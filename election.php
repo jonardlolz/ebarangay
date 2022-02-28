@@ -135,6 +135,7 @@
                         <th scope="col">Created By</th>
                         <th scope="col">Date Created</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Candidates</th>
                         <th scope="col">Action</th>
                         <th scope="col">Manage</th>
                     </tr>
@@ -179,6 +180,7 @@
                         </td>
                         <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
                         <td><?php echo $row["electionStatus"] ?></td>
+                        <td><button class="btn btn-warning btn-sm manage_candidates btn-flat" data-toggle="modal" data-target="#manageCandidate" data-backdrop="static data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
                         <td>
                             <?php if($row['electionStatus'] == "Active"): ?>
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
@@ -201,84 +203,7 @@
 
     </div>
     <!-- End of Card Body-->
-</div>
-<!--End of Card-->  
-<div class="card shadow mb-4 m-4">
-    <div class="card-header py-3 d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold text-dark">Candidates</h6>
-            <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_candidate" href="javascript:void(0)"></a>
-    </div>
-    
-    <div class="card-body" style="font-size: 75%">
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark" 
-                id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
-                <thead >
-                    <tr class="bg-gradient-secondary text-white">
-                        <th scope="col">UsersID</th>
-                        <th scope="col">Election Term</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Position</th>
-                        <th scope="col">Platform</th>
-                        <th scope="col">Edit</th>
-                    </tr>
-                    
-                </thead>
-                <tbody>
-                    <!--Row 1-->
-                    <?php 
-                        $candidates = $conn->query("SELECT candidates.*, concat(users.Firstname, ' ', users.Lastname) as name, users.profile_pic, users.userType, election.electionTitle FROM candidates INNER JOIN users on users.UsersID = candidates.UsersID INNER JOIN election ON election.electionID = candidates.electionID");
-                        while($row=$candidates->fetch_assoc()):
-                            if($row["userType"] == "Admin"){
-                                continue;
-                            }
-                    ?>
-                    <tr>
-                        <td><?php echo $row["UsersID"] ?></td>
-                        <td><?php echo $row["electionTitle"] ?></td>
-                        <td>
-                            <img class="img-profile rounded-circle <?php 
-                                if($row["userType"] == "Resident"){
-                                    echo "img-res-profile";
-                                }
-                                elseif($row["userType"] == "Purok Leader"){
-                                    echo "img-purokldr-profile";
-                                }
-                                elseif($row["userType"] == "Captain"){
-                                    echo "img-capt-profile";
-                                }
-                                elseif($row["userType"] == "Secretary"){
-                                    echo "img-sec-profile";
-                                }
-                                elseif($row["userType"] == "Treasurer"){
-                                    echo "img-treas-profile";
-                                }
-                                elseif($row["userType"] == "Admin"){
-                                    echo "img-admin-profile";
-                                }
-                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                            
-                            <?php echo $row["name"] ?>
-                        </td>
-                        <td><?php echo $row["position"] ?></td>
-                        <td><?php echo $row["platform"] ?></td>
-                        <td>
-                            <button class="btn btn-success btn-sm edit_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-edit"></i>Edit</button>
-                            <button class="btn btn-danger btn-sm delete_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-trash"></i>Delete</button>
-                        </td>
-                        
-                        <!--Right Options-->
-                    </tr>
-                    <?php endwhile; ?>
-                    <!--Row 1-->
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-    <!-- End of Card Body-->
-</div>                   
-<!--End of Card-->  
+</div> 
 <!--Residents Requests-->
 </div>
 </div>
@@ -287,6 +212,89 @@
 <!--Content-wrapper-->
 
 <?php endif; ?>
+
+<div class="modal fade" id="manageCandidate" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="">
+    <div class="modal-dialog modal-xl" role="document" style="border-color:#384550 ;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Manage Candidates</h5> 
+                <button class="btn btn-primary btn-sm btn-flat add_candidate ml-3" href="javascript:void(0)"><i class="fas fa-plus"></i> Add candidate</a>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">UsersID</th>
+                            <th scope="col">Election Term</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Platform</th>
+                            <th scope="col">Edit</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $candidates = $conn->query("SELECT candidates.*, concat(users.Firstname, ' ', users.Lastname) as name, users.profile_pic, users.userType, election.electionTitle FROM candidates INNER JOIN users on users.UsersID = candidates.UsersID INNER JOIN election ON election.electionID = candidates.electionID");
+                            while($row=$candidates->fetch_assoc()):
+                                if($row["userType"] == "Admin"){
+                                    continue;
+                                }
+                        ?>
+                        <tr>
+                            <td><?php echo $row["UsersID"] ?></td>
+                            <td><?php echo $row["electionTitle"] ?></td>
+                            <td>
+                                <img class="img-profile rounded-circle <?php 
+                                    if($row["userType"] == "Resident"){
+                                        echo "img-res-profile";
+                                    }
+                                    elseif($row["userType"] == "Purok Leader"){
+                                        echo "img-purokldr-profile";
+                                    }
+                                    elseif($row["userType"] == "Captain"){
+                                        echo "img-capt-profile";
+                                    }
+                                    elseif($row["userType"] == "Secretary"){
+                                        echo "img-sec-profile";
+                                    }
+                                    elseif($row["userType"] == "Treasurer"){
+                                        echo "img-treas-profile";
+                                    }
+                                    elseif($row["userType"] == "Admin"){
+                                        echo "img-admin-profile";
+                                    }
+                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                
+                                <?php echo $row["name"] ?>
+                            </td>
+                            <td><?php echo $row["position"] ?></td>
+                            <td><?php echo $row["platform"] ?></td>
+                            <td>
+                                <button class="btn btn-success btn-sm edit_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-edit"></i>Edit</button>
+                                <button class="btn btn-danger btn-sm delete_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-trash"></i>Delete</button>
+                            </td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Close</button> 
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 
@@ -351,7 +359,7 @@
 	      $.ajax({
 	          url:$url,
 	          error:err=>{
-	              console.log()
+	              console.log(err)
 	              alert("An error occured")
 	          },
 	          success:function(resp){

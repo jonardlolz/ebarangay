@@ -152,7 +152,7 @@
             elseif($_SESSION["userType"] == "Admin"){
                 echo "img-admin-profile";
             }
-        ?>" src="img/<?php echo $_SESSION["profile_pic"]; ?>"/>
+        ?>" src="img/<?php echo $_SESSION["profile_pic"]; ?> "/>
     </a>
 
     <div class="dropdown-menu dropdown-menu-sm-right shadow animated--grow-in"

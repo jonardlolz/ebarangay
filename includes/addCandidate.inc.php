@@ -17,7 +17,7 @@ session_start();
                 <select name="electionTerm" id="electionTerm" class="form-control form-control-sm form-select d-inline">
                     <option value="none" hidden selected>Election Term</option>
                     <?php
-                        $election = $conn->query("SELECT * FROM election WHERE status='Active'");
+                        $election = $conn->query("SELECT * FROM election WHERE electionStatus='Active'");
                         while($erow=$election->fetch_assoc()):
                     ?>
                     <option value="<?php echo $erow["electionID"] ?>" selected><?php echo $erow["electionTitle"] ?></option>
@@ -57,7 +57,7 @@ session_start();
                         <select name="electionTerm" id="electionTerm" class="form-control form-control-sm form-select d-inline">
                             <option value="<?php echo $row["electionID"] ?>" hidden selected><?php echo $row["electionTitle"] ?></option>
                             <?php
-                                $election = $conn->query("SELECT * FROM election WHERE status='Active'");
+                                $election = $conn->query("SELECT * FROM election WHERE electionStatus='Active'");
                                 while($erow=$election->fetch_assoc()):
                             ?>
                             <option value="<?php echo $erow["electionID"] ?>"><?php echo $erow["electionTitle"] ?></option>

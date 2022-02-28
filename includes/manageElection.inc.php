@@ -24,8 +24,8 @@
     }
     elseif(!isset($_GET["id"])){
         $id = $_SESSION["UsersID"];
-        $sql = "INSERT INTO election(electionTitle, created_by, barangay, purok)
-                SELECT '{$electionTitle}', $id, userBarangay, userPurok
+        $sql = "INSERT INTO election(electionTitle, created_by, barangay, purok) 
+                SELECT '{$electionTitle}', $id, users.userBarangay, users.userPurok
                 FROM users
                 WHERE UsersID=$id";
 
@@ -35,6 +35,7 @@
             exit();
         }
         if(!mysqli_stmt_execute($stmt)){
+            echo("Error description: " . mysqli_error($conn));
             header("location: ../election.php?error=sqlExecError");
             exit();
         }

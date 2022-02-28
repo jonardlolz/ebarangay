@@ -293,12 +293,12 @@
                     </div>
                 </div>
                     <div class="col-4">
-                        <div class="card shadow mb-3">
+                        <!-- <div class="card shadow mb-3">
                             
                             <div class="card-body">
                                 <div id="map"></div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row rounded mt-2 d-flex justify-content-center overflow-auto shadow">
                             <div class="calendar rounded text-white">
                                 

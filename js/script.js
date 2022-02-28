@@ -67,7 +67,7 @@ const renderCalendar = () => {
       days += `<div class="today">${i}</div>`;
       
     } 
-    else if (i === schedule.getDate() && date.getMonth() === new Date().getMonth()){
+    else if (i === schedule.getDate() && schedule.getMonth() === new Date().getMonth()){
       days += `<div class="today">${i}</div>`;
     }
     else {

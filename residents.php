@@ -1,5 +1,6 @@
 <?php include_once "header.php" ?>
 
+<div class="col d-flex flex-column">
 <!--Begin Page-->
 <div class="container p-4">
 
@@ -261,6 +262,7 @@
 <!--row-->
 </div>
 <!--Content-wrapper-->
+</div>
 
 <script>
     window.start_load = function(){

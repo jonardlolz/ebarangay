@@ -1,6 +1,6 @@
 <?php include_once 'header.php' ?>
-
-<div class="container p-4">
+<div class="col d-flex flex-column">
+<div class="container-fluid">
 <div class="card shadow mb-4 m-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <h6 class="m-0 font-weight-bold text-dark"><?php echo $_SESSION["userBarangay"] ?> Report</h6>
@@ -42,6 +42,7 @@
     </div>
     <!-- End of Card Body-->
 </div>                   
+</div>
 </div>
 
 <?php include_once 'footer.php' ?>
