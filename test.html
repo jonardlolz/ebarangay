@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    </head>
+    <body>
+        <form id="form" method="post" action="">
+
+            <label for="serial">Enter Serial Number</label>
+            <input id="serial" name="serial" type="text" placeholder="e.g. XXXX-XXXX-XXXX-XXXX" maxlength="19" />
+            <small>Alphanumeric. Dashes will be added automatically.</small>
+            
+            <button type="submit" name="submit">Submit</button>
+        </form>
+    </body>
+</html>
+
+<script>
+    (function($, undefined) {
+
+    "use strict";
+
+    // When ready.
+    $(function() {
+    
+    var $form = $( "#form" );
+    var $input = $form.find( "input" );
+
+    $input.on( "keyup", function( event ) {
+        
+        
+        // When user select text in the document, also abort.
+        var selection = window.getSelection().toString();
+        if ( selection !== '' ) {
+        return;
+        }
+        
+        // When the arrow keys are pressed, abort.
+        if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+        return;
+        }
+        
+        var $this = $(this);
+        var input = $this.val();
+            input = input.replace(/[\W\s\._\-]+/g, '');
+        
+        var split = 4;
+        var chunk = [];
+
+        for (var i = 0, len = input.length; i < len; i += split) {
+            chunk.push( input.substr( i, split ) );
+        }
+
+        $this.val(function() {
+            return chunk.join("-").toUpperCase();
+        });
+    
+    } );
+    
+    /**
+     * ==================================
+     * When Form Submitted
+     * ==================================
+     */
+    $form.on( "submit", function( event ) {
+        
+        var $this = $( this );
+        var arr = $this.serializeArray();
+        
+        console.log( arr[0]['value'] );
+        
+        event.preventDefault();
+    });
+    
+    });
+    })(jQuery);
+</script>
