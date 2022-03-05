@@ -3,13 +3,13 @@
     session_start();
 
     if(isset($_POST["submit"])){
-        $ereklamo = $conn->query("SELECT * FROM ereklamo WHERE UsersID=
-        {$_SESSION['UsersID']} AND status='Pending'");
-        $row_cnt = mysqli_num_rows($ereklamo);
-        if($row_cnt >= 1){
-            header("location: ../ereklamo.php?error=pendingRek");
-            exit();
-        }
+        // $ereklamo = $conn->query("SELECT * FROM ereklamo WHERE UsersID=
+        // {$_SESSION['UsersID']} AND status='Pending'");
+        // $row_cnt = mysqli_num_rows($ereklamo);
+        // if($row_cnt >= 1){
+        //     header("location: ../ereklamo.php?error=pendingRek");
+        //     exit();
+        // }
         $reklamotype = $_POST["reklamotype"];
         $detail = $_POST["detail"];
         $comment = $_POST["comment"];
@@ -32,7 +32,7 @@
 
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel) VALUES({$_SESSION["UsersID"]}, '$reklamotype', '$detail', '$status', '$comment', '$complainee', '$complaintLevel')");
+        $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '$reklamotype', '$detail', '$status', '$comment', '$complainee', '$complaintLevel', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has submitted a reklamo: $reklamotype', 'ereklamo', '$userType')");
 
         if($a1 && $a2){

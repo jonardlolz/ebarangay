@@ -28,7 +28,7 @@
                     <!--Row 1-->
                     <?php 
                         $userCity = "'".$_SESSION['userCity']."'";
-                        $barangay = $conn->query("SELECT * FROM barangay WHERE City = $userCity");
+                        $barangay = $conn->query("SELECT * FROM barangay");
                         while($row=$barangay->fetch_assoc()):
                     ?>
                     <tr>

@@ -132,11 +132,10 @@
                 <thead >
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Election Title</th>
-                        <th scope="col">Created By</th>
+                        <th scope="col">Purok</th>
                         <th scope="col">Date Created</th>
-                        <th scope="col">Status</th>
                         <th scope="col">Candidates</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Manage</th>
                     </tr>
                     
@@ -149,46 +148,23 @@
                         users.profile_pic, 
                         users.userType FROM election 
                         INNER JOIN users ON election.created_by = users.UsersID 
-                        WHERE barangay='{$_SESSION['userBarangay']}' AND purok = '{$_SESSION['userPurok']}'");
+                        WHERE barangay='{$_SESSION['userBarangay']}'");
                         while($row=$election->fetch_assoc()):
                     ?>
                     <tr>
                         <td><?php echo $row["electionTitle"] ?></td>
-                        <td>
-                            <img class="img-profile rounded-circle <?php 
-                                if($row["userType"] == "Resident"){
-                                    echo "img-res-profile";
-                                }
-                                elseif($row["userType"] == "Purok Leader"){
-                                    echo "img-purokldr-profile";
-                                }
-                                elseif($row["userType"] == "Captain"){
-                                    echo "img-capt-profile";
-                                }
-                                elseif($row["userType"] == "Secretary"){
-                                    echo "img-sec-profile";
-                                }
-                                elseif($row["userType"] == "Treasurer"){
-                                    echo "img-treas-profile";
-                                }
-                                elseif($row["userType"] == "Admin"){
-                                    echo "img-admin-profile";
-                                }
-                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                            
-                            <?php echo $row["name"] ?>
-                        </td>
+                        <td><?php echo $row["purok"] ?></td>
                         <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
-                        <td><?php echo $row["electionStatus"] ?></td>
-                        <td><button class="btn btn-warning btn-sm manage_candidates btn-flat" data-toggle="modal" data-target="#manageCandidate" data-backdrop="static data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                        <td><button class="btn btn-warning btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                        <td>
+                            <?php echo $row["electionStatus"] ?>
+                        </td>
                         <td>
                             <?php if($row['electionStatus'] == "Active"): ?>
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
                             <?php elseif($row['electionStatus'] == "Finish"): ?>
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>" disabled><i class="fas fa-check"></i> Finish</button>
                             <?php endif; ?>
-                        </td>
-                        <td>
                             <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
                             <button class="btn btn-danger btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
                         </td>
@@ -217,7 +193,7 @@
     <div class="modal-dialog modal-xl" role="document" style="border-color:#384550 ;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Manage Candidates</h5> 
+                <h5 class="modal-title" id="exampleModalLabel">Manage Candidates for </h5> 
                 <button class="btn btn-primary btn-sm btn-flat add_candidate ml-3" href="javascript:void(0)"><i class="fas fa-plus"></i> Add candidate</a>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -241,7 +217,13 @@
                     <tbody>
                         <!--Row 1-->
                         <?php 
-                            $candidates = $conn->query("SELECT candidates.*, concat(users.Firstname, ' ', users.Lastname) as name, users.profile_pic, users.userType, election.electionTitle FROM candidates INNER JOIN users on users.UsersID = candidates.UsersID INNER JOIN election ON election.electionID = candidates.electionID");
+                            $candidates = $conn->query("SELECT candidates.*, concat(users.Firstname, ' ', users.Lastname) 
+                            as name, users.profile_pic, users.userType, election.electionTitle 
+                            FROM candidates 
+                            INNER JOIN users 
+                            on users.UsersID = candidates.UsersID 
+                            INNER JOIN election 
+                            ON election.electionID = candidates.electionID");
                             while($row=$candidates->fetch_assoc()):
                                 if($row["userType"] == "Admin"){
                                     continue;
@@ -297,6 +279,15 @@
 </div>
 
 <script>
+    $(document).on("click", ".manage_candidates", function () {
+        var electionID = $(this).attr('data-electionid');
+        var purok = $(this).attr('data-id');
+        $(".modal-dialog .add_candidate").attr( 'data-electionid', electionID );
+        $(".modal-dialog .add_candidate").attr( 'data-id', purok );
+        document.getElementById('exampleModalLabel').innerHTML = "Manage candidates for Purok " + purok;
+        
+    });
+
 
     window.start_load = function(){
 	    $('body').prepend('<div id="preloader2"></div>')
@@ -369,7 +360,7 @@
 	                  if($size != ''){
 	                      $('#view_modal .modal-dialog').addClass($size)
 	                  }else{
-	                      $('#view_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+	                      $('#view_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-xl")
 	                  }
 	                  $('#view_modal').modal({
 	                    show:true,
@@ -420,8 +411,11 @@
             if(this.scrollHeight <= 117)
             $(this).height(0).height(this.scrollHeight);
         })
+        $('.view_candidate').click(function(){
+            view_modal("<center><b>Manage Candidates for " + $(this).attr('data-id') + "</b></center></center><button class='btn btn-primary btn-sm btn-flat add_candidate ml-3' href='javascript:void(0)'><i class='fas fa-plus'></i> Add candidate</a>","includes/view_candidate.inc.php?electionID="+ $(this).attr('data-electionid') + "&purok="+$(this).attr('data-id'))
+        })
         $('.add_candidate').click(function(){
-            uni_modal("<center><b>Add Candidate</b></center></center>","includes/addCandidate.inc.php")
+            uni_modal("<center><b>Add Candidate</b></center></center>","includes/addCandidate.inc.php?electionID="+$(this).attr('data-electionid')+"&purok="+$(this).attr('data-id'))
         })
         $('.edit_candidate').click(function(){
             uni_modal("<center><b>Edit Candidate</b></center></center>","includes/addCandidate.inc.php?id="+$(this).attr('data-id'))

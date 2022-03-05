@@ -3,7 +3,7 @@
     include 'includes/dbh.inc.php';
     if(isset($_SESSION["UsersID"]) == NULL)
     {
-        header("location: ../ebarangay/login.php");//return to login.php if error
+        header("location: login.php");//return to login.php if error
         exit();     //stop the script
     }
     else{
@@ -37,8 +37,31 @@
     <!--EB CSS-->
     <link href="css/cb2.css" rel="stylesheet">
     
+    <script src="//servedby.studads.com/ads/ads.php?t=MTQxNjk7ODY4OTtzcXVhcmUuc3F1YXJlX2JveA==&index=1"></script>   
     <script src="vendor/jquery/jquery.min.js"></script>
-
+    <style>
+        @media screen and (max-width: 768px) {
+            .sidebar {
+              width: 100%;
+              height: auto;
+              position: relative;
+            }
+            .sidebar .nav-item {float: left;}
+            div.content {margin-left: 0;}
+            /*#sidebarToggleTop {display: none;}*/
+            .sidebar {position: fixed; width: 190px;}   
+            #accordionSidebar {position: absolute;}
+            #sidebar-area { position: relative; z-index: 3000; }    /*area keeps all sidebar options above with z-index*/
+          }
+          
+          @media screen and (max-width: 400px) {
+            .sidebar .nav-item {
+              text-align: center;
+              float: none;
+            
+            }
+          }
+    </style>
 </head>
 
 <body id="page-top">
@@ -128,7 +151,7 @@
      
     <!-- Nav Item - User Information -->
     <li class="nav-item dropdown no-arrow">
-        
+    
     <?php if(isset($_SESSION["UsersID"]) != NULL) : ?>
     <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -250,9 +273,9 @@
         <!-- Captain Sidebar -->
         <?php elseif($_SESSION["userType"] == "Captain") : ?>
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
+        <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
-        </li>
+        </li> -->
         <!-- Nav Item - Home -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
@@ -291,9 +314,9 @@
         
         <?php elseif($_SESSION["userType"] == "Secretary") : ?>                  
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
+        <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
-        </li>
+        </li> -->
         <!-- Nav Item - eBulletin -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
@@ -334,9 +357,9 @@
 
         <?php elseif($_SESSION["userType"] == "Treasurer") : ?>
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
+        <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
-        </li>
+        </li> -->
         <!-- Nav Item - Home -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
@@ -356,12 +379,12 @@
 
         <?php elseif($_SESSION["userType"] == "Purok Leader") : ?>
             <!-- Nav Item - Dashboard -->
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
+        <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
-        </li>
+        </li> -->
         <!-- Nav Item - Dashboard -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
         </li>
 
         <!-- Nav Item - Request -->

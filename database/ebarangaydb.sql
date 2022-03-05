@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2021 at 01:48 AM
--- Server version: 10.4.20-MariaDB
+-- Generation Time: Mar 02, 2022 at 03:15 PM
+-- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,21 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `barangay` (
-  `BarangayID` int(11) NOT NULL,
+  `BarangayID` int NOT NULL,
   `BarangayName` varchar(50) NOT NULL,
   `City` varchar(20) NOT NULL,
   `Active` varchar(20) NOT NULL DEFAULT 'True'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `barangay`
 --
 
 INSERT INTO `barangay` (`BarangayID`, `BarangayName`, `City`, `Active`) VALUES
-(1, 'Bakilid', 'Mandaue', 'True'),
+(1, 'Bakilid', 'Mandaue', 'False'),
 (2, 'Paknaan', 'Mandaue', 'True'),
-(3, 'Maguikay', 'Mandaue', 'True'),
-(4, 'Cambaro', 'Mandaue', 'True');
+(3, 'Maguikay', 'Mandaue', 'False'),
+(4, 'Cambaro', 'Mandaue', 'False'),
+(5, 'Pajo', 'Lapu-Lapu', 'True');
 
 -- --------------------------------------------------------
 
@@ -51,28 +52,17 @@ INSERT INTO `barangay` (`BarangayID`, `BarangayName`, `City`, `Active`) VALUES
 --
 
 CREATE TABLE `candidates` (
-  `candidateID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
+  `candidateID` int NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `position` varchar(20) NOT NULL,
-  `electionID` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `platform` varchar(200) DEFAULT NULL,
-  `purok` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `candidates`
---
-
-INSERT INTO `candidates` (`candidateID`, `UsersID`, `lastname`, `firstname`, `position`, `electionID`, `created_at`, `updated_at`, `platform`, `purok`) VALUES
-(1, 11, 'Baring', 'Craige Jonard', 'Captain', 1, '2021-12-01 21:34:29', '2021-12-01 21:34:29', 'I\'ll pave a better tomorrow!', ''),
-(5, 11, 'Barings', 'Craige Jonard', 'Secretary', 1, '2021-12-03 23:10:14', '2021-12-03 23:10:14', 'I want to be secretary!', 'Kamanggahan'),
-(6, 12, 'Cadavero', 'Sajid', 'Captain', 1, '2021-12-03 23:10:43', '2021-12-03 23:10:43', 'I want to be Captain!', 'Test'),
-(7, 22, 'Pepito', 'Rosvie', 'Treasurer', 1, '2021-12-03 23:11:24', '2021-12-03 23:11:24', 'I want to be Treasurer!', 'Kamatis'),
-(8, 13, 'Baring', 'Craven Johnzen', 'Purok Leader', 1, '2021-12-03 23:11:49', '2021-12-03 23:11:49', 'I want to be Purok Leader!', 'Test');
+  `purok` varchar(20) NOT NULL,
+  `UsersID` int NOT NULL,
+  `electionID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -81,20 +71,12 @@ INSERT INTO `candidates` (`candidateID`, `UsersID`, `lastname`, `firstname`, `po
 --
 
 CREATE TABLE `comments` (
-  `CommentsID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
-  `PostID` int(11) NOT NULL,
+  `CommentsID` int NOT NULL,
+  `UsersID` int NOT NULL,
+  `PostID` int NOT NULL,
   `comment` varchar(255) NOT NULL,
-  `date_created` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`CommentsID`, `UsersID`, `PostID`, `comment`, `date_created`) VALUES
-(20, 24, 50, 'asdwq', '2021-12-06 22:08:06'),
-(21, 24, 51, 'Hello', '2021-12-06 22:09:47');
+  `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -103,20 +85,22 @@ INSERT INTO `comments` (`CommentsID`, `UsersID`, `PostID`, `comment`, `date_crea
 --
 
 CREATE TABLE `election` (
-  `electionID` int(11) NOT NULL,
+  `electionID` int NOT NULL,
   `electionTitle` varchar(50) NOT NULL,
   `electionStatus` varchar(20) NOT NULL,
   `created_by` varchar(50) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `barangay` varchar(50) DEFAULT NULL,
+  `purok` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `election`
 --
 
-INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Term 2021-2022', 'Active', '22', '2021-11-30 20:34:05', '2021-11-30 20:34:05');
+INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `created_by`, `created_at`, `updated_at`, `barangay`, `purok`) VALUES
+(4, 'Term 2022-2023', '', '29', '2022-03-02 21:25:23', '2022-03-02 21:25:23', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -125,26 +109,20 @@ INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `create
 --
 
 CREATE TABLE `ereklamo` (
-  `ReklamoID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
+  `ReklamoID` int NOT NULL,
   `reklamoType` varchar(120) DEFAULT NULL,
   `detail` varchar(120) NOT NULL,
   `status` varchar(50) DEFAULT NULL,
-  `CreatedOn` datetime DEFAULT current_timestamp(),
-  `UpdatedOn` datetime DEFAULT current_timestamp(),
+  `CreatedOn` datetime DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedOn` datetime DEFAULT CURRENT_TIMESTAMP,
   `comment` varchar(120) DEFAULT NULL,
   `checkedBy` varchar(120) DEFAULT NULL,
-  `checkedOn` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `ereklamo`
---
-
-INSERT INTO `ereklamo` (`ReklamoID`, `UsersID`, `reklamoType`, `detail`, `status`, `CreatedOn`, `UpdatedOn`, `comment`, `checkedBy`, `checkedOn`) VALUES
-(1, 11, 'Kuryente', 'Power outtages', 'Resolved', '2021-11-07 22:49:14', '2021-11-24 21:25:46', 'Area keeps having brownouts', 'Pepito, Rosvie', '2021-11-24 21:28:13'),
-(2, 11, 'Resident', 'Noise', 'Resolved', '2021-11-25 16:25:49', '2021-11-25 16:25:49', '5am mag disco', 'Pepito, Rosvie', '2021-11-25 16:27:51'),
-(3, 11, 'Resident', 'Disregard of trashes', 'Resolved', '2021-12-06 22:24:41', '2021-12-06 22:24:41', 'Batig nawng si abie', 'Captain, Captain', '2021-12-06 22:29:28');
+  `checkedOn` datetime DEFAULT NULL,
+  `complaintLevel` varchar(50) DEFAULT 'Minor',
+  `complainee` int DEFAULT NULL,
+  `scheduledSummon` date DEFAULT NULL,
+  `UsersID` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -153,21 +131,15 @@ INSERT INTO `ereklamo` (`ReklamoID`, `UsersID`, `reklamoType`, `detail`, `status
 --
 
 CREATE TABLE `notifications` (
-  `NotificationID` int(11) NOT NULL,
-  `message` varchar(100) NOT NULL,
-  `type` varchar(20) NOT NULL,
-  `status` varchar(20) NOT NULL DEFAULT 'Not read',
-  `UsersID` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `notifications`
---
-
-INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `UsersID`, `created_at`, `updated_at`) VALUES
-(1, 'This is a test notification!', 'Resident', 'Not read', 11, '2021-12-07 01:17:46', '2021-12-07 01:17:46');
+  `NotificationID` int NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `type` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT 'Not Read',
+  `UsersID` int DEFAULT NULL,
+  `position` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -176,15 +148,15 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 --
 
 CREATE TABLE `officials` (
-  `OfficialID` int(11) DEFAULT NULL,
+  `OfficialID` int DEFAULT NULL,
   `NationalID` varchar(50) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `middlename` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
-  `residentID` int(11) DEFAULT NULL,
+  `residentID` int DEFAULT NULL,
   `electedOn` date DEFAULT NULL,
   `updatedOn` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -193,36 +165,20 @@ CREATE TABLE `officials` (
 --
 
 CREATE TABLE `post` (
-  `PostID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
+  `PostID` int NOT NULL,
+  `UsersID` int NOT NULL,
   `username` varchar(50) NOT NULL,
   `userType` varchar(50) NOT NULL,
   `postMessage` varchar(255) NOT NULL,
-  `date_created` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `post`
 --
 
 INSERT INTO `post` (`PostID`, `UsersID`, `username`, `userType`, `postMessage`, `date_created`) VALUES
-(11, 12, 'sajidcadavero', 'Resident', 'Test 3', '2021-10-20 11:04:31'),
-(36, 11, 'jonardlolz', 'Resident', 'thoughts and prayers', '2021-11-04 11:13:00'),
-(41, 11, 'jonardlolz', 'Resident', 'test', '2021-11-04 21:33:39'),
-(42, 11, 'jonardlolz', 'Resident', 'test', '2021-11-04 21:34:35'),
-(43, 11, 'jonardlolz', 'Resident', 'test2', '2021-11-04 21:35:30'),
-(44, 11, 'jonardlolz', 'Resident', 'test3', '2021-11-04 21:38:24'),
-(45, 11, 'jonardlolz', 'Resident', 'test', '2021-11-04 21:39:44'),
-(46, 11, 'jonardlolz', 'Resident', 'test4', '2021-11-04 21:44:29'),
-(47, 11, 'jonardlolz', 'Resident', 'rwqr', '2021-11-04 21:45:19'),
-(48, 11, 'jonardlolz', 'Resident', 'dwqd', '2021-11-04 21:47:10'),
-(49, 11, 'jonardlolz', 'Resident', 'sadwq', '2021-11-04 21:48:42'),
-(50, 11, 'jonardlolz', 'Resident', 'test', '2021-11-05 17:42:31'),
-(51, 11, 'jonardlolz', 'Resident', 'test', '2021-11-05 17:43:05'),
-(52, 11, 'jonardlolz', 'Resident', 'test', '2021-11-05 17:44:25'),
-(53, 11, 'jonardlolz', 'Resident', 'test', '2021-11-05 17:44:45'),
-(54, 11, 'jonardlolz', 'Resident', 'test', '2021-11-05 17:49:54'),
-(55, 11, 'jonardlolz', 'Resident', 'test2', '2021-11-05 17:50:46');
+(69, 29, 'captain1', 'Captain', 'Vaccination for kids!! ', '2022-03-02 19:43:01');
 
 -- --------------------------------------------------------
 
@@ -231,11 +187,11 @@ INSERT INTO `post` (`PostID`, `UsersID`, `username`, `userType`, `postMessage`, 
 --
 
 CREATE TABLE `purok` (
-  `PurokID` int(11) NOT NULL,
+  `PurokID` int NOT NULL,
   `PurokName` varchar(20) NOT NULL,
   `BarangayName` varchar(20) NOT NULL,
   `Active` varchar(20) NOT NULL DEFAULT 'True'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `purok`
@@ -250,8 +206,34 @@ INSERT INTO `purok` (`PurokID`, `PurokName`, `BarangayName`, `Active`) VALUES
 (6, 'Chippy', 'Maguikay', 'True'),
 (7, 'Sprite', 'Cambaro', 'True'),
 (8, 'Coke', 'Cambaro', 'True'),
-(9, 'Apple', 'Paknaan', 'True'),
-(10, 'Papayas', 'Paknaan', 'True');
+(9, 'Apple', 'Paknaan', 'False'),
+(10, 'Papayas', 'Paknaan', 'False'),
+(11, 'Kamanggahan', 'Pajo', 'True');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `report`
+--
+
+CREATE TABLE `report` (
+  `reportID` int NOT NULL,
+  `ReportType` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `reportMessage` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `UsersID` int NOT NULL,
+  `created_on` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` datetime DEFAULT CURRENT_TIMESTAMP,
+  `userBarangay` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `userPurok` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `report`
+--
+
+INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `created_on`, `updated_on`, `userBarangay`, `userPurok`) VALUES
+(1, 'eReklamo', 'Test Test has resolved ereklamo#$id', 0, '2022-02-24 20:07:11', '2022-02-24 20:07:11', 'Pajo', 'Kamatis'),
+(2, 'eReklamo', 'Purok Leader Caitleen has resolved ereklamo#7', 23, '2022-02-24 20:15:16', '2022-02-24 20:15:16', 'Pajo', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -260,24 +242,40 @@ INSERT INTO `purok` (`PurokID`, `PurokName`, `BarangayName`, `Active`) VALUES
 --
 
 CREATE TABLE `request` (
-  `RequestID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
+  `RequestID` int NOT NULL,
   `documentType` varchar(120) NOT NULL,
   `purpose` varchar(120) NOT NULL,
-  `requestedOn` datetime DEFAULT current_timestamp(),
+  `requestedOn` datetime DEFAULT CURRENT_TIMESTAMP,
   `approvedOn` datetime DEFAULT NULL,
   `approvedBy` varchar(120) DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL,
-  `status` varchar(120) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `amount` int DEFAULT NULL,
+  `status` varchar(120) DEFAULT NULL,
+  `userBarangay` varchar(50) DEFAULT NULL,
+  `userPurok` varchar(50) DEFAULT NULL,
+  `paymentMode` varchar(50) DEFAULT NULL,
+  `userType` varchar(50) DEFAULT NULL,
+  `UsersID` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `request`
+-- Table structure for table `schedule`
 --
 
-INSERT INTO `request` (`RequestID`, `UsersID`, `documentType`, `purpose`, `requestedOn`, `approvedOn`, `approvedBy`, `amount`, `status`) VALUES
-(2, 11, 'brgyClearance', 'Employment', '2021-11-25 16:23:35', '2021-11-25 16:27:21', 'Pepito, Rosvie', 0, 'Approved'),
-(3, 11, 'Cedula', 'Employment', '2021-12-05 11:24:23', '2021-12-05 11:25:12', 'Pepito, Rosvie', 0, 'Approved');
+CREATE TABLE `schedule` (
+  `scheduleID` int NOT NULL,
+  `scheduleDate` date DEFAULT NULL,
+  `ereklamoID` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`scheduleID`, `scheduleDate`, `ereklamoID`) VALUES
+(2, '2022-02-18', NULL),
+(4, '2022-02-19', NULL);
 
 -- --------------------------------------------------------
 
@@ -286,7 +284,7 @@ INSERT INTO `request` (`RequestID`, `UsersID`, `documentType`, `purpose`, `reque
 --
 
 CREATE TABLE `users` (
-  `UsersID` int(11) NOT NULL,
+  `UsersID` int NOT NULL,
   `Firstname` varchar(50) NOT NULL,
   `Middlename` varchar(50) DEFAULT NULL,
   `Lastname` varchar(50) NOT NULL,
@@ -302,26 +300,22 @@ CREATE TABLE `users` (
   `userPurok` varchar(50) DEFAULT NULL,
   `phoneNum` varchar(20) DEFAULT NULL,
   `teleNum` varchar(20) DEFAULT NULL,
-  `NationalID` varchar(120) NOT NULL,
   `VerifyStatus` varchar(20) NOT NULL DEFAULT 'Pending',
   `userCity` varchar(30) NOT NULL DEFAULT 'None',
   `Status` varchar(20) NOT NULL DEFAULT 'Active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `NationalID`, `VerifyStatus`, `userCity`, `Status`) VALUES
-(11, 'Craige Jonard', 'Noels', 'Barings', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'jonardlolz', '$2y$10$K6Zkx.YH2y0g0m33wAc7Q.8KhMKvhHvsCur4qhw9qyGCusJagnnku', 'Male', 'Resident', '1634666100_gru.png', 'Paknaan', 'Kamatis', '999999', 'N/A', '', 'Pending', 'None', 'Active'),
-(12, 'Sajid', 'Manito', 'Cadavero', '2000-11-15', 'Single', 'cadaverosajid@gmail.com', 'sajidcadavero', '$2y$10$.kSmGRxGlKh/w7qlr/JbfOHadGYxel22MINmsi.WEe.2d1GPRU8aW', 'Male', 'Resident', 'profile_picture.jpg', 'Test', 'Test', NULL, NULL, '', 'Pending', 'None', 'Active'),
-(13, 'Craven Johnzen', 'Noel', 'Baring', '2000-11-08', 'Single', 'cravenjohnzen@gmail.com', 'johnzen', '$2y$10$XwKnYul153sHbFfkIQsZfubFmRQskanLa.uLxrjHP47Bp3Ldo3.ui', 'Male', 'Resident', 'profile_picture.jpg', 'Test', 'Test', NULL, NULL, '1234-5678-9123-4567', 'Pending', 'None', 'Active'),
-(15, 'Null', 'Null', 'Null', '0001-01-01', 'Single', 'Null@gmail.com', 'admin', '$2y$10$jn27UBTK1djlbR1AOEcPAe9LhvZgg2caCdTSmNCdNwv63qNI.nwQ2', 'Male', 'Admin', 'profile_picture.jpg', 'Null', 'Null', NULL, NULL, '0000-0000-0000-0000', 'Pending', 'Mandaue', 'Active'),
-(21, 'QWE', 'Noels', 'Barings', '2021-11-21', 'Single', 'asdjasdijnasd@gmaill.com', 'iajsdasd', '$2y$10$C9Cpmdo7iptrMwewTqnhZewD1c4xMv9xi3t83zX7gyo4L8/Qg2XpC', 'Female', NULL, 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, '1111-1111-1111-1111', 'Pending', 'None', 'Inactive'),
-(22, 'Rosvie', 'Ruizo', 'Pepito', '1999-08-23', 'Single', 'pepitorosvie@gmail.com', 'pepitorosvie', '$2y$10$66c6RivqwloDJyE3lojVWOfLxyfflfPx5BJONrQ3KAkdlQ4bs.6Ka', 'Male', 'Captain', 'profile_picture.jpg', 'Pajo', 'Kamatis', '095487785423', '(032)340-5560', '2222-2222-2222-2222', 'Pending', 'Mandaue', 'Inactive'),
-(23, 'Caitleen', 'Noel', 'Baring', '1111-11-11', 'Single', 'caitleenjhoyce@gmail.com', 'caitleenJhoyce', '$2y$10$L.MhYe18oF0B8s2m39YsHuCJ.RXYO1qOoIN1PyqddNkjRYxUQGiiu', 'Female', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamatis', '098752145632', NULL, '7894-5612-3785-4245', 'Verified', 'None', 'Active'),
-(24, 'Captain', 'Captain', 'Captain', '2002-10-25', 'Single', 'captain@gmail.com', 'captain1', '$2y$10$Naf9ZWeha2YmDCe1oOKDjeZHLdDDJ5F3ZVFIHeadhBWnlgCPy86CS', 'Male', 'Captain', 'profile_picture.jpg', NULL, NULL, '09758423457', '(032)340-7854', '5555-5555-5555-5555', 'Pending', 'Mandaue', 'Active'),
-(25, 'Test', 'Test', 'Test', '2222-02-22', 'Married', 'qweqwd@gmail.com', 'test', '$2y$10$Okj1uCodCTmwxoSeAQ.3nu2fgv3AcBh7Kj.9TDlvKMynevvBau0By', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamatis', NULL, NULL, '1231-2312-4124-1231', 'Pending', 'Mandaue', 'Active');
+INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`) VALUES
+(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Pending', '', 'Active'),
+(28, 'Xavier', 'Noel', 'Johnson', '2000-01-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$..PLFwgk8icProv4dHWmruXNRuedfpg9dq7cnvxdb/MNWdItpbt/e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active'),
+(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$Z6oSDH5WbQ1idlHl6Z48w.notdDAOGLo4JrrEC8WFwEGq6XhWLEQa', 'Male', 'Captain', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active'),
+(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active'),
+(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active'),
+(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active');
 
 -- --------------------------------------------------------
 
@@ -330,27 +324,14 @@ INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbi
 --
 
 CREATE TABLE `votes` (
-  `voteID` int(11) NOT NULL,
-  `candidateID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `position` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `votes`
---
-
-INSERT INTO `votes` (`voteID`, `candidateID`, `UsersID`, `created_at`, `updated_at`, `position`) VALUES
-(12, 1, 11, '2021-12-04 23:48:53', '2021-12-04 23:48:53', 'Captain'),
-(13, 5, 11, '2021-12-04 23:48:53', '2021-12-04 23:48:53', 'Secretary'),
-(14, 7, 11, '2021-12-04 23:48:53', '2021-12-04 23:48:53', 'Purok Leader'),
-(15, 8, 11, '2021-12-04 23:48:53', '2021-12-04 23:48:53', 'Treasurer'),
-(16, 6, 11, '2021-12-05 11:37:25', '2021-12-05 11:37:25', 'Captain'),
-(17, 5, 11, '2021-12-05 11:37:25', '2021-12-05 11:37:25', 'Secretary'),
-(18, 7, 11, '2021-12-05 11:37:25', '2021-12-05 11:37:25', 'Purok Leader'),
-(19, 8, 11, '2021-12-05 11:37:25', '2021-12-05 11:37:25', 'Treasurer');
+  `voteID` int NOT NULL,
+  `candidateID` int NOT NULL,
+  `UsersID` int NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `position` varchar(50) NOT NULL,
+  `electionID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Indexes for dumped tables
@@ -367,8 +348,8 @@ ALTER TABLE `barangay`
 --
 ALTER TABLE `candidates`
   ADD PRIMARY KEY (`candidateID`),
-  ADD KEY `electionID` (`electionID`),
-  ADD KEY `UsersID` (`UsersID`);
+  ADD KEY `UsersID` (`UsersID`),
+  ADD KEY `electionID` (`electionID`);
 
 --
 -- Indexes for table `comments`
@@ -395,8 +376,7 @@ ALTER TABLE `ereklamo`
 -- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`NotificationID`),
-  ADD KEY `UsersID` (`UsersID`);
+  ADD PRIMARY KEY (`NotificationID`);
 
 --
 -- Indexes for table `post`
@@ -413,11 +393,24 @@ ALTER TABLE `purok`
   ADD PRIMARY KEY (`PurokID`);
 
 --
+-- Indexes for table `report`
+--
+ALTER TABLE `report`
+  ADD PRIMARY KEY (`reportID`);
+
+--
 -- Indexes for table `request`
 --
 ALTER TABLE `request`
   ADD PRIMARY KEY (`RequestID`),
   ADD KEY `UsersID` (`UsersID`);
+
+--
+-- Indexes for table `schedule`
+--
+ALTER TABLE `schedule`
+  ADD PRIMARY KEY (`scheduleID`),
+  ADD KEY `ereklamoID` (`ereklamoID`);
 
 --
 -- Indexes for table `users`
@@ -442,67 +435,79 @@ ALTER TABLE `votes`
 -- AUTO_INCREMENT for table `barangay`
 --
 ALTER TABLE `barangay`
-  MODIFY `BarangayID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `BarangayID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `candidateID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `election`
 --
 ALTER TABLE `election`
-  MODIFY `electionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `PostID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `PostID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `purok`
 --
 ALTER TABLE `purok`
-  MODIFY `PurokID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `PurokID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `report`
+--
+ALTER TABLE `report`
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `RequestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `schedule`
+--
+ALTER TABLE `schedule`
+  MODIFY `scheduleID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `voteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `voteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
@@ -512,8 +517,8 @@ ALTER TABLE `votes`
 -- Constraints for table `candidates`
 --
 ALTER TABLE `candidates`
-  ADD CONSTRAINT `candidates_ibfk_1` FOREIGN KEY (`electionID`) REFERENCES `election` (`electionID`),
-  ADD CONSTRAINT `candidates_ibfk_2` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`);
+  ADD CONSTRAINT `candidates_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `candidates_ibfk_2` FOREIGN KEY (`electionID`) REFERENCES `election` (`electionID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `comments`
@@ -526,13 +531,7 @@ ALTER TABLE `comments`
 -- Constraints for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  ADD CONSTRAINT `ereklamo_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`);
-
---
--- Constraints for table `notifications`
---
-ALTER TABLE `notifications`
-  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`);
+  ADD CONSTRAINT `ereklamo_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `post`
@@ -545,7 +544,13 @@ ALTER TABLE `post`
 -- Constraints for table `request`
 --
 ALTER TABLE `request`
-  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`);
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `schedule`
+--
+ALTER TABLE `schedule`
+  ADD CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`ereklamoID`) REFERENCES `ereklamo` (`ReklamoID`);
 
 --
 -- Constraints for table `votes`

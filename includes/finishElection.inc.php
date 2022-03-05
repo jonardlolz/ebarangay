@@ -13,7 +13,7 @@ if(isset($_POST["id"])){
     GROUP BY candidateID) as results
     WHERE electionID=$id
     GROUP BY position;");
-    while($frow = $election->fetch_assoc()){
+    while($frow = $election->fetch_asso c()){
         $sql = "UPDATE users SET userType=? WHERE UsersID = ?";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
