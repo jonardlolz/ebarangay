@@ -34,16 +34,19 @@ if(isset($_GET['id'])):
                 <label>Birthdate: </label>
                 <input type="date" class="form-control form-control-sm" placeholder="Birthdate" name="userDOB" id="userDOB" value="<?php echo $dateofbirth ?>"></input>
             </div>
-        </div>
-        
-        <div class="form-group"><!--Civil status-->
-            <label class="d-inline mr-auto">Civil Status:</label>
-            <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline" style="width: auto;">
+            <div class="col-lg-6 col-sm-6">
+                <label>Civil Status:</label>
+                <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm" style="width: auto;">
                 <option value="<?php echo $civilStat ?>" hidden selected><?php echo $civilStat ?></option>
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
                 <option value="Widowed">Widowed</option>
             </select>
+            </div>
+        </div>
+        
+        <div class="form-group"><!--Civil status-->
+            
         </div>
         <div class="form-group">
             <label class="d-inline mr-auto">Purok:</label>
@@ -65,11 +68,15 @@ if(isset($_GET['id'])):
         <div class="form-group">    
             <label class="d-inline mr-auto">Barangay:</label>
             <select class="form-control form-control-sm form-select d-inline" name="userBrgy" id="userBrgy" style="width: auto;">
-                <option value="<?php echo $_SESSION['userBarangay'] ?>" hidden selected><?php echo $_SESSION['userBarangay'] ?></option>
-                    <?php $barangay = $conn->query("SELECT * FROM barangay");
-                    while($brow = $barangay->fetch_assoc()): ?>  
-                        <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                    <?php endwhile; ?>
+                 <?php 
+                    $purok = $conn->query("SELECT * FROM barangay");
+                    while($row=$purok->fetch_assoc()):
+                ?>
+                    <?php if($userBarangay == $row["BarangayName"]): ?>
+                        <option value="<?php echo $userBarangay ?>" selected><?php echo $userBarangay ?></option>
+                    <?php continue; endif;  ?>
+                    <option value="<?php echo $row["BarangayName"] ?>"><?php echo $row["BarangayName"] ?></option>
+                <?php endwhile; ?>
             </select>
         </div>
         <div class="form-group row">
