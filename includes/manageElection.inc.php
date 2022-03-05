@@ -25,7 +25,7 @@
     elseif(!isset($_GET["id"])){
         $id = $_SESSION["UsersID"];
         $sql = "INSERT INTO election(electionTitle, created_by, barangay, purok) 
-                SELECT '{$electionTitle}', $id, users.userBarangay, users.userPurok
+                SELECT '{$electionTitle}', $id, users.userBarangay, '$electionPurok'
                 FROM users
                 WHERE UsersID=$id";
 

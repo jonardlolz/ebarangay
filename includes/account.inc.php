@@ -102,10 +102,10 @@ if(isset($_GET['id'])):
 <?php else: ?> 
 <div class="container-fluid">
     <form id="form" action="includes/edit_account.inc.php" class="user" method="post">
-        <div class="form-group">
+        <!-- <div class="form-group">
             <input type="text" class="form-control form-control-sm" id="natID"
                     placeholder="National ID (e.g. XXXX-XXXX-XXXX-XXXX)" name="natID" maxlength="19" required>
-        </div>
+        </div> -->
         <div class="form-group row">    <!--Nmae-->
             <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
                 <input type="text" class="form-control form-control-sm" id="FirstName"

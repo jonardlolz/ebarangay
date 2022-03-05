@@ -9,8 +9,20 @@
         <div class="form-group">
             <div class="col-sm-7">
                 <label for="electionTitle">Election Title</label>
-                <input type="text" class="form-control form-control-sm" id="electionTitle"
+                <input type="text" class="form-control form-control-user" id="electionTitle"
                 name="electionTitle" placeholder="Election Title" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-7">
+                <label for="electionTitle">Purok</label>
+                <select name="electionPurok" id="electionPurok" class="form-select form-select-lg">
+                    <option value="" hidden selected>Purok</option>
+                    <?php $barangay = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'");
+                    while($brow = $barangay->fetch_assoc()): ?>  
+                    <option value="<?php echo $brow['PurokName'] ?>"><?php echo $brow['PurokName'] ?></option>
+                    <?php endwhile; ?>
+                </select>
             </div>
         </div>
     </form>

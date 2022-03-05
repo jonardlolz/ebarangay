@@ -49,7 +49,7 @@
     </div>
   </div>
   <div class="modal fade" id="view_modal" role='dialog'>
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
         <h5 class="modal-title"></h5>
@@ -124,6 +124,12 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+      $(document).ready( function () {
+      $('#dataTable').DataTable();
+      } );
+    </script>
+
 
 </body>
 

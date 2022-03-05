@@ -101,8 +101,17 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Minor';");
+                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                as checkedDate, users.userType, users.profile_pic 
+                                FROM ereklamo 
+                                INNER JOIN users 
+                                ON ereklamo.UsersID=users.UsersID 
+                                WHERE ereklamo.status='Pending' 
+                                AND ereklamo.complaintLevel='Minor' 
+                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -140,7 +149,8 @@
                                 <td><?php echo $row["createdDate"] ?></td>
                                 <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
                                 <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
-                                <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td>
+                                <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
+                                <td><a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Respondents</button></a></td>
                                 <!--Right Options-->
                             </tr>
                             <?php endwhile; ?>
@@ -257,8 +267,14 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major';");
+                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                as checkedDate, users.userType, users.profile_pic 
+                                FROM ereklamo 
+                                INNER JOIN users 
+                                ON ereklamo.UsersID=users.UsersID 
+                                WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -296,11 +312,12 @@
                                 <td><?php echo $row["createdDate"] ?></td>
                                 <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
                                 <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
-                                <td><?php if($row["reklamoType"] != 'Resident'){ ?>
-                                    <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a>
+                                <td>
+                                    <?php if($row["reklamoType"] != 'Resident'){ ?>
+                                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a>
                                     <?php } ?>
                                     <?php if($row["reklamoType"] == 'Resident'){ ?>
-                                    <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><i class="fas fa-calendar-alt fa-2x"></i></a>
+                                        <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><i class="fas fa-calendar-alt fa-2x"></i></a>
                                     <?php } ?>
                                 </td>
                                 <!--Right Options-->

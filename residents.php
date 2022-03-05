@@ -17,22 +17,21 @@
             <table class="table table-bordered text-center text-dark display" 
                 width="100%" cellspacing="0" cellpadding="0">
                 <thead >
-                    <tr class="bg-gradient-warning">
+                    <!-- <tr class="bg-gradient-warning">
                         <th colspan="5">Resident</th>
                         <th colspan ="2">Address</th>
                         <th colspan="2">Contacts</th>
                         <th colspan="1">Options</th>                   
-                    </tr>
+                    </tr> -->
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Name</th>
                         <th scope="col">Birthdate</th>
                         <th scope="col">Civil Status</th>
-                        <th scope="col">National ID</th>
                         <th scope="col">User Type</th>
                         <th scope="col">Purok</th>
                         <th scope="col">Barangay</th>
                         <th scope="col">Email Address</th>
-                        <th scope="col">Phone Number</th>
+                        <!-- <th scope="col">Phone Number</th> -->
                         <th scope="col">Manage</th>
                     </tr>
                     
@@ -73,95 +72,14 @@
                         </td>
                         <td><?php echo $row["dateofbirth"] ?></td>
                         <td><?php echo $row["civilStat"] ?></td>
-                        <td><?php echo $row["NationalID"] ?></td>
                         <td><?php echo $row["userType"] ?></td>
                         <td><?php echo $row["userPurok"] ?></td>
                         <td><?php echo $row["userBarangay"] ?></td>
                         <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                        <td><?php echo $row["phoneNum"] ?></td>
+                        <!-- <td><?php echo $row["phoneNum"] ?></td> -->
                         <td>
-                            <button class="btn btn-success btn-sm btn-flat verify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-check"></i>Verify</button>
+                            <button class="btn btn-success btn-sm btn-flat verify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-check"></i> Verify</button>
                         </td>
-                        
-                        <!--Right Options-->
-                    </tr>
-                    <?php endwhile; ?>
-                    <!--Row 1-->
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-    <!-- End of Card Body-->
-
-    <div class="card-body" style="font-size: 75%">
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark display" 
-                width="100%" cellspacing="0" cellpadding="0">
-                <thead >
-                    <tr class="bg-gradient-warning">
-                        <th colspan="5">Resident</th>
-                        <th colspan ="2">Address</th>
-                        <th colspan="2">Contacts</th>
-                  
-                    </tr>
-                    <tr class="bg-gradient-secondary text-white">
-                        <th scope="col">Name</th>
-                        <th scope="col">Birthdate</th>
-                        <th scope="col">Civil Status</th>
-                        <th scope="col">National ID</th>
-                        <th scope="col">User Type</th>
-                        <th scope="col">Purok</th>
-                        <th scope="col">Barangay</th>
-                        <th scope="col">Email Address</th>
-                        <th scope="col">Phone Number</th>
-
-                    </tr>
-                    
-                </thead>
-                <tbody>
-                    <!--Row 1-->
-                    <?php 
-                        $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = '{$_SESSION['userBarangay']}'");
-                        while($row=$accounts->fetch_assoc()):
-                            if($row["userType"] == "Admin"){
-                                continue;
-                            }
-                    ?>
-                    <tr>
-                        <td>
-                            <img class="img-profile rounded-circle <?php 
-                                if($row["userType"] == "Resident"){
-                                    echo "img-res-profile";
-                                }
-                                elseif($row["userType"] == "Purok Leader"){
-                                    echo "img-purokldr-profile";
-                                }
-                                elseif($row["userType"] == "Captain"){
-                                    echo "img-capt-profile";
-                                }
-                                elseif($row["userType"] == "Secretary"){
-                                    echo "img-sec-profile";
-                                }
-                                elseif($row["userType"] == "Treasurer"){
-                                    echo "img-treas-profile";
-                                }
-                                elseif($row["userType"] == "Admin"){
-                                    echo "img-admin-profile";
-                                }
-                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                            </br>
-                            <?php echo $row["name"] ?>
-                        </td>
-                        <td><?php echo $row["dateofbirth"] ?></td>
-                        <td><?php echo $row["civilStat"] ?></td>
-                        <td><?php echo $row["NationalID"] ?></td>
-                        <td><?php echo $row["userType"] ?></td>
-                        <td><?php echo $row["userPurok"] ?></td>
-                        <td><?php echo $row["userBarangay"] ?></td>
-                        <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                        <td><?php echo $row["phoneNum"] ?></td>
-                    
                         
                         <!--Right Options-->
                     </tr>
@@ -189,13 +107,12 @@
             <thead >
                 <tr class="bg-gradient-secondary text-white">
                     <th scope="col">Name</th>
-                    <th scope="col">National ID</th>
                     <th scope="col">User Type</th>
                     <th scope="col">Barangay</th>
                     <th scope="col">Purok</th>
                     <th scope="col">Email Address</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Manage</th>
+                    <!-- <th scope="col">Phone Number</th>
+                    <th scope="col">Manage</th> -->
                 </tr>
                 
             </thead>
@@ -233,15 +150,14 @@
                         </br>
                         <?php echo $row["name"] ?>
                     </td>
-                    <td><?php echo $row["NationalID"] ?></td>
                     <td><?php echo $row["userType"] ?></td>
                     <td><?php echo $row["userBarangay"] ?></td>
                     <td><?php echo $row["userPurok"] ?></td>
                     <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                    <td><?php echo $row["phoneNum"] ?></td>
+                    <!-- <td><?php echo $row["phoneNum"] ?></td>
                     <td>
                         <button class="btn btn-success btn-sm btn-flat edit_account" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Edit</button>
-                    </td>
+                    </td> -->
                     
                     <!--Right Options-->
                 </tr>

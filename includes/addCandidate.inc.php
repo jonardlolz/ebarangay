@@ -3,13 +3,22 @@ include 'dbh.inc.php';
 session_start();
 ?>
 
-<?php if(!isset($_GET["id"])): ?>
+<?php if(isset($_GET["electionID"])): ?>
 <div class="container-fluid">
     <form action="includes/manageCandidate.inc.php" class="user" method="post">
         <div class="form-group">
             <div class="col-sm-7">
-                <input type="text" class="form-control form-control-sm" id="UsersID"
-                name="UsersID" placeholder="Users ID#" value="">
+                <select class="form-select form-select-lg" id="UsersID"name="UsersID" required>
+                    <option value="none" disabled hidden selected>Resident Name</option>
+                    <?php $residents = $conn->query("SELECT * FROM users WHERE userType='Resident' 
+                                                    AND userBarangay='{$_SESSION['userBarangay']}' 
+                                                    AND userPurok='{$_GET['purok']}'");
+                        while($brow = $residents->fetch_assoc()): ?>  
+                            <option value="<?php echo $brow['UsersID'] ?>"><?php echo $brow["Firstname"].' '.$brow["Lastname"] ?></option>
+                        <?php endwhile; ?>
+                </select>
+                <!-- <input type="text" class="form-control form-control-sm" id="UsersID"
+                name="UsersID" placeholder="Users ID#" value=""> -->
             </div>
         </div>
         <div class="form-group">
@@ -17,7 +26,7 @@ session_start();
                 <select name="electionTerm" id="electionTerm" class="form-control form-control-sm form-select d-inline">
                     <option value="none" hidden selected>Election Term</option>
                     <?php
-                        $election = $conn->query("SELECT * FROM election WHERE electionStatus='Active'");
+                        $election = $conn->query("SELECT * FROM election WHERE electionID={$_GET['electionID']}");
                         while($erow=$election->fetch_assoc()):
                     ?>
                     <option value="<?php echo $erow["electionID"] ?>" selected><?php echo $erow["electionTitle"] ?></option>
@@ -28,11 +37,7 @@ session_start();
         <div class="form-group">
             <div class="col-sm-7">
                 <select name="position" id="position" class="form-control form-control-sm form-select d-inline">
-                    <option value="none" hidden selected disabled>Position</option>
-                    <option value="Captain">Captain</option>
-                    <option value="Purok Leader">Purok Leader</option>
-                    <option value="Treasurer">Treasurer</option>
-                    <option value="Secretary">Secretary</option>
+                    <option value="Purok Leader" selected disabled>Purok Leader</option>
                 </select>
             </div>
         </div>

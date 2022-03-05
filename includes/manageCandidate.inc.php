@@ -25,7 +25,8 @@
 
     }
     elseif(!isset($_GET["id"])){
-        $id = $_GET["id"];
+        $id = $UsersID;
+        $position = "Purok Leader";
         $sql = "INSERT INTO candidates(UsersID, lastname, firstname, position, electionID, platform, purok)
                 SELECT ?, Lastname, Firstname, ?, ?, ?, userPurok
                 FROM users

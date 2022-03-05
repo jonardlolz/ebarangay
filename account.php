@@ -15,17 +15,16 @@
             <table class="table table-bordered text-center text-dark" 
                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
                 <thead >
-                    <tr class="bg-gradient-warning">
+                    <!-- <tr class="bg-gradient-warning">
                         <th colspan="5">Resident</th>
                         <th colspan = "2">Address</th>
                         <th colspan="3">Contacts</th>
                         <th colspan="2">Options</th>                   
-                    </tr>
+                    </tr> -->
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Name</th>
                         <th scope="col">Birthdate</th>
                         <th scope="col">Civil Status</th>
-                        <th scope="col">National ID</th>
                         <th scope="col">User Type</th>
                         <th scope="col">Purok</th>
                         <th scope="col">Barangay</th>
@@ -73,7 +72,6 @@
                         </td>
                         <td><?php echo $row["dateofbirth"] ?></td>
                         <td><?php echo $row["civilStat"] ?></td>
-                        <td><?php echo $row["NationalID"] ?></td>
                         <td><?php echo $row["userType"] ?></td>
                         <td><?php echo $row["userPurok"] ?></td>
                         <td><?php echo $row["userBarangay"] ?></td>

@@ -16,7 +16,8 @@ if(isset($_POST["submit"])){
     $pwdRpt = $_POST["userRptPwd"];
     $userPurok = $_POST["userPurok"];
     $userBrgy = $_POST["userBarangay"];
-    $natID = $_POST["natID"];
+    $landlordName = $_POST["landlordName"];
+    $landlordContact = $_POST["landlordContact"];
 
 
     //linking php files for reference
@@ -48,10 +49,10 @@ if(isset($_POST["submit"])){
         header("location: ../signup.php?error=userExists"); //return to signup.php with an error msg
         exit();    //stop the script
     }
-    if(natIDexists($conn, $natID) !== false){ //checks if user already exists in db
-        header("location: ../signup.php?error=natIDexists"); //return to signup.php with an error msg
-        exit();    //stop the script
-    }
+    // if(natIDexists($conn, $natID) !== false){ //checks if user already exists in db
+    //     header("location: ../signup.php?error=natIDexists"); //return to signup.php with an error msg
+    //     exit();    //stop the script
+    // }
 
 
     if(emptyBrgy($userBrgy) !== false){ //checks if user already exists in db
@@ -64,7 +65,15 @@ if(isset($_POST["submit"])){
         exit();    //stop the script
     }
 
-    createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $natID); //create user if no more errors
+    if(isset($_POST['isRenting'])){
+        createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact);
+    }
+    else{
+        createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok);
+    }
+
+
+    //createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok); //create user if no more errors
 
 }
 else{

@@ -43,10 +43,10 @@
                                     <h1 class="mb-4 text-capitalize">Create an Account!</h1>
                                 </div>
                                 <form id="form" action="includes/signup.inc.php" class="user" method="post">
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <input type="text" class="form-control form-control-user" id="natID"
                                             placeholder="National ID (e.g. XXXX-XXXX-XXXX-XXXX)" name="natID" maxlength="19" required>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group row">
                                         <div class="col-sm-4 mb-3 mb-sm-0">
                                             <input type="text" class="form-control form-control-user"
@@ -87,7 +87,7 @@
                                         <div class="col-sm-6">
                                             <select name="userBarangay" id="userBarangay" class="form-select form-select-lg" onChange="changecat(this.value);" name="document">
                                                 <option value="" hidden selected>Barangay</option>
-                                                <?php $barangay = $conn->query("SELECT * FROM barangay");
+                                                <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
                                                 while($brow = $barangay->fetch_assoc()): ?>  
                                                 <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
                                                 <?php endwhile; ?>
@@ -102,13 +102,41 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <input type="text" class="form-control form-control-user" id="userAddress"
+                                            placeholder="Street Address" name="userAddress" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                           <input type="text" class="form-control form-control-user" id="userHouseNum"
+                                            placeholder="House #" name="userHouseNum" required>
+                                        </div>
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                           <input type="checkbox" name="isRenting" id="isRenting" onClick="showLandlord()"> Currently renting?
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row" id="landlord" style="display: none;">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                           <input type="text" class="form-control form-control-user" id="landlordName"
+                                            placeholder="Landlord's name" name="landlordName">
+                                        </div>
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                           <input type="text" class="form-control form-control-user" id="landlordContact"
+                                            placeholder="Landlord's phone number" name="landlordContact">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <input type="text" class="form-control form-control-user" id="userName"
+                                                placeholder="Username" name="userName" required>
+                                        </div>
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="email" class="form-control form-control-user" id="userEmail"
                                             placeholder="Email Address" name="userEmail" required>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="userName"
-                                            placeholder="Username" name="userName" required>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -209,6 +237,13 @@
                                         }
                                     ?>
                                     <hr>
+                                    <section>
+                                        <input type="checkbox" required> 
+                                        <i style="color: #c41508;">I hereby declare that the information provided is true and correct. I also understand that any willful
+                                        dishonesty may render for refusal of this registration. I also understand I am entitled to update and correct the above information.</i>
+                                    </section>
+                                    
+                                    <hr>
                                     <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
                                         Register Account
                                     </button>
@@ -240,6 +275,23 @@
     </body>
     
     <script>
+
+    function showLandlord(){
+        var chbox = document.getElementById("isRenting");
+        if(!chbox.checked){
+            var vis = "none";
+            document.getElementById("landlord").style.display = vis;
+            document.getElementById("landlordContact").required = false;
+        document.getElementById("landlordName").required = false;
+            return;
+        }
+        
+        var vis = "flex";
+        document.getElementById("landlord").style.display = vis;
+        document.getElementById("landlordContact").required = true;
+        document.getElementById("landlordName").required = true;
+    }
+
     (function($, undefined) {
 
     "use strict";
@@ -291,7 +343,7 @@
         while($brow = $barangay->fetch_assoc()):
     ?>
         <?php 
-        echo json_encode($brow["BarangayName"]) ?> : <?php $purok = $conn->query("SELECT * FROM purok WHERE BarangayName='{$brow['BarangayName']}'"); 
+        echo json_encode($brow["BarangayName"]) ?> : <?php $purok = $conn->query("SELECT * FROM purok WHERE BarangayName='{$brow['BarangayName']}' AND Active='True'"); 
         while($prow = $purok->fetch_assoc()):
         $puroks[] = $prow["PurokName"]?>
         <?php endwhile; echo json_encode($puroks). ","; $puroks = array();?>

@@ -1,6 +1,7 @@
 <?php include_once 'header.php'; ?>
 
 <style>
+       
         #map {
             height: 250px;
             width: 100%;
@@ -323,7 +324,8 @@
                 
                                 <div class="days"></div>
                             </div>
-                        </div>            
+                        </div>         
+                        
                     </div>
                 </div>
                 <!--End of Content Row-->

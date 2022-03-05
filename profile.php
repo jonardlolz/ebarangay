@@ -203,19 +203,19 @@
                         <div class="card-header">Address Information</div>
                         <div class="card-body">
                             <label>Barangay</label>
-                                <select name="userBrgy" id="userBrgy" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);">
+                                <select name="userBrgy" id="userBrgy" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" <?php if($_SESSION['userType'] != 'Resident'): echo "disabled"; endif; ?>>
                                     <option value="<?php echo $_SESSION['userBarangay'] ?>" hidden selected><?php echo $_SESSION['userBarangay'] ?></option>
-                                    <?php if($_SESSION['userType'] == 'Resident'): $barangay = $conn->query("SELECT * FROM barangay");
+                                    <?php $barangay = $conn->query("SELECT * FROM barangay");
                                     while($brow = $barangay->fetch_assoc()):?>  
                                     <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                                    <?php endwhile; endif; ?>
+                                    <?php endwhile; ?>
                                 </select>
                             <label>Purok</label>
-                            <select name="userPurok" id="userPurok" class="form-control w-75 form-control-md form-select">
+                            <select name="userPurok" id="userPurok" class="form-control w-75 form-control-md form-select" <?php if($_SESSION['userType'] != 'Resident'): echo "disabled"; endif; ?>>
                                 <option value="<?php echo $_SESSION["userPurok"] ?>" hidden selected><?php echo $_SESSION["userPurok"] ?></option>
                             </select>
                             <label>City/Municipality</label>
-                            <input type="text" class="form-control w-75" placeholder="City/Municipality" name="userCity" value="<?php echo $_SESSION['userCity'] ?>">
+                            <input type="text" class="form-control w-75" placeholder="City/Municipality" name="userCity" value="<?php echo $_SESSION['userCity'] ?>" <?php if($_SESSION['userType'] != 'Resident'): echo "disabled"; endif; ?>>
                             
                         </div><hr>
                         <!--end of header and body-->

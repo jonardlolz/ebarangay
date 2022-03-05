@@ -113,34 +113,34 @@ function userExists($conn, $userName, $userEmail){
     mysqli_stmt_close($stmt); //closes the connection
 }
 
-function natIDexists($conn, $natID){
-    $sql = "SELECT * FROM users WHERE NationalID = ?;"; //sql statement, searches if username or useremail exists in db
-    $stmt = mysqli_stmt_init($conn); //initialize connection to database
-    if(!mysqli_stmt_prepare($stmt, $sql)){ //checks if connection and statement are valid
-        header("location: ../account.php?error=stmtfaileduserexists"); //returns an error msg if not
-        exit();
-    }
+// function natIDexists($conn, $natID){
+//     $sql = "SELECT * FROM users WHERE NationalID = ?;"; //sql statement, searches if username or useremail exists in db
+//     $stmt = mysqli_stmt_init($conn); //initialize connection to database
+//     if(!mysqli_stmt_prepare($stmt, $sql)){ //checks if connection and statement are valid
+//         header("location: ../account.php?error=stmtfaileduserexists"); //returns an error msg if not
+//         exit();
+//     }
 
-    mysqli_stmt_bind_param($stmt, "s", $natID); //binds the values into sql statement
-    mysqli_stmt_execute($stmt); //executes the query to acquire the data from db
+//     mysqli_stmt_bind_param($stmt, "s", $natID); //binds the values into sql statement
+//     mysqli_stmt_execute($stmt); //executes the query to acquire the data from db
 
-    $resultData = mysqli_stmt_get_result($stmt); //gets the result and saves it into $resultData
+//     $resultData = mysqli_stmt_get_result($stmt); //gets the result and saves it into $resultData
 
-    if($row = mysqli_fetch_assoc($resultData)){
-        return $row; //if the user exists, return the data
-    }
-    else{
-        $result = false;
-        return $result; //if the user does not exist, return false
-    }
+//     if($row = mysqli_fetch_assoc($resultData)){
+//         return $row; //if the user exists, return the data
+//     }
+//     else{
+//         $result = false;
+//         return $result; //if the user does not exist, return false
+//     }
 
-    mysqli_stmt_close($stmt); //closes the connection
-}
+//     mysqli_stmt_close($stmt); //closes the connection
+// }
 
-function editUser($conn, $Firstname, $Middlename, $Lastname, $UserAge, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $natID){
+function editUser($conn, $Firstname, $Middlename, $Lastname, $UserAge, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok){
     $sql = "INSERT INTO users(Firstname, Middlename, Lastname, UserAge, dateofbirth, civilStat, 
-    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, NationalID) 
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
+    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
     $profile_pic = "profile_picture.jpg";
     $userType = "Resident";
     $stmt = mysqli_stmt_init($conn);
@@ -151,7 +151,7 @@ function editUser($conn, $Firstname, $Middlename, $Lastname, $UserAge, $dateofbi
 
     $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT); //hashes password to deter hackers
 
-    mysqli_stmt_bind_param($stmt, "sssssssssssssss", $Firstname, $Middlename, $Lastname, $UserAge, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $natID); 
+    mysqli_stmt_bind_param($stmt, "sssssssssssssss", $Firstname, $Middlename, $Lastname, $UserAge, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok); 
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
@@ -159,10 +159,10 @@ function editUser($conn, $Firstname, $Middlename, $Lastname, $UserAge, $dateofbi
     exit();
 }
 
-function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $natID){
+function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok){
     $sql = "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, civilStat, 
-    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, NationalID, userCity) 
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
+    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
     $profile_pic = "profile_picture.jpg";
     $userType = "Resident";
     $userCity = "Mandaue";
@@ -174,7 +174,34 @@ function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $ci
 
     $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT); //hashes password to deter hackers
 
-    mysqli_stmt_bind_param($stmt, "sssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $natID, $userCity); 
+    mysqli_stmt_bind_param($stmt, "ssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity); 
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../login.php?error=none"); //no errors were made
+    exit();
+}
+
+function createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact){
+    $sql = "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, civilStat, 
+    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity, isRenting, landlordName, landlordContact) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
+    $profile_pic = "profile_picture.jpg";
+    $userType = "Resident";
+    $userCity = "Mandaue";
+    $true = "True";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        header("location: ../signup.php?error=stmtfailedcreateuser");
+        exit();
+    }
+
+    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT); //hashes password to deter hackers
+
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity, $true, $landlordName, $landlordContact); 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
         exit();
