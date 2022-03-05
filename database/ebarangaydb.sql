@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2022 at 03:15 PM
+-- Generation Time: Mar 05, 2022 at 04:25 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -55,14 +55,23 @@ CREATE TABLE `candidates` (
   `candidateID` int NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
-  `position` varchar(20) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `platform` varchar(200) DEFAULT NULL,
   `purok` varchar(20) NOT NULL,
   `UsersID` int NOT NULL,
-  `electionID` int NOT NULL
+  `electionID` int NOT NULL,
+  `position` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `candidates`
+--
+
+INSERT INTO `candidates` (`candidateID`, `lastname`, `firstname`, `created_at`, `updated_at`, `platform`, `purok`, `UsersID`, `electionID`, `position`) VALUES
+(12, 'Johnson', 'Xavier', '2022-03-04 01:21:14', '2022-03-04 01:21:14', 'Test', 'Kamatis', 28, 8, 'Purok Leader'),
+(13, 'Johnson', 'Xavier', '2022-03-04 11:18:33', '2022-03-04 11:18:33', 'Test', 'Kamatis', 28, 8, 'Purok Leader'),
+(14, 'Torts', 'Woshua', '2022-03-04 11:24:11', '2022-03-04 11:24:11', 'Test', 'Kamatis', 34, 8, 'Purok Leader');
 
 -- --------------------------------------------------------
 
@@ -87,7 +96,7 @@ CREATE TABLE `comments` (
 CREATE TABLE `election` (
   `electionID` int NOT NULL,
   `electionTitle` varchar(50) NOT NULL,
-  `electionStatus` varchar(20) NOT NULL,
+  `electionStatus` varchar(20) NOT NULL DEFAULT 'Paused',
   `created_by` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -100,7 +109,8 @@ CREATE TABLE `election` (
 --
 
 INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `created_by`, `created_at`, `updated_at`, `barangay`, `purok`) VALUES
-(4, 'Term 2022-2023', '', '29', '2022-03-02 21:25:23', '2022-03-02 21:25:23', 'Paknaan', 'Kamatis');
+(8, 'Term 2023-2024', 'Paused', '29', '2022-03-04 01:03:33', '2022-03-04 01:03:33', 'Paknaan', 'Kamatis'),
+(9, 'Term 2026-2027', 'Paused', '29', '2022-03-04 10:45:26', '2022-03-04 10:45:26', 'Paknaan', 'Apple');
 
 -- --------------------------------------------------------
 
@@ -121,8 +131,17 @@ CREATE TABLE `ereklamo` (
   `complaintLevel` varchar(50) DEFAULT 'Minor',
   `complainee` int DEFAULT NULL,
   `scheduledSummon` date DEFAULT NULL,
-  `UsersID` int DEFAULT NULL
+  `UsersID` int DEFAULT NULL,
+  `barangay` varchar(20) NOT NULL,
+  `purok` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `ereklamo`
+--
+
+INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `CreatedOn`, `UpdatedOn`, `comment`, `checkedBy`, `checkedOn`, `complaintLevel`, `complainee`, `scheduledSummon`, `UsersID`, `barangay`, `purok`) VALUES
+(11, 'Kuryente', 'No electricity in the area', 'Pending', '2022-03-04 20:35:16', '2022-03-04 20:35:16', 'Test', NULL, NULL, 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -140,6 +159,20 @@ CREATE TABLE `notifications` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `UsersID`, `position`, `created_at`, `updated_at`) VALUES
+(15, 'Your account has been verified!', 'Resident', 'Not Read', 29, NULL, '2022-03-03 14:11:53', '2022-03-03 14:11:53'),
+(16, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-03-03 19:57:47', '2022-03-03 19:57:47'),
+(17, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-03-04 17:56:52', '2022-03-04 17:56:52'),
+(18, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-03-04 20:35:16', '2022-03-04 20:35:16'),
+(19, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-03-05 19:54:11', '2022-03-05 19:54:11'),
+(20, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-03-05 20:01:29', '2022-03-05 20:01:29'),
+(21, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-03-05 23:17:47', '2022-03-05 23:17:47'),
+(22, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-03-05 23:19:34', '2022-03-05 23:19:34');
 
 -- --------------------------------------------------------
 
@@ -249,13 +282,22 @@ CREATE TABLE `request` (
   `approvedOn` datetime DEFAULT NULL,
   `approvedBy` varchar(120) DEFAULT NULL,
   `amount` int DEFAULT NULL,
-  `status` varchar(120) DEFAULT NULL,
+  `status` varchar(120) DEFAULT 'Pending',
   `userBarangay` varchar(50) DEFAULT NULL,
   `userPurok` varchar(50) DEFAULT NULL,
   `paymentMode` varchar(50) DEFAULT NULL,
   `userType` varchar(50) DEFAULT NULL,
-  `UsersID` int DEFAULT NULL
+  `UsersID` int DEFAULT NULL,
+  `paymentStatus` varchar(20) DEFAULT 'Not Paid',
+  `requesturl` varchar(255) DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `request`
+--
+
+INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `approvedOn`, `approvedBy`, `amount`, `status`, `userBarangay`, `userPurok`, `paymentMode`, `userType`, `UsersID`, `paymentStatus`, `requesturl`) VALUES
+(14, 'Cedula', 'Employment', '2022-03-05 23:19:34', '2022-03-05 23:19:59', 'Handson, Roxy', 20, 'Releasing', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Treasurer', 28, 'Not Paid', 'https://getpaid.gcash.com/checkout/984aecd3d2d6b170a9d8f7870e5262d0');
 
 -- --------------------------------------------------------
 
@@ -302,20 +344,26 @@ CREATE TABLE `users` (
   `teleNum` varchar(20) DEFAULT NULL,
   `VerifyStatus` varchar(20) NOT NULL DEFAULT 'Pending',
   `userCity` varchar(30) NOT NULL DEFAULT 'None',
-  `Status` varchar(20) NOT NULL DEFAULT 'Active'
+  `Status` varchar(20) NOT NULL DEFAULT 'Active',
+  `isRenting` varchar(20) DEFAULT 'False',
+  `landlordName` varchar(50) DEFAULT 'None',
+  `landlordContact` varchar(50) DEFAULT 'NONE',
+  `barangayPos` varchar(50) DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`) VALUES
-(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Pending', '', 'Active'),
-(28, 'Xavier', 'Noel', 'Johnson', '2000-01-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$..PLFwgk8icProv4dHWmruXNRuedfpg9dq7cnvxdb/MNWdItpbt/e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active'),
-(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$Z6oSDH5WbQ1idlHl6Z48w.notdDAOGLo4JrrEC8WFwEGq6XhWLEQa', 'Male', 'Captain', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active'),
-(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active'),
-(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active'),
-(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active');
+INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`, `isRenting`, `landlordName`, `landlordContact`, `barangayPos`) VALUES
+(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Pending', '', 'Active', 'False', 'None', 'NONE', 'None'),
+(28, 'Xavier', 'Noel', 'Johnson', '2000-01-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$..PLFwgk8icProv4dHWmruXNRuedfpg9dq7cnvxdb/MNWdItpbt/e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None'),
+(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$Z6oSDH5WbQ1idlHl6Z48w.notdDAOGLo4JrrEC8WFwEGq6XhWLEQa', 'Male', 'Captain', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None'),
+(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None'),
+(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None'),
+(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None'),
+(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'Tanod'),
+(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', 'N/A', 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None');
 
 -- --------------------------------------------------------
 
@@ -441,7 +489,7 @@ ALTER TABLE `barangay`
 -- AUTO_INCREMENT for table `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -453,19 +501,19 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `election`
 --
 ALTER TABLE `election`
-  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `post`
@@ -483,13 +531,13 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `schedule`
@@ -501,7 +549,7 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `votes`
