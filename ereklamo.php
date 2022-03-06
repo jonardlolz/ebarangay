@@ -92,8 +92,6 @@
                                 <th scope="col">Comment</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Date Submitted</th>
-                                <th scope="col">Managed By</th>
-                                <th scope="col">Date Managed</th>
                                 <th scope="col">Manage</th>
                             </tr>
                             
@@ -104,7 +102,7 @@
                                 $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                 as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                 DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                as checkedDate, users.userType, users.profile_pic 
+                                as checkedDate, users.userType, users.profile_pic, users. 
                                 FROM ereklamo 
                                 INNER JOIN users 
                                 ON ereklamo.UsersID=users.UsersID 
@@ -147,8 +145,6 @@
                                 <td><?php echo $row["comment"] ?></td>
                                 <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                 <td><?php echo $row["createdDate"] ?></td>
-                                <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
-                                <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
                                 <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
                                 <td><a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Respondents</button></a></td>
                                 <!--Right Options-->

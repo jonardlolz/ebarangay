@@ -159,10 +159,10 @@ function editUser($conn, $Firstname, $Middlename, $Lastname, $UserAge, $dateofbi
     exit();
 }
 
-function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok){
+function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $userAddress, $userHouseNum){
     $sql = "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, civilStat, 
-    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity) 
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
+    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity, userAddress, userHouseNum) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
     $profile_pic = "profile_picture.jpg";
     $userType = "Resident";
     $userCity = "Mandaue";
@@ -174,7 +174,7 @@ function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $ci
 
     $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT); //hashes password to deter hackers
 
-    mysqli_stmt_bind_param($stmt, "ssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity); 
+    mysqli_stmt_bind_param($stmt, "ssssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity, $userAddress, $userHouseNum); 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
         exit();
@@ -185,10 +185,10 @@ function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $ci
     exit();
 }
 
-function createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact){
+function createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact, $userAddress, $userHouseNum){
     $sql = "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, civilStat, 
-    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity, isRenting, landlordName, landlordContact) 
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
+    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity, isRenting, landlordName, landlordContact, userAddress, userHouseNum) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
     $profile_pic = "profile_picture.jpg";
     $userType = "Resident";
     $userCity = "Mandaue";
@@ -201,7 +201,7 @@ function createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirt
 
     $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT); //hashes password to deter hackers
 
-    mysqli_stmt_bind_param($stmt, "sssssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity, $true, $landlordName, $landlordContact); 
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity, $true, $landlordName, $landlordContact, $userAddress, $userHouseNum); 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
         exit();
@@ -244,6 +244,7 @@ function loginUser($conn, $username, $password){ //logs in the user
         $_SESSION["teleNum"] = $userExists["teleNum"];
         $_SESSION["phoneNum"] = $userExists["phoneNum"];
         $_SESSION["userCity"] = $userExists["userCity"];
+        $_SESSION["barangayPos"] = $userExists["barangayPos"];
         if($_SESSION["userType"] == "Admin"){
             header("location: ../account.php"); //redirects to main page after successful login
             exit();
