@@ -26,6 +26,9 @@
         header("location: ../ereklamo.php?error=none");
         exit();
     }
+    if(isset($_GET['respond'])){
+        
+    }
 
 ?>
 
