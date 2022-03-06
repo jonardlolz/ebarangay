@@ -16,6 +16,8 @@ if(isset($_POST["submit"])){
     $pwdRpt = $_POST["userRptPwd"];
     $userPurok = $_POST["userPurok"];
     $userBrgy = $_POST["userBarangay"];
+    $userAddress = $_POST["userAddress"];
+    $userHouseNum = $_POST["userHouseNum"]; 
     $landlordName = $_POST["landlordName"];
     $landlordContact = $_POST["landlordContact"];
 
@@ -66,10 +68,10 @@ if(isset($_POST["submit"])){
     }
 
     if(isset($_POST['isRenting'])){
-        createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact);
+        createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact, $userAddress, $userHouseNum);
     }
     else{
-        createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok);
+        createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $userAddress, $userHouseNum);
     }
 
 
