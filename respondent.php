@@ -36,6 +36,16 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
+                                if($_SESSION['barangayPos'] == 'Tanod'){
+                                    $reklamoType = "Resident";
+                                }
+                                elseif($_SESSION['barangayPos'] == 'Electrician'){
+                                    $reklamoType = "Kuryente";
+                                }
+                                elseif($_SESSION['barangayPos'] == 'Plumber'){
+                                    $reklamoType = "Resident";
+                                }
+
                                 $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                 as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                 DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
@@ -43,8 +53,8 @@
                                 FROM ereklamo 
                                 INNER JOIN users 
                                 ON ereklamo.UsersID=users.UsersID 
-                                WHERE ereklamo.status='Pending' 
-                                AND ereklamo.complaintLevel='Minor' 
+                                WHERE ereklamo.status='Respondents sent' 
+                                AND ereklamo.reklamoType='{$reklamoType}'
                                 AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
                                 AND ereklamo.purok='{$_SESSION['userPurok']}'");
                                 while($row=$requests->fetch_assoc()):
@@ -84,7 +94,7 @@
                                 <td><?php echo $row["userHouseNum"] ?></td>
                                 <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                 <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
-                                <td><a href="includes/sendrespondent.inc.php?respond=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Respond to eReklamo</button></a></td>
+                                <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a></td>
                                 <!--Right Options-->
                             </tr>
                             <?php endwhile; ?>
@@ -98,3 +108,11 @@
         </div>                   
         <!--End of Card--> 
     <?php endif; ?>
+
+    <script>
+        $(document).ready(function() {
+        $('#dataTable').DataTable();
+        } );
+    </script>
+
+    <?php include_once 'footer.php' ?>

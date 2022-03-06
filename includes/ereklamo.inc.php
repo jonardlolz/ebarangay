@@ -75,14 +75,18 @@
 
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
         status='Resolved' WHERE ReklamoID=$id");
-        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo$#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
-        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
-  	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
-          '$userPurok');");
+        // $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
+  	    // 'Your eReklamo$#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+        // $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+  	    // 'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
+        //   '$userPurok');");
 
-        if($a1 && $a2 && $a3){
+        if($a1){
             mysqli_commit($conn);
+            if($_SESSION['barangayPos'] != "None"){
+                header("location: ../respondent.php?error=none"); 
+                exit();
+            }
             header("location: ../ereklamo.php?error=none"); 
             exit();
         }

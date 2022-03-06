@@ -32,7 +32,7 @@ CREATE TABLE `barangay` (
   `BarangayName` varchar(50) NOT NULL,
   `City` varchar(20) NOT NULL,
   `Active` varchar(20) NOT NULL DEFAULT 'True'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `barangay`
@@ -62,7 +62,7 @@ CREATE TABLE `candidates` (
   `UsersID` int NOT NULL,
   `electionID` int NOT NULL,
   `position` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `candidates`
@@ -85,7 +85,7 @@ CREATE TABLE `comments` (
   `PostID` int NOT NULL,
   `comment` varchar(255) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -102,7 +102,7 @@ CREATE TABLE `election` (
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `barangay` varchar(50) DEFAULT NULL,
   `purok` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `election`
@@ -134,7 +134,7 @@ CREATE TABLE `ereklamo` (
   `UsersID` int DEFAULT NULL,
   `barangay` varchar(20) NOT NULL,
   `purok` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ereklamo`
@@ -189,7 +189,7 @@ CREATE TABLE `officials` (
   `residentID` int DEFAULT NULL,
   `electedOn` date DEFAULT NULL,
   `updatedOn` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE `post` (
   `userType` varchar(50) NOT NULL,
   `postMessage` varchar(255) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `post`
@@ -224,7 +224,7 @@ CREATE TABLE `purok` (
   `PurokName` varchar(20) NOT NULL,
   `BarangayName` varchar(20) NOT NULL,
   `Active` varchar(20) NOT NULL DEFAULT 'True'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `purok`
@@ -290,7 +290,7 @@ CREATE TABLE `request` (
   `UsersID` int DEFAULT NULL,
   `paymentStatus` varchar(20) DEFAULT 'Not Paid',
   `requesturl` varchar(255) DEFAULT 'None'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `request`
@@ -351,7 +351,7 @@ CREATE TABLE `users` (
   `barangayPos` varchar(50) DEFAULT 'None',
   `userAddress` varchar(50) DEFAULT NULL,
   `userHouseNum` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -381,7 +381,7 @@ CREATE TABLE `votes` (
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `position` varchar(50) NOT NULL,
   `electionID` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
