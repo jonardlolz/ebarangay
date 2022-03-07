@@ -43,7 +43,10 @@
                                     $reklamoType = "Kuryente";
                                 }
                                 elseif($_SESSION['barangayPos'] == 'Plumber'){
-                                    $reklamoType = "Resident";
+                                    $reklamoType = "Tubig";
+                                }
+                                elseif($_SESSION['barangayPos'] == 'Construction'){
+                                    $reklamoType = "Kalsada";
                                 }
 
                                 $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
@@ -108,14 +111,12 @@
         </div>                   
         <!--End of Card--> 
 
-    <?php elseif($_SESSION['userType'] == 'Captain'): ?>
+    <?php elseif($_SESSION['userType'] == 'Captain' || $_SESSION['userType'] == 'Purok Leader'): ?>
     <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-dark">Respondent</h6>
-                <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_election" href="javascript:void(0)"></a>
+                <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_respondent" href="javascript:void(0)"></a>
             </div>
-            
-
             <div class="card-body" style="font-size: 75%">
                 <div class="table-responsive">
                     <table class="table table-bordered text-center text-dark" 
@@ -134,18 +135,9 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                if($_SESSION['barangayPos'] == 'Tanod'){
-                                    $reklamoType = "Resident";
-                                }
-                                elseif($_SESSION['barangayPos'] == 'Electrician'){
-                                    $reklamoType = "Kuryente";
-                                }
-                                elseif($_SESSION['barangayPos'] == 'Plumber'){
-                                    $reklamoType = "Resident";
-                                }
-
                                 $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname)
-                                as name FROM users WHERE barangayPos != 'None';");
+                                as name FROM users WHERE barangayPos != 'None' AND userBarangay='{$_SESSION['userBarangay']} 
+                                AND userPurok='{$_SESSION['userPurok']}';");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -272,9 +264,11 @@
 	        title: $msg
 	      })
 	  }
-
+      $('.add_respondent').click(function(){
+            uni_modal("<center><b>Add Respondent</b></center></center>","includes/sendrespondent.inc.php?add");
+        })
       $('.edit_respondent').click(function(){
-            uni_modal("<center><b>Edit Post</b></center></center>","includes/sendrespondent.inc.php?edit=" + $(this).attr('data-id'));
+            uni_modal("<center><b>Edit Respondent</b></center></center>","includes/sendrespondent.inc.php?edit=" + $(this).attr('data-id'));
         })
       $('.remove_respondent').click(function(){
         _conf("Are you sure to remove this respondent?","remove_respondent",[$(this).attr('data-id')])
