@@ -310,6 +310,10 @@
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "officials.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "officials.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="officials.php">Officers</a>
          </li>
+         <!-- Nav Item - Officials-->
+        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Respondents</a>
+         </li>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
         <!-- Sidebar Toggler (Sidebar) -->
