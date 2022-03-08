@@ -212,6 +212,7 @@
     
     <?php if(isset($_SESSION["UsersID"]) && !empty($_SESSION["UsersID"])) : ?>
     <!--Sidebar-->
+    <div id="sidebar-area">
     <ul class="navbar-nav sidebar sidebar-dark accordion px-2" id="accordionSidebar" style="background: rgb(70, 87, 101);">
         
         <!--Admin Sidebar-->
@@ -433,6 +434,7 @@
 
         <?php endif; ?>
     </ul>
+    </div>
     <!-- End of Sidebar -->
 
     
