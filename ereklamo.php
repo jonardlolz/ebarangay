@@ -315,6 +315,7 @@
                                     <?php if($row["reklamoType"] == 'Resident'){ ?>
                                         <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><i class="fas fa-calendar-alt fa-2x"></i></a>
                                     <?php } ?>
+                                    <a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Respondents</button></a>
                                 </td>
                                 <!--Right Options-->
                             </tr>
