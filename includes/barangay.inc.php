@@ -6,7 +6,7 @@
 <?php
     if(isset($_GET["id"])):
         $id = $_GET['id'];
-        $qry = $conn->query("SELECT * FROM barangay where BarangayID = {$_GET['id']}")->fetch_array();
+        $qry = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM barangay LEFT JOIN users ON barangay.brgyCaptain = users.UsersID where BarangayID = {$_GET['id']}")->fetch_array();
         foreach($qry as $k => $v){
             $$k= $v;
         }
@@ -30,6 +30,21 @@
                     <option value="<?php echo $Active ?>" hidden selected><?php echo $Active ?></option>
                     <option value="True">True</option>
                     <option value="False">False</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <label>Barangay Captain: </label>
+                <select name="brgyCaptain" id="brgyCaptain" class="form-control form-control-sm form-select d-inline">
+                    <?php if($brgyCaptain != NULL): ?>
+                        <option value="<?php echo $brgyCaptain ?>" hidden selected><?php echo $name ?></option>
+                    <?php else:?>
+                        <option value="None" hidden selected>None</option>
+                    <?php endif; ?>
+                    <option value="None">None</option>
+                    <?php $brgy = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident'");
+                        while($brgyRow = $brgy->fetch_assoc()): ?>
+                        <option value="<?php echo $brgyRow["UsersID"] ?>"><?php echo $brgyRow["name"]; ?></option>
+                    <?php endwhile; ?>
                 </select>
             </div>
         </div>

@@ -5,25 +5,57 @@
     require_once "functions.inc.php";
 
     if(isset($_GET["id"])){
+        $checkCapt = $conn->query("SELECT * FROM barangay WHERE BarangayID='{$_GET['id']}'");
+        $row = $checkCapt->fetch_assoc();
+        if($row['brgyCaptain'] != NULL || $row['brgyCaptain'] == "None"){
+            $captID = $row['brgyCaptain'];
+            $rmvCpt = $conn->prepare("UPDATE users SET userType='Resident' WHERE UsersID=?"); 
+            $rmvCpt->bind_param("s", $captID);
+            $rmvCpt->execute();
+        }
         $id = $_GET["id"];
-        $sql = "UPDATE barangay SET City=?, BarangayName=?, Active=? WHERE BarangayID=?";
+        mysqli_begin_transaction($conn);
 
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../barangay.php?error=stmtfailedcreatepost");
-            exit();
-        }
+        $sql = "UPDATE barangay SET City=?, BarangayName=?, Active=?, brgyCaptain=? WHERE BarangayID=?";
 
-        mysqli_stmt_bind_param($stmt, "ssss", $City, $BarangayName, $Active, $id); 
-        if(!mysqli_stmt_execute($stmt)){
-            echo("Error description: " . mysqli_error($conn));
-            exit();
+        if($row['brgyCaptain'] != "None" && $brgyCaptain != "None"){
+            $a1 = mysqli_query($conn, "UPDATE barangay SET City='$City', BarangayName='$BarangayName', Active='$Active', brgyCaptain=$brgyCaptain WHERE BarangayID=$id");
+            $a2 = mysqli_query($conn, "UPDATE users SET userType='Captain' WHERE UsersID=$brgyCaptain");
         }
-        else{
-            mysqli_stmt_close($stmt);
+        elseif($brgyCaptain == "None"){
+            $a1 = mysqli_query($conn, "UPDATE barangay SET City='$City', BarangayName='$BarangayName', Active='$Active', brgyCaptain=NULL WHERE BarangayID=$id");
+            $a2 = mysqli_query($conn, "SELECT * FROM barangay");
+        }
+        
+        
+        
+        if($a1 && $a2){
+            mysqli_commit($conn);
             header("location: ../barangay.php?error=none");
             exit();
         }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+        
+        // $stmt = mysqli_stmt_init($conn);
+        // if(!mysqli_stmt_prepare($stmt, $sql)){
+        //     header("location: ../barangay.php?error=stmtfailedcreatepost");
+        //     exit();
+        // }
+
+        // mysqli_stmt_bind_param($stmt, "sssss", $City, $BarangayName, $Active, $brgyCaptain, $id); 
+        // if(!mysqli_stmt_execute($stmt)){
+        //     echo("Error description: " . mysqli_error($conn));
+        //     exit();
+        // }
+        // else{
+        //     mysqli_stmt_close($stmt);
+        //     header("location: ../barangay.php?error=none");
+        //     exit();
+        // }
     }
 
     else{

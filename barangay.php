@@ -20,6 +20,7 @@
                         <th scope="col">City</th>
                         <th scope="col">Barangay Name</th>
                         <th scope="col">Active</th>
+                        <th>Barangay Captain</th>
                         <th scope="col">Edit</th>
                     </tr>
                     
@@ -28,13 +29,14 @@
                     <!--Row 1-->
                     <?php 
                         $userCity = "'".$_SESSION['userCity']."'";
-                        $barangay = $conn->query("SELECT * FROM barangay");
+                        $barangay = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM barangay LEFT JOIN users ON barangay.brgyCaptain = users.UsersID;");
                         while($row=$barangay->fetch_assoc()):
                     ?>
                     <tr>
                         <td><?php echo $row["City"] ?></td>
                         <td><?php echo $row["BarangayName"] ?></td>
                         <td><?php echo $row["Active"] ?></td>
+                        <td><?php if($row["name"] != NULL){echo $row["name"];}else{echo "None";}?></td>
                         <td>
                             <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_barangay" data-id="<?php echo $row['BarangayID'] ?>" href="javascript:void(0)"></a>
                         </td>

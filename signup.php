@@ -85,7 +85,7 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-6">
-                                            <select name="userBarangay" id="userBarangay" class="form-select form-select-lg" onChange="changecat(this.value);" name="document">
+                                            <select name="userBarangay" id="userBarangay" class="form-select form-select-lg" onChange="changecat(this.value);">
                                                 <option value="" hidden selected>Barangay</option>
                                                 <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
                                                 while($brow = $barangay->fetch_assoc()): ?>  
