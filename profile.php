@@ -1,5 +1,8 @@
 <?php include_once 'header.php' ?>
-                        
+                        <?php 
+                            $profile = $conn->query("SELECT * FROM users WHERE UsersID='{$_SESSION['UsersID']}'");
+                            while($row=$profile->fetch_assoc()):
+                        ?>
                         <!-- Begin Page Content -->
                         <div class="col d-flex flex-column px-4">
 
@@ -42,20 +45,23 @@
                                         </div>
                                         <div class="text-center">
                                             <!--Trigger Button Chat-->
-                                            <button type="button" class="btn m-0 btn-circle" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static">
-                                                    <i class="fas fa-edit fa-lg"></i>
-                                            </button>
+                                            <?php if($row['VerifyStatus'] == 'Verified'): ?>
+                                                <i class="fas fa-user-check fa-lg" alt="Verified" style="color: #0ca678"></i>
+                                            <?php elseif($row['VerifyStatus'] == 'Unverified'): ?>  
+                                                <i class="fas fa-user-slash fa-lg" alt="Unverified" style="color: #e63d2e"></i>
+                                            <?php elseif($row['VerifyStatus'] == 'Pending'): ?>
+                                                <i class="fas fa-user fa-lg" alt="Pending verification"></i>
+                                            <?php endif; ?>
+                                            <a href="javascript:void(0)"><i class="fas fa-edit fa-lg" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static"></i></a>
                                             <!--<button title="oas&#10;djaosjdsoajdjaosdj\nasdasdasdasdasd" type="button" class="btn m-0 btn-circle" onclick="openForm()">
                                                 <i class="fas fa-comments fw"></i>
                                             </button>-->
                                             <?php if($_SESSION['userType'] == "Resident"): ?>
-                                            <button type="button" class="btn m-0 btn-circle" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static">
-                                                    <i class="fas fa-file fa-lg"></i>
-                                            </button>
-                                            <?php elseif($_SESSION['userType'] == "Purok Leader" || $_SESSION['userType'] == "Captain" || $_SESSION['userType'] == "Secretary" || $_SESSION['userType'] == "Treasurer" || $_SESSION['userType'] == "Admin"): ?>
-                                            <button type="button" class="btn m-0 btn-circle" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static">
-                                                    <i class="fas fa-history fa-lg"></i>
-                                            </button>
+                                            <a href="javascript:void(0)"><i class="fas fa-file fa-lg" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static"></i></a>
+                                            
+                                            <?php else: ?>
+                                            <a href="javascript:void(0)"><i class="fas fa-history fa-lg" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static"></i></a>
+                                            
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -177,60 +183,84 @@
                 </div>
                 <!--modal-body-->
                 <div class="modal-body">
-                    <!--card-->
-                    <div class="card">
-                        <!--header and body-->
-                        <div class="card-header">Personal Information</div>
-                        <div class="card-body">
-                            <label>Firstname</label>
-                            <input type="text" class="form-control w-75" placeholder="Firstname" name="Firstname" value="<?php echo $_SESSION['Firstname'] ?>">
-                            <label>Middlename</label>
-                            <input type="text" class="form-control w-75" placeholder="Middlename" name="Middlename" value="<?php echo $_SESSION['Middlename'] ?>">
-                            <label>Lastname</label>
-                            <input type="text" class="form-control w-75" placeholder="Lastname" name="Lastname" value="<?php echo $_SESSION['Lastname'] ?>">
-                            <label>Gender</label>
-                            <input class="form-control w-75" list="genderListOptions"
-                                id="userGender" placeholder="Gender" name="userGender" value="<?php echo $_SESSION['userGender'] ?>" required>
-                                        <datalist id="genderListOptions">
-                                            <option value="Male">
-                                            <option value="Female">
-                                        </datalist>
-                            <label>Birthdate</label>
-                            <input type="date" class="form-control w-75" placeholder="Birthdate" name="userDOB" value="<?php echo $_SESSION['dateofbirth'] ?>">
-                        </div><hr>
-                        <!--end of header and body-->
-                        <!--header and body-->
-                        <div class="card-header">Address Information</div>
-                        <div class="card-body">
-                            <label>Barangay</label>
-                                <select name="userBrgy" id="userBrgy" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" <?php if($_SESSION['userType'] != 'Resident'): echo "disabled"; endif; ?>>
-                                    <option value="<?php echo $_SESSION['userBarangay'] ?>" hidden selected><?php echo $_SESSION['userBarangay'] ?></option>
-                                    <?php $barangay = $conn->query("SELECT * FROM barangay");
-                                    while($brow = $barangay->fetch_assoc()):?>  
-                                    <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                                    <?php endwhile; ?>
-                                </select>
-                            <label>Purok</label>
-                            <select name="userPurok" id="userPurok" class="form-control w-75 form-control-md form-select" <?php if($_SESSION['userType'] != 'Resident'): echo "disabled"; endif; ?>>
-                                <option value="<?php echo $_SESSION["userPurok"] ?>" hidden selected><?php echo $_SESSION["userPurok"] ?></option>
-                            </select>
-                            <label>City/Municipality</label>
-                            <input type="text" class="form-control w-75" placeholder="City/Municipality" name="userCity" value="<?php echo $_SESSION['userCity'] ?>" <?php if($_SESSION['userType'] != 'Resident'): echo "disabled"; endif; ?>>
-                            
-                        </div><hr>
-                        <!--end of header and body-->
-                        <!--header and body-->
-                        <div class="card-header">Contact Information</div>
-                        <div class="card-body">
-                            <label>Phone Number</label>
-                            <input type="text" class="form-control w-75" name="phoneNum" placeholder="" value="<?php if($_SESSION['phoneNum'] != NULL){ echo $_SESSION['phoneNum']; } else{ echo "N/A"; } ?>">
-                            <label>Telephone Number</label>
-                            <input type="text" class="form-control w-75" name="teleNum" placeholder="" value="<?php if($_SESSION['teleNum'] != NULL){ echo $_SESSION['teleNum']; } else{ echo "N/A"; } ?>">
-                            <label>Email Address</label>
-                            <input type="email" class="form-control w-75" name="emailAdd" placeholder="@email" value="<?php echo $_SESSION['emailAdd'] ?>">
+                    <div class="form-group row">    <!--Nmae-->
+                        <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
+                            <input type="text" class="form-control form-control-sm" id="FirstName"
+                                name="Firstname" placeholder="First Name" value="<?php echo $row['Firstname'] ?>">
                         </div>
-                        <!--end of header and body-->
-                    </div>  <!--end of card-->
+                        <div class="col-sm-4 col-md-4">
+                            <input type="text" class="form-control form-control-sm" id="MiddleName"
+                                name="Middlename" placeholder="Middle Name" value="<?php echo $_SESSION['Middlename'] ?>">
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <input type="text" class="form-control form-control-sm" id="LastName"
+                                name="Lastname" placeholder="Last Name" value="<?php echo $_SESSION['Lastname'] ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <input type="date" class="form-control form-control-sm" placeholder="Birthdate" 
+                            name="userDOB" id="userDOB" value="<?php echo $_SESSION['dateofbirth'] ?>"></input>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row"><!--Civil status-->
+                        <div class="col-sm-6">
+                            <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
+                                <option value="<?php echo $_SESSION['civilStat'] ?>" hidden selected disabled><?php echo $_SESSION['civilStat'] ?></option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
+                                <option value="<?php echo $_SESSION['userGender'] ?>" hidden selected><?php echo $_SESSION['userGender'] ?></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
+                                <option value="<?php echo $_SESSION['userBarangay'] ?>" hidden selected><?php echo $_SESSION['userBarangay'] ?></option>
+                                <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
+                                while($brow = $barangay->fetch_assoc()): ?>  
+                                    <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
+                                <option value="<?php echo $_SESSION['userPurok'] ?>" selected hidden><?php echo $_SESSION['userPurok'] ?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6 col-sm-6">
+                            <input type="text" class="form-control form-control-sm" name="userAddress" id="userAddress" placeholder="Street Address" value="<?php echo $_SESSION['userAddress'] ?>" required></input>
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $_SESSION['userHouseNum'] ?>" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6 col-sm-6">
+                            <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $_SESSION['emailAdd'] ?>"></input>
+                        </div>
+                        <div class="col-lg-6 col-sm-6">
+                            <select class="form-control form-control-sm form-select d-inline" name="userType" id="userType">
+                                <option value="<?php echo $userType ?>" hidden selected><?php echo $_SESSION['userType'] ?></option>
+                                <option value="Resident">Resident</option>
+                                <option value="Captain">Barangay Captain</option>
+                                <option value="Treasurer">Treasurer</option>
+                                <option value="Secretary">Secretary</option>
+                                <option value="Purok Leader">Purok Leader</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <!--end of modal body-->
                 <div class="modal-footer">
@@ -238,6 +268,7 @@
                     <button type="submit" class="btn btn-outline-primary" name="submit">Save Changes</button>
                 </div>
             </div>
+            <?php endwhile; ?>
             </form>
         </div>
     </div>

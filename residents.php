@@ -79,6 +79,7 @@
                         <!-- <td><?php echo $row["phoneNum"] ?></td> -->
                         <td>
                             <button class="btn btn-success btn-sm btn-flat verify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-check"></i> Verify</button>
+                            <button class="btn btn-danger btn-sm btn-flat unverify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-times"></i> Unverify</button>
                         </td>
                         
                         <!--Right Options-->
@@ -304,19 +305,33 @@
             uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?id="+$(this).attr('data-id'))
         })
         $('.verify_user').click(function(){
-        _conf("Are you sure to verify this user?","verify_user",[$(this).attr('data-id')])
+        _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
+        })
+        $('.unverify_user').click(function(){
+        _conf("Are you sure you want to unverify this user?","unverify_user",[$(this).attr('data-id')])
         })
         function verify_user($id){
                 start_load()
                 $.ajax({
-                    url:'includes/verify.inc.php',
-                    method:'POST',
+                    url:'includes/verify.inc.php?verify=' + $id,
+                    method:'GET',
                     data:{id:$id},
                     success:function(){
                         location.reload()
                     }
                 })
             }
+        function unverify_user($id){
+            start_load()
+            $.ajax({
+                url:'includes/verify.inc.php?unverify=' + $id,
+                method:'GET',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         $('#upload_post').click(function(){
             uni_modal("<center><b>Create Post</b></center></center>","includes/create_post.inc.php?upload=1")
         })
