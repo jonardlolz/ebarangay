@@ -93,9 +93,7 @@ elseif(isset($_GET["release"])){
         'description' => 'Payment for services rendered',
         'customername' => $requestData['Firstname']. " " .$requestData['Lastname'],
         'customeremail' => $requestData['emailAdd'],
-        'customermobile' => $requestData['phoneNum'],
-        'redirectsuccessurl' => 'localhost/index.php?success',
-        'redirectfailurl' => 'localhost/index.php?fail'
+        'customermobile' => $requestData['phoneNum']
     ),
     ));
 
@@ -119,7 +117,7 @@ elseif(isset($_GET["release"])){
 
     if($a2 ){
         mysqli_commit($conn);
-        header("location: ../request.php?error=none"); //no errors were made
+        //header("location: ../request.php?error=none"); //no errors were made
         exit();
     }
     else{

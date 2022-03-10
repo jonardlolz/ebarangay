@@ -3,17 +3,35 @@
     session_start();
     extract($_POST);
 
-    mysqli_begin_transaction($conn);
+    if(isset($_GET['verify'])){
 
-    $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified' WHERE UsersID=$id");
-    $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account has been verified!', 'Resident', $id);");
+        mysqli_begin_transaction($conn);
 
-    if($a1 && $a2){
-        mysqli_commit($conn);
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified' WHERE UsersID='{$_GET['verify']}'");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['verify']}');");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+        }
+        else{
+            mysqli_rollback($conn);
+    
+        }
     }
-    else{
-        mysqli_rollback($conn);
-    }
+    elseif(isset($_GET['unverify'])){
+        
+        mysqli_begin_transaction($conn);
+
+            $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Unverified' WHERE UsersID='{$_GET['unverify']}'");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been denied!', 'Resident', '{$_GET['unverify']}');");
+
+            if($a1 && $a2){
+                mysqli_commit($conn);
+            }
+            else{
+                mysqli_rollback($conn);
+            }
+        }
 
     /*$sql = "UPDATE users SET VerifyStatus='Verified' WHERE UsersID=$id";
     $stmt = mysqli_stmt_init($conn);
