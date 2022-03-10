@@ -23,16 +23,13 @@
                     </tr> -->
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Name</th>
-                        <th scope="col">Birthdate</th>
-                        <th scope="col">Civil Status</th>
                         <th scope="col">User Type</th>
-                        <th scope="col">Purok</th>
                         <th scope="col">Barangay</th>
-                        <th scope="col">Email Address</th>
-                        <th scope="col">Phone Number</th>
+                        <th scope="col">Purok</th>
+                        <th>Street Address</th>
+                        <th>House #</th>
                         <th scope="col">Username</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Action</th>
                     </tr>
                     
                 </thead>
@@ -70,19 +67,14 @@
                             
                             <?php echo $row["name"] ?>
                         </td>
-                        <td><?php echo $row["dateofbirth"] ?></td>
-                        <td><?php echo $row["civilStat"] ?></td>
                         <td><?php echo $row["userType"] ?></td>
-                        <td><?php echo $row["userPurok"] ?></td>
                         <td><?php echo $row["userBarangay"] ?></td>
-                        <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                        <td><?php echo $row["phoneNum"] ?></td>
+                        <td><?php echo $row["userPurok"] ?></td>
+                        <td><?php echo $row["userAddress"] ?></td>
+                        <td><?php echo $row["userHouseNum"] ?></td>
                         <td><?php echo $row["username"] ?></td>
                         <td>
-                            <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
-                        </td>
-                        <td>
-                            <a class="fas fa-trash fa-md mr-2 text-gray-600 deactivate_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
+                            <a class="fas fa-trash fa-md mr-2 text-gray-600 remove_captain" data-brgyid="<?php echo $row['userBarangay'] ?>" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
                         </td>
                         
                         <!--Right Options-->
@@ -227,13 +219,13 @@
         $('.edit_account').click(function(){
             uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?id="+$(this).attr('data-id'))
         })
-        $('.deactivate_account').click(function(){
-        _conf("Are you sure to deactivate this account?","deactivate_account",[$(this).attr('data-id')])
+        $('.remove_captain').click(function(){
+        _conf("Are you sure you want to remove this captain?","remove_captain",[$(this).attr('data-id')])
         })
-        function deactivate_account($id){
+        function remove_captain($id){
                 start_load()
                 $.ajax({
-                    url:'includes/deactivate_account.inc.php',
+                    url:'includes/edit_account.inc.php?removeCaptain',
                     method:'POST',
                     data:{id:$id},
                     success:function(){

@@ -23,18 +23,14 @@
                     </tr> -->
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Name</th>
-                        <th scope="col">Birthdate</th>
-                        <th scope="col">Civil Status</th>
                         <th scope="col">User Type</th>
-                        <th scope="col">Purok</th>
                         <th scope="col">Barangay</th>
-                        <th scope="col">Email Address</th>
-                        <th scope="col">Phone Number</th>
+                        <th scope="col">Purok</th>
+                        <th>Street Address</th>
+                        <th>House #</th>
                         <th scope="col">Username</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Action</th>
                     </tr>
-                    
                 </thead>
                 <tbody>
                     <!--Row 1-->
@@ -70,18 +66,14 @@
                             
                             <?php echo $row["name"] ?>
                         </td>
-                        <td><?php echo $row["dateofbirth"] ?></td>
-                        <td><?php echo $row["civilStat"] ?></td>
                         <td><?php echo $row["userType"] ?></td>
-                        <td><?php echo $row["userPurok"] ?></td>
                         <td><?php echo $row["userBarangay"] ?></td>
-                        <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                        <td><?php echo $row["phoneNum"] ?></td>
+                        <td><?php echo $row["userPurok"] ?></td>
+                        <td><?php echo $row["userAddress"] ?></td>
+                        <td><?php echo $row["userHouseNum"] ?></td>
                         <td><?php echo $row["username"] ?></td>
                         <td>
                             <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
-                        </td>
-                        <td>
                             <a class="fas fa-trash fa-md mr-2 text-gray-600 deactivate_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
                         </td>
                         

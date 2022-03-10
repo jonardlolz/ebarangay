@@ -1,5 +1,7 @@
 <?php
     session_start();
+    $id = NULL;
+    $brgy = NULL;
     extract($_POST);
     require_once "dbh.inc.php";
     require_once "functions.inc.php";
@@ -8,7 +10,7 @@
         $id = $_GET["id"];
         $sql = "UPDATE users SET Firstname=?, Middlename=?, Lastname=?, 
         dateofbirth=?, civilStat=?, userPurok=?, userBarangay=?,
-        emailAdd=?, phoneNum=?, userType=? WHERE UsersID=?";
+        emailAdd=?, phoneNum=?, userType=?, userAddress=?, userHouseNum=? WHERE UsersID=?";
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -16,7 +18,7 @@
             exit();
         }
 
-        mysqli_stmt_bind_param($stmt, "sssssssssss", $Firstname, $Middlename, $Lastname, $userDOB, $userCivilStat, $userPurok, $userBrgy, $emailAdd, $phoneNum, $userType, $id); 
+        mysqli_stmt_bind_param($stmt, "sssssssssssss", $Firstname, $Middlename, $Lastname, $userDOB, $userCivilStat, $userPurok, $userBrgy, $emailAdd, $phoneNum, $userType, $userAddress, $userHouseNum, $id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         
@@ -32,6 +34,23 @@
         
 
     }
+    elseif($id != NULL){
+        mysqli_begin_transaction($conn);
+        $a1 = mysqli_query($conn, "UPDATE users SET userType='Resident' WHERE UsersID=$id");
+        $a2 = mysqli_query($conn, "UPDATE barangay SET brgyCaptain=NULL WHERE brgyCaptain=$id");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../captain.php?error=none");
+            exit();
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+        }
+            
+    }
+
     else{   
         if(userExists($conn, $username, $emailAdd) !== false){ //checks if user already exists in db
         header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
