@@ -1,0 +1,37 @@
+admin- barangay
+	|- add functionality of adding captain to barangay DONE
+
+landlord's list
+
+profile - street address, house #, is renting, landlord's profile, verify status
+
+purok leader - verify/unverify users
+		|- if unverified, alert the user
+
+secretary - scheduler 
+
+calendar - resident
+
+resident reklamo for meet - captain functionality
+pdf functionality for secretary
+summon - 2 parties with a date for resident reklamo
+
+cash on claim, pay thru gcash, remove cash on delivery
+
+treasurer - paid button
+
+===================================================================================
+
+RESIDENT
+List of landors name
+Status
+Profile info
+
+PUROK LEADER
+Unverification
+Reports
+
+SECRETARY
+scheduler (2 residents, captain mubuhat)
+Document function
+Ereklamo from resident(srnd respondent)

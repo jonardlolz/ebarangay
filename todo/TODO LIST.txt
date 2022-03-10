@@ -1,0 +1,21 @@
+TODO:
+Signup.php - add address line, 
+		- prompt user if they're renting DONE
+			|- IF ask user for landlord name and contact DONE
+		- checkbox for user for truthfully filling up the info DONE
+		- fix backend DONE
+		
+Verification - add purok leader being able to verify residents DONE
+			|- add details (house #, address, purok, brgy)
+
+eReklamo - add user respondents DONE
+		- add responders functionality DONE
+
+eRequest - add pdf functionality
+		- add gcash paywall system
+		
+election - only vote for a purok leader DONE
+
+profile - barangay and purok edit not working DONE
+
+captain acc - manage purok leaders, and puroks
