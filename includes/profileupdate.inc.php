@@ -7,7 +7,7 @@
         $id=$_GET["id"];
         $sql = "UPDATE users SET Firstname=?, Middlename=?, Lastname=?, userGender=?, 
         dateofbirth=?, userPurok=?, userBarangay=?, userCity=?, 
-        phoneNum=?, teleNum=?, emailAdd=?, userAddress=?, userHouseNum=? WHERE UsersID=?";
+        phoneNum=?, teleNum=?, emailAdd=?, userAddress=?, userHouseNum=?, civilStat=? WHERE UsersID=?";
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -15,8 +15,8 @@
             exit();
         }
 
-        mysqli_stmt_bind_param($stmt, "ssssssssssssss", $Firstname, $Middlename, $Lastname, $userGender,
-        $userDOB, $userPurok, $userBrgy, $userCity, $phoneNum, $teleNum, $emailAdd, $userAddress, $userHouseNum, $id); 
+        mysqli_stmt_bind_param($stmt, "sssssssssssssss", $Firstname, $Middlename, $Lastname, $userGender,
+        $userDOB, $userPurok, $userBrgy, $userCity, $phoneNum, $teleNum, $emailAdd, $userAddress, $userHouseNum, $userCivilStat, $id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         
@@ -27,6 +27,7 @@
         $_SESSION["dateofbirth"] = $userDOB;
         $_SESSION["currentAdd"] = $currentAdd;
         $_SESSION["userPurok"] = $userPurok;
+        $_SESSION['civilStat'] = $userCivilStat;
         $_SESSION["userBarangay"] = $userBrgy;
         $_SESSION["userCity"] = $userCity;
         $_SESSION["phoneNum"] = $phoneNum;

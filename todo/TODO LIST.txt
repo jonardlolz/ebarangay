@@ -11,8 +11,8 @@ Verification - add purok leader being able to verify residents DONE
 eReklamo - add user respondents DONE
 		- add responders functionality DONE
 
-eRequest - add pdf functionality
-		- add gcash paywall system
+eRequest - add pdf functionality 
+		- add gcash paywall system DONE
 		
 election - only vote for a purok leader DONE
 
