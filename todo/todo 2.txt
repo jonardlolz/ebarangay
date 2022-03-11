@@ -3,9 +3,9 @@ admin- barangay
 
 landlord's list
 
-profile - street address, house #, is renting, landlord's profile, verify status
+profile - street address, house #, is renting, landlord's profile, verify status DONE
 
-purok leader - verify/unverify users
+purok leader - verify/unverify users DONE
 		|- if unverified, alert the user
 
 secretary - scheduler 

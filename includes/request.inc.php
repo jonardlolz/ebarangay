@@ -200,5 +200,23 @@ elseif(isset($_GET["declineID"])){
 
     
 }
+if(isset($_GET['paid'])){
+    extract($_POST);
+
+    $approvedBy = "'".$_SESSION['Lastname']. ', ' . $_SESSION['Firstname']."'";
+    
+    $sql = "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy=$approvedBy, status='Paid' WHERE RequestID=$id";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+ 
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+}
 
 ?>
