@@ -279,104 +279,115 @@
         <div class="modal-dialog modal-xl" role="document" style="border-color:#384550 ;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Document Requests</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">eReklamos and eRequests</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <!--modal-body-->
                 <div class="modal-body">
-                    <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark" 
-                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                        <thead >
-                            <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Document</th>
-                                <th scope="col">Purpose</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Date Requested</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Date Approved</th>
-                                <th scope="col">Approved By</th>
-                                <th scope="col">Manage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!--Row 1-->
-                            <?php 
-                                $requests = $conn->query("SELECT * FROM request WHERE UsersID={$_SESSION['UsersID']}");
-                                while($row=$requests->fetch_assoc()):
-                            ?>
-                            <tr>
-                                <td><?php echo $row["documentType"] ?></td>
-                                <td><?php echo $row["purpose"] ?></td>
-                                <td><?php echo $row["amount"] ?></td>
-                                <td><?php echo date("M d,Y h:i a", strtotime($row['requestedOn'])); ?></td>
-                                <td><?php echo $row["status"] ?></td>
-                                <td><?php if($row['approvedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['approvedOn']));} else{ echo "N/A"; } ?></td>
-                                <td><?php echo $row["approvedBy"] ?></td>
-                                <td>
-                                    
-                                    <button class="btn btn-danger btn-sm btn-flat delete_request" data-id="<?php echo $row['RequestID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                    data-backdrop="static"
-                                    <?php if($row['status'] == 'Approved'){ echo 'disabled';} 
-                                    else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
-                                    
-                                </td>
-                                
-                                <!--Right Options-->
-                            </tr>
-                            <?php endwhile; ?>
-                            <!--Row 1-->
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark" 
-                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                        <thead >
-                            <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Reklamo Type</th>
-                                <th scope="col">Detail</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Comment</th>
-                                <th scope="col">Submitted on</th>
-                                <th scope="col">Checked By</th>
-                                <th scope="col">Checked On</th>
-                                <th scope="col">Manage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!--Row 1-->
-                            <?php 
-                                $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']}");
-                                while($row=$requests->fetch_assoc()):
-                            ?>
-                            <tr>
-                                <td><?php echo $row["reklamoType"] ?></td>
-                                <td><?php echo $row["detail"] ?></td>
-                                <td><?php echo $row["status"] ?></td>
-                                <td><?php echo $row["comment"] ?></td>
-                                <td><?php echo date("M d,Y h:i a", strtotime($row['CreatedOn'])); ?></td>
-                                <td><?php if($row['checkedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['checkedOn']));} else{ echo "N/A"; } ?></td>
-                                <td><?php echo $row["checkedBy"] ?></td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                    data-backdrop="static"
-                                    <?php if($row['status'] == 'Approved'){ echo 'disabled';} 
-                                    else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
-                                    
-                                </td>
-                                
-                                <!--Right Options-->
-                            </tr>
-                            <?php endwhile; ?>
-                            <!--Row 1-->
-                        </tbody>
-                    </table>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-ereklamo-tab" data-toggle="tab" href="#nav-ereklamo" role="tab" aria-controls="nav-ereklamo" aria-selected="true">eReklamo</a>
+                            <a class="nav-item nav-link" id="nav-erequest-tab" data-toggle="tab" href="#nav-erequest" role="tab" aria-controls="nav-erequest" aria-selected="false">eRequest</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-ereklamo" role="tabpanel" aria-labelledby="nav-ereklamo-tab">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center text-dark" 
+                                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                    <thead >
+                                        <tr class="bg-gradient-secondary text-white">
+                                            <th scope="col">Reklamo Type</th>
+                                            <th scope="col">Detail</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Comment</th>
+                                            <th scope="col">Submitted on</th>
+                                            <th scope="col">Checked By</th>
+                                            <th scope="col">Checked On</th>
+                                            <th scope="col">Manage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!--Row 1-->
+                                        <?php 
+                                            $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']}");
+                                            while($row=$requests->fetch_assoc()):
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row["reklamoType"] ?></td>
+                                            <td><?php echo $row["detail"] ?></td>
+                                            <td><?php echo $row["status"] ?></td>
+                                            <td><?php echo $row["comment"] ?></td>
+                                            <td><?php echo date("M d,Y h:i a", strtotime($row['CreatedOn'])); ?></td>
+                                            <td><?php if($row['checkedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['checkedOn']));} else{ echo "N/A"; } ?></td>
+                                            <td><?php echo $row["checkedBy"] ?></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
+                                                data-backdrop="static"
+                                                <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
+                                                else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
+                                                
+                                            </td>
+                                            
+                                            <!--Right Options-->
+                                        </tr>
+                                        <?php endwhile; ?>
+                                        <!--Row 1-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-erequest" role="tabpanel" aria-labelledby="nav-erquest-tab">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center text-dark" 
+                                    id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                    <thead >
+                                        <tr class="bg-gradient-secondary text-white">
+                                            <th scope="col">Document</th>
+                                            <th scope="col">Purpose</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Date Requested</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Date Approved</th>
+                                            <th scope="col">Approved By</th>
+                                            <th scope="col">Manage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!--Row 1-->
+                                        <?php 
+                                            $requests = $conn->query("SELECT * FROM request WHERE UsersID={$_SESSION['UsersID']}");
+                                            while($row=$requests->fetch_assoc()):
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row["documentType"] ?></td>
+                                            <td><?php echo $row["purpose"] ?></td>
+                                            <td><?php echo $row["amount"] ?></td>
+                                            <td><?php echo date("M d,Y h:i a", strtotime($row['requestedOn'])); ?></td>
+                                            <td><?php echo $row["status"] ?></td>
+                                            <td><?php if($row['approvedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['approvedOn']));} else{ echo "N/A"; } ?></td>
+                                            <td><?php echo $row["approvedBy"] ?></td>
+                                            <td>
+                                                
+                                                <button class="btn btn-danger btn-sm btn-flat delete_request" data-id="<?php echo $row['RequestID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
+                                                data-backdrop="static"
+                                                <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
+                                                else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
+                                                <a target="_blank" href="<?php echo $row['requesturl'] ?>"><img src="https://getpaid.gcash.com/assets/img/paynow.png"></a>
+                                            </td>
+                                            
+                                            <!--Right Options-->
+                                        </tr>
+                                        <?php endwhile; ?>
+                                        <!--Row 1-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                    
                 </div>
                 <!--end of modal body-->
                 <div class="modal-footer">
@@ -825,4 +836,4 @@
 </script>
 
 
-</html>
+<?php include 'footer.php' ?>
