@@ -8,7 +8,7 @@ profile - street address, house #, is renting, landlord's profile, verify status
 purok leader - verify/unverify users DONE
 		|- if unverified, alert the user
 
-secretary - scheduler 
+secretary - send respondent
 
 calendar - resident
 
@@ -28,7 +28,7 @@ Status
 Profile info
 
 PUROK LEADER
-Unverification
+Unverification DONE
 Reports
 
 SECRETARY

@@ -30,6 +30,7 @@
                     INNER JOIN election 
                     ON election.electionID = candidates.electionID
                     WHERE candidates.electionID = {$_GET['electionID']}");
+                    $arrayCandidate = array();
                     while($row=$candidates->fetch_assoc()):
                         if($row["userType"] == "Admin"){
                             continue;
@@ -71,7 +72,11 @@
                     
                     <!--Right Options-->
                 </tr>
-                <?php endwhile; ?>
+                <?php 
+                    array_push($arrayCandidate, $row['UsersID']);
+                    endwhile; 
+                    $_SESSION['arrayCandidate'] = $arrayCandidate;
+                ?>
                 <!--Row 1-->
             </tbody>
         </table> 
@@ -197,8 +202,11 @@
                 return false;
                 }
         })
-
+        $('.delete_candidate').click(function(){
+            _conf("Are you sure to delete this candidate?","deleteCandidate",[$(this).attr('data-id')])
+        })
         $('.add_candidate').click(function(){
             uni_modal("<center><b>Add Candidate</b></center></center>","includes/addCandidate.inc.php?electionID=<?php echo $_GET['electionID'] ?>&purok=<?php echo $_GET['purok'] ?>")
         })
+        
 </script>

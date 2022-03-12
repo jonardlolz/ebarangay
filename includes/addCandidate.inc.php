@@ -8,14 +8,21 @@ session_start();
     <form action="includes/manageCandidate.inc.php" class="user" method="post">
         <div class="form-group">
             <div class="col-sm-7">
-                <select class="form-select form-select-lg" id="UsersID"name="UsersID" required>
+                <select class="form-select form-select-lg" id="UsersID" name="UsersID" required>
                     <option value="none" disabled hidden selected>Resident Name</option>
-                    <?php $residents = $conn->query("SELECT * FROM users WHERE userType='Resident' 
+                    <?php $residents = $conn->query("SELECT users.*, candidates.* FROM users 
+                                                    LEFT JOIN candidates 
+                                                    ON users.UsersID = candidates.UsersID 
+                                                    WHERE users.userType = 'Resident'
                                                     AND userBarangay='{$_SESSION['userBarangay']}' 
                                                     AND userPurok='{$_GET['purok']}'");
-                        while($brow = $residents->fetch_assoc()): ?>  
+                        while($brow = $residents->fetch_assoc()): 
+                            if(in_array($brow['UsersID'], $_SESSION['arrayCandidate'])){ continue; }?>  
                             <option value="<?php echo $brow['UsersID'] ?>"><?php echo $brow["Firstname"].' '.$brow["Lastname"] ?></option>
-                        <?php endwhile; ?>
+                        <?php 
+                            
+                            endwhile; 
+                        ?>
                 </select>
                 <!-- <input type="text" class="form-control form-control-sm" id="UsersID"
                 name="UsersID" placeholder="Users ID#" value=""> -->
@@ -37,7 +44,7 @@ session_start();
         <div class="form-group">
             <div class="col-sm-7">
                 <select name="position" id="position" class="form-control form-control-sm form-select d-inline">
-                    <option value="Purok Leader" selected disabled>Purok Leader</option>
+                    <option value="Purok Leader" selected>Purok Leader</option>
                 </select>
             </div>
         </div>

@@ -155,7 +155,7 @@
                         <td><?php echo $row["electionTitle"] ?></td>
                         <td><?php echo $row["purok"] ?></td>
                         <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
-                        <td><button class="btn btn-warning btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                        <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
                         <td>
                             <?php echo $row["electionStatus"] ?>
                         </td>
@@ -166,7 +166,7 @@
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>" disabled><i class="fas fa-check"></i> Finish</button>
                             <?php endif; ?>
                             <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-danger btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
+                            <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
                         </td>
                         
                         <!--Right Options-->
@@ -414,9 +414,7 @@
         $('.view_candidate').click(function(){
             view_modal("<center><b>Manage Candidates for " + $(this).attr('data-id') + "</b></center></center><button class='btn btn-primary btn-sm btn-flat add_candidate ml-3' href='javascript:void(0)'><i class='fas fa-plus'></i> Add candidate</a>","includes/view_candidate.inc.php?electionID="+ $(this).attr('data-electionid') + "&purok="+$(this).attr('data-id'))
         })
-        $('.add_candidate').click(function(){
-            uni_modal("<center><b>Add Candidate</b></center></center>","includes/addCandidate.inc.php?electionID="+$(this).attr('data-electionid')+"&purok="+$(this).attr('data-id'))
-        })
+        
         $('.edit_candidate').click(function(){
             uni_modal("<center><b>Edit Candidate</b></center></center>","includes/addCandidate.inc.php?id="+$(this).attr('data-id'))
         })
