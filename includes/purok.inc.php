@@ -6,7 +6,7 @@
 <?php
     if(isset($_GET["id"])):
         $id = $_GET['id'];
-        $qry = $conn->query("SELECT * FROM purok where PurokID = {$_GET['id']}")->fetch_array();
+        $qry = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM purok LEFT JOIN users ON purok.purokLeader = users.UsersID where PurokID = {$_GET['id']}")->fetch_array();
         foreach($qry as $k => $v){
             $$k= $v;
         }
@@ -40,6 +40,21 @@
                     <option value="<?php echo $Active ?>" hidden selected><?php echo $Active ?></option>
                     <option value="True">True</option>
                     <option value="False">False</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <label>Purok Leader: </label>
+                <select name="purokLeader" id="purokLeader" class="form-control form-control-sm form-select d-inline">
+                    <?php if($purokLeader != NULL): ?>
+                        <option value="<?php echo $purokLeader ?>" hidden selected><?php echo $name ?></option>
+                    <?php else:?>
+                        <option value="None" hidden selected>None</option>
+                    <?php endif; ?>
+                    <option value="None">None</option>
+                    <?php $purok = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident'");
+                        while($purokRow = $purok->fetch_assoc()): ?>
+                        <option value="<?php echo $purokRow["UsersID"] ?>"><?php echo $purokRow["name"]; ?></option>
+                    <?php endwhile; ?>
                 </select>
             </div>
         </div>

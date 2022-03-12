@@ -94,7 +94,7 @@
                                                         <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userBarangay"] ?>" readonly>
                                                         <label class="labels">Municipality/City</label>
                                                         <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $_SESSION["userCity"] ?>" readonly>
-                                                    
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -104,6 +104,15 @@
                                                     <div>
                                                         <strong>Contact Information</strong><hr>
                                                     </div>
+                                                    <label class="labels">Phone Number</label>
+                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
+                                                    <label class="labels">Telephone Number</label>
+                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["teleNum"]; }?>" readonly>
+                                                    <label class="labels">Email Address</label>
+                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
+                                                </div>
+                                                <div class="p-2">
+                                                    <strong>s</strong><hr>
                                                     <label class="labels">Phone Number</label>
                                                     <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
                                                     <label class="labels">Telephone Number</label>

@@ -5,8 +5,9 @@ $.ajax({
   type: 'GET',
   success: function (data) {
     var obj = jQuery.parseJSON(data);
-    s = obj[1].scheduleDate;
-    schedule = new Date(obj[1].scheduleDate);
+    var scheduleArray = new Array();
+
+    schedule = new Date(obj[0].scheduleDate);
     console.log(schedule.getMonth());
 
 

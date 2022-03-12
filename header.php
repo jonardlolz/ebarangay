@@ -1,4 +1,6 @@
 <?php
+    ini_set('display_errors', true);
+    error_reporting(E_ALL ^ E_NOTICE);
     session_start();
     include 'includes/dbh.inc.php';
     if(isset($_SESSION["UsersID"]) == NULL)
@@ -180,7 +182,7 @@
 
     <div class="dropdown-menu dropdown-menu-sm-right shadow animated--grow-in"
         aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="profile.php">
+        <a class="dropdown-item" href="profile.php?UsersID=<?php echo $_SESSION['UsersID']; ?>">
             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-600"></i>
                 Profile
             </a>
@@ -281,12 +283,12 @@
         </li>        
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purokLeader.php">
-                <span>Purok Leaders</span>
+                Purok Leaders
             </a>
         </li>
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purok.php" aria-expanded="true">
-                <span>Purok</span>
+                Purok
             </a>
         </li>
         <!-- Nav Item - Request -->

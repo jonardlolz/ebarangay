@@ -20,6 +20,7 @@
                         <th scope="col">Barangay</th>
                         <th scope="col">Purok</th>
                         <th scope="col">Active</th> 
+                        <th>Purok Leader</th>
                         <th scope="col">Edit</th>
                     </tr>
                     
@@ -27,13 +28,14 @@
                 <tbody>
                     <!--Row 1-->
                     <?php 
-                        $purok = $conn->query("SELECT * FROM purok");
+                        $purok = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name from purok LEFT JOIN users ON purok.purokLeader = users.UsersID");
                         while($row=$purok->fetch_assoc()):
                     ?>
                     <tr>
                         <td><?php echo $row["BarangayName"] ?></td>
                         <td><?php echo $row["PurokName"] ?></td>
                         <td><?php echo $row["Active"] ?></td>
+                        <td><?php if($row['name'] != NULL){echo $row['name'];}else{ echo "None"; } ?></td>
                         <td>
                             <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_purok" data-id="<?php echo $row['PurokID'] ?>" href="javascript:void(0)"></a>
                         </td>
