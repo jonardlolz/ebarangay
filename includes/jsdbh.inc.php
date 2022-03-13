@@ -2,7 +2,7 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "789632145";
 $dbname = "ebarangaydb";
 
 // Create connection
@@ -14,12 +14,18 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM schedule";  //This is where I specify what data to query
 $result = mysqli_query($conn, $sql);
+$query = doquery("SELECT * FROM schedule");
 
-$data = array();
-while($enr = mysqli_fetch_assoc($result)){
-    $a = array("scheduleDate" => $enr["scheduleDate"]);
-    array_push($data, $a);
+while(($result = mysqli_fetch_array($query))){
+    
 }
+
+
+// $data = array();
+// while($enr = mysqli_fetch_array($result)){
+//     $a = array("scheduleDate" => $enr["scheduleDate"]);
+//     array_push($data, $a);
+// }
 
 echo json_encode($data);
 
