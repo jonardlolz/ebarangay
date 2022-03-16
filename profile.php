@@ -112,13 +112,13 @@
                                                     <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
                                                 </div>
                                                 <div class="p-2">
-                                                    <strong>s</strong><hr>
-                                                    <label class="labels">Phone Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
-                                                    <label class="labels">Telephone Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["teleNum"]; }?>" readonly>
-                                                    <label class="labels">Email Address</label>
-                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
+                                                    <strong>Address Information</strong><hr>
+                                                    <label class="labels">Street Address</label>
+                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userAddress"]; }?>" readonly>
+                                                    <label class="labels">House Number</label>
+                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
+                                                    <label class="labels">Is renting?</label>
+                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
             <footer class="sticky-footer">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; eBarangay 2021</span>
+                        
                     </div>
                 </div>
             </footer>
@@ -814,6 +814,10 @@
                 }
             })
         })
+        $(document).ready(function() {
+        $('#dataTable').DataTable();
+        } );
+
         $(document).ready(function() {
         $('#dataTable2').DataTable();
         } );

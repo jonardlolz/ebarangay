@@ -27,6 +27,7 @@
                 <div class="row">
                 <div class="col-8">
                     <div class="container-fluid">
+                        <h1>Welcome to <?php echo "{$_SESSION['userBarangay']}, {$_SESSION['userPurok']}"  ?></h1>
                         <!-- Post Section -->
                         <?php if(!empty($_SESSION['UsersID']) && $_SESSION['userType'] != "Resident"): ?>
                         <div class="col-md-12">

@@ -135,9 +135,9 @@
         scheduleArray.push(obj);
 
         //console.log(obj[0].scheduleDate);
-        $.each(obj, function(idx, jq) {
-          console.log(jq.scheduleDate + " " + jq.ereklamoID);
-        });
+        // $.each(obj, function(idx, jq) {
+        //   console.log(jq.scheduleDate + " " + jq.ereklamoID);
+        // });
 
         schedule = new Date(obj[0].scheduleDate);
         //console.log(schedule.getMonth());

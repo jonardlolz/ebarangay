@@ -633,8 +633,14 @@
         }
     }
     $(document).ready(function() {
+        $('#dataTable').DataTable();
+    } );
+    
+    $(document).ready(function() {
         $('#dataTable2').DataTable();
     } );
+
+    
     </script>
 
     <?php include 'footer.php'; ?>
