@@ -7,7 +7,14 @@ $.ajax({
     var obj = jQuery.parseJSON(data);
     var scheduleArray = new Array();
 
+    obj.forEach(myFunction);
+
+    function myFunction(item){
+      console.log(item);
+    }
+
     schedule = new Date(obj[0].scheduleDate);
+    console.log(obj[0].ereklamoID);
     console.log(schedule.getMonth());
 
 
