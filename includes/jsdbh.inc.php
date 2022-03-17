@@ -25,7 +25,7 @@ $sql = "SELECT * FROM schedule";  //This is where I specify what data to query
 $result = mysqli_query($conn, $sql);
 $data = array();
 while($enr = mysqli_fetch_array($result)){
-    $a = array("scheduleDate" => $enr["scheduleDate"], "ereklamoID" => $enr['ereklamoID'], "UsersID" => $enr['UsersID']);
+    $a = array("scheduleDate" => $enr["scheduleDate"], "ereklamoID" => $enr['ereklamoID'], "UsersID" => $enr['UsersID'], "complainee" => $enr['complainee']);
     array_push($data, $a);
 }
 

@@ -270,7 +270,7 @@
                                 FROM ereklamo 
                                 INNER JOIN users 
                                 ON ereklamo.UsersID=users.UsersID 
-                                WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
+                                WHERE ereklamo.status='Pending' OR ereklamo.status='To be scheduled' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;

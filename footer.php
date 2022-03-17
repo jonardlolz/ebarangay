@@ -136,13 +136,14 @@
           
           echo "var sessionID = {$_SESSION['UsersID']};";
           echo "var sessionUser = '{$_SESSION['userType']}';";
-          
+
           ?>
           for(var key in obj){
             if(obj.hasOwnProperty(key)){
               scheduleDate = new Date(obj[key].scheduleDate)
               console.log(key + " -> " + scheduleDate.getDate());
               console.log(key + " -> " + obj[key].ereklamoID);
+              console.log(key + " -> " + obj[key].complainee);
             }
           }
 
@@ -208,7 +209,7 @@
             if (obj.hasOwnProperty(key)) {
               scheduleDate = new Date(obj[key].scheduleDate)
               if (i === scheduleDate.getDate() && scheduleDate.getMonth() === new Date().getMonth()) {
-                if(sessionID == obj[key].UsersID || sessionUser == 'Captain'){
+                if((sessionID == obj[key].UsersID || sessionID == obj[key].complainee) || sessionUser == 'Captain'){
                   days += `<div class="scheduleToday" id=${obj[key].UsersID}>${i}</div>`;
                 }
               } 
