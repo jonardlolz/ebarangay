@@ -326,3 +326,8 @@ margin-bottom: 15px !important;
     background-color: #262626;
     border: 0.1rem solid #777;
 }
+
+.scheduleToday {
+    background-color: #167e56;
+    border: 0.1rem solid #777;
+}

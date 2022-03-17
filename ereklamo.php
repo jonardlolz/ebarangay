@@ -309,13 +309,14 @@
                                 <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
                                 <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
                                 <td>
-                                    <?php if($row["reklamoType"] != 'Resident'){ ?>
-                                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a>
-                                    <?php } ?>
-                                    <?php if($row["reklamoType"] == 'Resident'){ ?>
+                                    <?php if($row['status'] == "To be scheduled"): ?>
                                         <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><i class="fas fa-calendar-alt fa-2x"></i></a>
-                                    <?php } ?>
-                                    <a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Respondents</button></a>
+
+                                    <?php elseif($row['status'] != "To be scheduled"): ?>
+                                        <a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Respondents</button></a>
+                                    <?php endif; ?>
+                                    
+                                    
                                 </td>
                                 <!--Right Options-->
                             </tr>

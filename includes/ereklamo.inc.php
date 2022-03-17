@@ -135,8 +135,7 @@
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has scheduled ereklamo#$id on $schedule', '$currentUser', '$userBarangay',
         '$userPurok');");
-        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID) VALUES(
-  	    'schedule, $id);");
+        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID) VALUES(schedule, $id);");
 
         if($a1 && $a2 && $a3 && $a4){
             mysqli_commit($conn);
