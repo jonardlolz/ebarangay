@@ -4,7 +4,16 @@
     include 'dbh.inc.php';
 ?>
 
+<?php    
+        $sql = $conn->query("SELECT * FROM election WHERE electionID = {$_GET['electionID']}");
+        $row = $sql->fetch_assoc();
+    ?>
+<div>
+    <button class='btn btn-primary btn-sm btn-flat add_candidate ml-3' href='javascript:void(0)' <?php if($row['electionStatus'] == 'Ongoing' || $row['electionStatus'] == 'Finished'){echo 'disabled';} ?>><i class="fas fa-plus"> Add candidate</i></button>
+</div>
+
 <div class="container-fluid">
+    
     <div class="table-responsive">
         <table class="table table-bordered text-center text-dark" 
             id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
@@ -23,7 +32,7 @@
                 <!--Row 1-->
                 <?php 
                     $candidates = $conn->query("SELECT candidates.*, concat(users.Firstname, ' ', users.Lastname) 
-                    as name, users.profile_pic, users.userType, election.electionTitle 
+                    as name, users.profile_pic, users.userType, election.electionTitle, election.electionStatus
                     FROM candidates 
                     INNER JOIN users 
                     on users.UsersID = candidates.UsersID 
@@ -66,8 +75,7 @@
                     <td><?php echo $row["position"] ?></td>
                     <td><?php echo $row["platform"] ?></td>
                     <td>
-                        <button class="btn btn-success btn-sm edit_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-edit"></i>Edit</button>
-                        <button class="btn btn-danger btn-sm delete_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-trash"></i>Delete</button>
+                        <button class="btn btn-danger btn-sm delete_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>" <?php if($row['electionStatus'] == "Ongoing"){echo "Disabled";} ?>><i class="fas fa-trash"></i> Remove</button>
                     </td>
                     
                     <!--Right Options-->

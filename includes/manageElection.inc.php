@@ -23,6 +23,9 @@
 
     }
     elseif(!isset($_GET["id"])){
+        $sql = $conn->query("SELECT * FROM election WHERE barangay='{$_SESSION['userBarangay']}' AND purok='$electionPurok' AND (electionStatus='Ongoing' OR electionStatus='Paused')");
+        $row_cnt = mysqli_num_rows($sql);
+        if($row_cnt <= 0){
         $id = $_SESSION["UsersID"];
         $sql = "INSERT INTO election(electionTitle, created_by, barangay, purok) 
                 SELECT '{$electionTitle}', $id, users.userBarangay, '$electionPurok'
@@ -43,7 +46,11 @@
         
         header("location: ../election.php?error=none");
         exit();
-
+        }
+        else{
+            header("location: ../election.php?error=alreadyExists");
+            exit();
+        }
     }
 ?>
 

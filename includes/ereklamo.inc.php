@@ -1,6 +1,7 @@
 <?php
     include_once "dbh.inc.php";
     session_start();
+    extract($_POST);
 
     if(isset($_POST["submit"])){
         // $ereklamo = $conn->query("SELECT * FROM ereklamo WHERE UsersID=
@@ -120,7 +121,6 @@
         $Firstname = $_SESSION['Firstname'];
         $userBarangay = $_SESSION['userBarangay'];
         $userPurok = $_SESSION['userPurok'];
-        
 
         $schedule = date('Y-m-d', strtotime($_POST['schedule']));
         
@@ -168,8 +168,14 @@
     }
 
     else if(isset($_GET["respondID"])){
-        $id = $_GET["respondID"];
-        $usersID = $_GET['usersID'];
+        if($id == NULL){
+            $id = $_GET["respondID"];
+            $usersID = $_GET['usersID'];
+        }
+        else{
+            $usersID = $user;
+        }
+        
         $currentUser = $_SESSION['UsersID'];
         $userType = $_SESSION['userType'];
         $Firstname = $_SESSION['Firstname'];

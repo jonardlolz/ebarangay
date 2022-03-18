@@ -535,7 +535,7 @@
             uni_modal("<center><b>Edit Post</b></center></center>","includes/create_post.inc.php?id="+$(this).attr('data-id'))
         })
         $('.delete_post').click(function(){
-        _conf("Are you sure to delete this post?","delete_post",[$(this).attr('data-id')])
+           _conf("Are you sure to delete this post?","delete_post",[$(this).attr('data-id')])
         })
         function delete_post($id){
                 start_load()
