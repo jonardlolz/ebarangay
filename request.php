@@ -227,6 +227,7 @@
                                 <td>
                                     <a href="includes/request.inc.php?release=<?php echo $row["RequestID"] ?>">
                                         <button class="btn btn-success"><i class="fas fa-check"></i> Release</button>
+                                        <button class="btn btn-warning"><i class="fas fa-check"></i> Print</button>
                                     </a>
                                 </td>
                                 <!--Right Options-->
