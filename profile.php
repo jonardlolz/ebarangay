@@ -60,7 +60,7 @@
                                             <a href="javascript:void(0)"><i class="fas fa-file fa-lg" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static"></i></a>
                                             
                                             <?php else: ?>
-                                            <a href="javascript:void(0)"><i class="fas fa-history fa-lg" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static"></i></a>
+                                            <a href="javascript:void(0)"><i class="fas fa-history fa-lg" data-toggle="modal" data-target="#reportHistory" data-backdrop="static"></i></a>
                                             
                                             <?php endif; ?>
                                         </div>
@@ -112,13 +112,13 @@
                                                     <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
                                                 </div>
                                                 <div class="p-2">
-                                                    <strong>s</strong><hr>
-                                                    <label class="labels">Phone Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
-                                                    <label class="labels">Telephone Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["teleNum"]; }?>" readonly>
-                                                    <label class="labels">Email Address</label>
-                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
+                                                    <strong>Address Information</strong><hr>
+                                                    <label class="labels">Street Address</label>
+                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userAddress"]; }?>" readonly>
+                                                    <label class="labels">House Number</label>
+                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
+                                                    <label class="labels">Is renting?</label>
+                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
             <footer class="sticky-footer">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; eBarangay 2021</span>
+                        
                     </div>
                 </div>
             </footer>
@@ -282,7 +282,59 @@
         </div>
     </div>
 
-    
+    <div class="modal fade" id="reportHistory" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="">
+        <div class="modal-dialog modal-xl" role="document" style="border-color:#384550 ;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!--modal-body-->
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark display" 
+                                width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Report Type</th>
+                                        <th scope="col">Content</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $accounts = $conn->query("SELECT * FROM report WHERE userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
+                                        while($row=$accounts->fetch_assoc()):
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $row["ReportType"] ?></td>
+                                        <td><?php echo $row["reportMessage"] ?></td>
+                                        <td><?php echo $row["UsersID"] ?></td>
+                                        <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
+                                        
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                </div>
+                <!--end of modal body-->
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 
     <div class="modal fade" id="requestHistoryModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="">
         <div class="modal-dialog modal-xl" role="document" style="border-color:#384550 ;">
@@ -384,7 +436,9 @@
                                                 data-backdrop="static"
                                                 <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
                                                 else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
+                                                <?php if($row['status'] != 'Pending'): ?>
                                                 <a target="_blank" href="<?php echo $row['requesturl'] ?>"><img src="https://getpaid.gcash.com/assets/img/paynow.png"></a>
+                                                <?php endif;?>
                                             </td>
                                             
                                             <!--Right Options-->
@@ -814,6 +868,10 @@
                 }
             })
         })
+        $(document).ready(function() {
+        $('#dataTable').DataTable();
+        } );
+
         $(document).ready(function() {
         $('#dataTable2').DataTable();
         } );

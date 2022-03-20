@@ -36,7 +36,7 @@ if(isset($_GET['id'])):
         <div class="form-group row"><!--Civil status-->
             <div class="col-sm-6">
                 <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
-                    <option value="<?php echo $civilStat ?>" hidden selected disabled><?php echo $civilStat ?></option>
+                    <option value="<?php echo $civilStat ?>" hidden selected><?php echo $civilStat ?></option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
                     <option value="Widowed">Widowed</option>

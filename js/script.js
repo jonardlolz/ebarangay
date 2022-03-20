@@ -7,8 +7,17 @@ $.ajax({
     var obj = jQuery.parseJSON(data);
     var scheduleArray = new Array();
 
-    schedule = new Date(obj[0].scheduleDate);
-    console.log(schedule.getMonth());
+    for(var key in obj){
+      if(obj.hasOwnProperty(key)){
+        scheduleDate = new Date(obj[key].scheduleDate)
+        console.log(key + " -> " + scheduleDate.getDate());
+        console.log(key + " -> " + obj[key].ereklamoID);
+      }
+    }
+
+    // schedule = new Date(obj[0].scheduleDate);
+    // console.log(obj[0].ereklamoID);
+    // console.log(schedule.getMonth());
 
 
 const renderCalendar = () => {
@@ -64,13 +73,18 @@ const renderCalendar = () => {
   }
 
   for (var i = 1; i <= lastDay; i++) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        scheduleDate = new Date(obj[key].scheduleDate)
+        if (i === scheduleDate.getDate() && scheduleDate.getMonth() === new Date().getMonth()) {
+          days += `<div class="scheduleToday" id=${obj[key].ereklamoID}>${i}</div>`;
+        } 
+      }
+    }
     if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()){
       days += `<div class="today">${i}</div>`;
       
     } 
-    else if (i === schedule.getDate() && schedule.getMonth() === new Date().getMonth()){
-      days += `<div class="today">${i}</div>`;
-    }
     else {
       days += `<div>${i}</div>`;
     }

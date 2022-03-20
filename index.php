@@ -27,6 +27,7 @@
                 <div class="row">
                 <div class="col-8">
                     <div class="container-fluid">
+                        <h1>Welcome to <?php echo "{$_SESSION['userPurok']}, {$_SESSION['userBarangay']}"  ?></h1>
                         <!-- Post Section -->
                         <?php if(!empty($_SESSION['UsersID']) && $_SESSION['userType'] != "Resident"): ?>
                         <div class="col-md-12">
@@ -294,12 +295,6 @@
                     </div>
                 </div>
                     <div class="col-4">
-                        <!-- <div class="card shadow mb-3">
-                            
-                            <div class="card-body">
-                                <div id="map"></div>
-                            </div>
-                        </div> -->
                         <div class="row rounded mt-2 d-flex justify-content-center overflow-auto shadow">
                             <div class="calendar rounded text-white">
                                 
@@ -325,7 +320,12 @@
                                 <div class="days"></div>
                             </div>
                         </div>         
-                        
+                        <div class="card shadow mb-3">
+                            
+                            <div class="card-body">
+                                <div id="map"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!--End of Content Row-->
@@ -534,7 +534,7 @@
             uni_modal("<center><b>Edit Post</b></center></center>","includes/create_post.inc.php?id="+$(this).attr('data-id'))
         })
         $('.delete_post').click(function(){
-        _conf("Are you sure to delete this post?","delete_post",[$(this).attr('data-id')])
+           _conf("Are you sure to delete this post?","delete_post",[$(this).attr('data-id')])
         })
         function delete_post($id){
                 start_load()

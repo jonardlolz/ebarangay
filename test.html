@@ -1,78 +1,47 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
-    </head>
+    
     <body>
-        <form id="form" method="post" action="">
-
-            <label for="serial">Enter Serial Number</label>
-            <input id="serial" name="serial" type="text" placeholder="e.g. XXXX-XXXX-XXXX-XXXX" maxlength="19" />
-            <small>Alphanumeric. Dashes will be added automatically.</small>
-            
-            <button type="submit" name="submit">Submit</button>
-        </form>
+        <div>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+        
+        <script src="vendor/chart.js/Chart.js"></script>
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
-
-<script>
-    (function($, undefined) {
-
-    "use strict";
-
-    // When ready.
-    $(function() {
-    
-    var $form = $( "#form" );
-    var $input = $form.find( "input" );
-
-    $input.on( "keyup", function( event ) {
-        
-        
-        // When user select text in the document, also abort.
-        var selection = window.getSelection().toString();
-        if ( selection !== '' ) {
-        return;
-        }
-        
-        // When the arrow keys are pressed, abort.
-        if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
-        return;
-        }
-        
-        var $this = $(this);
-        var input = $this.val();
-            input = input.replace(/[\W\s\._\-]+/g, '');
-        
-        var split = 4;
-        var chunk = [];
-
-        for (var i = 0, len = input.length; i < len; i += split) {
-            chunk.push( input.substr( i, split ) );
-        }
-
-        $this.val(function() {
-            return chunk.join("-").toUpperCase();
-        });
-    
-    } );
-    
-    /**
-     * ==================================
-     * When Form Submitted
-     * ==================================
-     */
-    $form.on( "submit", function( event ) {
-        
-        var $this = $( this );
-        var arr = $this.serializeArray();
-        
-        console.log( arr[0]['value'] );
-        
-        event.preventDefault();
-    });
-    
-    });
-    })(jQuery);
-</script>

@@ -25,7 +25,8 @@
 
     }
     else{
-        $id = $UsersID;
+        echo($resident);
+        $id = $_POST['resident'];
         $position = "Purok Leader";
         $sql = "INSERT INTO candidates(UsersID, lastname, firstname, position, electionID, platform, purok)
                 SELECT $id, Lastname, Firstname, '$position', '$electionTerm', '$platform', userPurok
@@ -34,7 +35,7 @@
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../election.php?error=stmtfailedcreatepost");
+            header("location: ../election.php?error=$id");
             exit();
         }
  
@@ -43,7 +44,7 @@
             exit();
         }
         else{
-            header("location: ../election.php?error=test");
+            header("location: ../election.php?error=$id");
             exit();
         }
 

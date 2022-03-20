@@ -8,19 +8,16 @@ session_start();
     <form action="includes/manageCandidate.inc.php" class="user" method="post">
         <div class="form-group">
             <div class="col-sm-7">
-                <select class="form-select form-select-lg" id="UsersID" name="UsersID" required>
+                <select class="form-select form-select-lg" id="resident" name="resident" required>
                     <option value="none" disabled hidden selected>Resident Name</option>
-                    <?php $residents = $conn->query("SELECT users.*, candidates.* FROM users 
-                                                    LEFT JOIN candidates 
-                                                    ON users.UsersID = candidates.UsersID 
+                    <?php $residents = $conn->query("SELECT * FROM users 
                                                     WHERE users.userType = 'Resident'
-                                                    AND userBarangay='{$_SESSION['userBarangay']}' 
-                                                    AND userPurok='{$_GET['purok']}'");
+                                                    AND userBarangay='Paknaan' 
+                                                    AND userPurok='Kamatis'");
                         while($brow = $residents->fetch_assoc()): 
                             if(in_array($brow['UsersID'], $_SESSION['arrayCandidate'])){ continue; }?>  
                             <option value="<?php echo $brow['UsersID'] ?>"><?php echo $brow["Firstname"].' '.$brow["Lastname"] ?></option>
                         <?php 
-                            
                             endwhile; 
                         ?>
                 </select>

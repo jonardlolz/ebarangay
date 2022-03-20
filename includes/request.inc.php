@@ -113,16 +113,16 @@ elseif(isset($_GET["release"])){
     $reportMessage = "Secretary ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has released the RequestID # ". $id;
     $requestUrl = $resData["data"]["checkouturl"];
     //$a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
-    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='{$status}', request.userType='{$userType}', paymentStatus='{$paymentStatus}', requesturl='{$requestUrl}' WHERE RequestID=$id");
+    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='{$status}', request.userType='{$userType}', requesturl='{$requestUrl}' WHERE RequestID=$id");
 
     if($a2 ){
         mysqli_commit($conn);
-        //header("location: ../request.php?error=none"); //no errors were made
+        header("location: ../request.php?error=none"); //no errors were made
         exit();
     }
     else{
         mysqli_rollback($conn);
-        //header("location: ../request.php?error=error"); //no errors were made
+        header("location: ../request.php?error=error"); //no errors were made
         exit();
     }
 }
@@ -167,9 +167,9 @@ elseif(isset($_GET["approveID"])){
     $reportMessage = "Treasurer ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has released the RequestID#".$id;
 
     //$a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
-    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy=$approvedBy, status='{$status}', request.userType='{$userType}', paymentStatus='{$paymentStatus}' WHERE RequestID=$id");
+    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy=$approvedBy, status='{$status}', request.userType='{$userType}' WHERE RequestID=$id");
 
-    if($a2 ){
+    if($a2){
         mysqli_commit($conn);
         header("location: ../request.php?error=none"); //no errors were made
         exit();

@@ -5,7 +5,7 @@
 
 <?php if($_SESSION["userType"] == "Resident"): ?>
     <?php 
-        $notif = $conn->query("SELECT * FROM votes WHERE UsersID={$_SESSION['UsersID']}");
+        $notif = $conn->query("SELECT * FROM votes INNER JOIN election ON election.electionID = votes.electionID WHERE UsersID={$_SESSION['UsersID']} AND electionStatus='Ongoing'");
         $row_cnt = mysqli_num_rows($notif);
         if($row_cnt <= 0):
     ?>
@@ -19,7 +19,7 @@
             </div>
 
             <?php 
-                $posts = $conn->query("SELECT * FROM election WHERE electionStatus='Active'");
+                $posts = $conn->query("SELECT * FROM election WHERE electionStatus='Ongoing' AND barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}'");
                 $row_cnt = mysqli_num_rows($posts);
                 if($row_cnt > 0):
                     while($row=$posts->fetch_assoc()):
@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <?php 
                             $i = 0;
-                            $posi = array("Captain", "Purok Leader", "Secretary", "Treasurer");
+                            $posi = array("Purok Leader");
                             while($i < count($posi)):
                         ?>
                         <div class="card shadow mb-3">
@@ -46,7 +46,10 @@
                             <div class="card-body">
                                 <div class="row">
                                     <?php 
-                                    $cands = $conn->query("SELECT candidates.*, users.profile_pic FROM candidates INNER JOIN users ON users.UsersID=candidates.UsersID WHERE position='". $posi[$i] ."'");
+                                    $cands = $conn->query("SELECT candidates.*, users.profile_pic FROM candidates 
+                                    INNER JOIN users ON users.UsersID=candidates.UsersID 
+                                    INNER JOIN election ON election.electionID = candidates.electionID
+                                    WHERE position='{$posi[$i]}' AND election.electionStatus='Ongoing' AND election.barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}'");
                                     while($crow=$cands->fetch_assoc()):
                                         $crow["position"] = str_replace(" ", "", $crow["position"]);
                                     ?>
@@ -160,11 +163,14 @@
                             <?php echo $row["electionStatus"] ?>
                         </td>
                         <td>
-                            <?php if($row['electionStatus'] == "Active"): ?>
+                            <?php if($row['electionStatus'] == "Paused"): ?>
+                                <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>>Start</button>
+                            <?php elseif($row['electionStatus'] == "Ongoing"): ?>
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
-                            <?php elseif($row['electionStatus'] == "Finish"): ?>
-                                <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>" disabled><i class="fas fa-check"></i> Finish</button>
+                            <?php elseif($row['electionStatus'] == "Finished"): ?>
+                                <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
                             <?php endif; ?>
+                            
                             <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
                             <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
                         </td>
@@ -194,7 +200,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Manage Candidates for </h5> 
-                <button class="btn btn-primary btn-sm btn-flat add_candidate ml-3" href="javascript:void(0)"><i class="fas fa-plus"></i> Add candidate</a>
+                <?php 
+                    $cands = $conn->query("SELECT * FROM election");
+                    $crow=$cands->fetch_assoc();
+                        
+                ?>
+                <button class="btn btn-primary btn-sm btn-flat add_candidate ml-3" href="javascript:void(0)" disabled><i class="fas fa-plus"></i> Add candidate</a>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -412,17 +423,19 @@
             $(this).height(0).height(this.scrollHeight);
         })
         $('.view_candidate').click(function(){
-            view_modal("<center><b>Manage Candidates for " + $(this).attr('data-id') + "</b></center></center><button class='btn btn-primary btn-sm btn-flat add_candidate ml-3' href='javascript:void(0)'><i class='fas fa-plus'></i> Add candidate</a>","includes/view_candidate.inc.php?electionID="+ $(this).attr('data-electionid') + "&purok="+$(this).attr('data-id'))
+            view_modal("<center><b>Manage Candidates for " + $(this).attr('data-id') + "</b></center></center>","includes/view_candidate.inc.php?electionID="+ $(this).attr('data-electionid') + "&purok="+$(this).attr('data-id'))
         })
-        
         $('.edit_candidate').click(function(){
             uni_modal("<center><b>Edit Candidate</b></center></center>","includes/addCandidate.inc.php?id="+$(this).attr('data-id'))
         })
         $('.add_election').click(function(){
-            uni_modal("<center><b>Add Election</b></center></center>","includes/addElection.inc.php")
+            uni_modal("<center><b>Add Election</b></center></center>","includes/addElection.inc.php?add")
         })
         $('.edit_election').click(function(){
-            uni_modal("<center><b>Add Election</b></center></center>","includes/addElection.inc.php?id="+$(this).attr('data-id'))
+            uni_modal("<center><b>Add Election</b></center></center>","includes/addElection.inc.php?edit="+$(this).attr('data-id'))
+        })
+        $('.results_election').click(function(){
+            uni_modal("<center><b>Results</b></center></center>","includes/addElection.inc.php?result="+$(this).attr('data-id'))
         })
         $('.delete_candidate').click(function(){
         _conf("Are you sure to delete this candidate?","deleteCandidate",[$(this).attr('data-id')])
@@ -430,13 +443,27 @@
         $('.delete_election').click(function(){
         _conf("Are you sure to delete this election? <br> All candidates and votes that has been submitted to this election will be removed.","deleteElection",[$(this).attr('data-id')])
         })
+        $('.start_election').click(function(){
+        _conf("Once election starts, you cannot change the listed candidates anymore. <br> Do you want to continue? ","startElection",[$(this).attr('data-id')])
+        })
         $('.finish_election').click(function(){
         _conf("Finishing election cannot be undone. <br> Do you want to continue? ","finishElection",[$(this).attr('data-id')])
         })
+        function startElection($id){
+                start_load()
+                $.ajax({
+                    url:'includes/finishElection.inc.php?start',
+                    method:'POST',
+                    data:{id:$id},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
         function finishElection($id){
                 start_load()
                 $.ajax({
-                    url:'includes/finishElection.inc.php',
+                    url:'includes/finishElection.inc.php?finish',
                     method:'POST',
                     data:{id:$id},
                     success:function(){

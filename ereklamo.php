@@ -81,6 +81,16 @@
             </div>
             
             <div class="card-body" style="font-size: 75%">
+                <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Pending</a>
+                    <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Resolved</a>
+                </div>
+                </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered text-center text-dark" 
                         id="dataTable" width="100%" cellspacing="0" cellpadding="0">
@@ -236,7 +246,7 @@
             <!-- End of Card Body-->
         </div>                   
         <!--End of Card--> 
-        <?php elseif($_SESSION["userType"] != "Resident"): ?>
+        <?php elseif($_SESSION["userType"] == "Secretary"): ?>
             <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-dark">eReklamo</h6>
@@ -270,7 +280,7 @@
                                 FROM ereklamo 
                                 INNER JOIN users 
                                 ON ereklamo.UsersID=users.UsersID 
-                                WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
+                                WHERE ereklamo.status='To be scheduled' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -309,13 +319,7 @@
                                 <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
                                 <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
                                 <td>
-                                    <?php if($row["reklamoType"] != 'Resident'){ ?>
-                                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a>
-                                    <?php } ?>
-                                    <?php if($row["reklamoType"] == 'Resident'){ ?>
-                                        <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><i class="fas fa-calendar-alt fa-2x"></i></a>
-                                    <?php } ?>
-                                    <a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Respondents</button></a>
+                                    <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set schedule</button></a>
                                 </td>
                                 <!--Right Options-->
                             </tr>
@@ -406,6 +410,171 @@
             <!-- End of Card Body-->
         </div>                   
         <!--End of Card--> 
+
+        <?php elseif($_SESSION["userType"] == "Captain"): ?>
+            <div class="card shadow mb-4 m-4">
+            <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">eReklamo</h6>
+            </div>
+            
+            <div class="card-body" style="font-size: 75%">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center text-dark" 
+                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                        <thead >
+                            <tr class="bg-gradient-secondary text-white">
+                                <th scope="col">Name</th>
+                                <th scope="col">Reklamo Type</th>
+                                <th scope="col">Detail</th>
+                                <th scope="col">Comment</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Date Submitted</th>
+                                <th scope="col">Managed By</th>
+                                <th scope="col">Date Managed</th>
+                                <th scope="col">Manage</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <!--Row 1-->
+                            <?php 
+                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                as checkedDate, users.userType, users.profile_pic 
+                                FROM ereklamo 
+                                INNER JOIN users 
+                                ON ereklamo.UsersID=users.UsersID 
+                                WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
+                                while($row=$requests->fetch_assoc()):
+                                    if($row["userType"] == "Admin"){
+                                        continue;
+                                    }
+                            ?>
+                            <tr>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php 
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    <br>
+                                    <?php echo $row["name"] ?>
+                                </td>
+                                <td><?php echo $row["reklamoType"] ?></td>
+                                <td><?php echo $row["detail"] ?></td>
+                                <td><?php echo $row["comment"] ?></td>
+                                <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
+                                <td><?php echo $row["createdDate"] ?></td>
+                                <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
+                                <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
+                                <td>
+                                    <a class="set-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set for schedule</button></a>
+                                    <a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Tanod</button></a>
+                                </td>
+                                <!--Right Options-->
+                            </tr>
+                            <?php endwhile; ?>
+                            <!--Row 1-->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!-- End of Card Body-->
+        </div>                   
+        <!--End of Card--> 
+
+        <div class="card shadow mb-4 m-4">
+            <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">Resolved</h6>
+            </div>
+            
+            <div class="card-body" style="font-size: 75%">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center text-dark" 
+                        id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                        <thead >
+                            <tr class="bg-gradient-secondary text-white">
+                                <th scope="col">Name</th>
+                                <th scope="col">Reklamo Type</th>
+                                <th scope="col">Detail</th>
+                                <th scope="col">Comment</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Date Submitted</th>
+                                <th scope="col">Managed By</th>
+                                <th scope="col">Date Managed</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <!--Row 1-->
+                            <?php 
+                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Resolved';");
+                                while($row=$requests->fetch_assoc()):
+                                    if($row["userType"] == "Admin"){
+                                        continue;
+                                    }
+                            ?>
+                            <tr>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php 
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    <br>
+                                    <?php echo $row["name"] ?>
+                                </td>
+                                <td><?php echo $row["reklamoType"] ?></td>
+                                <td><?php echo $row["detail"] ?></td>
+                                <td><?php echo $row["comment"] ?></td>
+                                <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
+                                <td><?php echo $row["createdDate"] ?></td>
+                                <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
+                                <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
+                                <!--Right Options-->
+                            </tr>
+                            <?php endwhile; ?>
+                            <!--Row 1-->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!-- End of Card Body-->
+        </div>       
         <?php endif; ?>
 
                                                                    
@@ -542,6 +711,9 @@
             if(this.scrollHeight <= 117)
             $(this).height(0).height(this.scrollHeight);
         })
+        $('.set-schedule').click(function(){
+            _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
+        })
         $('.confirm-schedule').click(function(){
             uni_modal("<center><b>Schedule a summon</b></center></center>","includes/schedule.inc.php?scheduleSummon="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'))
         })
@@ -556,6 +728,17 @@
                 $(this).parent().children('.show-content').removeClass('d-none')
             }
         })
+        function set_schedule($id, $user){
+                start_load()
+                $.ajax({
+                    url:'includes/ereklamo.inc.php?respondID',
+                    method:'POST',
+                    data:{id:$id, user:$user},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
         $('.show-content').click(function(){
             var txt = $(this).text()
             if(txt == "Show More"){
@@ -597,6 +780,14 @@
                 }
             })
         })
+
+        $(document).ready(function() {
+        $('#dataTable').DataTable();
+        } );
+        
+        $(document).ready(function() {
+            $('#dataTable2').DataTable();
+        } );
 </script>
 
 <?php include 'footer.php'; ?>

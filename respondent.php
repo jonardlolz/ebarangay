@@ -97,7 +97,8 @@
                                 <td><?php echo $row["userHouseNum"] ?></td>
                                 <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                 <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
-                                <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a></td>
+                                <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a>
+                                    <a href="includes/ereklamo.inc.php?respondID=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-warning" href=""><i class="fas fa-check"></i> For meet</button></a></td>
                                 <!--Right Options-->
                             </tr>
                             <?php endwhile; ?>

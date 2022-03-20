@@ -124,17 +124,33 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script>
-    const date = new Date();
-      // $.ajax({
-      //   url: './includes/jsdbh.inc.php',
-      //   type: 'GET',
-      //   success: function (data) {
-      //     var obj = jQuery.parseJSON(data);
-      //     var scheduleArray = new Array();
+      const date = new Date();
 
-      //     schedule = new Date(obj[0].scheduleDate);
-      //     console.log(schedule.getMonth());
-      <?php $schedule = $conn->query("SELECT * FROM schedule");?>
+      $.ajax({
+        url: './includes/jsdbh.inc.php',
+        type: 'GET',
+        success: function (data) {
+          var obj = jQuery.parseJSON(data);
+          var scheduleArray = new Array();
+          <?php 
+          
+          echo "var sessionID = {$_SESSION['UsersID']};";
+          echo "var sessionUser = '{$_SESSION['userType']}';";
+
+          ?>
+          for(var key in obj){
+            if(obj.hasOwnProperty(key)){
+              scheduleDate = new Date(obj[key].scheduleDate)
+              console.log(key + " -> " + scheduleDate.getDate());
+              console.log(key + " -> " + obj[key].ereklamoID);
+              console.log(key + " -> " + obj[key].complainee);
+            }
+          }
+
+          // schedule = new Date(obj[0].scheduleDate);
+          // console.log(obj[0].ereklamoID);
+          // console.log(schedule.getMonth());
+
 
       const renderCalendar = () => {
         date.setDate(1);
@@ -189,15 +205,20 @@
         }
 
         for (var i = 1; i <= lastDay; i++) {
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              scheduleDate = new Date(obj[key].scheduleDate)
+              if (i === scheduleDate.getDate() && scheduleDate.getMonth() === new Date().getMonth()) {
+                if((sessionID == obj[key].UsersID || sessionID == obj[key].complainee) || sessionUser == 'Captain'){
+                  days += `<div class="scheduleToday" id=${obj[key].UsersID}>${i}</div>`;
+                }
+              } 
+            }
+          }
           if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()){
             days += `<div class="today">${i}</div>`;
             
           } 
-          <?php while($row = $schedule->fetch_assoc()): ?>
-            else if (i ==.getDate() && schedule.getMonth() === new Date().getMonth()){
-              days += `<div class="today">${i}</div>`;
-            }
-          <?php endwhile; ?>
           else {
             days += `<div>${i}</div>`;
           }
@@ -224,15 +245,7 @@
 
         }
       });
-    </script>
-    <script>
-      $(document).ready( function () {
-      $('#dataTable').DataTable();
-      } );
 
-      $(document).ready( function () {
-      $('#dataTable2').DataTable();
-      } );
     </script>
 
 
