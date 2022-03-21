@@ -255,6 +255,23 @@
             </div>
         </div>
         <div class="tab-pane fade" id="purokleaders" role="tabpanel" aria-labelledby="purokleaders-tab">
+            <div class="row">
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary add_officer">Add Purok Leader</button>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered text-center text-dark display" 
                     width="100%" cellspacing="0" cellpadding="0">
