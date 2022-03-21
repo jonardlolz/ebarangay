@@ -31,7 +31,7 @@
 <?php elseif(isset($_GET["edit"])): ?>
 <div class="container-fluid">
     <?php 
-        $id = $_GET["id"];
+        $id = $_GET["edit"];
         $elections = $conn->query("SELECT * FROM election WHERE electionID=$id ");
         while($row=$elections->fetch_assoc()):
     ?>

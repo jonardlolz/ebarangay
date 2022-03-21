@@ -164,15 +164,15 @@
                         </td>
                         <td>
                             <?php if($row['electionStatus'] == "Paused"): ?>
-                                <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>>Start</button>
+                                <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
+                                <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
                             <?php elseif($row['electionStatus'] == "Ongoing"): ?>
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
                             <?php elseif($row['electionStatus'] == "Finished"): ?>
                                 <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
                             <?php endif; ?>
                             
-                            <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finish"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
                         </td>
                         
                         <!--Right Options-->

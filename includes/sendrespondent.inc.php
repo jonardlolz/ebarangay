@@ -56,6 +56,29 @@
             </div>
             </form>
         </div>
+        <style>
+            #uni_modal .modal-footer{
+                display: none;
+            }
+            #uni_modal .modal-footer.display{
+                display: block !important;
+            }
+
+            .modal-footercustom {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 0.75rem;
+                border-top: 1px solid #e3e6f0;
+                border-bottom-right-radius: calc(0.3rem - 1px);
+                border-bottom-left-radius: calc(0.3rem - 1px);
+            }
+
+            .modal-footercustom > * {
+                margin: 0.25rem;
+            }
+        </style>
     <?php }
     if(isset($_POST['submit'])){
         extract($_POST);
@@ -64,17 +87,17 @@
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            // header("location: ../respondent.php?error=stmtfailedcreatepost");
+            header("location: ../residents.php?error=stmtfailedcreatepost");
             echo("Error description: " . $mysqli -> error);
             exit();
         }
         if(!mysqli_stmt_execute($stmt)){
-            // header("location: ../respondent.php?error=sqlExecError");
+            header("location: ../residents.php?error=sqlExecError");
             echo("Error description: " . $mysqli -> error);
             exit();
         }
         mysqli_stmt_close($stmt);
-        header("location: ../respondent.php?error=none"); //no errors were made
+        header("location: ../residents.php?error=none"); //no errors were made
         exit();
     }
     if(isset($_GET['edit'])){?>
@@ -99,16 +122,16 @@
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../respondent.php?error=stmtfailedcreatepost");
+            header("location: ../residents.php?error=stmtfailedcreatepost");
             exit();
         }
 
         if(!mysqli_stmt_execute($stmt)){
-            header("location: ../respondent.php?error=sqlExecError");
+            header("location: ../residents.php?error=sqlExecError");
             exit();
         }
         mysqli_stmt_close($stmt);
-        header("location: ../respondent.php?error=none"); //no errors were made
+        header("location: ../residents.php?error=none"); //no errors were made
         exit();
     }
     if(isset($_GET['postedit'])){
@@ -117,42 +140,22 @@
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../respondent.php?error=stmtfailedcreatepost");
+            header("location: ../residents.php?error=stmtfailedcreatepost");
             exit();
         }
 
         if(!mysqli_stmt_execute($stmt)){
-            header("location: ../respondent.php?error=sqlExecError");
+            header("location: ../residents.php?error=sqlExecError");
             exit();
         }
         mysqli_stmt_close($stmt);
         
-        header("location: ../respondent.php?error=none");
+        header("location: ../residents.php?error=none");
         exit();
     }
 
 ?>
 
 <style>
-	#uni_modal .modal-footer{
-		display: none;
-	}
-	#uni_modal .modal-footer.display{
-		display: block !important;
-	}
-
-    .modal-footercustom {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 0.75rem;
-        border-top: 1px solid #e3e6f0;
-        border-bottom-right-radius: calc(0.3rem - 1px);
-        border-bottom-left-radius: calc(0.3rem - 1px);
-    }
-
-    .modal-footercustom > * {
-        margin: 0.25rem;
-    }
+	
 </style>

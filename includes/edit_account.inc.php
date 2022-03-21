@@ -52,13 +52,32 @@
     }
 
     elseif(isset($_GET["removeLeader"])){
+        extract($_POST);
         mysqli_begin_transaction($conn);
         $a1 = mysqli_query($conn, "UPDATE users SET userType='Resident' WHERE UsersID=$id");
         $a2 = mysqli_query($conn, "UPDATE purok SET purokLeader=NULL WHERE purokLeader=$id");
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../captain.php?error=none");
+            header("location: ../residents.php?error=none");
+            exit();
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+        }
+            
+    }
+
+    elseif(isset($_GET["changePosition"])){
+        $id = $_GET["changePosition"];
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+        $a1 = mysqli_query($conn, "UPDATE users SET userType='$position' WHERE UsersID=$id");
+
+        if($a1){
+            mysqli_commit($conn);
+            header("location: ../residents.php?error=none");
             exit();
         }
         else{

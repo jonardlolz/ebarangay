@@ -9,7 +9,6 @@
 <div class="card shadow mb-4 m-4">
     <div class="card-header py-3 d-flex justify-content-between">
             <h6 class="m-0 font-weight-bold text-dark"><?php echo $_SESSION["userBarangay"] ?> Residents</h6>
-            <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_account" href="javascript:void(0)"></a>
     </div>
     
     <div class="card-body" style="font-size: 75%">
@@ -256,6 +255,23 @@
             </div>
         </div>
         <div class="tab-pane fade" id="purokleaders" role="tabpanel" aria-labelledby="purokleaders-tab">
+            <div class="row">
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary add_purokleader">Add Purok Leader</button>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered text-center text-dark display" 
                     width="100%" cellspacing="0" cellpadding="0">
@@ -263,18 +279,18 @@
                         <tr class="bg-gradient-secondary text-white">
                             <th scope="col">Name</th>
                             <th scope="col">User Type</th>
-                            <th scope="col">Barangay</th>
                             <th scope="col">Purok</th>
-                            <th scope="col">Email Address</th>
-                            <!-- <th scope="col">Phone Number</th>
-                            <th scope="col">Manage</th> -->
+                            <th>Street Address</th>
+                            <th>House #</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Action</th>
                         </tr>
                         
                     </thead>
                     <tbody>
                         <!--Row 1-->
                         <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' AND userBarangay = '{$_SESSION['userBarangay']}' AND userType='Purok Leader'");
+                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE Status='Active' AND userType='Purok Leader'");
                             while($row=$accounts->fetch_assoc()):
                                 if($row["userType"] == "Admin"){
                                     continue;
@@ -302,19 +318,18 @@
                                         echo "img-admin-profile";
                                     }
                                 ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                </br>
+                                <br>
                                 <?php echo $row["name"] ?>
                             </td>
                             <td><?php echo $row["userType"] ?></td>
-                            <td><?php echo $row["userBarangay"] ?></td>
                             <td><?php echo $row["userPurok"] ?></td>
-                            <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                            <!-- <td><?php echo $row["phoneNum"] ?></td>
+                            <td><?php echo $row["userAddress"] ?></td>
+                            <td><?php echo $row["userHouseNum"] ?></td>
+                            <td><?php echo $row["username"] ?></td>
                             <td>
-                                <button class="btn btn-success btn-sm btn-flat edit_account" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Edit</button>
-                            </td> -->
-                            
-                            <!--Right Options-->
+                                <button class="btn btn-danger removeleader" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-trash fa-md"></i> Remove Leader</button>
+                                
+                            </td>
                         </tr>
                         <?php endwhile; ?>
                         <!--Row 1-->
@@ -323,25 +338,44 @@
             </div>
         </div>
         <div class="tab-pane fade" id="officers" role="tabpanel" aria-labelledby="officers-tab">
+        <div class="row">
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                <button class="btn btn-primary add_officer">Add officer</button>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered text-center text-dark display" 
                     width="100%" cellspacing="0" cellpadding="0">
                     <thead >
                         <tr class="bg-gradient-secondary text-white">
                             <th scope="col">Name</th>
-                            <th scope="col">User Type</th>
+                            <th scope="col">Position</th>
                             <th scope="col">Barangay</th>
                             <th scope="col">Purok</th>
-                            <th scope="col">Email Address</th>
-                            <!-- <th scope="col">Phone Number</th>
-                            <th scope="col">Manage</th> -->
+                            <th>Manage</th>
                         </tr>
                         
                     </thead>
                     <tbody>
                         <!--Row 1-->
                         <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' AND userBarangay = '{$_SESSION['userBarangay']}' AND userType != 'Resident'");
+                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users 
+                            WHERE (userType = 'Purok Leader' 
+                            OR userType = 'Treasurer' 
+                            OR userType = 'Secretary')
+                            AND userBarangay = '{$_SESSION["userBarangay"]}';");
                             while($row=$accounts->fetch_assoc()):
                                 if($row["userType"] == "Admin"){
                                     continue;
@@ -375,13 +409,9 @@
                             <td><?php echo $row["userType"] ?></td>
                             <td><?php echo $row["userBarangay"] ?></td>
                             <td><?php echo $row["userPurok"] ?></td>
-                            <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                            <!-- <td><?php echo $row["phoneNum"] ?></td>
                             <td>
-                                <button class="btn btn-success btn-sm btn-flat edit_account" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Edit</button>
-                            </td> -->
-                            
-                            <!--Right Options-->
+                                <button class="btn btn-success btn-sm btn-flat changePosition" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Change Position</button>
+                            </td>
                         </tr>
                         <?php endwhile; ?>
                         <!--Row 1-->
@@ -390,69 +420,82 @@
             </div>
         </div>
         <div class="tab-pane fade" id="respondents" role="tabpanel" aria-labelledby="respondents-tab">
-        <button class="btn btn-primary">+ Add Respondent</button>
+        <div class="row">
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                <button class="btn btn-primary add_respondent">Add Respondent</button>
+            </div>
+        </div>
+        
         <div class="table-responsive">
             <table class="table table-bordered text-center text-dark display" 
                     width="100%" cellspacing="0" cellpadding="0">
                     <thead >
                         <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Name</th>
-                            <th scope="col">User Type</th>
-                            <th scope="col">Barangay</th>
-                            <th scope="col">Purok</th>
-                            <th scope="col">Email Address</th>
-                            <!-- <th scope="col">Phone Number</th>
-                            <th scope="col">Manage</th> -->
+                            <th>Name</th>
+                            <th>Respondent Type</th>
+                            <th>Barangay</th>
+                            <th>Purok</th>
+                            <th>Action</th>
                         </tr>
                         
                     </thead>
                     <tbody>
-                        <!--Row 1-->
                         <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' AND userBarangay = '{$_SESSION['userBarangay']}' AND barangayPos != 'None'");
-                            while($row=$accounts->fetch_assoc()):
-                                if($row["userType"] == "Admin"){
-                                    continue;
-                                }
-                        ?>
-                        <tr>
-                            <td>
-                                <img class="img-profile rounded-circle <?php 
-                                    if($row["userType"] == "Resident"){
-                                        echo "img-res-profile";
+                                $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname)
+                                as name FROM users WHERE barangayPos != 'None' AND userBarangay='{$_SESSION['userBarangay']}'
+                                AND userPurok='{$_SESSION['userPurok']}';");
+                                while($row=$requests->fetch_assoc()):
+                                    if($row["userType"] == "Admin"){
+                                        continue;
                                     }
-                                    elseif($row["userType"] == "Purok Leader"){
-                                        echo "img-purokldr-profile";
-                                    }
-                                    elseif($row["userType"] == "Captain"){
-                                        echo "img-capt-profile";
-                                    }
-                                    elseif($row["userType"] == "Secretary"){
-                                        echo "img-sec-profile";
-                                    }
-                                    elseif($row["userType"] == "Treasurer"){
-                                        echo "img-treas-profile";
-                                    }
-                                    elseif($row["userType"] == "Admin"){
-                                        echo "img-admin-profile";
-                                    }
-                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                </br>
-                                <?php echo $row["name"] ?>
-                            </td>
-                            <td><?php echo $row["userType"] ?></td>
-                            <td><?php echo $row["userBarangay"] ?></td>
-                            <td><?php echo $row["userPurok"] ?></td>
-                            <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                            <!-- <td><?php echo $row["phoneNum"] ?></td>
-                            <td>
-                                <button class="btn btn-success btn-sm btn-flat edit_account" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Edit</button>
-                            </td> -->
-                            
-                            <!--Right Options-->
-                        </tr>
+                            ?>
+                            <tr>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php 
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    <br>
+                                    <?php echo $row["name"] ?>
+                                </td>
+                                <td><?php echo $row["barangayPos"] ?></td>
+                                <td><?php echo $row["userBarangay"] ?></td>
+                                <td><?php echo $row["userPurok"] ?></td>
+                                <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
+                                <td>
+                                    <button type="button" class="btn btn-danger remove_respondent" data-id="<?php echo $row["UsersID"] ?>"><i class="fas fa-check"></i> Remove</button>
+                                    <button type="button" class="btn btn-warning edit_respondent" data-id="<?php echo $row["UsersID"] ?>"><i class="fas fa-check"></i> Edit</button></td>
+                                <!--Right Options-->
+                            </tr>
                         <?php endwhile; ?>
-                        <!--Row 1-->
                     </tbody>
                 </table>
             </div>
@@ -590,11 +633,41 @@
             if(this.scrollHeight <= 117)
             $(this).height(0).height(this.scrollHeight);
         })
+        $('.add_respondent').click(function(){
+            uni_modal("<center><b>Add Respondent</b></center></center>","includes/sendrespondent.inc.php?add");
+        })
+        $('.add_officer').click(function(){
+            uni_modal("<center><b>Add Officer</b></center></center>","includes/account.inc.php?addOfficer");
+        })
+        $('.add_purokleader').click(function(){
+            uni_modal("<center><b>Add Purok Leader</b></center></center>","includes/account.inc.php?addleader");
+        })
+        $('.edit_respondent').click(function(){
+            uni_modal("<center><b>Edit Respondent</b></center></center>","includes/sendrespondent.inc.php?edit=" + $(this).attr('data-id'));
+        })
+        
+        $('.remove_respondent').click(function(){
+            _conf("Are you sure to remove this respondent?","remove_respondent",[$(this).attr('data-id')])
+        })
+        function remove_respondent($id){
+                start_load()
+                $.ajax({
+                    url:'includes/sendrespondent.inc.php',
+                    method:'POST',
+                    data:{id:$id},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
         $('.add_account').click(function(){
-            uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php")
+            uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php?add")
         })
         $('.edit_account').click(function(){
-            uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?id="+$(this).attr('data-id'))
+            uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?edit="+$(this).attr('data-id'))
+        })
+        $('.changePosition').click(function(){
+            uni_modal("<center><b>Change Position</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
         })
         $('.verify_user').click(function(){
         _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
@@ -602,17 +675,31 @@
         $('.unverify_user').click(function(){
         _conf("Are you sure you want to unverify this user?","unverify_user",[$(this).attr('data-id')])
         })
+        $('.removeleader').click(function(){
+        _conf("Are you sure to remove this Purok Leader?","removeLeader",[$(this).attr('data-id')])
+        })
+        function removeLeader($id){
+            start_load()
+            $.ajax({
+                url:'includes/edit_account.inc.php?removeLeader',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         function verify_user($id){
-                start_load()
-                $.ajax({
-                    url:'includes/verify.inc.php?verify=' + $id,
-                    method:'GET',
-                    data:{id:$id},
-                    success:function(){
-                        location.reload()
-                    }
-                })
-            }
+            start_load()
+            $.ajax({
+                url:'includes/verify.inc.php?verify=' + $id,
+                method:'GET',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         function unverify_user($id){
             start_load()
             $.ajax({

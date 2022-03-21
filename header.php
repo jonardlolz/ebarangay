@@ -113,6 +113,7 @@
             <h6 class="dropdown-header">
                 Alerts Center
             </h6>
+            <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
             <?php 
             $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') AND status='Not Read' ORDER BY NotificationID DESC;";
             $results = mysqli_query($conn, $query);
@@ -143,6 +144,7 @@
             </a>
             
             <?php endwhile; ?>
+            </div>
             <?php else: ?>
                 <a class="dropdown-item text-center small text-gray-500" href="#">You're all caught up!</a>
             <?php endif; ?>
@@ -241,7 +243,7 @@
         <?php elseif($_SESSION["userType"] == "Resident") : ?>
         <!-- Nav Item - Dashboard -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>
         <!-- Nav Item - Request -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
@@ -259,9 +261,9 @@
         </li>
         <?php if($_SESSION['barangayPos'] != "None"): ?>
         
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Responder</a>
-        </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Responder</a>
+            </li>
         <?php endif; ?>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -279,7 +281,7 @@
         </li> -->
         <!-- Nav Item - Home -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>        
         <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purokLeader.php">
@@ -377,7 +379,7 @@
         </li> -->
         <!-- Nav Item - Home -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>        
         <!-- Nav Item - Request -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
@@ -395,7 +397,7 @@
         </li> -->
         <!-- Nav Item - Dashboard -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">Home</a>
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>
 
         <!-- Nav Item - Request -->
