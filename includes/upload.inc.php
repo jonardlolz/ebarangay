@@ -7,7 +7,7 @@ session_start();
 
 if(isset($_FILES['pp']) && $_FILES['pp']['tmp_name'] != ''){//checks if their are files submitted from the form
     $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['pp']['name']; //creates a unique filename to avoid duplications/conflicts with filename
-    $move = move_uploaded_file($_FILES['pp']['tmp_name'],'C:/xampp/htdocs/eBarangay/img/'. $fnamep); //uploads file to the directory
+    $move = move_uploaded_file($_FILES['pp']['tmp_name'],'../img/'. $fnamep); //uploads file to the directory
     $data = "profile_pic = '$fnamep' "; //saves filename to $data
     $usersID = $_SESSION['UsersID']; //$_SESSION value for UsersID (prmry key) held to $usersID
 }

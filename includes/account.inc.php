@@ -140,6 +140,45 @@ if(isset($_GET['edit'])):
     </form>
 </div>
 
+<?php elseif(isset($_GET['addleader'])): ?>
+<div class="container-fluid">
+    <form action="includes/account.inc.php?postAddLeader" class="user" method="post">
+        <div class="form-group row">    <!--Nmae-->
+            <div class="col-md-5">
+                <select class="form-control form-control-sm form-select d-inline" name="name" id="name" required>
+                    <option value="" hidden selected>Name</option>
+                    <?php 
+                        $qry = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users 
+                        WHERE userType='Resident'");
+                        while($row = $qry->fetch_array()):
+                    ?>
+                    <option value="<?php echo $row['UsersID'] ?>"><?php echo $row['name'] ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+<?php elseif(isset($_GET['postAddLeader'])): 
+    $id = $_GET["changePosition"];
+    extract($_POST);
+    mysqli_begin_transaction($conn);
+    $a1 = mysqli_query($conn, "UPDATE users SET userType='Purok Leader' WHERE UsersID='$name'");
+
+    if($a1){
+        mysqli_commit($conn);
+        header("location: ../residents.php?error=none");
+        exit();
+    }
+    else{
+        echo("Error description: ".mysqli_error($conn));
+        mysqli_rollback($conn);
+    }
+        
+?>
+
+
 <?php elseif(isset($_GET['postAddOfficer'])): 
     $id = $_GET["changePosition"];
     extract($_POST);

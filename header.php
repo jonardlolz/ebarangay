@@ -113,8 +113,9 @@
             <h6 class="dropdown-header">
                 Alerts Center
             </h6>
+            <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
             <?php 
-            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') AND status='Not Read' ORDER BY NotificationID DESC LIMIT 5;";
+            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') AND status='Not Read' ORDER BY NotificationID DESC;";
             $results = mysqli_query($conn, $query);
             $numResults = mysqli_num_rows($results);
             if($numResults > 0):
@@ -143,6 +144,7 @@
             </a>
             
             <?php endwhile; ?>
+            </div>
             <?php else: ?>
                 <a class="dropdown-item text-center small text-gray-500" href="#">You're all caught up!</a>
             <?php endif; ?>

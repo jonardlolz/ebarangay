@@ -269,7 +269,7 @@
                     
                 </div>
                 <div class="col">
-                    <button class="btn btn-primary add_officer">Add Purok Leader</button>
+                    <button class="btn btn-primary add_purokleader">Add Purok Leader</button>
                 </div>
             </div>
             <div class="table-responsive">
@@ -434,7 +434,7 @@
                 
             </div>
             <div class="col">
-                <button class="btn btn-primary add_respondent">+ Add Respondent</button>
+                <button class="btn btn-primary add_respondent">Add Respondent</button>
             </div>
         </div>
         
@@ -639,8 +639,11 @@
         $('.add_officer').click(function(){
             uni_modal("<center><b>Add Officer</b></center></center>","includes/account.inc.php?addOfficer");
         })
+        $('.add_purokleader').click(function(){
+            uni_modal("<center><b>Add Purok Leader</b></center></center>","includes/account.inc.php?addleader");
+        })
         $('.edit_respondent').click(function(){
-                uni_modal("<center><b>Edit Respondent</b></center></center>","includes/sendrespondent.inc.php?edit=" + $(this).attr('data-id'));
+            uni_modal("<center><b>Edit Respondent</b></center></center>","includes/sendrespondent.inc.php?edit=" + $(this).attr('data-id'));
         })
         
         $('.remove_respondent').click(function(){
