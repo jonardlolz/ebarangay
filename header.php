@@ -114,7 +114,7 @@
                 Alerts Center
             </h6>
             <?php 
-            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') AND status='Not Read' ORDER BY NotificationID DESC;";
+            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') AND status='Not Read' ORDER BY NotificationID DESC LIMIT 5;";
             $results = mysqli_query($conn, $query);
             $numResults = mysqli_num_rows($results);
             if($numResults > 0):
@@ -259,9 +259,9 @@
         </li>
         <?php if($_SESSION['barangayPos'] != "None"): ?>
         
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Responder</a>
-        </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Responder</a>
+            </li>
         <?php endif; ?>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">

@@ -413,7 +413,7 @@
                         <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="home" aria-selected="true">Pending</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="profile" aria-selected="false">Released</a>
+                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="profile" aria-selected="false">Approved</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -480,9 +480,11 @@
                                         <td><?php echo $row["requestedDate"] ?></td>
                                         <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td>
-                                            <a href="includes/request.inc.php?release=<?php echo $row["RequestID"] ?>">
-                                                <button class="btn btn-success"><i class="fas fa-check"></i> Release</button>
-                                                <button class="btn btn-warning"><i class="fas fa-check"></i> Print</button>
+                                            <a href="includes/request.inc.php?approveID=<?php echo $row["RequestID"] ?>">
+                                                <button class="btn btn-success"><i class="fas fa-check"></i> Approve</button>
+                                            </a>
+                                            <a href="includes/request.inc.php?declineID=<?php echo $row["RequestID"] ?>">
+                                                <button class="btn btn-danger"><i class="fas fa-times"></i> Decline</button>
                                             </a>
                                         </td>
                                         <!--Right Options-->

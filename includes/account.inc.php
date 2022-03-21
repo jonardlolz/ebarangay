@@ -3,9 +3,9 @@ session_start();
 include "dbh.inc.php";
 ?>
 <?php 
-if(isset($_GET['id'])):
-	$id = $_GET['id'];
-	$qry = $conn->query("SELECT * FROM users where UsersID = {$_GET['id']}")->fetch_array();
+if(isset($_GET['edit'])):
+	$id = $_GET['edit'];
+	$qry = $conn->query("SELECT * FROM users where UsersID = $id")->fetch_array();
     foreach($qry as $k => $v){
 		$$k= $v;
 	}
@@ -93,8 +93,59 @@ if(isset($_GET['id'])):
     </form>
 </div>
 
+<?php elseif(isset($_GET['changePosition'])):
+	$id = $_GET['changePosition'];
+	$qry = $conn->query("SELECT * FROM users where UsersID = $id")->fetch_array();
+?>
+<div class="container-fluid">
+    <form action="includes/edit_account.inc.php?changePosition=<?php echo $id ?>" class="user" method="post">
+        <div class="form-group row">    <!--Nmae-->
+            <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
+                <select class="form-control form-control-sm form-select d-inline" name="position" id="position">
+                    <option value="<?php echo $qry['userType'] ?>" hidden selected><?php echo $qry['userType'] ?></option>
+                    <option value="Secretary">Secretary</option>
+                    <option value="Treasurer">Treasurer</option>
+                    <option value="Resident">Resident</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
 
-<?php else: ?> 
+<?php elseif(isset($_GET['addOfficer'])): ?>
+<div class="container-fluid">
+    <form action="includes/edit_account.inc.php?postAddOfficer" class="user" method="post">
+        <div class="form-group row">    <!--Nmae-->
+            <div class="col-md-5">
+                <select class="form-control form-control-sm form-select d-inline" name="name" id="name" required>
+                    <option value="" hidden selected>Name</option>
+                    <?php 
+                        $qry = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users 
+                        WHERE userType='Resident'");
+                        while($row = $qry->fetch_array()):
+                    ?>
+                    <option value="<?php echo $row['UsersID'] ?>"><?php echo $row['name'] ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="col-md-5">
+                <select class="form-control form-control-sm form-select d-inline" name="position" id="position" required>
+                    <option value="" hidden selected>Position</option>
+                    <option value="Secretary">Secretary</option>
+                    <option value="Treasurer">Treasurer</option>
+                    <option value="Resident">Resident</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+<?php elseif(isset($_GET['postAddOfficer'])): 
+    
+?>
+    
+
+<?php elseif(isset($_GET['add'])): ?> 
 <div class="container-fluid">
     <form id="form" action="includes/edit_account.inc.php" class="user" method="post">
         <!-- <div class="form-group">
