@@ -673,7 +673,7 @@
         _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
         })
         $('.unverify_user').click(function(){
-        _conf("Are you sure you want to unverify this user?","unverify_user",[$(this).attr('data-id')])
+            uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?edit="+$(this).attr('data-id'))
         })
         $('.removeleader').click(function(){
         _conf("Are you sure to remove this Purok Leader?","removeLeader",[$(this).attr('data-id')])
