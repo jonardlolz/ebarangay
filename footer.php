@@ -124,6 +124,17 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script>
+      function notificationRead(){
+        $.ajax({
+          url: './includes/notifications.inc.php?read',
+          type: 'POST',
+          data: {id:$("notifications").attr('data-id')},
+          success: function(data){
+            $(".badge-counter").attr("hidden",true);
+          }
+        })
+      }
+
       const date = new Date();
 
       $.ajax({

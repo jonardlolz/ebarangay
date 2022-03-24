@@ -1,0 +1,54 @@
+OBJECTIVES: (taken from latest ebarangay manuscript)
+
+To develop an application that will enable residents to:
+• manage own account (edit, create)
+	possible revisions: [soft delete account]
+• view to eBulletin (DONE)
+• view the geographical map (DONE)
+	possible revisions: [allow user to set coords] [really unlikely]
+• send their complaints (DONE)
+• request for barangay documents (DONE)
+	additional functionalities:
+		-can now pay through gcash
+• vote for nominees (DONE)
+
+To develop an application that will enable the purok leader to:
+• manage own account
+• access to eBulletin
+• verify new user accounts
+• view list of resident’s profiles within their purok area
+• receive the concerns and complaints and requests
+• assess and perform necessary minor actions
+• send report
+• vote for nominees
+
+Develop an application that will enable the barangay treasurer to:
+• manage own account
+• access to eBulletin
+• confirm payments
+• send reports
+• vote for nominees
+
+Develop an application that will enable the barangay secretary to:
+• manage own account
+• access to eBulletin
+• view resident’s profiles within the barangay area
+• receive major concerns and complaints, the concerns and complaints from the
+resident users
+• send reports
+• vote for nominees
+
+Develop an application that will enable the barangay captain to:
+• manage own account
+• access to eBulletin
+• manage resident’s profiles within the purok area
+• manage reports
+• promote, demote or nominate user
+
+Develop an application that will enable the admin to:
+• add officer account
+• view officer account
+• add resident
+• assign position
+• activate or deactivate barangay name
+• activate or deactivate purok name
