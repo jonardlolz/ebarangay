@@ -91,7 +91,7 @@
 
     <?php if(isset($_SESSION["UsersID"]) != NULL) : ?>
     <!-- Nav Item - Alerts -->
-    <li class="nav-item dropdown no-arrow mx-1">
+    <li class="nav-item dropdown no-arrow mx-1" id="notifications" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
@@ -115,7 +115,7 @@
             </h6>
             <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
             <?php 
-            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') AND status='Not Read' ORDER BY NotificationID DESC;";
+            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') ORDER BY NotificationID DESC LIMIT 10;";
             $results = mysqli_query($conn, $query);
             $numResults = mysqli_num_rows($results);
             if($numResults > 0):
