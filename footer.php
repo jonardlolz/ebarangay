@@ -124,6 +124,14 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script>
+      $(document).ready(function() {
+      $('#dataTable').DataTable();
+      } );
+      
+      $(document).ready(function() {
+          $('#dataTable2').DataTable();
+      } );
+
       function notificationRead(){
         $.ajax({
           url: './includes/notifications.inc.php?read',
