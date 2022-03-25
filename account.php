@@ -214,10 +214,10 @@
             $(this).height(0).height(this.scrollHeight);
         })
         $('.add_account').click(function(){
-            uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php")
+            uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php?add")
         })
         $('.edit_account').click(function(){
-            uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?id="+$(this).attr('data-id'))
+            uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?edit="+$(this).attr('data-id'))
         })
         $('.deactivate_account').click(function(){
         _conf("Are you sure to deactivate this account?","deactivate_account",[$(this).attr('data-id')])
