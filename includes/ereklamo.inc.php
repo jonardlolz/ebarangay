@@ -63,8 +63,7 @@
     }
     else if(isset($_GET["resolvedID"])){
         $id = $_GET["resolvedID"];
-        //$usersID = $_GET['usersID'];
-        $usersID = $_SESSION['UsersID'];
+        $usersID = $_GET['usersID'];
         $currentUser = $_SESSION['UsersID'];
         $userType = $_SESSION['userType'];
         $Firstname = $_SESSION['Firstname'];

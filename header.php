@@ -115,7 +115,12 @@
             </h6>
             <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
             <?php 
-            $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') ORDER BY NotificationID DESC LIMIT 10;";
+            if($_SESSION['userType'] == 'Resident'){
+                $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']}) ORDER BY NotificationID DESC LIMIT 10;";
+            }
+            else{
+                $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']} OR position='{$_SESSION['userType']}') ORDER BY NotificationID DESC LIMIT 10;";
+            }
             $results = mysqli_query($conn, $query);
             $numResults = mysqli_num_rows($results);
             if($numResults > 0):
