@@ -164,7 +164,7 @@ CREATE TABLE `notifications` (
   `position` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `notifications`
@@ -275,7 +275,7 @@ CREATE TABLE `report` (
   `updated_on` datetime DEFAULT CURRENT_TIMESTAMP,
   `userBarangay` varchar(50) DEFAULT NULL,
   `userPurok` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `report`
@@ -331,7 +331,7 @@ CREATE TABLE `schedule` (
   `UsersID` int DEFAULT NULL,
   `complainee` int DEFAULT NULL,
   `forAll` varchar(10) DEFAULT 'False'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `schedule`
