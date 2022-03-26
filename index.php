@@ -84,7 +84,7 @@
                             $total_rows = mysqli_fetch_array($result)[0];
                             $total_pages = ceil($total_rows / $no_of_records_per_page);
 
-                            $posts = $conn->query("SELECT p.*, concat(u.Firstname, ' ', u.Lastname) as name, u.profile_pic FROM post p inner join users u on u.UsersID = p.UsersID ORDER BY unix_timestamp(date_created) DESC LIMIT $offset, $no_of_records_per_page;");
+                            $posts = $conn->query("SELECT p.*, concat(u.Firstname, ' ', u.Lastname) as name, u.profile_pic FROM post p inner join users u on u.UsersID = p.UsersID WHERE barangay='{$_SESSION['userBarangay']}'ORDER BY unix_timestamp(date_created) DESC LIMIT $offset, $no_of_records_per_page;");
                             while($row=$posts->fetch_assoc()):
                                 $row['postMessage'] = str_replace("\n", "<br/>", $row['postMessage']);
                         ?>

@@ -555,10 +555,8 @@
                                             <th scope="col">Reklamo Type</th>
                                             <th scope="col">Detail</th>
                                             <th scope="col">Comment</th>
+                                            <th>Complainee</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Date Submitted</th>
-                                            <th scope="col">Managed By</th>
-                                            <th scope="col">Date Managed</th>
                                             <th scope="col">Manage</th>
                                         </tr>
                                         
@@ -607,10 +605,8 @@
                                             <td><?php echo $row["reklamoType"] ?></td>
                                             <td><?php echo $row["detail"] ?></td>
                                             <td><?php echo $row["comment"] ?></td>
+                                            <td></td>
                                             <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
-                                            <td><?php echo $row["createdDate"] ?></td>
-                                            <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
-                                            <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
                                             <td>
                                                 <a class="set-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set for schedule</button></a>
                                                 <a href="includes/sendrespondent.inc.php?reklamoid=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Send Tanod</button></a>

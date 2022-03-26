@@ -59,7 +59,8 @@
                                 WHERE ereklamo.status='Respondents sent' 
                                 AND ereklamo.reklamoType='{$reklamoType}'
                                 AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
-                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                AND ereklamo.purok='{$_SESSION['userPurok']}'
+                                AND NOT ereklamo.UsersID={$_SESSION['UsersID']}");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;

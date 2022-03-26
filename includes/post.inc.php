@@ -51,14 +51,14 @@
             exit();
         }
         else{
-            $sql = "INSERT INTO post(UsersID, username, userType, postMessage) VALUES(?, ?, ?, ?)";
+            $sql = "INSERT INTO post(UsersID, username, userType, postMessage, barangay) VALUES(?, ?, ?, ?, ?)";
             $stmt = mysqli_stmt_init($conn);
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 header("location: ../index.php?error=stmtfailedcreatepost");
                 exit();
             }
-
-            mysqli_stmt_bind_param($stmt, "ssss", $usersID, $username, $userType, $postContent); 
+            $barangay = $_SESSION['userBarangay'];
+            mysqli_stmt_bind_param($stmt, "sssss", $usersID, $username, $userType, $postContent, $barangay); 
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
             
