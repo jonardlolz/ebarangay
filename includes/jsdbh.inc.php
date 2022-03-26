@@ -2,7 +2,7 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "789632145";
+$password = "";
 $dbname = "ebarangaydb";
 
 // Create connection

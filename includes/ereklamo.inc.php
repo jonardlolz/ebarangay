@@ -63,7 +63,8 @@
     }
     else if(isset($_GET["resolvedID"])){
         $id = $_GET["resolvedID"];
-        $usersID = $_GET['usersID'];
+        //$usersID = $_GET['usersID'];
+        $usersID = $_SESSION['UsersID'];
         $currentUser = $_SESSION['UsersID'];
         $userType = $_SESSION['userType'];
         $Firstname = $_SESSION['Firstname'];
@@ -77,12 +78,12 @@
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
         status='Resolved' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo#{$id} has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+  	    'Your eReklamo#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
           '$userPurok');");
 
-        if($a1){
+        if($a3){
             mysqli_commit($conn);
             if($_SESSION['barangayPos'] != "None"){
                 header("location: ../respondent.php?error=none"); 
@@ -94,6 +95,7 @@
         else{
             echo("Error description: " . mysqli_error($conn));
             mysqli_rollback($conn);
+            header("location: ../respondent.php?error=error"); 
             exit();
         }
 
@@ -186,15 +188,15 @@
 
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        status='To be scheduled' WHERE ReklamoID=$id");
+        // $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        // status='To be scheduled' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
   	    'Your eReklamo$#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
-        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
-  	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
-          '$userPurok');");
+        // $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+  	    // 'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
+        //   '$userPurok');");
 
-        if($a1 && $a2 && $a3){
+        if($a2){
             mysqli_commit($conn);
             if($_SESSION['barangayPos'] != "None"){
                 header("location: ../respondent.php?error=none"); 
