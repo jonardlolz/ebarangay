@@ -223,6 +223,7 @@
           days += `<div class="prev-date">${prevLastDay - x + 1}</div>`;
         }
 
+
         for (var i = 1; i <= lastDay; i++) {
           for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
@@ -230,16 +231,18 @@
               if (i === scheduleDate.getDate() && scheduleDate.getMonth() === new Date().getMonth()) {
                 if((sessionID == obj[key].UsersID || sessionID == obj[key].complainee) || sessionUser == 'Captain'){
                   days += `<div class="scheduleToday" id=${obj[key].UsersID}>${i}</div>`;
+                  break;
                 }
               } 
             }
-          }
-          if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()){
-            days += `<div class="today">${i}</div>`;
-            
-          } 
-          else {
-            days += `<div>${i}</div>`;
+            if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()){
+              days += `<div class="today">${i}</div>`;
+              
+            }
+            else {
+              days += `<div>${i}</div>`;
+            }
+            break;
           }
         }
 

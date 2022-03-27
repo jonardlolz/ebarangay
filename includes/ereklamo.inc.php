@@ -136,8 +136,8 @@
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has scheduled ereklamo#$id on $schedule', '$currentUser', '$userBarangay',
         '$userPurok');");
-        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID, UsersID, complainee) 
-                                    SELECT '$schedule', $id, UsersID, complainee
+        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID, UsersID, complainee, scheduleTitle) 
+                                    SELECT '$schedule', $id, UsersID, complainee, 'Meet with eReklamoID#$id'
                                     FROM ereklamo 
                                     WHERE ReklamoID=$id;");
 
@@ -187,13 +187,13 @@
 
         mysqli_begin_transaction($conn);
 
-        // $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        // status='To be scheduled' WHERE ReklamoID=$id");
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        status='To be scheduled' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo$#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
-        // $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
-  	    // 'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
-        //   '$userPurok');");
+  	    'Your eReklamo#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+  	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
+          '$userPurok');");
 
         if($a2){
             mysqli_commit($conn);
