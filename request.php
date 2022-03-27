@@ -5,7 +5,7 @@
     <?php if($_SESSION["userType"] === "Resident"): ?>
         <!-- Page Heading --> 
         <div class="d-sm-flex align-items-center justify-content-between">  
-            <h3 class="font-weight-bold text-dark">Request Form </h3> 
+            <h3 class="font-weight-bold text-dark">Request Form</h3> 
             
         </div>
 
@@ -315,8 +315,8 @@
                                         <td>
                                             <a href="includes/request.inc.php?release=<?php echo $row["RequestID"] ?>">
                                                 <button class="btn btn-success"><i class="fas fa-check"></i> Release</button>
-                                                <button class="btn btn-warning"><i class="fas fa-check"></i> Print</button>
                                             </a>
+                                            <button class="btn btn-primary" id="print" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Print</button>
                                         </td>
                                         <!--Right Options-->
                                     </tr>
@@ -668,6 +668,34 @@
             }
         })
     }
+    window.print_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#print_modal .modal-title').html($title)
+                    $('#print_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#print_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#print_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-lg")
+                    }
+                    $('#print_modal').modal({
+                        show:true,
+                        backdrop:'static',
+                        keyboard:false,
+                        focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
     window._conf = function($msg='',$func='',$params = []){
         $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
         $('#confirm_modal .modal-body').html($msg)
@@ -685,7 +713,9 @@
         title: $msg
         })
     }
-
+    $('#print').click(function(){
+        print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));
+    })
     $('.paid_request').click(function(){
         _conf("Confirm the request is paid?","paid_request",[$(this).attr('data-id')])
     })
