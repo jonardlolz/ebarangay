@@ -35,7 +35,7 @@
                     <option value="none" disabled hidden selected>Name</option>
                     <?php   $sql = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name 
                             FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}'
-                            AND barangayPos='None' AND userType='Resident'");
+                            AND barangayPos='None' AND VerifyStatus='Verified' AND userType='Resident'");
                             while($row=$sql->fetch_assoc()): 
                     ?>
                     <option value="<?php echo $row['UsersID'] ?>"><?php echo $row['name'] ?></option>

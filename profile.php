@@ -309,7 +309,7 @@
                                 <tbody>
                                     <!--Row 1-->
                                     <?php 
-                                        $accounts = $conn->query("SELECT * FROM report WHERE userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
+                                        $accounts = $conn->query("SELECT * FROM report WHERE userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}' ORDER BY created_on DESC");
                                         while($row=$accounts->fetch_assoc()):
                                     ?>
                                     <tr>

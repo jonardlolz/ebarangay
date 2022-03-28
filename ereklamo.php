@@ -11,7 +11,17 @@
 <!-- Content Row -->
 <div class="container p-4">
 
-        <?php if($_SESSION["userType"] === "Resident"): ?>
+        <?php if($_SESSION["userType"] === "Resident"): 
+            if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): 
+        ?>
+            <div class='alert alert-danger' role='alert' style="text-align: center">
+                You're still unverified!
+            </div>
+            
+        
+
+
+        <?php else: ?>
         <!--EReklamo Content-->
         <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">    
             <form class="form-group" action="includes/ereklamo.inc.php" method="POST">
@@ -72,6 +82,7 @@
                 
             </div>
             </form>
+            <?php endif; ?>
         </div>
         <!--End of EReklamo Content-->
         <?php elseif($_SESSION["userType"] == "Purok Leader"): ?>
@@ -833,7 +844,7 @@
                 "id='resident' class='form-control w-75 form-control-md' required />"+ 
                 "<datalist id='Resident'>" + "<option value=''>Select</option>" +
                 <?php 
-                    $posts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}'");
+                    $posts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}' AND userType='Resident'");
                     while($row=$posts->fetch_assoc()):
                         if($row["UsersID"] == $_SESSION["UsersID"]){
                             continue;

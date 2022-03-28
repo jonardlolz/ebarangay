@@ -141,7 +141,7 @@
                             <?php 
                                 $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname)
                                 as name FROM users WHERE barangayPos != 'None' AND userBarangay='{$_SESSION['userBarangay']}'
-                                AND userPurok='{$_SESSION['userPurok']}';");
+                                AND userPurok='{$_SESSION['userPurok']}' AND VerifyStatus='Verified';");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
