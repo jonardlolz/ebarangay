@@ -42,27 +42,63 @@
     <script src="//servedby.studads.com/ads/ads.php?t=MTQxNjk7ODY4OTtzcXVhcmUuc3F1YXJlX2JveA==&index=1"></script>   
     <script src="vendor/jquery/jquery.min.js"></script>
     <style>
-        @media screen and (max-width: 768px) {
-            .sidebar {
-              width: 100%;
-              height: auto;
-              position: relative;
+    @media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sidebar .nav-item {
+        float: left;
+    }
+
+    div.content {
+        margin-left: 0;
+    }
+
+    /*#sidebarToggleTop {display: none;}*/
+    .sidebar {
+            position: fixed; width: 190px;
+        }  
+
+        #accordionSidebar {
+            position: absolute;
+        }
+
+        #sidebar-area { 
+            position: relative; z-index: 3000; 
+        }    /*area keeps all sidebar options above with z-index*/
+    }
+    
+    @media screen and (max-width: 400px) {
+        .sidebar .nav-item {
+            text-align: center;
+            float: none;
             }
-            .sidebar .nav-item {float: left;}
-            div.content {margin-left: 0;}
-            /*#sidebarToggleTop {display: none;}*/
-            .sidebar {position: fixed; width: 190px;}   
-            #accordionSidebar {position: absolute;}
-            #sidebar-area { position: relative; z-index: 3000; }    /*area keeps all sidebar options above with z-index*/
-          }
-          
-          @media screen and (max-width: 400px) {
-            .sidebar .nav-item {
-              text-align: center;
-              float: none;
-            
-            }
-          }
+        }
+        @media screen {
+        #printSection {
+            display: none;
+        }
+    }
+
+    @media print {
+        body * {
+            visibility:hidden;
+        }
+        #printSection, #printSection * {
+            visibility:visible;
+        }
+        #printSection {
+            position:absolute;
+            left:0;
+            top:0;
+        }
+    }
+
+
+
     </style>
 </head>
 

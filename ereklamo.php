@@ -11,7 +11,17 @@
 <!-- Content Row -->
 <div class="container p-4">
 
-        <?php if($_SESSION["userType"] === "Resident"): ?>
+        <?php if($_SESSION["userType"] === "Resident"): 
+            if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): 
+        ?>
+            <div class='alert alert-danger' role='alert' style="text-align: center">
+                You're still unverified!
+            </div>
+            
+        
+
+
+        <?php else: ?>
         <!--EReklamo Content-->
         <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">    
             <form class="form-group" action="includes/ereklamo.inc.php" method="POST">
@@ -72,6 +82,7 @@
                 
             </div>
             </form>
+            <?php endif; ?>
         </div>
         <!--End of EReklamo Content-->
         <?php elseif($_SESSION["userType"] == "Purok Leader"): ?>
@@ -324,35 +335,62 @@
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
                                 <thead >
                                     <tr class="bg-gradient-secondary text-white">
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Reklamo Type</th>
-                                        <th scope="col">Detail</th>
-                                        <th scope="col">Comment</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Date Submitted</th>
-                                        <th scope="col">Managed By</th>
-                                        <th scope="col">Date Managed</th>
-                                        <th scope="col">Manage</th>
-                                    </tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Reklamo Type</th>
+                                            <th scope="col">Detail</th>
+                                            <th scope="col">Comment</th>
+                                            <th>Complainee</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Manage</th>
+                                        </tr>
                                     
                                 </thead>
                                 <tbody>
                                     <!--Row 1-->
                                     <?php 
-                                        $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                        $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as complainee, stuff.profile_pic as userPic, stuff.userType as reklamoUser FROM (SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                         as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                         DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                        as checkedDate, users.userType, users.profile_pic 
+                                        as checkedDate, users.userType, users.profile_pic
                                         FROM ereklamo 
                                         INNER JOIN users 
-                                        ON ereklamo.UsersID=users.UsersID 
-                                        WHERE ereklamo.status='To be scheduled' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
+                                        ON ereklamo.UsersID=users.UsersID
+                                        WHERE (ereklamo.status='To be scheduled' OR ereklamo.status='Reschedule') AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}') as stuff
+                                        INNER JOIN users
+                                        ON users.UsersID=stuff.complainee");
                                         while($row=$requests->fetch_assoc()):
                                             if($row["userType"] == "Admin"){
                                                 continue;
                                             }
                                     ?>
                                     <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["reklamoUser"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["reklamoUser"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["reklamoUser"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["reklamoUser"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["reklamoUser"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["reklamoUser"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["userPic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["reklamoType"] ?></td>
+                                        <td><?php echo $row["detail"] ?></td>
+                                        <td><?php echo $row["comment"] ?></td>
                                         <td>
                                             <img class="img-profile rounded-circle <?php 
                                                 if($row["userType"] == "Resident"){
@@ -375,15 +413,9 @@
                                                 }
                                             ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
-                                            <?php echo $row["name"] ?>
+                                            <?php echo $row["complainee"] ?>
                                         </td>
-                                        <td><?php echo $row["reklamoType"] ?></td>
-                                        <td><?php echo $row["detail"] ?></td>
-                                        <td><?php echo $row["comment"] ?></td>
                                         <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
-                                        <td><?php echo $row["createdDate"] ?></td>
-                                        <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
-                                        <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
                                         <td>
                                             <a class="confirm-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set schedule</button></a>
                                         </td>
@@ -564,20 +596,49 @@
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
-                                            $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                            $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as complainee, stuff.profile_pic as userPic, stuff.userType as reklamoUser FROM (SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                             as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                             DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                            as checkedDate, users.userType, users.profile_pic 
+                                            as checkedDate, users.userType, users.profile_pic
                                             FROM ereklamo 
                                             INNER JOIN users 
-                                            ON ereklamo.UsersID=users.UsersID 
-                                            WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}'");
+                                            ON ereklamo.UsersID=users.UsersID
+                                            WHERE ereklamo.status='Pending' AND ereklamo.complaintLevel='Major' AND ereklamo.barangay='{$_SESSION['userBarangay']}') as stuff
+                                            INNER JOIN users
+                                            ON users.UsersID=stuff.complainee");
                                             while($row=$requests->fetch_assoc()):
                                                 if($row["userType"] == "Admin"){
                                                     continue;
                                                 }
                                         ?>
                                         <tr>
+                                            <td>
+                                                <img class="img-profile rounded-circle <?php 
+                                                    if($row["reklamoUser"] == "Resident"){
+                                                        echo "img-res-profile";
+                                                    }
+                                                    elseif($row["reklamoUser"] == "Purok Leader"){
+                                                        echo "img-purokldr-profile";
+                                                    }
+                                                    elseif($row["reklamoUser"] == "Captain"){
+                                                        echo "img-capt-profile";
+                                                    }
+                                                    elseif($row["reklamoUser"] == "Secretary"){
+                                                        echo "img-sec-profile";
+                                                    }
+                                                    elseif($row["reklamoUser"] == "Treasurer"){
+                                                        echo "img-treas-profile";
+                                                    }
+                                                    elseif($row["reklamoUser"] == "Admin"){
+                                                        echo "img-admin-profile";
+                                                    }
+                                                ?>" src="img/<?php echo $row["userPic"] ?>" width="40" height="40"/>
+                                                <br>
+                                                <?php echo $row["name"] ?>
+                                            </td>
+                                            <td><?php echo $row["reklamoType"] ?></td>
+                                            <td><?php echo $row["detail"] ?></td>
+                                            <td><?php echo $row["comment"] ?></td>
                                             <td>
                                                 <img class="img-profile rounded-circle <?php 
                                                     if($row["userType"] == "Resident"){
@@ -600,12 +661,8 @@
                                                     }
                                                 ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                                 <br>
-                                                <?php echo $row["name"] ?>
+                                                <?php echo $row["complainee"] ?>
                                             </td>
-                                            <td><?php echo $row["reklamoType"] ?></td>
-                                            <td><?php echo $row["detail"] ?></td>
-                                            <td><?php echo $row["comment"] ?></td>
-                                            <td></td>
                                             <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                             <td>
                                                 <a class="set-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set for schedule</button></a>
@@ -629,18 +686,23 @@
                                             <th scope="col">Reklamo Type</th>
                                             <th scope="col">Detail</th>
                                             <th scope="col">Comment</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Date Submitted</th>
-                                            <th scope="col">Managed By</th>
-                                            <th scope="col">Date Managed</th>
+                                            <th scope="col">Date Scheduled</th>
+                                            <th>Manage</th>
                                         </tr>
                                         
                                     </thead>
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
-                                            $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                            as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Scheduled';");
+                                            $requests = $conn->query("SELECT ereklamo.*, schedule.*, concat(users.Firstname, ' ', users.Lastname) 
+                                            as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                            DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') as checkedDate, 
+                                            users.userType, users.profile_pic 
+                                            FROM ereklamo INNER JOIN users 
+                                            ON ereklamo.UsersID=users.UsersID 
+                                            INNER JOIN schedule
+                                            ON schedule.ereklamoID=ereklamo.ReklamoID
+                                            WHERE ereklamo.status='Scheduled';");
                                             while($row=$requests->fetch_assoc()):
                                                 if($row["userType"] == "Admin"){
                                                     continue;
@@ -674,8 +736,11 @@
                                             <td><?php echo $row["reklamoType"] ?></td>
                                             <td><?php echo $row["detail"] ?></td>
                                             <td><?php echo $row["comment"] ?></td>
-                                            <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
-                                            <td><?php echo $row["scheduledSummon"] ?></td>
+                                            <td><?php echo $row["scheduleDate"] ?></td>
+                                            <td>
+                                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a>
+                                                <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
+                                            </td>
                                             <!--Right Options-->
                                         </tr>
                                         <?php endwhile; ?>
@@ -687,7 +752,7 @@
                         <div class="tab-pane fade" id="nav-resolved" role="tabpanel" aria-labelledby="nav-resolved-tab">
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark" 
-                                    id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                    id="dataTable3" width="100%" cellspacing="0" cellpadding="0">
                                     <thead >
                                         <tr class="bg-gradient-secondary text-white">
                                             <th scope="col">Name</th>
@@ -787,7 +852,10 @@
                 "id='resident' class='form-control w-75 form-control-md' required />"+ 
                 "<datalist id='Resident'>" + "<option value=''>Select</option>" +
                 <?php 
-                    $posts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}'");
+                    $posts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name 
+                    FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' 
+                    AND userPurok='{$_SESSION['userPurok']}' 
+                    AND userType='Resident'");
                     while($row=$posts->fetch_assoc()):
                         if($row["UsersID"] == $_SESSION["UsersID"]){
                             continue;
@@ -904,9 +972,7 @@
         $('.confirm-schedule').click(function(){
             uni_modal("<center><b>Schedule a summon</b></center></center>","includes/schedule.inc.php?scheduleSummon="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'))
         })
-        $('#confirm-schedule').click(function(){
-            uni_modal("<center><b>Schedule a summon</b></center></center>","includes/create_post.inc.php?id="+$(this).attr('data-id'))
-        })
+        
         $('.content-field').each(function(){
             var dom = $(this)[0]
             var divHeight = dom.offsetHeight

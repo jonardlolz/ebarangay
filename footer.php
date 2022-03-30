@@ -67,6 +67,40 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="print_modal" role='dialog'>
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><b>&times;</b></span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnPrint">Print</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="verifyInfo" role='dialog'>
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><b>&times;</b></span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" name="submit" id='submit' onclick="$('#verifyInfo form').submit()">Confirm</button>
+      </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="confirm_modal" role='dialog'>
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
@@ -124,6 +158,39 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script>
+      document.getElementById("btnPrint").onclick = function() {
+        printElement(document.getElementById("printThis"));
+        window.print();
+      }
+
+      function printElement(elem, append, delimiter) {
+        var domClone = elem.cloneNode(true);
+
+        var $printSection = document.getElementById("printSection");
+
+        if (!$printSection) {
+            var $printSection = document.createElement("div");
+            $printSection.id = "printSection";
+            document.body.appendChild($printSection);
+        }
+
+        if (append !== true) {
+            $printSection.innerHTML = "";
+        }
+
+        else if (append === true) {
+            if (typeof(delimiter) === "string") {
+                $printSection.innerHTML += delimiter;
+            }
+            else if (typeof(delimiter) === "object") {
+                $printSection.appendChlid(delimiter);
+            }
+        }
+
+        $printSection.appendChild(domClone);
+    }
+
+
       $(document).ready(function() {
       $('#dataTable').DataTable();
       } );
@@ -163,6 +230,7 @@
               console.log(key + " -> " + scheduleDate.getDate());
               console.log(key + " -> " + obj[key].ereklamoID);
               console.log(key + " -> " + obj[key].complainee);
+              console.log(key + " -> " + obj[key].scheduleTitle);
             }
           }
 
@@ -223,24 +291,28 @@
           days += `<div class="prev-date">${prevLastDay - x + 1}</div>`;
         }
 
+
         for (var i = 1; i <= lastDay; i++) {
           for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
               scheduleDate = new Date(obj[key].scheduleDate)
               if (i === scheduleDate.getDate() && scheduleDate.getMonth() === new Date().getMonth()) {
                 if((sessionID == obj[key].UsersID || sessionID == obj[key].complainee) || sessionUser == 'Captain'){
-                  days += `<div class="scheduleToday" id=${obj[key].UsersID}>${i}</div>`;
+                  days += `<span title="${obj[key].scheduleTitle}"><div class="scheduleToday" id=${obj[key].UsersID}>${i}</div></span>`;
+                  break;
                 }
               } 
             }
+            if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()){
+              days += `<div class="today">${i}</div>`;
+              
+            }
+            else {
+              days += `<div>${i}</div>`;
+            }
+            break;
           }
-          if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()){
-            days += `<div class="today">${i}</div>`;
-            
-          } 
-          else {
-            days += `<div>${i}</div>`;
-          }
+          
         }
 
 

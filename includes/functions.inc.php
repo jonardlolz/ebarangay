@@ -248,6 +248,7 @@ function loginUser($conn, $username, $password){ //logs in the user
         $_SESSION['userAddress'] = $userExists['userAddress'];
         $_SESSION['userHouseNum'] = $userExists['userHouseNum'];
         $_SESSION['isRenting'] = $userExists['isRenting'];
+        $_SESSION['VerifyStatus'] = $userExists['VerifyStatus'];
         if($_SESSION["userType"] == "Admin"){
             header("location: ../account.php"); //redirects to main page after successful login
             exit();

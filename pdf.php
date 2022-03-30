@@ -4,13 +4,13 @@
 require_once 'vendor\dompdf\autoload.inc.php'; 
 session_start(); 
 
-if(isset($_GET['print'])){
+
     // Reference the Dompdf namespace 
     use Dompdf\Dompdf; 
     
     // Instantiate and use the dompdf class 
     $dompdf = new Dompdf();
-
+    
     // Load HTML content 
     $dompdf->loadHtml("<html>
     <head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
@@ -34,7 +34,7 @@ if(isset($_GET['print'])){
     <div style='position:absolute;left:126.02px;top:327.17px' class='cls_006'><span class='cls_006'>NOT VALID WITHOUT OFFICIAL SEAL.</span></div>
     <div style='position:absolute;left:126.02px;top:354.77px' class='cls_004'><span class='cls_004'>Given this Monday, May 20, 2013.</span></div>
     <div style='position:absolute;left:126.02px;top:354.77px' class='cls_004'><span class='cls_004'>Given this Monday, May 20, 2013.</span></div>
-    <div style='position:absolute;left:400.07px;top:400.99px' class='cls_006'><span class='cls_006'><img src='signature.png' alt='signature' style='width: 25%;'></span></div>
+    <div style='position:absolute;left:400.07px;top:400.99px' class='cls_006'><span class='cls_006'><img src='C:/xampp/htdocs/ebarangaytest/signature.png' alt='signature' style='width: 25%;'></span></div>
 
     <div style='position:absolute;left:342.07px;top:409.99px' class='cls_006'><span class='cls_006'>RAMON M. BARGAMENTO II</span></div>
     <div style='position:absolute;left:384.79px;top:423.79px' class='cls_004'><span class='cls_004'>Punong Barangay</span></div>
@@ -59,5 +59,4 @@ if(isset($_GET['print'])){
     
     // Output the generated PDF to Browser 
     $dompdf->stream();
-}
 

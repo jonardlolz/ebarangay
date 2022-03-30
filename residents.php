@@ -139,7 +139,7 @@
                     <tbody>
                         <!--Row 1-->
                         <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident');");
+                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident');");
                             while($row=$accounts->fetch_assoc()):
                                 if($row["userType"] == "Admin"){
                                     continue;
@@ -206,7 +206,7 @@
                     <tbody>
                         <!--Row 1-->
                         <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' AND userType='Resident' AND userBarangay='{$_SESSION['userBarangay']}'");
+                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userType='Resident' AND userBarangay='{$_SESSION['userBarangay']}'");
                             while($row=$accounts->fetch_assoc()):
                                 if($row["userType"] == "Admin"){
                                     continue;
@@ -670,10 +670,10 @@
             uni_modal("<center><b>Change Position</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
         })
         $('.verify_user').click(function(){
-        _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
+            _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
         })
         $('.unverify_user').click(function(){
-            uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?edit="+$(this).attr('data-id'))
+            _conf("Are you sure you want to unverify this user?","unverify_user",[$(this).attr('data-id')])
         })
         $('.removeleader').click(function(){
         _conf("Are you sure to remove this Purok Leader?","removeLeader",[$(this).attr('data-id')])

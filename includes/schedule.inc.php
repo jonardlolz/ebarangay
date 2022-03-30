@@ -9,8 +9,16 @@
 ?>
 <div class="container-fluid">
     <form action="includes/ereklamo.inc.php?scheduleID=<?php echo $id ?>&usersID=<?php echo $_GET['usersID'] ?>" class="user" method="post">
-        Date: <input name="schedule" type="date" min="<?php echo date("Y-m-d"); ?>" value="<?php echo date("Y-m-d") ?>" required>
-        
+        <div class="col">
+            <div class="row">
+                <label for="schedule">Date: </label>
+                <input name="schedule" type="date" min="<?php $date = date("Y-m-d"); $date1 = str_replace('-', '/', $date); $tomorrow = date('Y-m-d',strtotime($date1 . "+1 days")); echo $tomorrow; ?>" value="<?php echo $tomorrow; ?>" required>
+            </div>
+            <div class="row">
+                <label for="scheduleTitle">Title: </label>
+                <input name="scheduleTitle" id="scheduleTitle" type="text" required>
+            </div>
+        </div>
     </form>
 </div>
 

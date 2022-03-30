@@ -82,7 +82,7 @@
   	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
           '$userPurok');");
 
-        if($a3){
+        if($a1 && $a2 && $a3){
             mysqli_commit($conn);
             if($_SESSION['barangayPos'] != "None"){
                 header("location: ../respondent.php?error=none"); 
@@ -98,17 +98,45 @@
             exit();
         }
 
-        /*$sql = "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        status='Resolved' WHERE ReklamoID=$id";
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            echo("Error description: " . mysqli_error($conn));
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET["rescheduleID"])){
+        $id = $_GET["rescheduleID"];
+        $usersID = $_GET['usersID'];
+        $currentUser = $_SESSION['UsersID'];
+        $userType = $_SESSION['userType'];
+        $Firstname = $_SESSION['Firstname'];
+        $userBarangay = $_SESSION['userBarangay'];
+        $userPurok = $_SESSION['userPurok'];
+
+        $managedBy = "'".$_SESSION['Lastname']. ', ' . $_SESSION['Firstname']."'";
+
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        status='Reschedule' WHERE ReklamoID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
+  	    'Your eReklamo#$id has been rescheduled by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+  	    'eReklamo','$userType $Firstname has rescheduled ereklamo#$id', '$currentUser', '$userBarangay',
+          '$userPurok');");
+
+        if($a1 && $a2 && $a3){
+            mysqli_commit($conn);
+            if($_SESSION['barangayPos'] != "None"){
+                header("location: ../respondent.php?error=none"); 
+                exit();
+            }
+            header("location: ../ereklamo.php?error=none"); 
             exit();
         }
-        
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
-        */
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            header("location: ../respondent.php?error=error"); 
+            exit();
+        }
 
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
@@ -136,8 +164,8 @@
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has scheduled ereklamo#$id on $schedule', '$currentUser', '$userBarangay',
         '$userPurok');");
-        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID, UsersID, complainee) 
-                                    SELECT '$schedule', $id, UsersID, complainee
+        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID, UsersID, complainee, scheduleTitle) 
+                                    SELECT '$schedule', $id, UsersID, complainee, '{$_POST['scheduleTitle']}'
                                     FROM ereklamo 
                                     WHERE ReklamoID=$id;");
 
@@ -152,17 +180,6 @@
             mysqli_rollback($conn);
             exit();
         }
-
-        /*$sql = "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        status='Scheduled', scheduledSummon='$schedule' WHERE ReklamoID=$id";
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            echo("Error description: " . mysqli_error($conn));
-            exit();
-        }
-    
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);*/
 
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
@@ -187,13 +204,13 @@
 
         mysqli_begin_transaction($conn);
 
-        // $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        // status='To be scheduled' WHERE ReklamoID=$id");
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        status='To be scheduled' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo$#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
-        // $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
-  	    // 'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
-        //   '$userPurok');");
+  	    'Your eReklamo#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+  	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
+          '$userPurok');");
 
         if($a2){
             mysqli_commit($conn);

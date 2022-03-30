@@ -2,25 +2,35 @@
                             
     <!-- Begin Page Content -->
     <div class="col d-flex flex-column px-4">
-    <?php if($_SESSION["userType"] === "Resident"): ?>
+        
         <!-- Page Heading --> 
         <div class="d-sm-flex align-items-center justify-content-between">  
-            <h3 class="font-weight-bold text-dark">Request Form </h3> 
+            <h3 class="font-weight-bold text-dark">Request Form</h3> 
             
         </div>
+        <?php if($_SESSION["userType"] === "Resident"): 
+            if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): 
+        ?>
+            <div class='alert alert-danger' role='alert' style="text-align: center">
+                You're still unverified!
+            </div>
+            
+        
 
+
+        <?php else: ?>
         <!-- Content Row -->
         <div class="row">
             <div class="col-md">
                 <div class="container-fluid">
                 <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">    
-                    <form class="form-group" action="includes/request.inc.php" method="POST" >
+                    <!-- <form class="form-group" action="includes/request.inc.php" method="POST" > -->
                         <section>
                             <strong>Request Document</strong>
                             <div class="row p-2">
                                 <div class="col-lg-6 m-1">
                                     <label>Choose document:</label>
-                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" name="document" required>
+                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
                                         <option value="" hidden selected>Select</option>
                                         <option value="Cedula">Cedula</option>
                                         <option value="Barangay Clearance">Barangay Clearance</option>
@@ -35,8 +45,7 @@
                                 <div class="col-lg-5 m-1">
                                     <label>Mode of Payment</label>
                                     <select name="modeofPayment" id="modeofPayment" class="form-control w-75 form-control-md form-select" required>
-                                        <option value="" hidden selected>Select</option>
-                                        <option value="Cash on Claim">Cash on Claim</option>
+                                        <option value="Cash on Claim" selected>Cash on Claim</option>
                                     </select>
                                 </div>
                             </div>
@@ -59,10 +68,14 @@
                         </section>
                         <br>
 
-                        <div class="m-3 p-3 text-right">
+                        <!-- <div class="m-3 p-3 text-right">
                             <button name="submit" class="btn btn-primary border" type="submit">Continue</button>
+                        </div> -->
+                        <div class="m-3 p-3 text-right">
+                            <button class="btn btn-primary border continue" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
                         </div>
-                    </form>
+                        
+                    <!-- </form> -->
 
                     
                 </div>
@@ -71,7 +84,7 @@
             </div>
         </div>
         <!--End of Content Row-->
-                                        
+        <?php endif; ?>
     </div>
 
     <?php elseif($_SESSION["userType"] == "Treasurer"): ?>
@@ -96,6 +109,7 @@
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
                                 <thead >
                                     <tr class="bg-gradient-secondary text-white">
+                                        <th>Request ID</th>
                                         <th>Requester</th>
                                         <th>Document Type</th>
                                         <th>Amount</th>
@@ -113,7 +127,7 @@
                                         FROM request 
                                         INNER JOIN users 
                                         ON request.UsersID=users.UsersID 
-                                        WHERE request.status='Releasing' 
+                                        WHERE request.status='Approved' 
                                         AND request.userPurok='{$_SESSION['userPurok']}' 
                                         AND request.userBarangay='{$_SESSION['userBarangay']}' 
                                         AND request.userType='{$_SESSION['userType']}'");
@@ -123,6 +137,7 @@
                                             }
                                     ?>
                                     <tr>
+                                        <td><?php echo $row["RequestID"] ?></td>
                                         <td>
                                             <img class="img-profile rounded-circle <?php 
                                                 if($row["userType"] == "Resident"){
@@ -145,7 +160,7 @@
                                                 }
                                             ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
-                                            <?php echo $row["name"] ?>
+                                            <?php echo $row["name"]; ?>
                                         </td>
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row['amount'] ?></td>
@@ -256,6 +271,7 @@
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
                                 <thead >
                                     <tr class="bg-gradient-secondary text-white">
+                                        <th>Request ID</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Document Type</th>
                                         <th scope="col">Purpose</th>
@@ -274,16 +290,17 @@
                                         FROM request 
                                         INNER JOIN users 
                                         ON request.UsersID=users.UsersID 
-                                        WHERE request.status='Approved' 
+                                        WHERE request.status='Paid' 
                                         AND request.userPurok='{$_SESSION['userPurok']}' 
                                         AND request.userBarangay='{$_SESSION['userBarangay']}' 
                                         AND request.userType='{$_SESSION['userType']}'");
                                         while($row=$requests->fetch_assoc()):
-                                            if($row["userType"] == "Admin"){
-                                                continue;
-                                            }
+                                        if($row["userType"] == "Admin"){
+                                            continue;
+                                        }
                                     ?>
                                     <tr>
+                                        <td><?php echo $row['RequestID'] ?></td>
                                         <td>
                                             <img class="img-profile rounded-circle <?php 
                                                 if($row["userType"] == "Resident"){
@@ -313,10 +330,11 @@
                                         <td><?php echo $row["requestedDate"] ?></td>
                                         <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td>
-                                            <a href="includes/request.inc.php?release=<?php echo $row["RequestID"] ?>">
-                                                <button class="btn btn-success"><i class="fas fa-check"></i> Release</button>
-                                                <button class="btn btn-warning"><i class="fas fa-check"></i> Print</button>
-                                            </a>
+                                            
+                                            <button class="btn btn-success releaseFunc" id="releaseFunc" data-id="<?php echo $row["RequestID"] ?>"><i class="fas fa-check"></i> Release</button>
+                                            <?php if($row['documentType'] == 'Barangay Clearance'): ?>
+                                            <button class="btn btn-primary" id="print" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Print</button>
+                                            <?php endif; ?>
                                         </td>
                                         <!--Right Options-->
                                     </tr>
@@ -349,7 +367,7 @@
                                         as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
                                         DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
                                         users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
-                                        WHERE request.status='Approved' AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        WHERE request.status='Released' AND request.userPurok='{$_SESSION['userPurok']}' 
                                         AND request.userBarangay='{$_SESSION['userBarangay']}'");
                                         while($row=$requests->fetch_assoc()):
                                             if($row["userType"] == "Admin"){
@@ -481,7 +499,7 @@
                                         <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td>
                                             <a href="includes/request.inc.php?approveID=<?php echo $row["RequestID"] ?>">
-                                                <button class="btn btn-success"><i class="fas fa-check"></i> Approve</button>
+                                                <button class="btn btn-success approve" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
                                             </a>
                                             <a href="includes/request.inc.php?declineID=<?php echo $row["RequestID"] ?>">
                                                 <button class="btn btn-danger"><i class="fas fa-times"></i> Decline</button>
@@ -518,7 +536,7 @@
                                         as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
                                         DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
                                         users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
-                                        WHERE request.status='Approved' AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        WHERE (request.status='Approved' OR request.status='Released' OR request.status='Paid') AND request.userPurok='{$_SESSION['userPurok']}' 
                                         AND request.userBarangay='{$_SESSION['userBarangay']}'");
                                         while($row=$requests->fetch_assoc()):
                                             if($row["userType"] == "Admin"){
@@ -668,6 +686,62 @@
             }
         })
     }
+    window.verifyInfo_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#verifyInfo .modal-title').html($title)
+                    $('#verifyInfo .modal-body').html(resp)
+                    if($size != ''){
+                        $('#verifyInfo .modal-dialog').addClass($size)
+                    }else{
+                        $('#verifyInfo .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                    }
+                    $('#verifyInfo').modal({
+                        show:true,
+                        backdrop:'static',
+                        keyboard:false,
+                        focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
+    window.print_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#print_modal .modal-title').html($title)
+                    $('#print_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#print_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#print_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-lg")
+                    }
+                    $('#print_modal').modal({
+                        show:true,
+                        backdrop:'static',
+                        keyboard:false,
+                        focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
     window._conf = function($msg='',$func='',$params = []){
         $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
         $('#confirm_modal .modal-body').html($msg)
@@ -685,14 +759,30 @@
         title: $msg
         })
     }
-
+    $('.continue').click(function(){
+        var ddl = document.getElementById("document");
+        var selectedValue = ddl.options[ddl.selectedIndex].value;
+        if (selectedValue == ""){
+            alert("Please select a document");
+        }
+        else{
+            verifyInfo_modal("<center><b>Verify Information</b></center></center>","includes/request.inc.php?verifyInfo&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val()+"&modeofPayment="+$("#modeofPayment").val());
+        }
+        
+    })
+    $('#print').click(function(){
+        print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));
+    })
     $('.paid_request').click(function(){
         _conf("Confirm the request is paid?","paid_request",[$(this).attr('data-id')])
+    })
+    $('.releaseFunc').click(function(){
+        _conf("Release the document?","releaseDoc",[$(this).attr('data-id')])
     })
     function paid_request($id){
         start_load()
         $.ajax({
-            url:'includes/request.inc.php?paid',
+            url:'includes/request.inc.php?paid='+$(this).attr('data-id'),
             method:'POST',
             data:{id:$id},
             success:function(){
@@ -700,6 +790,18 @@
             }
         })
     }
+    function releaseDoc($id){
+        start_load()
+        $.ajax({
+            url:'includes/request.inc.php?release',
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
+    }
+
     
     var mealsByCategory = {
         Cedula: ["Employment", "Work", "Registering a new business", 

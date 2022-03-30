@@ -17,7 +17,15 @@
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Election</h1>
             </div>
+            <?php if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): ?>
+                <div class='alert alert-danger' role='alert' style="text-align: center">
+                    You're still unverified!
+                </div>
+                
+            
 
+
+            <?php else: ?>
             <?php 
                 $posts = $conn->query("SELECT * FROM election WHERE electionStatus='Ongoing' AND barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}'");
                 $row_cnt = mysqli_num_rows($posts);
@@ -94,6 +102,7 @@
                 </div>
 
             <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -116,6 +125,7 @@
 </div>
 
 <?php endif; ?>
+
 
 <?php elseif($_SESSION["userType"] == "Captain"): ?>
 

@@ -99,7 +99,7 @@
                                 <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                 <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
                                 <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a>
-                                    <?php if($row["reklamoType"] == "Tanod"): ?><a href="includes/ereklamo.inc.php?respondID=<?php echo $row['ReklamoID'] ?>"><button type="button" class="btn btn-warning" href=""><i class="fas fa-check"></i> For meet</button></a>
+                                    <?php if($row["reklamoType"] == "Resident"): ?><a class="set-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set for schedule</button></a></a>
                                     <?php endif; ?>
                                 </td>
                                 <!--Right Options-->
@@ -141,7 +141,7 @@
                             <?php 
                                 $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname)
                                 as name FROM users WHERE barangayPos != 'None' AND userBarangay='{$_SESSION['userBarangay']}'
-                                AND userPurok='{$_SESSION['userPurok']}';");
+                                AND userPurok='{$_SESSION['userPurok']}' AND VerifyStatus='Verified';");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -270,15 +270,29 @@
 	        title: $msg
 	      })
 	  }
-      $('.add_respondent').click(function(){
+        $('.add_respondent').click(function(){
             uni_modal("<center><b>Add Respondent</b></center></center>","includes/sendrespondent.inc.php?add");
         })
-      $('.edit_respondent').click(function(){
+        $('.edit_respondent').click(function(){
             uni_modal("<center><b>Edit Respondent</b></center></center>","includes/sendrespondent.inc.php?edit=" + $(this).attr('data-id'));
         })
-      $('.remove_respondent').click(function(){
+        $('.remove_respondent').click(function(){
         _conf("Are you sure to remove this respondent?","remove_respondent",[$(this).attr('data-id')])
+         })
+        $('.set-schedule').click(function(){
+            _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
         })
+        function set_schedule($id, $user){
+                start_load()
+                $.ajax({
+                    url:'includes/ereklamo.inc.php?respondID',
+                    method:'POST',
+                    data:{id:$id, user:$user},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
         function remove_respondent($id){
                 start_load()
                 $.ajax({
