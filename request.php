@@ -295,9 +295,9 @@
                                         AND request.userBarangay='{$_SESSION['userBarangay']}' 
                                         AND request.userType='{$_SESSION['userType']}'");
                                         while($row=$requests->fetch_assoc()):
-                                            if($row["userType"] == "Admin"){
-                                                continue;
-                                            }
+                                        if($row["userType"] == "Admin"){
+                                            continue;
+                                        }
                                     ?>
                                     <tr>
                                         <td><?php echo $row['RequestID'] ?></td>
