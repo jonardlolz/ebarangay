@@ -7,28 +7,9 @@
         </div>
         <div class="card-body" style="font-size: 100%">
             <div class="container">
-                <div class="row">
-                    <div class="col">
-                        Document Type: 
-                        <select name="documentType" id="documentType">
-                            <option value="">Select document type</option>
-                            <option value="cedula">Cedula</option>
-                            <option value="barangayclearance">Barangay Clearance</option>
-                            <option value="businesspermit">Business Permit</option>
-                            <option value="indigencyclearance">Indigency Clearance</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        Purpose: 
-                        <input type="text" name="purpose" />
-                    </div>
-                </div>
-            </div>          
-        </div>
-        <div class="card-footer">
-
+                
+            </div>
+            
         </div>
     </div>
 </div>
