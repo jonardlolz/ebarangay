@@ -67,6 +67,24 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="secondary_modal" role='dialog'>
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><b>&times;</b></span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" name="submit" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="print_modal" role='dialog'>
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
