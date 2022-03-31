@@ -3,9 +3,13 @@ include 'dbh.inc.php';
 session_start();
 ?>
 
-<?php if(isset($_GET['addPurpose'])): ?>
+<?php if(isset($_GET['addPurpose']) || isset($_GET['editPurpose'])): ?>
 <div class="container-fluid">
-    <form action="document.inc.php?add" >
+    <form action="includes/document.inc.php?add&docuType=<?php echo $_GET['docuType'] ?>" method="POST">
+        <?php if(isset($_GET['editPurpose'])){
+            $sql = $conn->query("SELECT * FROM documentpurpose WHERE purposeID='{$_GET['purposeID']}'");
+            $editPurpose = $sql->fetch_assoc();
+        } ?>
         <div class="form-group row">
             <div class="col-sm-5" style="text-align: right">
                 <label>Document name:</label>
@@ -16,10 +20,27 @@ session_start();
         </div>
         <div class="form-group row">
             <div class="col-sm-5" style="text-align: right">
+                <label>Purpose:</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="purpose" placeholder="Purpose" 
+                <?php if(isset($_GET['editPurpose'])): ?> 
+                    value="<?php echo $editPurpose['purpose'] ?>">
+                <?php endif; ?>
+                </input>
+            </div>
+        </div>
+        <?php if($_GET['docuType'] != "Indigency Clearance"): ?>
+        <div class="form-group row">
+            <div class="col-sm-5" style="text-align: right">
                 <label>Enter fee:</label>
             </div>
             <div class="col-sm-4">
-                <input type="text" placeholder="Fee"></input>
+                <input type="number" name="fee" min="0" placeholder="Fee" 
+                <?php if(isset($_GET['editPurpose'])): ?> 
+                    value="<?php echo $editPurpose['price'] ?>">
+                <?php endif; ?>
+            </input>
             </div>
         </div>
         <div class="form-group row">
@@ -27,7 +48,11 @@ session_start();
                 <label>Student's Discount:</label>
             </div>
             <div class="col-sm-4">
-                <input type="number" name="studentDiscount" value="0" min="0" max="100" placeholder="Fee"></input> %
+                <input type="number" name="studentDiscount" value="0" min="0" max="100" placeholder="Fee"
+                <?php if(isset($_GET['editPurpose'])): ?> 
+                    value="<?php echo $editPurpose['studentDiscount'] ?>">
+                <?php endif; ?>
+                </input> %
             </div>
         </div>
         <div class="form-group row">
@@ -35,7 +60,11 @@ session_start();
                 <label>Senior's Discount:</label>
             </div>
             <div class="col-sm-4">
-                <input type="number" name="seniorDiscount" value="20" min="20" max="100" placeholder="Fee"></input> %
+                <input type="number" name="seniorDiscount" value="20" min="20" max="100" placeholder="Fee"
+                <?php if(isset($_GET['editPurpose'])): ?> 
+                    value="<?php echo $editPurpose['seniorDiscount'] ?>">
+                <?php endif; ?>
+                </input> %
             </div>
         </div>
         <div class="form-group row">
@@ -43,9 +72,14 @@ session_start();
                 <label>PWD's Discount:</label>
             </div>
             <div class="col-sm-4">
-                <input type="number" name="pwdDiscount" value="0" min="0" max="100" placeholder="Fee"></input>
+                <input type="number" name="pwdDiscount" value="0" min="0" max="100" placeholder="Fee"
+                <?php if(isset($_GET['editPurpose'])): ?> 
+                    value="<?php echo $editPurpose['pwdDiscount'] ?>">
+                <?php endif; ?>
+                </input> %
             </div>
         </div>
+        <?php endif; ?>
     </form>
 </div>
 <?php elseif(isset($_GET['viewPurpose'])): ?>
@@ -65,10 +99,13 @@ session_start();
                 <thead>
                     <tr class="bg-gradient-secondary text-white">
                         <th>Purpose</th>
+                        <?php if($_GET['docuType'] != "Indigency Clearance"): ?>
                         <th>Price</th>
                         <th>Student Discount</th>
                         <th>Senior Discount</th>
                         <th>PWD Discount</th>
+                        <?php endif; ?>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,10 +117,16 @@ session_start();
                     ?>
                     <tr>
                         <td><?php echo $row['purpose'] ?></td>
+                        <?php if($_GET['docuType'] != "Indigency Clearance"): ?>
                         <td><?php echo $row['price'] ?></td>
                         <td><?php echo $row['studentDiscount'] ?> %</td>
                         <td><?php echo $row['seniorDiscount'] ?> %</td>
                         <td><?php echo $row['pwdDiscount'] ?> %</td>
+                        <?php endif; ?>
+                        <td>
+                            <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $_GET['docuType'] ?>"><i class="fas fa-edit"></i></a>
+                            <a href="javascript:void(0)" class="delete_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $row['purposeID'] ?>"><i class="fas fa-trash"></i></a>
+                        </td>
                     </tr>
                     
                     <?php 
@@ -91,7 +134,7 @@ session_start();
                         if($x <= 0):
                     ?>
                     <tr>
-                        <td colspan="5" class="align-center">No data in this table.</td>
+                        <td colspan="6" class="align-center">No data in this table.</td>
                         
                     </tr>
                     <?php endif; ?>
@@ -101,7 +144,33 @@ session_start();
     </div>
 </div>
 
+<?php elseif(isset($_GET['add'])): 
+    extract($_POST);
+    if($_GET['docuType'] == "Indigency Clearance"){
+        $fee = "0";
+        $studentDiscount = 0;
+        $seniorDiscount = 0;
+        $pwdDiscount = 0;
+    }
+    $sql = "INSERT INTO documentpurpose(purpose, barangayDoc, price, barangay, studentDiscount, seniorDiscount, pwdDiscount)
+            VALUES('$purpose', '{$_GET['docuType']}', $fee, '{$_SESSION['userBarangay']}', $studentDiscount, $seniorDiscount, $pwdDiscount)";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
 
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../document.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../document.php?error=none"); //no errors were made
+    exit();
+    
+?>
 <?php endif; ?>
 
 <script>
@@ -249,4 +318,13 @@ session_start();
     $('.add_purpose').click(function(){
         secondary_modal("<center><b>Add purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?addPurpose&docuType="+$(this).attr('data-docu'));
     })
+    $('.edit_purpose').click(function(){
+        secondary_modal("<center><b>Edit purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?editPurpose&docuType="+$(this).attr('data-docu')+"&purposeID="+$(this).attr('data-id'));
+    })
+    $('.delete_purpose').click(function(){
+        _conf("Are you sure you want to delete this purpose?","deletePurpose",[$(this).attr('data-id')]);
+    })
+    function deletePurpose($id){
+        
+    }
 </script>

@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col" style="display: none">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Business Permit</h5>
