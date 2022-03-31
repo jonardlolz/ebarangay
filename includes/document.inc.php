@@ -43,7 +43,7 @@ session_start();
                 <label>PWD's Discount:</label>
             </div>
             <div class="col-sm-4">
-                <input type="number" name="pwdDiscount" value="0" min="0" max="100" placeholder="Fee"></input> %
+                <input type="number" name="pwdDiscount" value="0" min="0" max="100" placeholder="Fee"></input>
             </div>
         </div>
     </form>
