@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2022 at 03:06 PM
+-- Generation Time: Apr 01, 2022 at 01:25 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -111,7 +111,9 @@ CREATE TABLE `documentpurpose` (
 --
 
 INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangayDoc`, `price`, `barangay`, `studentDiscount`, `seniorDiscount`, `pwdDiscount`) VALUES
-(1, 'Employment', 'Barangay Clearance', '100', 'Paknaan', '0', '0', '0');
+(1, 'Employment', 'Barangay Clearance', '100', 'Paknaan', '0', '0', '0'),
+(3, 'Ayuda', 'Indigency Clearance', '0', 'Paknaan', '0', '0', '0'),
+(4, 'Test', 'Indigency Clearance', '0', 'Paknaan', '0', '0', '0');
 
 -- --------------------------------------------------------
 
@@ -668,7 +670,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `documenttype`
