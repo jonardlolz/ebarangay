@@ -14,10 +14,6 @@
             <div class='alert alert-danger' role='alert' style="text-align: center">
                 You're still unverified!
             </div>
-            
-        
-
-
         <?php else: ?>
         <!-- Content Row -->
         <div class="row">
@@ -428,10 +424,13 @@
             <div class="card-body" style="font-size: 75%">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="home" aria-selected="true">Pending</a>
+                        <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="profile" aria-selected="false">Approved</a>
+                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -580,6 +579,50 @@
                                     <!--Row 1-->
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
+                        <div class="container">
+                            <div class="row" style="margin: 25px">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Cedula</h5>
+                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Cedula">Go somewhere</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Barangay Clearance</h5>
+                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Barangay Clearance">Go somewhere</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 25px">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Indigency Clearance</h5>
+                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Indigency Clearance">Go somewhere</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" style="display: none">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Business Permit</h5>
+                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Business Permit">Go somewhere</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -778,6 +821,9 @@
     })
     $('.releaseFunc').click(function(){
         _conf("Release the document?","releaseDoc",[$(this).attr('data-id')])
+    })
+    $('.document_edit').click(function(){
+        uni_modal("<center><b>Document edit for " + $(this).attr('data-id') + "</b></center></center>","includes/document.inc.php?viewPurpose&docuType="+$(this).attr('data-id'), "modal-lg");
     })
     function paid_request($id){
         start_load()
