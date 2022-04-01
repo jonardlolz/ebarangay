@@ -144,6 +144,26 @@ session_start();
     </div>
 </div>
 
+<?php elseif(isset($_GET['delete'])):
+    extract($_POST);
+    $sql = $conn->query("DELETE FROM documentpurpose WHERE purposeID = $id");
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../document.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../document.php?error=none"); //no errors were made
+    exit();
+?>
+
 <?php elseif(isset($_GET['add'])): 
     extract($_POST);
     if($_GET['docuType'] == "Indigency Clearance"){
@@ -325,6 +345,14 @@ session_start();
         _conf("Are you sure you want to delete this purpose?","deletePurpose",[$(this).attr('data-id')]);
     })
     function deletePurpose($id){
-        
+        start_load()
+        $.ajax({
+            url:'includes/document.inc.php?delete',
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
     }
 </script>
