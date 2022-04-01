@@ -850,9 +850,12 @@
 
     
     var mealsByCategory = {
-        Cedula: ["Employment", "Work", "Registering a new business", 
-                "Filing Income Tax Returns", "License", "Receipts", 
-                "Proof of Residency", "Others"],
+        Cedula: <?php 
+        $purposes = array();
+        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Cedula' AND barangay='{$_SESSION['userBarangay']}'"); 
+        while($prow = $purpose->fetch_assoc()):
+        $purposes[] = $prow["purpose"]?>
+        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
         "Barangay Clearance": ["Employment", "Scholarship", "Financial Assistance",
                                 "Educational Assistance", "Work", "For business permit",
                                 "Postal ID", "Solo Parent ID", "Others"],
