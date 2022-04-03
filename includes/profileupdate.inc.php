@@ -35,13 +35,69 @@
         $_SESSION["emailAdd"] = $emailAdd;
         $_SESSION['userAddress'] = $userAddress;
         $_SESSION['userHouseNum'] = $userHouseNum;
-
-
-
-
         header("location: ../profile.php?error=none");
         exit();
     }
+    if(isset($_GET['viewReklamo'])): ?>
+    <div class="container-fluid">
+
+    </div>
+<?php elseif(isset($_GET['viewRequest'])): ?>
+    <div class="container-fluid">
+
+    </div>
 
 
-?>
+<?php elseif(isset($_GET['viewHistory'])): ?>
+    <style>
+        .modal-footer{
+            display: none;
+        }
+    </style>
+    <div class="container-fluid">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-ereklamo-tab" data-toggle="tab" href="#nav-ereklamo" role="tab" aria-controls="nav-ereklamo" aria-selected="true">eReklamo</a>
+                <a class="nav-item nav-link" id="nav-erequest-tab" data-toggle="tab" href="#nav-erequest" role="tab" aria-controls="nav-erequest" aria-selected="false">eRequest</a>
+            </div>
+        </nav>
+        <div class="table-responsive">
+            <table id="dataTable1" class="table table-bordered text-center text-dark display" 
+                width="100%" cellspacing="0" cellpadding="0">
+                <thead >
+                    <tr class="bg-gradient-secondary text-white">
+                        <th scope="col">Report Type</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">From</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <!--Row 1-->
+                    <?php 
+                        $accounts = $conn->query("SELECT * FROM report WHERE UsersID='{$_GET['UsersID']}' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}' ORDER BY created_on DESC");
+                        while($row=$accounts->fetch_assoc()):
+                    ?>
+                    <tr>
+                        <td><?php echo $row["ReportType"] ?></td>
+                        <td><?php echo $row["reportMessage"] ?></td>
+                        <td><?php echo $row["UsersID"] ?></td>
+                        <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
+                        
+                        <!--Right Options-->
+                    </tr>
+                    <?php endwhile; ?>
+                    <!--Row 1-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTable1').DataTable();
+    } );
+</script>

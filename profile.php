@@ -1,158 +1,130 @@
 <?php include_once 'header.php' ?>
-                        <?php 
-                            $profile = $conn->query("SELECT * FROM users WHERE UsersID='{$_SESSION['UsersID']}'");
-                            while($row=$profile->fetch_assoc()):
-                        ?>
-                        <!-- Begin Page Content -->
-                        <div class="col d-flex flex-column px-4">
-
-                            <div class="m-4 p-4"> 
-                                <div class="card rounded shadow" style="background-color: #dcdce4;">
-                                    <!--Card-header-->
-                                    <div class="card-header">
-                                        <div class="text-center text-dark">
-                                            <div class="user-avatar w-100 d-flex justify-content-center">
-                                                <span class="position-relative">
-                                                    <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid img-thumbnail rounded-circle <?php 
-                                                        if($_SESSION["userType"] == "Resident"){
-                                                            echo "img-res-profile";
-                                                        }
-                                                        elseif($_SESSION["userType"] == "Purok Leader"){
-                                                            echo "img-purokldr-profile";
-                                                        }
-                                                        elseif($_SESSION["userType"] == "Captain"){
-                                                            echo "img-capt-profile";
-                                                        }
-                                                        elseif($_SESSION["userType"] == "Secretary"){
-                                                            echo "img-sec-profile";
-                                                        }
-                                                        elseif($_SESSION["userType"] == "Treasurer"){
-                                                            echo "img-treas-profile";
-                                                        }
-                                                        elseif($_SESSION["userType"] == "Admin"){
-                                                            echo "img-admin-profile";
-                                                        }
-                                                    ?>" style="width:150px; height:150px">
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
-                                                        <i class="fas fa-camera"></i>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="mt-2">
-                                                <h5 class="font-weight-bold"><?php echo $name ?></h5>
-                                                <h6 readonly><?php echo $_SESSION["emailAdd"]; ?></h6>
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <!--Trigger Button Chat-->
-                                            <?php if($row['VerifyStatus'] == 'Verified'): ?>
-                                                <i class="fas fa-user-check fa-lg" alt="Verified" style="color: #0ca678"></i>
-                                            <?php elseif($row['VerifyStatus'] == 'Unverified'): ?>  
-                                                <i class="fas fa-user-slash fa-lg" alt="Unverified" style="color: #e63d2e"></i>
-                                            <?php elseif($row['VerifyStatus'] == 'Pending'): ?>
-                                                <i class="fas fa-user fa-lg" alt="Pending verification"></i>
-                                            <?php endif; ?>
-                                            <a href="javascript:void(0)"><i class="fas fa-edit fa-lg" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static"></i></a>
-                                            <!--<button title="oas&#10;djaosjdsoajdjaosdj\nasdasdasdasdasd" type="button" class="btn m-0 btn-circle" onclick="openForm()">
-                                                <i class="fas fa-comments fw"></i>
-                                            </button>-->
-                                            <?php if($_SESSION['userType'] == "Resident"): ?>
-                                            <a href="javascript:void(0)"><i class="fas fa-file fa-lg" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static"></i></a>
-                                            
-                                            <?php else: ?>
-                                            <a href="javascript:void(0)"><i class="fas fa-history fa-lg" data-toggle="modal" data-target="#reportHistory" data-backdrop="static"></i></a>
-                                            
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <!--End of Card-Header-->
-                                    <!--Card-Body-->
-                                    <div class="card-body text-dark">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="p-2">
-                                                    <div>
-                                                        <strong>Personal Information</strong><hr>
-                                                    </div>
-                                                    <label class="labels">Name</label>
-                                                    <input type="text" class="form-control w-75" placeholder="Fname Mname Lname" value="<?php echo "{$_SESSION['Lastname']}, {$_SESSION['Firstname']} {$_SESSION['Middlename']}"?>" readonly>
-                                                    <label class="labels">Gender</label>
-                                                    <input type="text" class="form-control w-75" placeholder="Gender" value="<?php echo $_SESSION["userGender"] ?>" readonly>
-                                                    <label class="labels">Birthdate</label>
-                                                    <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $_SESSION["dateofbirth"] ?>" readonly>
-                                                </div>
-                                                <div class="p-2">
-                                                    <div>
-                                                        <strong>Address Information</strong><hr>
-                                                    </div>
-                                                    <div class="row-md-4 row-sm-4">
-                                                        <label class="labels">Purok</label>
-                                                        <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userPurok"] ?>" readonly>
-                                                    </div>
-                                                    <div class="row-md-4 row-sm-4">
-                                                        <label class="labels">Barangay</label>
-                                                        <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userBarangay"] ?>" readonly>
-                                                        <label class="labels">Municipality/City</label>
-                                                        <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $_SESSION["userCity"] ?>" readonly>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="p-2">
-                                                    <div>
-                                                        <strong>Contact Information</strong><hr>
-                                                    </div>
-                                                    <label class="labels">Phone Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
-                                                    <label class="labels">Telephone Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["teleNum"]; }?>" readonly>
-                                                    <label class="labels">Email Address</label>
-                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
-                                                </div>
-                                                <div class="p-2">
-                                                    <strong>Address Information</strong><hr>
-                                                    <label class="labels">Street Address</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userAddress"]; }?>" readonly>
-                                                    <label class="labels">House Number</label>
-                                                    <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
-                                                    <label class="labels">Is renting?</label>
-                                                    <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--End of Card-Body-->
-                                </div>
-                            </div>
-                                                            
-                        </div>
-                        <!-- End of Begin Page Content -->
-
+<?php 
+    $profile = $conn->query("SELECT * FROM users WHERE UsersID='{$_SESSION['UsersID']}'");
+    while($row=$profile->fetch_assoc()):
+?>
+<!-- Begin Page Content -->
+<div class="col d-flex flex-column px-4">
+    <div class="m-4 p-4"> 
+        <div class="card rounded shadow" style="background-color: #dcdce4;">
+            <!--Card-header-->
+            <div class="card-header">
+                <div class="text-center text-dark">
+                    <div class="user-avatar w-100 d-flex justify-content-center">
+                        <span class="position-relative">
+                            <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid img-thumbnail rounded-circle <?php 
+                                if($_SESSION["userType"] == "Resident"){
+                                    echo "img-res-profile";
+                                }
+                                elseif($_SESSION["userType"] == "Purok Leader"){
+                                    echo "img-purokldr-profile";
+                                }
+                                elseif($_SESSION["userType"] == "Captain"){
+                                    echo "img-capt-profile";
+                                }
+                                elseif($_SESSION["userType"] == "Secretary"){
+                                    echo "img-sec-profile";
+                                }
+                                elseif($_SESSION["userType"] == "Treasurer"){
+                                    echo "img-treas-profile";
+                                }
+                                elseif($_SESSION["userType"] == "Admin"){
+                                    echo "img-admin-profile";
+                                }
+                            ?>" style="width:150px; height:150px">
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
+                                <i class="fas fa-camera"></i>
+                            </a>
+                        </span>
                     </div>
-                    <!-- End of Row -->
+                    <div class="mt-2">
+                        <h5 class="font-weight-bold"><?php echo $name ?></h5>
+                        <h6 readonly><?php echo $_SESSION["emailAdd"]; ?></h6>
+                    </div>
                 </div>
-                <!-- End of Content Wrapper -->
-
+                <div class="text-center">
+                    <!--Trigger Button Chat-->
+                    <?php if($row['VerifyStatus'] == 'Verified'): ?>
+                        <i class="fas fa-user-check fa-lg" alt="Verified" style="color: #0ca678"></i>
+                    <?php elseif($row['VerifyStatus'] == 'Unverified'): ?>  
+                        <i class="fas fa-user-slash fa-lg" alt="Unverified" style="color: #e63d2e"></i>
+                    <?php elseif($row['VerifyStatus'] == 'Pending'): ?>
+                        <i class="fas fa-user fa-lg" alt="Pending verification"></i>
+                    <?php endif; ?>
+                    <a href="javascript:void(0)"><i class="fas fa-edit fa-lg" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static"></i></a>
+                    <!--<button title="oas&#10;djaosjdsoajdjaosdj\nasdasdasdasdasd" type="button" class="btn m-0 btn-circle" onclick="openForm()">
+                        <i class="fas fa-comments fw"></i>
+                    </button>-->
+                    <?php if($_SESSION['userType'] == "Resident"): ?>
+                    <a href="javascript:void(0)"><i class="fas fa-file fa-lg" data-toggle="modal" data-target="#requestHistoryModal" data-backdrop="static"></i></a>
+                    
+                    <?php else: ?>
+                    <a href="javascript:void(0)"><i class="fas fa-history fa-lg" data-toggle="modal" data-target="#reportHistory" data-backdrop="static"></i></a>
+                    
+                    <?php endif; ?>
+                </div>
             </div>
-            <!-- End of Main Content -->
+            <!--End of Card-Header-->
+            <!--Card-Body-->
+            <div class="card-body text-dark">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="p-2">
+                            <div>
+                                <strong>Personal Information</strong><hr>
+                            </div>
+                            <label class="labels">Name</label>
+                            <input type="text" class="form-control w-75" placeholder="Fname Mname Lname" value="<?php echo "{$_SESSION['Lastname']}, {$_SESSION['Firstname']} {$_SESSION['Middlename']}"?>" readonly>
+                            <label class="labels">Gender</label>
+                            <input type="text" class="form-control w-75" placeholder="Gender" value="<?php echo $_SESSION["userGender"] ?>" readonly>
+                            <label class="labels">Birthdate</label>
+                            <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $_SESSION["dateofbirth"] ?>" readonly>
+                        </div>
+                        <div class="p-2">
+                            <div>
+                                <strong>Address Information</strong><hr>
+                            </div>
+                            <div class="row-md-4 row-sm-4">
+                                <label class="labels">Purok</label>
+                                <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userPurok"] ?>" readonly>
+                            </div>
+                            <div class="row-md-4 row-sm-4">
+                                <label class="labels">Barangay</label>
+                                <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userBarangay"] ?>" readonly>
+                                <label class="labels">Municipality/City</label>
+                                <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $_SESSION["userCity"] ?>" readonly>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Footer -->
-            <footer class="sticky-footer">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        
+                    <div class="col-md-6">
+                        <div class="p-2">
+                            <div>
+                                <strong>Contact Information</strong><hr>
+                            </div>
+                            <label class="labels">Phone Number</label>
+                            <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
+                            <label class="labels">Telephone Number</label>
+                            <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["teleNum"]; }?>" readonly>
+                            <label class="labels">Email Address</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
+                        </div>
+                        <div class="p-2">
+                            <strong>Address Information</strong><hr>
+                            <label class="labels">Street Address</label>
+                            <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userAddress"]; }?>" readonly>
+                            <label class="labels">House Number</label>
+                            <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
+                            <label class="labels">Is renting?</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+                        </div>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
-
+            </div>
+            <!--End of Card-Body-->
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
 
     <!-- dynamic modal -->
     <div class="modal fade" id="uni_modal" role='dialog'>
@@ -324,7 +296,7 @@
                                     <!--Row 1-->
                                 </tbody>
                             </table>
-                    </div>
+                        </div>
                 </div>
                 </div>
                 <!--end of modal body-->
@@ -496,104 +468,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!--Chatbox-->
-    <div>
-        <!--Card-->
-        <div class="card p-0 shadow" id="myForm" style="height: 500px; 
-            width: 300px;
-            display: none;
-            position: fixed;
-            bottom: 40px;
-            right: 60px;
-            z-index: 9;">
-            <!--Chatbox Header-->
-            <div class="card-header shadow m-0" style="background-color: #dcdce4; 
-                border-radius: 15px 15px 0 0 !important;
-                border-bottom: 0 !important;">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <a href="profile.html">
-                            <img src="img/eb-logo.png" class="rounded-circle img-res-profile" width="60" height="60">
-                        </a>
-                        <div class="p-2">
-                            <h5 class="text-dark">User Name</h5>
-                        </div>
-                    </div>
-                    <button type="button" class="btn close" onclick="closeForm()">
-                        <i class="fas fa-times fw"></i>
-                    </button>
-                </div>
-            </div>
-            <!--End of Chatbox Card-Header-->
-
-            <!--Chatbox Card-Body-->
-            <div class="card-body shadow" style="background-color: #465765; 
-                overflow-y: auto;
-                height: 340px;">
-                <h6 class="text-white text-center pb-3">Start a conversation</h6 t>
-                <!--Content of Conversation-->
-                <div class="my-2">
-
-                    <div class="d-flex justify-content-start mb-4">
-                        <div class="img_cont_msg">
-                            <img src="img/eb-logo.png" class="rounded-circle user_img_msg">
-                        </div>
-                        <div class="msg_cotainer">
-                            Hi, how are you samim?
-                            <span class="msg_time text-muted">8:40 AM, Today</span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="msg_cotainer_send">
-                            Hi Khalid i am good tnx how about you?
-                            <span class="msg_time_send text-muted">8:55 AM, Today</span>
-                        </div>
-                        <div class="img_cont_msg">
-                            <img src="img/eb-logo.png" class="rounded-circle user_img_msg">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-start mb-4">
-                        <div class="img_cont_msg">
-                            <img src="img/eb-logo.png" class="rounded-circle user_img_msg">
-                        </div>
-                        <div class="msg_cotainer">
-                            I am good too, thank you for your chat template
-                            <span class="msg_time text-muted">9:00 AM, Today</span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="msg_cotainer_send">
-                            You are welcome
-                            <span class="msg_time_send text-muted">9:05 AM, Today</span>
-                        </div>
-                        <div class="img_cont_msg">
-                            <img src="img/eb-logo.png" class="rounded-circle user_img_msg">
-                        </div>
-                    </div>
-
-                </div>
-                <!--End of Conversation Content-->
-            </div>
-            <!--End of Card-Body-->
-
-            <!--Card-Footer-->
-            <div class="card-footer shadow" style="background-color: #dcdce4;
-                border-radius: 0 0 15px 15px !important;
-                border-top: 0 !important;">
-                <div class="input-group">
-                    <!--<div class="input-group-append">
-                        <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-                    </div>-->
-                    <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
-                    <div class="input-group-append">
-                        <span class="input-group-text send_btn bg-primary"><i class="fas fa-location-arrow"></i></span>
-                    </div>
-                </div>
-            </div>
-            <!--End of Card-Footer-->
-        </div>
-        <!--End of Card -->
     </div>
     <!-- Profile Pic Modal-->
     <div class="modal fade" id="ppModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
