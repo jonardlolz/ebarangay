@@ -57,7 +57,7 @@
                 <?php elseif($row['VerifyStatus'] == 'Pending'): ?>
                     <i class="fas fa-user fa-lg" alt="Pending verification"></i>
                 <?php endif; ?>
-                <a href="javascript:void(0)"><i class="fas fa-edit fa-lg" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static"></i></a>
+                <a class="edit_account" href="javascript:void(0)" data-id="<?php echo $_GET['UsersID'] ?>"><i class="fas fa-edit fa-lg" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static"></i></a>
                 <!--<button title="oas&#10;djaosjdsoajdjaosdj\nasdasdasdasdasd" type="button" class="btn m-0 btn-circle" onclick="openForm()">
                     <i class="fas fa-comments fw"></i>
                 </button>-->
@@ -267,20 +267,20 @@ window.start_load = function(){
         if(this.scrollHeight <= 117)
         $(this).height(0).height(this.scrollHeight);
     })
-    $('.view_reklamo').click(function(){
-        uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php")
+    $('.view_reklamos').click(function(){
+        uni_modal("<center><b>View Reklamos</b></center></center>","includes/profileupdate.inc.php?viewReklamo&UsersID="+$(this).attr('data-id'), 'modal-lg')
     })
-    $('.view_request').click(function(){
-        uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php")
+    $('.view_requests').click(function(){
+        uni_modal("<center><b>View Requests</b></center></center>","includes/profileupdate.inc.php?viewRequest&UsersID="+$(this).attr('data-id'), 'modal-lg')
     })
     $('.view_report').click(function(){
-        uni_modal("<center><b>Add Account</b></center></center>","includes/profileupdate.inc.php?viewHistory&UsersID="+ $(this).attr('data-id'), "modal-lg")
+        uni_modal("<center><b>View Report</b></center></center>","includes/profileupdate.inc.php?viewHistory&UsersID="+ $(this).attr('data-id'), "modal-lg")
     })
     $('.add_account').click(function(){
         uni_modal("<center><b>Add Account</b></center></center>","includes/account.inc.php")
     })
     $('.edit_account').click(function(){
-        uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?id="+$(this).attr('data-id'))
+        uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?edit="+$(this).attr('data-id'))
     })
     $('.delete_request').click(function(){
     _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])
