@@ -77,18 +77,24 @@
                             <input type="text" class="form-control w-75" placeholder="Fname Mname Lname" value="<?php echo "{$_SESSION['Lastname']}, {$_SESSION['Firstname']} {$_SESSION['Middlename']}"?>" readonly>
                             <label class="labels">Gender</label>
                             <input type="text" class="form-control w-75" placeholder="Gender" value="<?php echo $_SESSION["userGender"] ?>" readonly>
+                            <label class="labels">Civil Status</label>
+                            <input type="text" class="form-control w-75" placeholder="Civil Status" value="">
                             <label class="labels">Birthdate</label>
                             <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $_SESSION["dateofbirth"] ?>" readonly>
+                            <label class="labels">Birthplace</label>    <!--push-->
+                            <input type="text" class="form-control w-75" placeholder="Birthplace" value="" readonly>   <!--push-->
+                            
+
                         </div>
                         <div class="p-2">
                             <div>
                                 <strong>Address Information</strong><hr>
                             </div>
                             <div class="row-md-4 row-sm-4">
+                                <label class="labels">House Number</label>  <!--push-->
+                                <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
                                 <label class="labels">Purok</label>
                                 <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userPurok"] ?>" readonly>
-                            </div>
-                            <div class="row-md-4 row-sm-4">
                                 <label class="labels">Barangay</label>
                                 <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userBarangay"] ?>" readonly>
                                 <label class="labels">Municipality/City</label>
@@ -111,13 +117,20 @@
                             <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
                         </div>
                         <div class="p-2">
-                            <strong>Address Information</strong><hr>
-                            <label class="labels">Street Address</label>
-                            <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userAddress"]; }?>" readonly>
-                            <label class="labels">House Number</label>
-                            <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
+                            <strong>Additional Information</strong><hr> <!--push-->
+                            <label class="labels">Is student?</label>   
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+                            <label class="labels">Is employed?</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+                            <label class="labels">Is unemployed?</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+                            <label class="labels">Is person with dissability (PWD)?</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+                            <label class="labels">Is senior citizen?</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
                             <label class="labels">Is renting?</label>
                             <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+
                         </div>
                     </div>
                 </div>
@@ -127,7 +140,7 @@
     </div>
 
     <!-- dynamic modal -->
-    <div class="modal fade" id="uni_modal" role='dialog'>
+    <div class="modal fade" id="uni_modal" role="dialog">
         <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -153,7 +166,7 @@
 
     <!-- Edit Profile Modal-->
     <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="">
-        <div class="modal-dialog modal-fullscreen-sm-down border border-0" role="document" style="border-color:#384550 ;">
+        <div class="modal-dialog modal-dialog-scrollable border border-0" role="document" style="border-color:#384550 ;">
             <form action="includes/profileupdate.inc.php?id=<?php echo $_SESSION["UsersID"] ?>" class="user" method="post">
             <div class="modal-content">
                 <div class="modal-header">
@@ -164,37 +177,28 @@
                 </div>
                 <!--modal-body-->
                 <div class="modal-body">
-                    <div class="form-group row">    <!--Nmae-->
+                    <div class="form-group row">    <!--Name-->
                         <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
+                        <label class="labels">Firstname:</label>
                             <input type="text" class="form-control form-control-sm" id="FirstName"
                                 name="Firstname" placeholder="First Name" value="<?php echo $row['Firstname'] ?>">
                         </div>
                         <div class="col-sm-4 col-md-4">
+                        <label class="labels">Middlename:</label>
                             <input type="text" class="form-control form-control-sm" id="MiddleName"
                                 name="Middlename" placeholder="Middle Name" value="<?php echo $_SESSION['Middlename'] ?>">
                         </div>
                         <div class="col-sm-4 col-md-4">
+                        <label class="labels">Lastname:</label>
                             <input type="text" class="form-control form-control-sm" id="LastName"
                                 name="Lastname" placeholder="Last Name" value="<?php echo $_SESSION['Lastname'] ?>">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <input type="date" class="form-control form-control-sm" placeholder="Birthdate" 
-                            name="userDOB" id="userDOB" value="<?php echo $_SESSION['dateofbirth'] ?>"></input>
-                        </div>
-                    </div>
-                    
+
                     <div class="form-group row"><!--Civil status-->
+                        
                         <div class="col-sm-6">
-                            <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
-                                <option value="<?php echo $_SESSION['civilStat'] ?>" hidden selected disabled><?php echo $_SESSION['civilStat'] ?></option>
-                                <option value="Single">Single</option>
-                                <option value="Married">Married</option>
-                                <option value="Widowed">Widowed</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
+                            <label class="labels">Gender:</label>
                             <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
                                 <option value="<?php echo $_SESSION['userGender'] ?>" hidden selected><?php echo $_SESSION['userGender'] ?></option>
                                 <option value="Male">Male</option>
@@ -202,36 +206,79 @@
                             </select>
                         </div>
                         
+                        <div class="col-sm-6">
+                        <label class="labels">Civil Status:</label>
+                            <select name="userCivilStat" id="userCivilStat"  class="form-control form-control-sm form-select d-inline">
+                                <option value="<?php echo $_SESSION['civilStat'] ?>" hidden selected disabled><?php echo $_SESSION['civilStat'] ?></option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
                     </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="labels">Birthdate:</label>
+                            <input type="date" class="form-control form-control-sm" placeholder="Birthdate" 
+                            name="userDOB" id="userDOB" value="<?php echo $_SESSION['dateofbirth'] ?>"></input>
+                        </div>
+
+                        <div class="col-sm-6">
+                        <label class="labels">Birthplace:</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Birthdate"> </input>
+                        </div>
+                        
+                    </div>
+                    <hr><!--CONTACT INFORMATION-->
+                    <div class="form-group row">
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Phone Number:</label>
+                            <input type="num" class="form-control form-control-sm" name="" id="" placeholder="xxxxx" value=""></input>
+                        </div>
+                        
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Telephone Number:</label>
+                            <input type="num" class="form-control form-control-sm" name="" id="" placeholder="xxxxxx" value=""></input>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Email Address:</label>
+                            <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $_SESSION['emailAdd'] ?>"></input>
+                        </div>
+                    </div>
+
+                    <hr><!--ADDRESS-->
+                    <div class="form-group row">
+                       <div class="col-lg-6 col-sm-6" >
+                            <label class="labels">House Number:</label>
+                            <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $_SESSION['userHouseNum'] ?>" required>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-6">
+                            <label class="labels">Purok:</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
+                                <option value="<?php echo $_SESSION['userPurok'] ?>" selected hidden><?php echo $_SESSION['userPurok'] ?></option>
+                            </select>
+                        </div> 
+                    </div>
+
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
+                            <label class="labels">Barangay:</label>
                             <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
                                 <option value="<?php echo $_SESSION['userBarangay'] ?>" hidden selected><?php echo $_SESSION['userBarangay'] ?></option>
                                 <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
                                 while($brow = $barangay->fetch_assoc()): ?>  
                                     <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                                <?php endwhile; ?>
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
-                                <option value="<?php echo $_SESSION['userPurok'] ?>" selected hidden><?php echo $_SESSION['userPurok'] ?></option>
+                                <?php endwhile; ?>  <!--brgy name must be set-->
                             </select>
                         </div>
                     </div>
+                    
                     <div class="form-group row">
                         <div class="col-lg-6 col-sm-6">
-                            <input type="text" class="form-control form-control-sm" name="userAddress" id="userAddress" placeholder="Street Address" value="<?php echo $_SESSION['userAddress'] ?>" required></input>
-                        </div>
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $_SESSION['userHouseNum'] ?>" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-lg-6 col-sm-6">
-                            <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $_SESSION['emailAdd'] ?>"></input>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Position:</label>
                             <select class="form-control form-control-sm form-select d-inline" name="userType" id="userType">
                                 <option value="<?php echo $userType ?>" hidden selected><?php echo $_SESSION['userType'] ?></option>
                                 <option value="Resident">Resident</option>
@@ -242,8 +289,61 @@
                             </select>
                         </div>
                     </div>
+
+                    <hr><!--ARE YOU?-->
+                    <div class="form-group row">
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Is a student?</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="" id="">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Is a PWD?</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="" id="">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Is employed?</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="" id="">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Is unemployed?</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="" id="">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Is a senior citizen?</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="" id="">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-6">
+                            <label class="labels">Is renting?</label>
+                            <select class="form-control form-control-sm form-select d-inline" name="" id="">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                
+
                 </div>
                 <!--end of modal body-->
+                
                 <div class="modal-footer">
                     <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-outline-primary" name="submit">Save Changes</button>

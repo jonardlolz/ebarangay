@@ -84,6 +84,7 @@
         <?php endif; ?>
     </div>
 
+<!--TREASURER-->
     <?php elseif($_SESSION["userType"] == "Treasurer"): ?>
         <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
@@ -98,7 +99,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid</a>
                     </li>
-                    </ul>
+                </ul>
                     <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                         <div class="table-responsive">
@@ -802,14 +803,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <!--<button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">x</span>
-                        </button>
+                        </button>-->    <!--push-->
                     </div>
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.php">Logout</a>
+                        <a class="btn btn-outline-primary" href="login.php">Logout</a>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
