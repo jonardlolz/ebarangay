@@ -27,7 +27,7 @@
                 <div class="row">
                 <div class="col-8">
                     <div class="container-fluid">
-                        <h1>Welcome to <?php echo "{$_SESSION['userPurok']}, {$_SESSION['userBarangay']}"  ?></h1>
+                        <h1 class="font-weight-normal text-dark text-uppercase text-left">Barangay <?php echo "{$_SESSION['userBarangay']}"  ?></h1>    <!--push-->
                         <!-- Post Section -->
                         <?php if(!empty($_SESSION['UsersID']) && $_SESSION['userType'] != "Resident"): ?>
                         <div class="col-md-12">
@@ -364,8 +364,8 @@
         <div id="delete_content"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='confirm' onclick="">Continue</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" id='confirm' onclick="">Continue</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
       </div>
       </div>
     </div>
@@ -382,8 +382,8 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-outline-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
       </div>
       </div>
     </div>
@@ -405,7 +405,7 @@
   <div class="modal fade" id="viewer_modal" role='dialog'>
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
-              <button type="button" class="btn-close" data-dismiss="modal"><span class="fa fa-times"></span></button>
+              <button type="button" class="btn-close btn-outline" data-dismiss="modal"><span class="fa fa-times"></span></button>
               <img src="" alt="">
       </div>
     </div>

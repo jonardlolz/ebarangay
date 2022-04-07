@@ -30,6 +30,7 @@
                                         <option value="" hidden selected>Select</option>
                                         <option value="Cedula">Cedula</option>
                                         <option value="Barangay Clearance">Barangay Clearance</option>
+                                        <option value="Indigency Clearance">Indigency Clearance</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-5 m-1">
@@ -83,6 +84,7 @@
         <?php endif; ?>
     </div>
 
+<!--TREASURER-->
     <?php elseif($_SESSION["userType"] == "Treasurer"): ?>
         <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
@@ -97,7 +99,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid</a>
                     </li>
-                    </ul>
+                </ul>
                     <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                         <div class="table-responsive">
@@ -427,11 +429,19 @@
                         <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+                        <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="releasing-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="approved" aria-selected="false">Paid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
+                    </li>
+                    <?php if($_SESSION['userType'] == "Captain"): ?>
                     <li class="nav-item">
                         <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
                     </li>
+                    <?php endif; ?>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="release" role="tabpanel" aria-labelledby="release-tab">
@@ -500,9 +510,6 @@
                                             <a href="includes/request.inc.php?approveID=<?php echo $row["RequestID"] ?>">
                                                 <button class="btn btn-success approve" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
                                             </a>
-                                            <a href="includes/request.inc.php?declineID=<?php echo $row["RequestID"] ?>">
-                                                <button class="btn btn-danger"><i class="fas fa-times"></i> Decline</button>
-                                            </a>
                                         </td>
                                         <!--Right Options-->
                                     </tr>
@@ -512,7 +519,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
+                    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
                         <div class="table-responsive">
                             <table class="table table-bordered text-center text-dark" 
                                 id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
@@ -531,11 +538,11 @@
                                 <tbody>
                                     <!--Row 1-->
                                     <?php 
-                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) 
+                                        $requests = $conn->query("SELECT request.*, users.UsersID, concat(users.Firstname, ' ', users.Lastname) 
                                         as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
                                         DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
                                         users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
-                                        WHERE (request.status='Approved' OR request.status='Released' OR request.status='Paid') AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        WHERE request.status='Approved' AND request.userPurok='{$_SESSION['userPurok']}' 
                                         AND request.userBarangay='{$_SESSION['userBarangay']}'");
                                         while($row=$requests->fetch_assoc()):
                                             if($row["userType"] == "Admin"){
@@ -565,7 +572,145 @@
                                                 }
                                             ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
-                                            <?php echo $row["name"] ?>
+                                            <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a>  
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row["purpose"] ?></td>
+                                        <td><?php echo $row["requestedDate"] ?></td>
+                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
+                                        <td><?php if($row["approvedBy"] != NULL){echo $row["approvedBy"];} else{echo "None";} ?></td>
+                                        <td><?php if($row["approvedOn"] != NULL){echo $row["approvedDate"];} else{echo "None";} ?></td>
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable3" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Document Type</th>
+                                        <th scope="col">Purpose</th>
+                                        <th scope="col">Date Requested</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Managed By</th>
+                                        <th scope="col">Date Managed</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, users.UsersID, concat(users.Firstname, ' ', users.Lastname) 
+                                        as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
+                                        users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Paid' AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a>  
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row["purpose"] ?></td>
+                                        <td><?php echo $row["requestedDate"] ?></td>
+                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
+                                        <td><?php if($row["approvedBy"] != NULL){echo $row["approvedBy"];} else{echo "None";} ?></td>
+                                        <td><?php if($row["approvedOn"] != NULL){echo $row["approvedDate"];} else{echo "None";} ?></td>
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable4" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Document Type</th>
+                                        <th scope="col">Purpose</th>
+                                        <th scope="col">Date Requested</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Managed By</th>
+                                        <th scope="col">Date Managed</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, users.UsersID, concat(users.Firstname, ' ', users.Lastname) 
+                                        as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
+                                        users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Released' AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a>  
                                         </td>
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row["purpose"] ?></td>
@@ -658,14 +803,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <!--<button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">x</span>
-                        </button>
+                        </button>-->    <!--push-->
                     </div>
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.php">Logout</a>
+                        <a class="btn btn-outline-primary" href="login.php">Logout</a>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -805,13 +950,17 @@
     $('.continue').click(function(){
         var ddl = document.getElementById("document");
         var selectedValue = ddl.options[ddl.selectedIndex].value;
+        var ddl2 = document.getElementById("purpose");
+        var selectedValue2 = ddl2.options[ddl2.selectedIndex].value;
         if (selectedValue == ""){
             alert("Please select a document");
         }
+        else if(selectedValue2 == ""){
+            alert("Please select a valid purpose");
+        }
         else{
             verifyInfo_modal("<center><b>Verify Information</b></center></center>","includes/request.inc.php?verifyInfo&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val()+"&modeofPayment="+$("#modeofPayment").val());
-        }
-        
+        }  
     })
     $('#print').click(function(){
         print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));
@@ -821,6 +970,9 @@
     })
     $('.releaseFunc').click(function(){
         _conf("Release the document?","releaseDoc",[$(this).attr('data-id')])
+    })
+    $('.view_profile').click(function(){
+        uni_modal("<center>Profile</center>","profile_alt.php?viewProfile&UsersID="+$(this).attr('data-id'), "modal-lg");
     })
     $('.document_edit').click(function(){
         uni_modal("<center><b>Document edit for " + $(this).attr('data-id') + "</b></center></center>","includes/document.inc.php?viewPurpose&docuType="+$(this).attr('data-id'), "modal-lg");
@@ -850,22 +1002,40 @@
 
     
     var mealsByCategory = {
-        Cedula: ["Employment", "Work", "Registering a new business", 
-                "Filing Income Tax Returns", "License", "Receipts", 
-                "Proof of Residency", "Others"],
-        "Barangay Clearance": ["Employment", "Scholarship", "Financial Assistance",
-                                "Educational Assistance", "Work", "For business permit",
-                                "Postal ID", "Solo Parent ID", "Others"],
+        Cedula: <?php 
+        $purposes = array();
+        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Cedula' AND barangay='{$_SESSION['userBarangay']}'"); 
+        while($prow = $purpose->fetch_assoc()):
+        $purposes[] = $prow["purpose"]?>
+        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
+        "Barangay Clearance": <?php 
+        $purposes = array();
+        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Barangay Clearance' AND barangay='{$_SESSION['userBarangay']}'"); 
+        while($prow = $purpose->fetch_assoc()):
+        $purposes[] = $prow["purpose"]?>
+        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
+        "Indigency Clearance": <?php 
+        $purposes = array();
+        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Indigency Clearance' AND barangay='{$_SESSION['userBarangay']}'"); 
+        while($prow = $purpose->fetch_assoc()):
+        $purposes[] = $prow["purpose"]?>
+        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
     }
 
     function changecat(value) {
-        if (value.length == 0) document.getElementById("purpose").innerHTML = "<option></option>";
+        if (value.length == 0) document.getElementById("purpose").innerHTML = "<option>Empty</option>";
         else {
             var catOptions = "";
-            for (categoryId in mealsByCategory[value]) {
-                catOptions += "<option>" + mealsByCategory[value][categoryId] + "</option>";
+            if(mealsByCategory[value].length != 0){
+                for (categoryId in mealsByCategory[value]) {
+                    catOptions += "<option>" + mealsByCategory[value][categoryId] + "</option>";
+                }
+                document.getElementById("purpose").innerHTML = catOptions;
             }
-            document.getElementById("purpose").innerHTML = catOptions;
+            else{
+                catOptions += "<option value=''>Empty</option>";
+                document.getElementById("purpose").innerHTML = catOptions;
+            }
         }
     }
     $(document).ready(function() {

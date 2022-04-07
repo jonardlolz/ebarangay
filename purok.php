@@ -12,6 +12,61 @@
     </div>
     
     <div class="card-body" style="font-size: 100%">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist"> <!--push-->
+            <li class="nav-item">
+                <a class="nav-link active" id="" data-toggle="tab" href="" role="tab" aria-controls="" aria-selected="true">Purok1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="" data-toggle="tab" href="" role="tab" aria-controls="" aria-selected="false">Purok2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="" data-toggle="tab" href="" role="tab" aria-controls="" aria-selected="false">Purok3</a>
+            </li>
+        </ul>      
+
+        <!--Tab Content-->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="release" role="tabpanel" aria-labelledby="release-tab">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center text-dark" 
+                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="bg-gradient-secondary text-white">
+                                <th scope="col">Status</th>
+                                <th scope="col">Purok Leader </th>
+                                <th scope="col">Total No. of Residents</th>
+                                <!--<th scope="col">Total No. of Renters</th>-->
+                                <th scope="col">Total No. of PWD</th>
+                                <th scope="col">Total No. of Students</th>
+                                <th scope="col">Total No. of Senior Citizen</th>
+                                <th scope="col">Total No. of Employed</th>
+                                <!--<th scope="col">Total No. of Unemployed</th>-->
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>In/Active</td>
+                                <td>Leader Name</td>
+                                <td>50</td>
+                                <td>20</td>
+                                <td>20</td>
+                                <td>20</td>
+                                <td>20</td>
+                                <td>    
+                                    <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_purok" data-id="<?php echo $row['PurokID'] ?>" href="javascript:void(0)"></a>
+                                    <hr>
+                                    <a class="fas fa-trash fa-md mr-2 text-gray-600" data-toggle="modal" data-target="#confirmModal" data-backdrop="static" data-id="" href=""></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                </div>
+            </div>
+        </div>
+        <!-- End of tab content-->
+         
+    
         <div class="table-responsive">
             <table class="table table-bordered text-center text-dark" 
                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
@@ -58,6 +113,22 @@
 <!--row-->
 </div>
 <!--Content-wrapper-->
+
+<!--#confirmModal (push)-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="border-color:#384550 ;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Delete Purok?</h5>
+            </div>
+            <div class="modal-body">Select "Delete" below if you are ready to delete the purok selected.</div>
+            <div class="modal-footer">
+                <a class="btn btn-outline-primary" href="">Delete</a>
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>               
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 window.start_load = function(){

@@ -7,30 +7,72 @@ if(isset($_GET["verifyInfo"])){ ?>
     <div class="container-fluid">
         <?php $qry=$conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name, concat(userAddress, ', ', userPurok, ', ', userBarangay, ', ', userCity) as address FROM users WHERE UsersID={$_GET['usersid']}");
                 $row=$qry->fetch_assoc();?>
-        <form action="includes/request.inc.php?document=<?php echo $_GET['docType'] ?>&purpose=<?php echo $_GET['purpose'] ?>&modeofPayment=<?php echo $_GET['modeofPayment'] ?>" method="POST">
+        <?php $qry2=$conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='{$_GET['docType']}' AND purpose='{$_GET['purpose']}' AND barangay='{$_SESSION['userBarangay']}'");
+                $row2=$qry2->fetch_assoc();?>
+        <form action="includes/request.inc.php?document=<?php echo $_GET['docType'] ?>&purpose=<?php echo $_GET['purpose'] ?>&modeofPayment=<?php echo $_GET['modeofPayment'] ?>&price=<?php echo $row2['price'] ?>" method="POST">
             <div class="form-group">
-                <div class="col">
-                    <div class="row">
-                        <label for="">Current Date: <?php echo date("Y-m-d") ?></label>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Current Date:</b>  </label>
                     </div>
-                    <div class="row">
-                        <label for="">Claim Date: 3 business days from current date</label>
+                    <div class="col-sm-5">
+                        <label><?php echo date("Y-m-d") ?></label>
                     </div>
-                    <br>
-                    <div class="row">
-                        <label for="">Name: <?php echo $row['name'] ?></label>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Claim Date:</b>  </label>
                     </div>
-                    <div class="row">
-                        <label for="">Address: <?php echo $row['address'] ?></label>
+                    <div class="col-sm-7">
+                        <label>3 business days from current date</label>
                     </div>
-                    <div class="row">
-                        <label for="">Document Type: <?php echo $_GET['docType'] ?></label>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Name:</b>  </label>
                     </div>
-                    <div class="row">
-                        <label for="">Purpose: <?php echo $_GET['purpose'] ?></label>
+                    <div class="col-sm-5">
+                        <label><?php echo $row['name'] ?></label>
                     </div>
-                    <div class="row">
-                        <label for="">Mode of Payment: <?php echo $_GET['modeofPayment'] ?></label>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Address: </b> </label>
+                    </div>
+                    <div class="col-sm-7">
+                        <label><?php echo $row['address'] ?></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Document Type:</b>  </label>
+                    </div>
+                    <div class="col-sm-5">
+                        <label><?php echo $_GET['docType'] ?></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Purpose:</b>  </label>
+                    </div>
+                    <div class="col-sm-5">
+                        <label><?php echo $_GET['purpose'] ?></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Fee:</b>  </label>
+                    </div>
+                    <div class="col-sm-5">
+                        <label><?php echo $row2['price'] ?></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="text-align: right">
+                        <label for=""><b>Mode of Payment:</b>  </label>
+                    </div>
+                    <div class="col-sm-5">
+                        <label><?php echo $_GET['modeofPayment'] ?></label>
                     </div>
                 </div>
             </div>
@@ -51,15 +93,8 @@ if(isset($_GET["document"]))
     $document = $_GET["document"];
     $purpose = $_GET["purpose"];
     $modeofPayment = $_GET["modeofPayment"];
-    
-    if($document == "Barangay Clearance"){
-        $userType = "Purok Leader";
-        $amount = 50;
-    }
-    else if($document == "Cedula"){
-        $userType = "Purok Leader";
-        $amount = 20;
-    }
+    $userType = 'Purok Leader';
+    $amount = $_GET['price'];
     mysqli_begin_transaction($conn);
 
     $a1 = mysqli_query($conn, "INSERT INTO request (UsersID, userBarangay, userPurok, documentType, paymentMode, purpose, amount, userType)

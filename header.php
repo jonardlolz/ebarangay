@@ -120,7 +120,7 @@
 <h1 class="navbar-text font-weight-bold d-none d-sm-block d-md-block text-white" 
     style= "font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-shadow: -1px 0px black, 3px 4px black, 5px 0 black, 0 -1px black;">
-    EBARANGAY
+    EBARANGAY 
 </h1>
 
 <!-- Topbar Navbar -->

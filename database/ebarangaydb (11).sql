@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2022 at 03:06 PM
+-- Generation Time: Apr 01, 2022 at 01:25 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -111,7 +111,9 @@ CREATE TABLE `documentpurpose` (
 --
 
 INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangayDoc`, `price`, `barangay`, `studentDiscount`, `seniorDiscount`, `pwdDiscount`) VALUES
-(1, 'Employment', 'Barangay Clearance', '100', 'Paknaan', '0', '0', '0');
+(1, 'Employment', 'Barangay Clearance', '100', 'Paknaan', '0', '0', '0'),
+(3, 'Ayuda', 'Indigency Clearance', '0', 'Paknaan', '0', '0', '0'),
+(4, 'Test', 'Indigency Clearance', '0', 'Paknaan', '0', '0', '0');
 
 -- --------------------------------------------------------
 
@@ -205,7 +207,7 @@ CREATE TABLE `notifications` (
   `position` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `notifications`
@@ -350,7 +352,7 @@ CREATE TABLE `report` (
   `updated_on` datetime DEFAULT CURRENT_TIMESTAMP,
   `userBarangay` varchar(50) DEFAULT NULL,
   `userPurok` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `report`
@@ -450,7 +452,7 @@ CREATE TABLE `schedule` (
   `complainee` int DEFAULT NULL,
   `forAll` varchar(10) DEFAULT 'False',
   `scheduleTitle` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `schedule`
@@ -668,7 +670,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `documenttype`
