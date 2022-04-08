@@ -14,55 +14,28 @@
     <div class="card-body" style="font-size: 100%">
 
         <ul class="nav nav-tabs" id="myTab" role="tablist"> <!--push-->
+            <?php 
+                $sql = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'");
+                $i = 0;
+                while($row = $sql->fetch_assoc()):
+            ?>
             <li class="nav-item">
-                <a class="nav-link active" id="" data-toggle="tab" href="" role="tab" aria-controls="" aria-selected="true">Purok1</a>
+                <a class="nav-link <?php if($i == 0){ echo 'active';} ?>" id="<?php echo $row['PurokName'] ?>-tab" data-toggle="tab" href="#<?php echo $row['PurokName'] ?>" role="tab" aria-controls="<?php echo $row['PurokName'] ?>" aria-selected="true"><?php echo $row['PurokName'] ?></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="" data-toggle="tab" href="" role="tab" aria-controls="" aria-selected="false">Purok2</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="" data-toggle="tab" href="" role="tab" aria-controls="" aria-selected="false">Purok3</a>
-            </li>
+            <?php $i++; endwhile; ?>
         </ul>      
 
         <!--Tab Content-->
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="release" role="tabpanel" aria-labelledby="release-tab">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark" 
-                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Status</th>
-                                <th scope="col">Purok Leader </th>
-                                <th scope="col">Total No. of Residents</th>
-                                <!--<th scope="col">Total No. of Renters</th>-->
-                                <th scope="col">Total No. of PWD</th>
-                                <th scope="col">Total No. of Students</th>
-                                <th scope="col">Total No. of Senior Citizen</th>
-                                <th scope="col">Total No. of Employed</th>
-                                <!--<th scope="col">Total No. of Unemployed</th>-->
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>In/Active</td>
-                                <td>Leader Name</td>
-                                <td>50</td>
-                                <td>20</td>
-                                <td>20</td>
-                                <td>20</td>
-                                <td>20</td>
-                                <td>    
-                                    <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_purok" data-id="<?php echo $row['PurokID'] ?>" href="javascript:void(0)"></a>
-                                    <hr>
-                                    <a class="fas fa-trash fa-md mr-2 text-gray-600" data-toggle="modal" data-target="#confirmModal" data-backdrop="static" data-id="" href=""></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                </div>
+            <?php 
+                $sql2 = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'");
+                $i = 0;
+                while($row2 = $sql2->fetch_assoc()):
+            ?>
+            <div class="tab-pane fade <?php if($i == 0){ echo 'show active'; } ?>" id="<?php echo $row2['PurokName'] ?>" role="tabpanel" aria-labelledby="<?php echo $row2['PurokName'] ?>-tab">
+                <?php echo $row2['PurokName'] ?>
             </div>
+            <?php $i++; endwhile; ?>
         </div>
         <!-- End of tab content-->
          
