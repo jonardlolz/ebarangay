@@ -12,7 +12,7 @@
                 <div class="text-center text-dark">
                     <div class="user-avatar w-100 d-flex justify-content-center">
                         <span class="position-relative">
-                            <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid img-thumbnail rounded-circle <?php 
+                            <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid rounded-circle <?php 
                                 if($_SESSION["userType"] == "Resident"){
                                     echo "img-res-profile";
                                 }
