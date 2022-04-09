@@ -23,7 +23,6 @@
                         <th>Barangay Captain</th>
                         <th scope="col">Edit</th>
                     </tr>
-                    
                 </thead>
                 <tbody>
                     <!--Row 1-->
