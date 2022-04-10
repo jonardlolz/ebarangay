@@ -571,13 +571,94 @@
             <div class="card-body" style="font-size: 75%">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</a>
+                        <a class="nav-item nav-link active" id="nav-ereklamo-tab" data-toggle="tab" href="#nav-ereklamo" role="tab" aria-controls="nav-ereklamo" aria-selected="true">eReklamo</a>
+                        <a class="nav-item nav-link" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</a>
                         <a class="nav-item nav-link" id="nav-scheduled-tab" data-toggle="tab" href="#nav-scheduled" role="tab" aria-controls="nav-scheduled" aria-selected="false">Scheduled</a>
                         <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#nav-resolved" role="tab" aria-controls="nav-resolved" aria-selected="false">Resolved</a>
                     </div>
                 </nav>
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
+                        <div class="tab-pane fade show active" id="nav-ereklamo" role="tabpanel" aria-labelledby="nav-ereklamo-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col m-2">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row">
+                                                            <div class="col-md-11">
+                                                                <h5><b>eReklamo Categories</b></h5>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <a class="add_ereklamoCat" href="javascript:void(0)"><i class="fas fa-plus fa-2x"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div id="accordion">
+                                                            <?php 
+                                                            $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}'");
+                                                            if(($ereklamoCat->num_rows) > 0):
+                                                                while($catRow = $ereklamoCat->fetch_assoc()):
+                                                                ?>
+                                                            <div class="card">
+                                                                    <div class="card-header" id="<?php echo $catRow['reklamoCatName'] ?>" data-toggle="collapse" data-target="#<?php echo $catRow['reklamoCatName'] ?>Accordian" aria-expanded="true" aria-controls="<?php echo $catRow['reklamoCatName'] ?>Accordian">
+                                                                        <div class="row">
+                                                                            <div class="col-md-11">
+                                                                                <label class="mb-0">
+                                                                                    <a>
+                                                                                        <?php echo $catRow['reklamoCatName']; ?>
+                                                                                    </a>
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-md-1">
+                                                                                <a class="add_ereklamotype" href="javascript:void(0)" data-id="<?php echo $catRow['reklamoCatID'] ?>" data-name="<?php echo $catRow['reklamoCatName'] ?>"><i class="fas fa-plus fa-2x"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div id="<?php echo $catRow['reklamoCatName'] ?>Accordian" class="collapse show" aria-labelledby="<?php echo $catRow['reklamoCatName'] ?>" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <?php 
+                                                                                $reklamoType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$catRow['reklamoCatID']}");
+                                                                                if(($reklamoType->num_rows) > 0):
+                                                                                    while($typeRow = $reklamoType->fetch_assoc()):
+                                                                            ?>
+                                                                                <div class="row">
+                                                                                    <div class="col-sm-10">
+                                                                                        <label><?php echo $typeRow['reklamoTypeName'] ?></label>
+                                                                                    </div>
+                                                                                    <div class="col-sm-1">
+                                                                                        <?php echo $typeRow['reklamoTypePriority'] ?>
+                                                                                    </div>
+                                                                                    <div class="col-sm-1">
+                                                                                        <a href="javascript:void(0)"><i class="fas fa-edit"></i></a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <?php endwhile; ?>
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <?php endwhile; ?>
+                                                            <?php else: ?>
+                                                                <div class="alert alert-danger">
+                                                                    <label for=""><b>Category is empty!</b></label>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="tab-pane fade" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark" 
                                     id="dataTable" width="100%" cellspacing="0" cellpadding="0">
@@ -972,6 +1053,13 @@
         $('.confirm-schedule').click(function(){
             uni_modal("<center><b>Schedule a summon</b></center></center>","includes/schedule.inc.php?scheduleSummon="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'))
         })
+        $('.add_ereklamoCat').click(function(){
+            uni_modal("<center><b>Add Reklamo Category</b></center></center>","includes/ereklamo.inc.php?ereklamoAddCat")
+        })
+        $('.add_ereklamotype').click(function(){
+            uni_modal("<center><b>Add Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoAddType&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
+        })
+        
         
         $('.content-field').each(function(){
             var dom = $(this)[0]

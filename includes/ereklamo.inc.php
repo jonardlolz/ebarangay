@@ -242,4 +242,92 @@
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
     }
+    if(isset($_GET['ereklamoAddCat'])):?>
+        <div class="container-fluid">
+            <form action="includes/ereklamo.inc.php?postCatAdd" class="user" method="post">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Category name: </label>
+                        </div>
+                        <div class="col">
+                            <input type="text" placeholder="Category Name" name="catName">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+    <?php
+    elseif(isset($_GET['ereklamoAddType'])):?>
+        <div class="container-fluid">
+            <form action="includes/ereklamo.inc.php?postTypeAdd&catID=<?php echo $_GET['catID']?>&catName=<?php echo $_GET['catName'] ?>" class="user" method="post">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>Type name: </label>
+                        </div>
+                        <div class="col">
+                            <input type="text" placeholder="Type Name" name="typeName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>Priority: </label>
+                        </div>
+                        <div class="col">
+                            <select name="typePriority" id="typePriority">
+                                <option value="Minor" selected>Minor</option>
+                                <option value="Major">Major</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    <?php
+    endif;
+    if(isset($_GET['postCatAdd'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "INSERT INTO ereklamocategory(reklamoCatName, reklamoCatBrgy) VALUES('$catName', '{$_SESSION['userBarangay']}')");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo category type: $catName', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET['postTypeAdd'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "INSERT INTO ereklamotype(reklamoTypeName, reklamoTypePriority, reklamoCatID) VALUES('$typeName', '$typePriority', {$_GET['catID']})");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo type for category type: {$_GET['catName']}', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
+    
 ?>
