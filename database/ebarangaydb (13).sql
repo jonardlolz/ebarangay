@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2022 at 01:35 PM
+-- Generation Time: Apr 11, 2022 at 01:36 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -200,6 +200,52 @@ INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `Created
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ereklamocategory`
+--
+
+CREATE TABLE `ereklamocategory` (
+  `reklamoCatID` int NOT NULL,
+  `reklamoCatName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `reklamoCatBrgy` varchar(20) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ereklamocategory`
+--
+
+INSERT INTO `ereklamocategory` (`reklamoCatID`, `reklamoCatName`, `reklamoCatBrgy`) VALUES
+(6, 'Garbage', 'Paknaan'),
+(7, 'Residents', 'Paknaan'),
+(8, 'Barangay Infrastructures', 'Paknaan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ereklamotype`
+--
+
+CREATE TABLE `ereklamotype` (
+  `reklamoTypeID` int NOT NULL,
+  `reklamoTypeName` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `reklamoTypePriority` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `reklamoCatID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ereklamotype`
+--
+
+INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoTypePriority`, `reklamoCatID`) VALUES
+(2, 'Improper disposal', 'Minor', 6),
+(3, 'Drugs', 'Major', 7),
+(4, 'Solicitors', 'Minor', 7),
+(5, 'Illegal Vendors', 'Minor', 7),
+(6, 'Broken light posts', 'Minor', 8),
+(7, 'Broken roads', 'Minor', 8);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `notifications`
 --
 
@@ -365,7 +411,6 @@ CREATE TABLE `report` (
 --
 
 INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `created_on`, `updated_on`, `userBarangay`, `userPurok`) VALUES
-(1, 'eReklamo', 'Test Test has resolved ereklamo#$id', 0, '2022-02-24 20:07:11', '2022-02-24 20:07:11', 'Paknaan', 'Kamatis'),
 (2, 'eReklamo', 'Purok Leader Caitleen has resolved ereklamo#7', 23, '2022-02-24 20:15:16', '2022-02-24 20:15:16', 'Paknaan', 'Kamatis'),
 (16, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#12 on 2022-03-30', 30, '2022-03-17 22:35:11', '2022-03-17 22:35:11', 'Paknaan', 'Kamatis'),
 (17, 'eReklamo', 'Resident Xavier has resolved ereklamo#15', 28, '2022-03-26 21:02:23', '2022-03-26 21:02:23', 'Paknaan', 'Kamatis'),
@@ -409,7 +454,20 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (62, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 25', 31, '2022-03-29 07:49:49', '2022-03-29 07:49:49', 'Paknaan', 'Kamatis'),
 (63, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 25', 37, '2022-03-29 07:55:07', '2022-03-29 07:55:07', 'Paknaan', 'Kamatis'),
 (64, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 24', 37, '2022-03-29 07:57:02', '2022-03-29 07:57:02', 'Paknaan', 'Kamatis'),
-(65, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 26', 31, '2022-04-02 22:18:01', '2022-04-02 22:18:01', 'Paknaan', 'Kamatis');
+(65, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 26', 31, '2022-04-02 22:18:01', '2022-04-02 22:18:01', 'Paknaan', 'Kamatis'),
+(70, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-04-10 18:51:27', '2022-04-10 18:51:27', 'Paknaan', 'Kamatis'),
+(71, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-04-10 19:39:28', '2022-04-10 19:39:28', 'Paknaan', 'Kamatis'),
+(72, 'eReklamo', 'Captain has entered a new reklamo category type: Test2', 29, '2022-04-10 19:51:46', '2022-04-10 19:51:46', 'Paknaan', 'Kamatis'),
+(73, 'eReklamo', 'Captain has entered a new reklamo category type: Test2', 29, '2022-04-10 20:08:44', '2022-04-10 20:08:44', 'Paknaan', 'Kamatis'),
+(74, 'eReklamo', 'Captain has entered a new reklamo category type: Garbage', 29, '2022-04-10 20:48:01', '2022-04-10 20:48:01', 'Paknaan', 'Kamatis'),
+(75, 'eReklamo', 'Captain has entered a new reklamo category type: Residents', 29, '2022-04-10 20:48:08', '2022-04-10 20:48:08', 'Paknaan', 'Kamatis'),
+(76, 'eReklamo', 'Captain has entered a new reklamo category type: Barangay Infrastructures', 29, '2022-04-10 20:48:46', '2022-04-10 20:48:46', 'Paknaan', 'Kamatis'),
+(77, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 29, '2022-04-10 20:48:58', '2022-04-10 20:48:58', 'Paknaan', 'Kamatis'),
+(78, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-10 20:49:16', '2022-04-10 20:49:16', 'Paknaan', 'Kamatis'),
+(79, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-10 20:52:50', '2022-04-10 20:52:50', 'Paknaan', 'Kamatis'),
+(80, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-10 20:52:58', '2022-04-10 20:52:58', 'Paknaan', 'Kamatis'),
+(81, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-10 20:53:31', '2022-04-10 20:53:31', 'Paknaan', 'Kamatis'),
+(82, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-10 20:53:38', '2022-04-10 20:53:38', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -597,6 +655,19 @@ ALTER TABLE `ereklamo`
   ADD KEY `UsersID` (`UsersID`);
 
 --
+-- Indexes for table `ereklamocategory`
+--
+ALTER TABLE `ereklamocategory`
+  ADD PRIMARY KEY (`reklamoCatID`);
+
+--
+-- Indexes for table `ereklamotype`
+--
+ALTER TABLE `ereklamotype`
+  ADD PRIMARY KEY (`reklamoTypeID`),
+  ADD KEY `reklamoCatID` (`reklamoCatID`);
+
+--
 -- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -699,6 +770,18 @@ ALTER TABLE `ereklamo`
   MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT for table `ereklamocategory`
+--
+ALTER TABLE `ereklamocategory`
+  MODIFY `reklamoCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `ereklamotype`
+--
+ALTER TABLE `ereklamotype`
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -720,7 +803,7 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `request`
@@ -781,6 +864,12 @@ ALTER TABLE `documenttype`
 --
 ALTER TABLE `ereklamo`
   ADD CONSTRAINT `ereklamo_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ereklamotype`
+--
+ALTER TABLE `ereklamotype`
+  ADD CONSTRAINT `ereklamotype_ibfk_1` FOREIGN KEY (`reklamoCatID`) REFERENCES `ereklamocategory` (`reklamoCatID`);
 
 --
 -- Constraints for table `post`

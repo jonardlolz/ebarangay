@@ -286,6 +286,38 @@
             </form>
         </div>
     <?php
+    elseif(isset($_GET['ereklamoEditType'])):?>
+        <div class="container-fluid">
+            <form action="includes/ereklamo.inc.php?postTypeEdit&typeID=<?php echo $_GET['typeID']?>" class="user" method="post">
+                <?php 
+                    $ereklamoType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoTypeID = {$_GET['typeID']}");
+                    $ereklamo = $ereklamoType->fetch_assoc();
+                ?>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>Type name: </label>
+                        </div>
+                        <div class="col">
+                            <input value="<?php echo $ereklamo['reklamoTypeName'] ?>" type="text" placeholder="Type Name" name="typeName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>Priority: </label>
+                        </div>
+                        <div class="col">
+                            <select name="typePriority" id="typePriority">
+                                <option value="<?php echo $ereklamo['reklamoTypePriority']?>" hidden selected><?php echo $ereklamo['reklamoTypePriority']?></option>
+                                <option value="Minor">Minor</option>
+                                <option value="Major">Major</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    <?php
     endif;
     if(isset($_GET['postCatAdd'])){
         extract($_POST);

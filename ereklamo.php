@@ -603,12 +603,12 @@
                                                                 while($catRow = $ereklamoCat->fetch_assoc()):
                                                                 ?>
                                                             <div class="card">
-                                                                    <div class="card-header" id="<?php echo $catRow['reklamoCatName'] ?>" data-toggle="collapse" data-target="#<?php echo $catRow['reklamoCatName'] ?>Accordian" aria-expanded="true" aria-controls="<?php echo $catRow['reklamoCatName'] ?>Accordian">
+                                                                    <div class="card-header" id="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>" data-toggle="collapse" data-target="#<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian" aria-expanded="true" aria-controls="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian">
                                                                         <div class="row">
                                                                             <div class="col-md-11">
                                                                                 <label class="mb-0">
                                                                                     <a>
-                                                                                        <?php echo $catRow['reklamoCatName']; ?>
+                                                                                        <?php echo $catRow['reklamoCatName'];  ?>
                                                                                     </a>
                                                                                 </label>
                                                                             </div>
@@ -619,7 +619,7 @@
                                                                         
                                                                     </div>
 
-                                                                    <div id="<?php echo $catRow['reklamoCatName'] ?>Accordian" class="collapse show" aria-labelledby="<?php echo $catRow['reklamoCatName'] ?>" data-parent="#accordion">
+                                                                    <div id="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian" class="collapse show" aria-labelledby="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <?php 
                                                                                 $reklamoType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$catRow['reklamoCatID']}");
@@ -634,7 +634,7 @@
                                                                                         <?php echo $typeRow['reklamoTypePriority'] ?>
                                                                                     </div>
                                                                                     <div class="col-sm-1">
-                                                                                        <a href="javascript:void(0)"><i class="fas fa-edit"></i></a>
+                                                                                        <a class="edit_type" data-id="<?php echo $typeRow['reklamoTypeID'] ?>" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                                 <?php endwhile; ?>
@@ -1058,6 +1058,9 @@
         })
         $('.add_ereklamotype').click(function(){
             uni_modal("<center><b>Add Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoAddType&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
+        })
+        $('.edit_type').click(function(){
+            uni_modal("<center><b>Edit Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoEditType&typeID="+ $(this).attr('data-id'))
         })
         
         
