@@ -259,6 +259,27 @@
         </div>
     
     <?php
+    elseif(isset($_GET['ereklamoEditCat'])):?>
+        <div class="container-fluid">
+            <form action="includes/ereklamo.inc.php?postCatEdit&catID=<?php echo $_GET['catID'] ?>" class="user" method="post">
+                <?php
+                $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatID={$_GET['catID']}");
+                $ereklamoRow = $ereklamoCat->fetch_assoc();
+                ?>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Category name: </label>
+                        </div>
+                        <div class="col">
+                            <input type="text" value="<?php echo $ereklamoRow['reklamoCatName'] ?>" placeholder="Category Name" name="catName">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+    <?php
     elseif(isset($_GET['ereklamoAddType'])):?>
         <div class="container-fluid">
             <form action="includes/ereklamo.inc.php?postTypeAdd&catID=<?php echo $_GET['catID']?>&catName=<?php echo $_GET['catName'] ?>" class="user" method="post">
@@ -268,7 +289,7 @@
                             <label>Type name: </label>
                         </div>
                         <div class="col">
-                            <input type="text" placeholder="Type Name" name="typeName">
+                            <input type="text" placeholder="Type Name" name="typeName" required>
                         </div>
                     </div>
                     <div class="row">
@@ -340,12 +361,96 @@
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
     }
+    else if(isset($_GET['postCatEdit'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamocategory SET reklamoCatName='$catName' WHERE reklamoCatID={$_GET['catID']}");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has modified reklamo category #{$_GET['catID']}', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET['postCatDelete'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "DELETE FROM ereklamocategory WHERE reklamoCatID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has deleted the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
     else if(isset($_GET['postTypeAdd'])){
         extract($_POST);
         mysqli_begin_transaction($conn);
 
         $a1 = mysqli_query($conn, "INSERT INTO ereklamotype(reklamoTypeName, reklamoTypePriority, reklamoCatID) VALUES('$typeName', '$typePriority', {$_GET['catID']})");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo type for category type: {$_GET['catName']}', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET['postTypeEdit'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamotype SET reklamoTypeName='{$_POST['typeName']}', reklamoTypePriority='{$_POST['typePriority']}' WHERE reklamoTypeID={$_GET['typeID']}");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has modified the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../ereklamo.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET['postTypeDelete'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "DELETE FROM ereklamoType WHERE reklamoTypeID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has deleted the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
             mysqli_commit($conn);

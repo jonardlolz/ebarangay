@@ -33,10 +33,12 @@
                             <select class="form-control w-75 form-control-md form-select" 
                             name="reklamotype" onChange="changecat(this.value);" required>
                                 <option selected value="" hidden>Select</option>
-                                <option value="Kuryente">Kuryente</option>
-                                <option value="Tubig">Tubig</option>
-                                <option value="Kalsada">Kalsada</option>
-                                <option value="Resident">Resident</option> 
+                                <?php 
+                                $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}'"); 
+                                while($categoryRow = $ereklamoCat->fetch_assoc()):
+                                ?>
+                                <option value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
+                                <?php endwhile; ?>
                             </select>
                         </div>
                         <div class="col-lg-5 m-1">
@@ -605,21 +607,26 @@
                                                             <div class="card">
                                                                     <div class="card-header" id="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>" data-toggle="collapse" data-target="#<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian" aria-expanded="true" aria-controls="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian">
                                                                         <div class="row">
-                                                                            <div class="col-md-11">
-                                                                                <label class="mb-0">
-                                                                                    <a>
+                                                                            <div class="d-flex">
+                                                                                <div class="p-2">
+                                                                                    <h6>
+                                                                                    <label class="mb-0">
                                                                                         <?php echo $catRow['reklamoCatName'];  ?>
-                                                                                    </a>
-                                                                                </label>
-                                                                            </div>
-                                                                            <div class="col-md-1">
-                                                                                <a class="add_ereklamotype" href="javascript:void(0)" data-id="<?php echo $catRow['reklamoCatID'] ?>" data-name="<?php echo $catRow['reklamoCatName'] ?>"><i class="fas fa-plus fa-2x"></i></a>
+                                                                                    </label>
+                                                                                    </h6>
+                                                                                </div>
+                                                                                <div class="ml-auto p-2">
+                                                                                    <a class="add_ereklamotype" href="javascript:void(0)" data-id="<?php echo $catRow['reklamoCatID'] ?>" data-name="<?php echo $catRow['reklamoCatName'] ?>"><i class="fas fa-plus"></i></a>
+                                                                                    <a class="edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $catRow['reklamoCatID'] ?>" data-name="<?php echo $catRow['reklamoCatName'] ?>"><i class="fas fa-edit"></i></a>
+                                                                                    <a class="delete_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $catRow['reklamoCatID'] ?>" data-name="<?php echo $catRow['reklamoCatName'] ?>"><i class="fas fa-trash"></i></a>
+
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         
                                                                     </div>
 
-                                                                    <div id="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian" class="collapse show" aria-labelledby="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>" data-parent="#accordion">
+                                                                    <div id="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>Accordian" class="collapse" aria-labelledby="<?php echo str_replace(' ', '', $catRow['reklamoCatName']) ?>" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <?php 
                                                                                 $reklamoType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$catRow['reklamoCatID']}");
@@ -635,9 +642,16 @@
                                                                                     </div>
                                                                                     <div class="col-sm-1">
                                                                                         <a class="edit_type" data-id="<?php echo $typeRow['reklamoTypeID'] ?>" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
+                                                                                        <a class="delete_type" data-id="<?php echo $typeRow['reklamoTypeID'] ?>" href="javascript:void(0)"><i class="fas fa-trash"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                                 <?php endwhile; ?>
+                                                                            <?php else: ?>
+                                                                                <div class="row">
+                                                                                    <div class="col">
+                                                                                        <class class="alert alert-danger">This category is empty.</class>
+                                                                                    </div>
+                                                                                </div>
                                                                             <?php endif; ?>
                                                                         </div>
                                                                     </div>
@@ -912,11 +926,27 @@
 <!-- End of Begin Page Content -->
 
 <script>
+    $(".delete_ereklamoCat").on('click', function (e) { e.stopPropagation(); })
+    $(".edit_ereklamoCat").on('click', function (e) { e.stopPropagation(); })
+    $(".add_ereklamotype").on('click', function (e) { e.stopPropagation(); })
+
     var problemsByCategory = {
-        Kuryente: ["No electricity in the area", "Power outtages", "Others"],
-        Tubig: ["No water in the area", "Leakage", "Others"],
-        Kalsada: ["No roads in the area", "Broken roads", "Others"],
-        Resident: ["Noise", "Disregard of trashes", "Abusive", "Others"]
+        <?php 
+            $puroks = array();
+            $barangay = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}'");
+            while($brow = $barangay->fetch_assoc()):
+        ?>
+            <?php 
+            echo json_encode($brow["reklamoCatName"]) ?> : <?php $purok = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID='{$brow['reklamoCatID']}'"); 
+            while($prow = $purok->fetch_assoc()):
+            $puroks[] = $prow["reklamoTypeName"]?>
+            <?php endwhile; echo json_encode($puroks). ","; $puroks = array();?>
+            <?php endwhile; ?>
+
+        // Kuryente: ["No electricity in the area", "Power outtages", "Others"],
+        // Tubig: ["No water in the area", "Leakage", "Others"],
+        // Kalsada: ["No roads in the area", "Broken roads", "Others"],
+        // Resident: ["Noise", "Disregard of trashes", "Abusive", "Others"]
     }
 
     function changecat(value) {
@@ -1056,13 +1086,45 @@
         $('.add_ereklamoCat').click(function(){
             uni_modal("<center><b>Add Reklamo Category</b></center></center>","includes/ereklamo.inc.php?ereklamoAddCat")
         })
+        $('.edit_ereklamoCat').click(function(){
+            uni_modal("<center><b>Add Reklamo Category</b></center></center>","includes/ereklamo.inc.php?ereklamoEditCat&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
+        })
+        $('.delete_ereklamoCat').click(function(){
+            _conf("Are you sure you want to delete this reklamo category?", "delete_cat", [$(this).attr('data-id')])
+        })
         $('.add_ereklamotype').click(function(){
             uni_modal("<center><b>Add Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoAddType&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
         })
         $('.edit_type').click(function(){
             uni_modal("<center><b>Edit Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoEditType&typeID="+ $(this).attr('data-id'))
         })
-        
+        $('.delete_type').click(function(){
+            _conf("Are you sure you want to delete this reklamo type?", "delete_type", [$(this).attr('data-id')])
+        })
+
+        function delete_cat($id){
+            start_load()
+            $.ajax({
+                url:'includes/ereklamo.inc.php?postCatDelete',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+
+        function delete_type($id){
+            start_load()
+            $.ajax({
+                url:'includes/ereklamo.inc.php?postTypeDelete',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         
         $('.content-field').each(function(){
             var dom = $(this)[0]
