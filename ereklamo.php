@@ -957,7 +957,7 @@
                 catOptions += "<option>" + problemsByCategory[value][categoryId] + "</option>";
             }
             document.getElementById("specific").innerHTML = catOptions;
-            if(value == "Resident"){
+            if(value == "Resident" || value == "Residents"){
                 $("#inputArea").append(
                 "<label for='resident' id='label'>Resident name: </label><select name='resident'" +
                 "id='resident' class='form-control w-75 form-control-md' required />"+ 
