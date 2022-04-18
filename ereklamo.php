@@ -18,9 +18,6 @@
                 You're still unverified!
             </div>
             
-        
-
-
         <?php else: ?>
         <!--EReklamo Content-->
         <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">    
@@ -55,7 +52,7 @@
                 <section>
                     <strong>Comments</strong>
                     <div class="row p-2">
-                        <label>Specify your concern.</label>
+                        <label>Additional details:</label>
                         <textarea name="comment" class="form-control" rows="3" style="resize:none;"></textarea>
                     </div>
                     <?php
