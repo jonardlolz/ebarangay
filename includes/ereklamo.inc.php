@@ -12,8 +12,29 @@
         //     header("location: ../ereklamo.php?error=pendingRek");
         //     exit();
         // }
-        $postsql = $conn->query("SELECT * FROM (SELECT ereklamotype.*, ereklamocategory.reklamoCatName, ereklamocategory.reklamoCatBrgy FROM ereklamotype INNER JOIN ereklamocategory ON ereklamotype.reklamoCatID = ereklamocategory.reklamoCatID) as ereklamoTab WHERE reklamoTypeName='Drugs' AND reklamoCatName='Residents' AND reklamoCatBrgy = 'Paknaan'");
+        $postsql = $conn->query("SELECT * FROM (SELECT ereklamotype.*, ereklamocategory.reklamoCatName, ereklamocategory.reklamoCatBrgy FROM ereklamotype INNER JOIN ereklamocategory ON ereklamotype.reklamoCatID = ereklamocategory.reklamoCatID) as ereklamoTab WHERE reklamoTypeName='{$_POST['detail']}' AND reklamoCatName='{$_POST['reklamotype']}' AND reklamoCatBrgy = '{$_SESSION['userBarangay']}'");
         $postreklamo = $postsql->fetch_assoc();
+        if($postreklamo['reklamoTypePriority'] == "Minor"){
+            mysqli_begin_transaction($conn);
+
+            $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', 'N/A', '{$postreklamo['reklamoTypePriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a reklamo!', 'ereklamo', 'Purok Leader')");
+
+            if($a1 && $a2){
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
+                exit();
+            }
+            else{
+                echo("Error description: " . mysqli_error($conn));
+                mysqli_rollback($conn);
+                exit();
+            }
+        }
+        else if($postreklamo['reklamoTypePriority'] == "Major"){
+            echo "Major";
+        }
+
         // $reklamotype = $_POST["reklamotype"];
         // $detail = $_POST["detail"];
         // $comment = $_POST["comment"];
@@ -104,6 +125,7 @@
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
     }
+    
     else if(isset($_GET["rescheduleID"])){
         $id = $_GET["rescheduleID"];
         $usersID = $_GET['usersID'];
