@@ -106,9 +106,10 @@
                                 <thead >
                                     <tr class="bg-gradient-secondary text-white">
                                         <th scope="col">Name</th>
+                                        <th scope="col">Reklamo Category</th>
                                         <th scope="col">Reklamo Type</th>
-                                        <th scope="col">Detail</th>
-                                        <th scope="col">Comment</th>
+                                        <th>Priority</th>
+                                        <th scope="col">Details</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Date Submitted</th>
                                         <th scope="col">Manage</th>
@@ -161,7 +162,8 @@
                                         </td>
                                         <td><?php echo $row["reklamoType"] ?></td>
                                         <td><?php echo $row["detail"] ?></td>
-                                        <td><?php echo $row["comment"] ?></td>
+                                        <td><?php echo $row['complaintLevel'] ?></td>
+                                        <td><?php if($row["comment"] != "" || $row["comment"] != NULL){ echo $row["comment"]; }else{ echo "No comment given"; } ?></td>
                                         <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td><?php echo $row["createdDate"] ?></td>
                                         <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->

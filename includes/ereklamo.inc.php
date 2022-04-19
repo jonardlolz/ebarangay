@@ -32,7 +32,21 @@
             }
         }
         else if($postreklamo['reklamoTypePriority'] == "Major"){
-            echo "Major";
+            mysqli_begin_transaction($conn);
+
+            $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION['UsersID']}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', '{$_POST['resident']}', '{$postreklamo['reklamoTypePriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a reklamo!', 'ereklamo', 'Purok Leader')");
+
+            if($a1 && $a2){
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
+                exit();
+            }
+            else{
+                echo("Error description: " . mysqli_error($conn));
+                mysqli_rollback($conn);
+                exit();
+            }
         }
 
         // $reklamotype = $_POST["reklamotype"];
