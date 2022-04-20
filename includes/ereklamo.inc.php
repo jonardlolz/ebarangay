@@ -5,13 +5,6 @@
 
     if(isset($_POST["submit"])){
         
-        // $ereklamo = $conn->query("SELECT * FROM ereklamo WHERE UsersID=
-        // {$_SESSION['UsersID']} AND status='Pending'");
-        // $row_cnt = mysqli_num_rows($ereklamo);
-        // if($row_cnt >= 1){
-        //     header("location: ../ereklamo.php?error=pendingRek");
-        //     exit();
-        // }
         $postsql = $conn->query("SELECT * FROM (SELECT ereklamotype.*, ereklamocategory.reklamoCatName, ereklamocategory.reklamoCatBrgy FROM ereklamotype INNER JOIN ereklamocategory ON ereklamotype.reklamoCatID = ereklamocategory.reklamoCatID) as ereklamoTab WHERE reklamoTypeName='{$_POST['detail']}' AND reklamoCatName='{$_POST['reklamotype']}' AND reklamoCatBrgy = '{$_SESSION['userBarangay']}'");
         $postreklamo = $postsql->fetch_assoc();
         if($postreklamo['reklamoTypePriority'] == "Minor"){
@@ -115,7 +108,7 @@
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
         status='Resolved' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+  	    'Your eReklamo#$id has been resolved by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
           '$userPurok');");
@@ -132,12 +125,9 @@
         else{
             echo("Error description: " . mysqli_error($conn));
             mysqli_rollback($conn);
-            header("location: ../respondent.php?error=error"); 
-            exit();
+            // header("location: ../respondent.php?error=error"); 
+            // exit();
         }
-
-        header("location: ../ereklamo.php?error=none"); //no errors were made
-        exit();
     }
     
     else if(isset($_GET["rescheduleID"])){
