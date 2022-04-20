@@ -4,48 +4,79 @@
     extract($_POST);
 
     if(isset($_POST["submit"])){
-        // $ereklamo = $conn->query("SELECT * FROM ereklamo WHERE UsersID=
-        // {$_SESSION['UsersID']} AND status='Pending'");
-        // $row_cnt = mysqli_num_rows($ereklamo);
-        // if($row_cnt >= 1){
-        //     header("location: ../ereklamo.php?error=pendingRek");
-        //     exit();
-        // }
-        $reklamotype = $_POST["reklamotype"];
-        $detail = $_POST["detail"];
-        $comment = $_POST["comment"];
-        $status = "Pending";
-        $complainee = $_POST["resident"];
-        if($reklamotype == "Resident"){
-            if($complainee == ""){  
-                header("location: ../ereklamo.php?error=noResident");
+        
+        $postsql = $conn->query("SELECT * FROM (SELECT ereklamotype.*, ereklamocategory.reklamoCatName, ereklamocategory.reklamoCatBrgy FROM ereklamotype INNER JOIN ereklamocategory ON ereklamotype.reklamoCatID = ereklamocategory.reklamoCatID) as ereklamoTab WHERE reklamoTypeName='{$_POST['detail']}' AND reklamoCatName='{$_POST['reklamotype']}' AND reklamoCatBrgy = '{$_SESSION['userBarangay']}'");
+        $postreklamo = $postsql->fetch_assoc();
+        if($postreklamo['reklamoTypePriority'] == "Minor"){
+            mysqli_begin_transaction($conn);
+
+            $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', 'N/A', '{$postreklamo['reklamoTypePriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a reklamo!', 'ereklamo', 'Purok Leader')");
+
+            if($a1 && $a2){
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
                 exit();
             }
             else{
-                $complaintLevel = "Major";
-                $userType =  "Secretary";
+                echo("Error description: " . mysqli_error($conn));
+                mysqli_rollback($conn);
+                exit();
             }
         }
-        else{
-            $complaintLevel = "Minor";
-            $userType =  "Purok Leader";
+        else if($postreklamo['reklamoTypePriority'] == "Major"){
+            mysqli_begin_transaction($conn);
+
+            $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION['UsersID']}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', '{$_POST['resident']}', '{$postreklamo['reklamoTypePriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a reklamo!', 'ereklamo', 'Purok Leader')");
+
+            if($a1 && $a2){
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
+                exit();
+            }
+            else{
+                echo("Error description: " . mysqli_error($conn));
+                mysqli_rollback($conn);
+                exit();
+            }
         }
 
-        mysqli_begin_transaction($conn);
+        // $reklamotype = $_POST["reklamotype"];
+        // $detail = $_POST["detail"];
+        // $comment = $_POST["comment"];
+        // $status = "Pending";
+        // $complainee = $_POST["resident"];
+        // if($reklamotype == "Resident"){
+        //     if($complainee == ""){  
+        //         header("location: ../ereklamo.php?error=noResident");
+        //         exit();
+        //     }
+        //     else{
+        //         $complaintLevel = "Major";
+        //         $userType =  "Secretary";
+        //     }
+        // }
+        // else{
+        //     $complaintLevel = "Minor";
+        //     $userType =  "Purok Leader";
+        // }
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '$reklamotype', '$detail', '$status', '$comment', '$complainee', '$complaintLevel', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
-        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has submitted a reklamo: $reklamotype', 'ereklamo', '$userType')");
+        // mysqli_begin_transaction($conn);
 
-        if($a1 && $a2){
-            mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
-            exit();
-        }
-        else{
-            echo("Error description: " . mysqli_error($conn));
-            mysqli_rollback($conn);
-            exit();
-        }
+        // $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '$reklamotype', '$detail', '$status', '$comment', '$complainee', '$complaintLevel', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+        // $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has submitted a reklamo: $reklamotype', 'ereklamo', '$userType')");
+
+        // if($a1 && $a2){
+        //     mysqli_commit($conn);
+        //     header("location: ../ereklamo.php?error=none"); 
+        //     exit();
+        // }
+        // else{
+        //     echo("Error description: " . mysqli_error($conn));
+        //     mysqli_rollback($conn);
+        //     exit();
+        // }
 
         /*$sql = "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment) VALUES(?, ?, ?, ?, ?)";
         $stmt = mysqli_stmt_init($conn);
@@ -77,7 +108,7 @@
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
         status='Resolved' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo#$id has been responded by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
+  	    'Your eReklamo#$id has been resolved by $userType $Firstname.', 'ereklamo', 'Resident', $usersID);");
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has resolved ereklamo#$id', '$currentUser', '$userBarangay',
           '$userPurok');");
@@ -94,13 +125,11 @@
         else{
             echo("Error description: " . mysqli_error($conn));
             mysqli_rollback($conn);
-            header("location: ../respondent.php?error=error"); 
-            exit();
+            // header("location: ../respondent.php?error=error"); 
+            // exit();
         }
-
-        header("location: ../ereklamo.php?error=none"); //no errors were made
-        exit();
     }
+    
     else if(isset($_GET["rescheduleID"])){
         $id = $_GET["rescheduleID"];
         $usersID = $_GET['usersID'];

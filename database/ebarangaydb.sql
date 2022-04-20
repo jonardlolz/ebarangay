@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2022 at 01:34 PM
+-- Generation Time: Apr 19, 2022 at 02:34 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -187,15 +187,8 @@ CREATE TABLE `ereklamo` (
 --
 
 INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `CreatedOn`, `UpdatedOn`, `comment`, `checkedBy`, `checkedOn`, `complaintLevel`, `complainee`, `scheduledSummon`, `UsersID`, `barangay`, `purok`) VALUES
-(11, 'Kuryente', 'No electricity in the area', 'Resolved', '2022-03-04 20:35:16', '2022-03-04 20:35:16', 'Test', 'Torts, Woshua', '2022-03-07 01:00:41', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
-(12, 'Resident', 'Noise', 'Scheduled', '2022-03-17 16:37:52', '2022-03-17 16:37:52', 'Test', 'Handson, Roxy', '2022-03-17 22:35:10', 'Major', 34, '2022-03-30', 28, 'Paknaan', 'Kamatis'),
-(14, 'Resident', 'Disregard of trashes', 'Scheduled', '2022-03-17 23:27:34', '2022-03-17 23:27:34', 'Test', 'Handson, Roxy', '2022-03-27 20:15:43', 'Major', 34, '2022-03-28', 28, 'Paknaan', 'Kamatis'),
-(15, 'Kuryente', 'No electricity in the area', 'Respondents sent', '2022-03-22 18:52:24', '2022-03-22 18:52:24', 'Test ', 'Johnson, Xavier', '2022-03-26 21:02:23', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
-(16, 'Resident', 'Noise', 'Scheduled', '2022-03-24 14:46:52', '2022-03-24 14:46:52', 'Test', 'Handson, Roxy', '2022-03-27 20:46:55', 'Major', 29, '2022-03-28', 28, 'Paknaan', 'Kamatis'),
-(17, 'Kuryente', 'No electricity in the area', 'Respondents sent', '2022-03-26 21:45:36', '2022-03-26 21:45:36', 'Test', 'Purok Leader', '2022-03-26 21:45:47', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
-(18, 'Resident', 'Disregard of trashes', 'Scheduled', '2022-03-26 22:56:12', '2022-03-26 22:56:12', 'Test', 'Handson, Roxy', '2022-03-27 20:46:59', 'Major', 30, '2022-03-28', 28, 'Paknaan', 'Kamatis'),
-(19, 'Kuryente', 'No electricity in the area', 'Respondents sent', '2022-03-28 15:31:45', '2022-03-28 15:31:45', '', 'Purok Leader', '2022-03-29 08:15:04', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
-(20, 'Resident', 'Disregard of trashes', 'Reschedule', '2022-03-28 17:13:02', '2022-03-28 17:13:02', 'Test', 'Elbertson, Jeremy', '2022-03-28 22:21:10', 'Major', 39, '2022-03-30', 28, 'Paknaan', 'Kamatis');
+(31, 'Residents', 'Drugs', 'Pending', '2022-04-19 22:30:13', '2022-04-19 22:30:13', 'Test', NULL, NULL, 'Major', 34, NULL, 28, 'Paknaan', 'Kamatis'),
+(32, 'Garbages', 'Improper disposal', 'Pending', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', NULL, NULL, 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -236,7 +229,11 @@ CREATE TABLE `ereklamotype` (
 --
 
 INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoTypePriority`, `reklamoCatID`) VALUES
-(1, 'Improper disposals', 'Minor', 6);
+(1, 'Improper disposal', 'Minor', 6),
+(3, 'Drugs', 'Major', 7),
+(4, 'Noise', 'Minor', 7),
+(5, 'Broken Roads', 'Minor', 8),
+(6, 'Broken Lightposts', 'Minor', 8);
 
 -- --------------------------------------------------------
 
@@ -310,7 +307,17 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (68, 'Your eReklamo#20 has been rescheduled by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-03-28 22:21:10', '2022-03-28 22:21:10'),
 (69, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-29 07:31:09', '2022-03-29 07:31:09'),
 (70, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-29 07:36:50', '2022-03-29 07:36:50'),
-(71, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-04-02 15:27:45', '2022-04-02 15:27:45');
+(71, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-04-02 15:27:45', '2022-04-02 15:27:45'),
+(72, 'A resident has submitted a reklamo: Residents', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-15 21:07:51', '2022-04-15 21:07:51'),
+(73, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 15:22:42', '2022-04-19 15:22:42'),
+(74, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 21:16:58', '2022-04-19 21:16:58'),
+(75, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 21:17:08', '2022-04-19 21:17:08'),
+(76, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:15:05', '2022-04-19 22:15:05'),
+(77, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:15:21', '2022-04-19 22:15:21'),
+(78, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:15:32', '2022-04-19 22:15:32'),
+(79, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:21:37', '2022-04-19 22:21:37'),
+(80, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:30:13', '2022-04-19 22:30:13'),
+(81, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:30:53', '2022-04-19 22:30:53');
 
 -- --------------------------------------------------------
 
@@ -478,7 +485,12 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (97, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbages', 29, '2022-04-12 19:28:31', '2022-04-12 19:28:31', 'Paknaan', 'Kamatis'),
 (98, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-04-12 19:28:36', '2022-04-12 19:28:36', 'Paknaan', 'Kamatis'),
 (99, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-04-12 19:28:41', '2022-04-12 19:28:41', 'Paknaan', 'Kamatis'),
-(100, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 19:28:45', '2022-04-12 19:28:45', 'Paknaan', 'Kamatis');
+(100, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 19:28:45', '2022-04-12 19:28:45', 'Paknaan', 'Kamatis'),
+(101, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-15 20:15:53', '2022-04-15 20:15:53', 'Paknaan', 'Kamatis'),
+(102, 'eReklamo', 'Captain has modified the reklamo type #1', 29, '2022-04-15 20:16:31', '2022-04-15 20:16:31', 'Paknaan', 'Kamatis'),
+(103, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-15 20:18:44', '2022-04-15 20:18:44', 'Paknaan', 'Kamatis'),
+(104, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-15 20:18:52', '2022-04-15 20:18:52', 'Paknaan', 'Kamatis'),
+(105, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-15 20:18:59', '2022-04-15 20:18:59', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -524,19 +536,12 @@ INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `a
 CREATE TABLE `schedule` (
   `scheduleID` int NOT NULL,
   `scheduleDate` date DEFAULT NULL,
-  `ereklamoID` int DEFAULT NULL,
   `UsersID` int DEFAULT NULL,
   `complainee` int DEFAULT NULL,
   `forAll` varchar(10) DEFAULT 'False',
-  `scheduleTitle` varchar(50) DEFAULT NULL
+  `scheduleTitle` varchar(50) DEFAULT NULL,
+  `ereklamoID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `schedule`
---
-
-INSERT INTO `schedule` (`scheduleID`, `scheduleDate`, `ereklamoID`, `UsersID`, `complainee`, `forAll`, `scheduleTitle`) VALUES
-(15, '2022-03-30', 20, 28, 39, 'False', 'Test title');
 
 -- --------------------------------------------------------
 
@@ -778,7 +783,7 @@ ALTER TABLE `election`
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `ereklamocategory`
@@ -790,13 +795,13 @@ ALTER TABLE `ereklamocategory`
 -- AUTO_INCREMENT for table `ereklamotype`
 --
 ALTER TABLE `ereklamotype`
-  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `post`
@@ -814,7 +819,7 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT for table `request`
