@@ -48,5 +48,74 @@
 
     header("location: ../index.php?error=none"); //no errors were made
     exit();*/
+    ?>
 
-?>
+<?php if(isset($_GET['viewVerify'])): ?>
+    <style>
+        #uni_modal .modal-footer{
+            display: none;
+        }
+        #uni_modal .modal-footer.display{
+            display: block !important;;
+        }
+    </style>
+    <div class="container-fluid">  
+        <form action="">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <input type="radio" id="renter" value="renter" name="residentStat"
+                        onclick="ShowHideDiv()">
+                        <label for="">Is Renter?</label>
+                    </div>
+                    <div class="col">
+                        <input type="radio" id="landlord" value="landlord" name="residentStat" onclick="ShowHideDiv()">
+                        <label for="">Is Landlord?</label>
+                    </div>
+                </div>
+                <div class="row" id="renterStat" style="display: none">
+                    <hr>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Landlord's Name: </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="landlordName" id="landlordName">
+                                    <option value="">Landlord's name</option>
+                                    <?php 
+                                        $landlord = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}' AND IsLandlord='True'");
+                                        while($landlordRow = $landlord->fetch_assoc()):
+                                    ?>
+                                    <option value="<?php echo $lardlordRow['UsersID'] ?>"><?php echo $lardlordRow['name'] ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Date rented: </label>    
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="date" name="date" id="date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="landlordStat" style="display: none">
+
+                </div>
+            </div>
+        </form>
+    </div>
+<?php endif; ?>
+
+<script>
+    function ShowHideDiv(){
+        var renter = document.getElementById("renter");
+        var landlord = document.getElementById("landlord");
+        var divRenter = document.getElementById("renterStat");
+        renterStat.style.display = renter.checked ? "block" : "none";
+
+    }
+</script>
