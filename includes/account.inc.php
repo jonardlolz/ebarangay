@@ -291,7 +291,6 @@ if(isset($_GET['edit'])):
         </div>
     </form>
 </div>
-
 <?php endif; ?>
 
 <script>

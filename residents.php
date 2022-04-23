@@ -670,8 +670,11 @@
             uni_modal("<center><b>Change Position</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
         })
         $('.verify_user').click(function(){
-            _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
+            uni_modal("<center><b>Verify residents</b></center></center>","includes/verify.inc.php?viewVerify="+$(this).attr('data-id'))
         })
+        // $('.verify_user').click(function(){
+        //     _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
+        // })
         $('.unverify_user').click(function(){
             _conf("Are you sure you want to unverify this user?","unverify_user",[$(this).attr('data-id')])
         })
