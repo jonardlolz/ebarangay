@@ -1,0 +1,28 @@
+NOTE:
+resident - request:
+claim date not hardcoded
+address change to house number and purok and barangay
+
+resident - purok leader:
+check if resident request is verified or not
+	if not 
+
+purok leader - verification
+edit database
+click verify - modal pops up
+modal contains checkbox for isrenter, islandlord, and date rent started
+
+resident profile - finish erequest and ereklamo
+
+sign up - welcome:
+address
+employment
+renter
+landlord
+student
+pwd
+
+limitation:
+system cannot handle emergencies (patch: give option to purok leader to call the necessary hotlines)
+
+
