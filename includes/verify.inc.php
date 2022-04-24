@@ -51,6 +51,15 @@
     ?>
 
 <?php if(isset($_GET['viewVerify'])): ?>
+    <style>
+        #continue_modal .modal-footer{
+            display: none;
+        }
+        #continue_modal .modal-footer.display{
+            display: block !important;
+        }
+
+    </style>
     <div class="container-fluid">  
         <form action="includes/verify.inc.php?continueVerify">
             <div class="col">
@@ -94,7 +103,7 @@
                                 <label for="">Date rented: </label>    
                             </div>
                             <div class="col-sm-4">
-                                <input type="date" name="date" id="date" required>
+                                <input type="date" name="date" id="date" max="<?php echo date("Y-m-d") ?>" required>
                             </div>
                         </div>
                     </div>
@@ -105,6 +114,15 @@
             </div>
         </form>
     </div>
+    <div class="modal-footer display py-1 px-1" style="float:right;">
+        <div class="d-block w-100">
+            <button type="button" class="continue_verify btn btn-primary">Continue</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+        
+    </div>
+
+    
     <script>
         $('.continue_verify').click(function(){
             uni_modal("<center><b>Confirm Information</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
