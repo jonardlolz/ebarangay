@@ -51,26 +51,23 @@
     ?>
 
 <?php if(isset($_GET['viewVerify'])): ?>
-    <style>
-        #uni_modal .modal-footer{
-            display: none;
-        }
-        #uni_modal .modal-footer.display{
-            display: block !important;;
-        }
-    </style>
     <div class="container-fluid">  
-        <form action="">
+        <form action="includes/verify.inc.php?continueVerify">
             <div class="col">
                 <div class="row">
                     <div class="col">
+                        <input type="radio" id="resident" value="resident" name="residentStat"
+                        onclick="ShowHideDiv()" checked>
+                        <label for="">Resident</label>
+                    </div>
+                    <div class="col">
                         <input type="radio" id="renter" value="renter" name="residentStat"
                         onclick="ShowHideDiv()">
-                        <label for="">Is Renter?</label>
+                        <label for="">Renter</label>
                     </div>
                     <div class="col">
                         <input type="radio" id="landlord" value="landlord" name="residentStat" onclick="ShowHideDiv()">
-                        <label for="">Is Landlord?</label>
+                        <label for="">Landlord</label>
                     </div>
                 </div>
                 <div class="row" id="renterStat" style="display: none">
@@ -81,13 +78,13 @@
                                 <label for="">Landlord's Name: </label>
                             </div>
                             <div class="col-sm-4">
-                                <select name="landlordName" id="landlordName">
+                                <select name="landlordName" id="landlordName" required>
                                     <option value="">Landlord's name</option>
                                     <?php 
                                         $landlord = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}' AND IsLandlord='True'");
                                         while($landlordRow = $landlord->fetch_assoc()):
                                     ?>
-                                    <option value="<?php echo $lardlordRow['UsersID'] ?>"><?php echo $lardlordRow['name'] ?></option>
+                                    <option value="<?php echo $landlordRow['UsersID'] ?>"><?php echo $landlordRow['name'] ?></option>
                                     <?php endwhile; ?>
                                 </select>
                             </div>
@@ -97,7 +94,7 @@
                                 <label for="">Date rented: </label>    
                             </div>
                             <div class="col-sm-4">
-                                <input type="date" name="date" id="date">
+                                <input type="date" name="date" id="date" required>
                             </div>
                         </div>
                     </div>
@@ -107,6 +104,15 @@
                 </div>
             </div>
         </form>
+    </div>
+    <script>
+        $('.continue_verify').click(function(){
+            uni_modal("<center><b>Confirm Information</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
+        })
+    </script>
+<?php elseif(asset($_GET['continueVerify'])): ?>
+    <div class="container-fluid">
+
     </div>
 <?php endif; ?>
 
