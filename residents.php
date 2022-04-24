@@ -545,34 +545,62 @@
 	          end_load()  
 
 	}
-	  window.uni_modal = function($title = '' , $url='',$size=""){
-	      start_load()
-	      $.ajax({
-	          url:$url,
-	          error:err=>{
-	              console.log()
-	              alert("An error occured")
-	          },
-	          success:function(resp){
-	              if(resp){
-	                  $('#uni_modal .modal-title').html($title)
-	                  $('#uni_modal .modal-body').html(resp)
-	                  if($size != ''){
-	                      $('#uni_modal .modal-dialog').addClass($size)
-	                  }else{
-	                      $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
-	                  }
-	                  $('#uni_modal').modal({
-	                    show:true,
-	                    backdrop:'static',
-	                    keyboard:false,
-	                    focus:true
-	                  })
-	                  end_load()
-	              }
-	          }
-	      })
-	  }
+	window.uni_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#uni_modal .modal-title').html($title)
+                    $('#uni_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#uni_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                    }
+                    $('#uni_modal').modal({
+                    show:true,
+                    backdrop:'static',
+                    keyboard:false,
+                    focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
+    window.continue_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#continue_modal .modal-title').html($title)
+                    $('#continue_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#continue_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#continue_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                    }
+                    $('#continue_modal').modal({
+                    show:true,
+                    backdrop:'static',
+                    keyboard:false,
+                    focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
 	  window._conf = function($msg='',$func='',$params = []){
 	     $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
 	     $('#confirm_modal .modal-body').html($msg)
@@ -670,7 +698,7 @@
             uni_modal("<center><b>Change Position</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
         })
         $('.verify_user').click(function(){
-            uni_modal("<center><b>Verify residents</b></center></center>","includes/verify.inc.php?viewVerify="+$(this).attr('data-id'))
+            continue_modal("<center><b>Verify residents</b></center></center>","includes/verify.inc.php?viewVerify="+$(this).attr('data-id'))
         })
         // $('.verify_user').click(function(){
         //     _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
