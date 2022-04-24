@@ -2,10 +2,17 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
+-- H<<<<<<< HEAD
+-- Host: 127.0.0.1
+-- Generation Time: Apr 23, 2022 at 01:58 PM
+-- Server version: 8.0.28
+-- PHP Version: 8.0.9
+=======
 -- Host: localhost
 -- Generation Time: Apr 23, 2022 at 03:24 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
+>>>>>>> 9eb9ea96b923cbdd648fd5611e26e98379564d84
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -849,61 +856,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `votes`
   MODIFY `voteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `barangay`
---
-ALTER TABLE `barangay`
-  ADD CONSTRAINT `barangay_ibfk_1` FOREIGN KEY (`brgyCaptain`) REFERENCES `users` (`UsersID`);
-
---
--- Constraints for table `candidates`
---
-ALTER TABLE `candidates`
-  ADD CONSTRAINT `candidates_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `candidates_ibfk_2` FOREIGN KEY (`electionID`) REFERENCES `election` (`electionID`) ON DELETE CASCADE;
-
---
--- Constraints for table `comments`
---
-ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`PostID`) REFERENCES `post` (`PostID`) ON DELETE CASCADE;
-
---
--- Constraints for table `documenttype`
---
-ALTER TABLE `documenttype`
-  ADD CONSTRAINT `documenttype_ibfk_1` FOREIGN KEY (`barangayID`) REFERENCES `barangay` (`BarangayID`) ON DELETE CASCADE;
-
---
--- Constraints for table `ereklamo`
---
-ALTER TABLE `ereklamo`
-  ADD CONSTRAINT `ereklamo_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE;
-
---
--- Constraints for table `ereklamotype`
---
-ALTER TABLE `ereklamotype`
-  ADD CONSTRAINT `ereklamotype_ibfk_1` FOREIGN KEY (`reklamoCatID`) REFERENCES `ereklamocategory` (`reklamoCatID`) ON DELETE CASCADE;
-
---
--- Constraints for table `post`
---
-ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`),
-  ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`);
-
---
--- Constraints for table `purok`
---
-ALTER TABLE `purok`
-  ADD CONSTRAINT `purok_ibfk_1` FOREIGN KEY (`purokLeader`) REFERENCES `users` (`UsersID`);
+GN KEY (`purokLeader`) REFERENCES `users` (`UsersID`);
 
 --
 -- Constraints for table `request`
