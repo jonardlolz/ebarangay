@@ -959,7 +959,7 @@
             alert("Please select a valid purpose");
         }
         else{
-            verifyInfo_modal("<center><b>Verify Information</b></center></center>","includes/request.inc.php?verifyInfo&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val()+"&modeofPayment="+$("#modeofPayment").val());
+            verifyInfo_modal("<center><b>Verify Information</b></center>","includes/request.inc.php?verifyInfo&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val()+"&modeofPayment="+$("#modeofPayment").val());
         }  
     })
     $('#print').click(function(){
