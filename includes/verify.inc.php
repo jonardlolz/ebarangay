@@ -75,7 +75,8 @@
                         <label for="">Renter</label>
                     </div>
                     <div class="col">
-                        <input type="radio" id="landlord" value="landlord" name="residentStat" onclick="ShowHideDiv()">
+                        <input type="radio" id="landlord" value="landlord" name="residentStat" 
+                        onclick="ShowHideDiv()">
                         <label for="">Landlord</label>
                     </div>
                 </div>
@@ -103,13 +104,36 @@
                                 <label for="">Date rented: </label>    
                             </div>
                             <div class="col-sm-4">
-                                <input type="date" name="date" id="date" max="<?php echo date("Y-m-d") ?>" required>
+                                <input type="date" name="date" id="dateRenter" max="<?php echo date("Y-m-d") ?>" required>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row" id="landlordStat" style="display: none">
-
+                    <hr>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Date lived: </label>    
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="date" name="date" id="dateLandlord" max="<?php echo date("Y-m-d") ?>" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="residentStat" style="display: none">
+                    <hr>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Date lived: </label>    
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="date" name="date" id="dateResident" max="<?php echo date("Y-m-d") ?>" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -125,12 +149,30 @@
     
     <script>
         $('.continue_verify').click(function(){
-            uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify="+$(this).attr('data-id'),"modal-lg")
+            var renter = document.getElementById("renter");
+            var landlord = document.getElementById("landlord");
+            var resident = document.getElementById("resident");
+            if(renter.checked){
+                var date = $('#dateRenter').val();
+                alert(date);
+                uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&usersID="+$(this).attr('data-id')+"&date="+date.toString(),"modal-lg")
+            }
+            else if(landlord.checked){
+                var date = $('#dateLandlord').val();
+                alert(date);
+                uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&usersID="+$(this).attr('data-id')+"&date="+date.toString(),"modal-lg")
+            }
+            else if(resident.checked){
+                var date = $('#dateResident').val();
+                alert(date);
+                uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&usersID="+$(this).attr('data-id')+"&date="+date.toString(),"modal-lg")
+            }
+            
         })
     </script>
 <?php elseif(isset($_GET['continueVerify'])): ?>
     <?php 
-        $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE UsersID='{$_GET['continueVerify']}'");
+        $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE UsersID='{$_GET['usersID']}'");
         $row=$profile->fetch_assoc();
     ?>
     <div class="container-fluid">
@@ -199,7 +241,7 @@
                                                     <label class="labels">Gender:</label>
                                                 </div>
                                                 <div class="col">
-                                                    <label for=""><?php echo $row["userGender"] ?></label>
+                                                    <label for=""><b><?php echo $row["userGender"] ?></b></label>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -207,15 +249,15 @@
                                                     <label class="labels">Civil Status:</label>
                                                 </div>
                                                 <div class="col">
-                                                    <label for=""><?php echo $row["civilStat"] ?></label>
+                                                    <label for=""><b><?php echo $row["civilStat"] ?></b></label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col">
                                                     <label class="labels">Birthdate:</label>
                                                 </div>
                                                 <div class="col">
-                                                    <label for=""><?php echo date_format(date_create($row["dateofbirth"]), "m/d/Y") ?></label>
+                                                    <label for=""><b><?php echo date_format(date_create($row["dateofbirth"]), "m/d/Y") ?></b></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -223,27 +265,67 @@
                                             <div>
                                                 <strong>Address Information</strong><hr>
                                             </div>
-                                            <div class="row-md-4 row-sm-4">
-                                                <label class="labels">House Number</label>
-                                                <input type="text" class="form-control w-75" placeholder="houseNum" value="<?php echo $row["userHouseNum"] ?>" readonly>
-                                                <label class="labels">Purok</label>
-                                                <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $row["userPurok"] ?>" readonly>
-                                                <label class="labels">Barangay</label>
-                                                <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $row["userBarangay"] ?>" readonly>
-                                                <label class="labels">Municipality/City</label>
-                                                <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $row["userCity"] ?>" readonly>
-                                                
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <label class="labels">House #:</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for=""><b><?php echo $row["userHouseNum"] ?></b></label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <label class="labels">Purok:</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for=""><b><?php echo $row["userPurok"] ?></b></label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <label class="labels">Barangay:</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for=""><b><?php echo $row['userBarangay'] ?></b></label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <label class="labels">Municipality/City:</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for=""><b><?php echo $row['userCity'] ?></b></label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--End of Card-Body-->
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    test
+                    <div class="card rounded shadow">
+                        <div class="card-body text-dark">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="p-2">
+                                        <div>
+                                            <strong>Additional Info</strong><hr>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="">Renter? </label>
+                                            </div>
+                                            <div class="col">
+                                                <?php echo date_format(date_create($_GET["date"]), "m/d/Y") ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -251,11 +333,13 @@
 <?php endif; ?>
 
 <script>
+    ShowHideDiv();
     function ShowHideDiv(){
         var renter = document.getElementById("renter");
         var landlord = document.getElementById("landlord");
-        var divRenter = document.getElementById("renterStat");
+        var resident = document.getElementById("resident");
         renterStat.style.display = renter.checked ? "block" : "none";
-
+        landlordStat.style.display = landlord.checked ? "block" : "none";
+        residentStat.style.display = resident.checked ? "block" : "none";
     }
 </script>
