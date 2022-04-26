@@ -104,7 +104,7 @@
                                 <label for="">Date rented: </label>    
                             </div>
                             <div class="col-sm-4">
-                                <input type="date" name="date" id="dateRenter" max="<?php echo date("Y-m-d") ?>" required>
+                                <input type="date" name="date" id="dateRenter" max="<?php echo date("Y-m-d") ?>">
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                                 <label for="">Date lived: </label>    
                             </div>
                             <div class="col-sm-4">
-                                <input type="date" name="date" id="dateLandlord" max="<?php echo date("Y-m-d") ?>" required>
+                                <input type="date" name="date" id="dateLandlord" max="<?php echo date("Y-m-d") ?>">
                             </div>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                                 <label for="">Date lived: </label>    
                             </div>
                             <div class="col-sm-4">
-                                <input type="date" name="date" id="dateResident" max="<?php echo date("Y-m-d") ?>" required>
+                                <input type="date" name="date" id="dateResident" max="<?php echo date("Y-m-d") ?>">
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,6 @@
             <button type="button" class="continue_verify btn btn-primary" data-id="<?php echo $_GET['viewVerify'] ?>" >Continue</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
-        
     </div>
 
     
@@ -152,25 +151,49 @@
             var renter = document.getElementById("renter");
             var landlord = document.getElementById("landlord");
             var resident = document.getElementById("resident");
+            var landlordName = document.getElementById("landlordName");
             if(renter.checked){
-                var date = $('#dateRenter').val();
-                alert(date);
-                uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&usersID="+$(this).attr('data-id')+"&date="+date.toString(),"modal-lg")
+                var date = document.getElementById("dateRenter");
+                if(!date.value){
+                    alert("Date is empty!");
+                }
+                else if(landlordName.value == ""){
+                    alert("Landlord name is empty!");
+                }
+                else{
+                    uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&renter&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&landlord="+landlordName.value,"modal-lg");
+                }
             }
             else if(landlord.checked){
-                var date = $('#dateLandlord').val();
-                alert(date);
-                uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&usersID="+$(this).attr('data-id')+"&date="+date.toString(),"modal-lg")
+                var date = document.getElementById("dateLandlord");
+                if(!date.value){
+                    alert("Date is empty!");
+                }
+                else{
+                    uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&landlord&usersID="+$(this).attr('data-id')+"&date="+date.value.toString(),"modal-lg")
+                }
             }
             else if(resident.checked){
-                var date = $('#dateResident').val();
-                alert(date);
-                uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&usersID="+$(this).attr('data-id')+"&date="+date.toString(),"modal-lg")
+                var date = document.getElementById("dateResident");
+                if(!date.value){
+                    alert("Date is empty!");
+                }
+                else{
+                    uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&resident&usersID="+$(this).attr('data-id')+"&date="+date.value.toString(),"modal-lg")
+                }
             }
-            
         })
     </script>
 <?php elseif(isset($_GET['continueVerify'])): ?>
+    <style>
+        #uni_modal .modal-footer{
+            display: none;
+        }
+        #uni_modal .modal-footer.display{
+            display: block !important;
+        }
+
+    </style>
     <?php 
         $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE UsersID='{$_GET['usersID']}'");
         $row=$profile->fetch_assoc();
@@ -261,6 +284,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col d-flex flex-column px-4">
+                        <div class="card rounded shadow">
+                            <div class="card-body text-dark">
+                                <div class="row">
+                                    <div class="col">
                                         <div class="p-2">
                                             <div>
                                                 <strong>Address Information</strong><hr>
@@ -300,25 +335,49 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card rounded shadow">
-                        <div class="card-body text-dark">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="p-2">
-                                        <div>
-                                            <strong>Additional Info</strong><hr>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="">Renter? </label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="p-2">
+                                            <div>
+                                                <strong>Additional Info</strong><hr>
                                             </div>
-                                            <div class="col">
-                                                <?php echo date_format(date_create($_GET["date"]), "m/d/Y") ?>
+                                            <?php if(isset($_GET["renter"])): ?>
+                                                <?php $sql = $conn->query("SELECT concat(Firstname, ' ', Lastname) as name FROM users WHERE UsersID='{$_GET['landlord']}'");
+                                                    $landlordname = $sql->fetch_assoc();
+                                                ?>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="">Renter </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="">Landlord: </label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for=""><?php echo $landlordname['name'] ?> </label>
+                                                    </div>
+                                                </div>
+                                            <?php elseif(isset($_GET["landlord"])): ?>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="">Landlord </label>
+                                                    </div>
+                                                </div>
+                                            <?php elseif(isset($_GET["resident"])): ?>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="">Resident </label>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="">Started living: </label>
+                                                </div>
+                                                <div class="col">
+                                                    <?php echo date_format(date_create($_GET["date"]), "F d,Y") ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -329,8 +388,58 @@
                 </div>
             </div>
         </div>
+        <div class="modal-footer display py-1 px-1" style="float:right;">
+            <div class="d-block w-100">
+                <?php if(isset($_GET["resident"])): ?>
+                    <a href="includes/verify.inc.php?postVerify&resident=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                        <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
+                    </a>
+                <?php elseif(isset($_GET["renter"])): ?>
+                    <a href="includes/verify.inc.php?postVerify&landlord=<?php echo $_GET['landlord'] ?>&renter=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                        <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
+                    </a>
+                <?php elseif(isset($_GET["landlord"])): ?>
+                    <a href="includes/verify.inc.php?postVerify&landlord=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                        <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
+                    </a>
+                <?php endif; ?>
+                
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>   
     </div>
+    
 <?php endif; ?>
+
+<?php
+
+if(isset($_GET['postVerify'])){
+    mysqli_begin_transaction($conn);
+
+    if(isset($_GET['resident'])){
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['resident']}'");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['resident']}');");
+    }
+    elseif(isset($_GET['renter'])){
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', landlordName='{$_GET['landlord']}', startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['renter']}'");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['renter']}');");
+    }
+    elseif(isset($_GET['landlord'])){
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['landlord']}'");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['landlord']}');");
+    }
+
+    if($a1 && $a2){
+        mysqli_commit($conn);
+        header("location: ../residents.php");
+    }
+    else{
+        mysqli_rollback($conn);
+        echo("Error description: " . mysqli_error($conn));
+    }
+} 
+
+?>
 
 <script>
     ShowHideDiv();
