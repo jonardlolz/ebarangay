@@ -2,17 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- H<<<<<<< HEAD
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2022 at 01:58 PM
+-- Generation Time: Apr 26, 2022 at 11:37 AM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
-=======
--- Host: localhost
--- Generation Time: Apr 23, 2022 at 03:24 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.2
->>>>>>> 9eb9ea96b923cbdd648fd5611e26e98379564d84
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,16 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `barangay` (
-  `BarangayID` int(11) NOT NULL,
-  `BarangayName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `City` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Active` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'True',
-  `brgyCaptain` int(11) DEFAULT NULL,
-  `Province` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cebu',
-  `barangay_pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'brgy_default.png',
-  `brgyTelephone` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `brgyEmail` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `brgyCell` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `BarangayID` int NOT NULL,
+  `BarangayName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `City` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Active` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'True',
+  `brgyCaptain` int DEFAULT NULL,
+  `Province` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cebu',
+  `barangay_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'brgy_default.png',
+  `brgyTelephone` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `brgyEmail` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `brgyCell` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -64,16 +57,16 @@ INSERT INTO `barangay` (`BarangayID`, `BarangayName`, `City`, `Active`, `brgyCap
 --
 
 CREATE TABLE `candidates` (
-  `candidateID` int(11) NOT NULL,
-  `lastname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `platform` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `purok` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `UsersID` int(11) NOT NULL,
-  `electionID` int(11) NOT NULL,
-  `position` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+  `candidateID` int NOT NULL,
+  `lastname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `firstname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `platform` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `purok` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `UsersID` int NOT NULL,
+  `electionID` int NOT NULL,
+  `position` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -94,11 +87,11 @@ INSERT INTO `candidates` (`candidateID`, `lastname`, `firstname`, `created_at`, 
 --
 
 CREATE TABLE `comments` (
-  `CommentsID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
-  `PostID` int(11) NOT NULL,
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date_created` datetime NOT NULL DEFAULT current_timestamp()
+  `CommentsID` int NOT NULL,
+  `UsersID` int NOT NULL,
+  `PostID` int NOT NULL,
+  `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -108,15 +101,15 @@ CREATE TABLE `comments` (
 --
 
 CREATE TABLE `documentpurpose` (
-  `purposeID` int(11) NOT NULL,
-  `purpose` varchar(20) NOT NULL,
-  `barangayDoc` varchar(20) NOT NULL,
-  `price` varchar(20) NOT NULL,
-  `barangay` varchar(20) NOT NULL,
-  `studentDiscount` varchar(20) NOT NULL,
-  `seniorDiscount` varchar(20) NOT NULL,
-  `pwdDiscount` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `purposeID` int NOT NULL,
+  `purpose` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `barangayDoc` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `price` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `barangay` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `studentDiscount` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `seniorDiscount` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `pwdDiscount` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `documentpurpose`
@@ -125,8 +118,7 @@ CREATE TABLE `documentpurpose` (
 INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangayDoc`, `price`, `barangay`, `studentDiscount`, `seniorDiscount`, `pwdDiscount`) VALUES
 (3, 'Ayuda', 'Indigency Clearance', '0', 'Paknaan', '0', '0', '0'),
 (4, 'Test', 'Indigency Clearance', '0', 'Paknaan', '0', '0', '0'),
-(5, 'Test', 'Cedula', '222', 'Paknaan', '0', '20', '0'),
-(6, 'Employment', 'Barangay Clearance', '100', 'Paknaan', '0', '20', '0');
+(5, 'Test', 'Cedula', '222', 'Paknaan', '0', '20', '0');
 
 -- --------------------------------------------------------
 
@@ -135,10 +127,10 @@ INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangayDoc`, `price`, `
 --
 
 CREATE TABLE `documenttype` (
-  `DocumentID` int(11) NOT NULL,
-  `documentName` varchar(20) NOT NULL,
-  `barangayID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `DocumentID` int NOT NULL,
+  `documentName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `barangayID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -147,14 +139,14 @@ CREATE TABLE `documenttype` (
 --
 
 CREATE TABLE `election` (
-  `electionID` int(11) NOT NULL,
-  `electionTitle` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `electionStatus` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Paused',
-  `created_by` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `barangay` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `purok` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `electionID` int NOT NULL,
+  `electionTitle` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `electionStatus` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Paused',
+  `created_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `barangay` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `purok` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -173,21 +165,21 @@ INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `create
 --
 
 CREATE TABLE `ereklamo` (
-  `ReklamoID` int(11) NOT NULL,
-  `reklamoType` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `detail` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `CreatedOn` datetime DEFAULT current_timestamp(),
-  `UpdatedOn` datetime DEFAULT current_timestamp(),
-  `comment` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `checkedBy` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ReklamoID` int NOT NULL,
+  `reklamoType` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `detail` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CreatedOn` datetime DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedOn` datetime DEFAULT CURRENT_TIMESTAMP,
+  `comment` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `checkedBy` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `checkedOn` datetime DEFAULT NULL,
-  `complaintLevel` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Minor',
-  `complainee` int(11) DEFAULT NULL,
+  `complaintLevel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Minor',
+  `complainee` int DEFAULT NULL,
   `scheduledSummon` date DEFAULT NULL,
-  `UsersID` int(11) DEFAULT NULL,
-  `barangay` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `purok` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+  `UsersID` int DEFAULT NULL,
+  `barangay` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `purok` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -196,7 +188,8 @@ CREATE TABLE `ereklamo` (
 
 INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `CreatedOn`, `UpdatedOn`, `comment`, `checkedBy`, `checkedOn`, `complaintLevel`, `complainee`, `scheduledSummon`, `UsersID`, `barangay`, `purok`) VALUES
 (31, 'Residents', 'Drugs', 'Pending', '2022-04-19 22:30:13', '2022-04-19 22:30:13', 'Test', NULL, NULL, 'Major', 34, NULL, 28, 'Paknaan', 'Kamatis'),
-(32, 'Garbages', 'Improper disposal', 'Respondents sent', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', 'Purok Leader', '2022-04-20 22:05:08', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis');
+(32, 'Garbages', 'Improper disposal', 'Pending', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', NULL, NULL, 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
+(33, 'Residents', 'Drugs', 'Pending', '2022-04-25 15:21:20', '2022-04-25 15:21:20', '', NULL, NULL, 'Major', 34, NULL, 28, 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -205,10 +198,10 @@ INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `Created
 --
 
 CREATE TABLE `ereklamocategory` (
-  `reklamoCatID` int(11) NOT NULL,
-  `reklamoCatName` varchar(50) NOT NULL,
-  `reklamoCatBrgy` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `reklamoCatID` int NOT NULL,
+  `reklamoCatName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `reklamoCatBrgy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ereklamocategory`
@@ -226,11 +219,11 @@ INSERT INTO `ereklamocategory` (`reklamoCatID`, `reklamoCatName`, `reklamoCatBrg
 --
 
 CREATE TABLE `ereklamotype` (
-  `reklamoTypeID` int(11) NOT NULL,
-  `reklamoTypeName` varchar(100) NOT NULL,
-  `reklamoTypePriority` varchar(20) NOT NULL,
-  `reklamoCatID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `reklamoTypeID` int NOT NULL,
+  `reklamoTypeName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `reklamoTypePriority` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `reklamoCatID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ereklamotype`
@@ -250,14 +243,14 @@ INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoTypePrio
 --
 
 CREATE TABLE `notifications` (
-  `NotificationID` int(11) NOT NULL,
+  `NotificationID` int NOT NULL,
   `message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Not Read',
-  `UsersID` int(11) DEFAULT NULL,
+  `UsersID` int DEFAULT NULL,
   `position` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp()
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -320,13 +313,20 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (73, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 15:22:42', '2022-04-19 15:22:42'),
 (74, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 21:16:58', '2022-04-19 21:16:58'),
 (75, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 21:17:08', '2022-04-19 21:17:08'),
-(76, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:15:05', '2022-04-19 22:15:05'),
-(77, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:15:21', '2022-04-19 22:15:21'),
-(78, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:15:32', '2022-04-19 22:15:32'),
-(79, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:21:37', '2022-04-19 22:21:37'),
-(80, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:30:13', '2022-04-19 22:30:13'),
-(81, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-04-19 22:30:53', '2022-04-19 22:30:53'),
-(82, 'A resident has requested a Barangay Clearance', 'request', 'Not Read', NULL, 'Purok Leader', '2022-01-10 13:33:05', '2022-01-10 13:33:05');
+(76, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:15:05', '2022-04-19 22:15:05'),
+(77, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:15:21', '2022-04-19 22:15:21'),
+(78, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:15:32', '2022-04-19 22:15:32'),
+(79, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:21:37', '2022-04-19 22:21:37'),
+(80, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:30:13', '2022-04-19 22:30:13'),
+(81, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:30:53', '2022-04-19 22:30:53'),
+(82, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-25 15:21:20', '2022-04-25 15:21:20'),
+(83, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 17:49:24', '2022-04-26 17:49:24'),
+(84, 'Your account verification has been approved!', 'Resident', 'Not Read', 0, NULL, '2022-04-26 19:20:26', '2022-04-26 19:20:26'),
+(85, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:21:57', '2022-04-26 19:21:57'),
+(86, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:22:36', '2022-04-26 19:22:36'),
+(87, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:22:57', '2022-04-26 19:22:57'),
+(88, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:23:33', '2022-04-26 19:23:33'),
+(89, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:24:41', '2022-04-26 19:24:41');
 
 -- --------------------------------------------------------
 
@@ -335,12 +335,12 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 --
 
 CREATE TABLE `officials` (
-  `OfficialID` int(11) DEFAULT NULL,
-  `NationalID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `firstname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `middlename` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `residentID` int(11) DEFAULT NULL,
+  `OfficialID` int DEFAULT NULL,
+  `NationalID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `middlename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `residentID` int DEFAULT NULL,
   `electedOn` date DEFAULT NULL,
   `updatedOn` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -352,13 +352,13 @@ CREATE TABLE `officials` (
 --
 
 CREATE TABLE `post` (
-  `PostID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `userType` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postMessage` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date_created` datetime NOT NULL DEFAULT current_timestamp(),
-  `barangay` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `PostID` int NOT NULL,
+  `UsersID` int NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postMessage` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `barangay` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -375,11 +375,11 @@ INSERT INTO `post` (`PostID`, `UsersID`, `username`, `userType`, `postMessage`, 
 --
 
 CREATE TABLE `purok` (
-  `PurokID` int(11) NOT NULL,
-  `PurokName` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `BarangayName` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Active` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'True',
-  `purokLeader` int(11) DEFAULT NULL
+  `PurokID` int NOT NULL,
+  `PurokName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `BarangayName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Active` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'True',
+  `purokLeader` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -407,12 +407,12 @@ INSERT INTO `purok` (`PurokID`, `PurokName`, `BarangayName`, `Active`, `purokLea
 --
 
 CREATE TABLE `report` (
-  `reportID` int(11) NOT NULL,
+  `reportID` int NOT NULL,
   `ReportType` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `reportMessage` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `UsersID` int(11) NOT NULL,
-  `created_on` datetime DEFAULT current_timestamp(),
-  `updated_on` datetime DEFAULT current_timestamp(),
+  `UsersID` int NOT NULL,
+  `created_on` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` datetime DEFAULT CURRENT_TIMESTAMP,
   `userBarangay` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `userPurok` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -508,20 +508,20 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 --
 
 CREATE TABLE `request` (
-  `RequestID` int(11) NOT NULL,
-  `documentType` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `purpose` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `requestedOn` datetime DEFAULT current_timestamp(),
+  `RequestID` int NOT NULL,
+  `documentType` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `purpose` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `requestedOn` datetime DEFAULT CURRENT_TIMESTAMP,
   `approvedOn` datetime DEFAULT NULL,
-  `approvedBy` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL,
-  `status` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT 'Pending',
-  `userBarangay` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userPurok` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paymentMode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userType` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `UsersID` int(11) DEFAULT NULL,
-  `requesturl` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'None'
+  `approvedBy` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` int DEFAULT NULL,
+  `status` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Pending',
+  `userBarangay` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userPurok` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `paymentMode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UsersID` int DEFAULT NULL,
+  `requesturl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -534,8 +534,7 @@ INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `a
 (23, 'Cedula', 'Employment', '2022-03-28 16:31:39', '2022-03-28 17:06:50', 'Ville, Jackson', 20, 'Paid', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/53a59cfd1e256b4064170e8c9cf222a0'),
 (24, 'Barangay Clearance', 'Employment', '2022-03-29 07:31:09', '2022-03-29 07:57:02', 'Ville, Jackson', 50, 'Paid', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/a65846399caff7957c8923eaed155192'),
 (25, 'Cedula', 'Employment', '2022-03-29 07:36:50', '2022-03-29 07:55:07', 'Ville, Jackson', 20, 'Paid', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/c1dde9784e9bb636fc718b4d0da11692'),
-(26, 'Cedula', 'Test', '2022-04-02 15:27:45', '2022-04-02 22:18:02', 'Leader, Purok', 222, 'Approved', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/e8c0afb83105fd0641490493e3d4d10e'),
-(27, 'Barangay Clearance', 'Employment', '2022-01-10 13:33:05', NULL, NULL, 100, 'Pending', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Purok Leader', 28, 'None');
+(26, 'Cedula', 'Test', '2022-04-02 15:27:45', '2022-04-02 22:18:02', 'Leader, Purok', 222, 'Approved', 'Paknaan', 'Kamatis', 'Cash on Claim', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/e8c0afb83105fd0641490493e3d4d10e');
 
 -- --------------------------------------------------------
 
@@ -544,13 +543,13 @@ INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `a
 --
 
 CREATE TABLE `schedule` (
-  `scheduleID` int(11) NOT NULL,
+  `scheduleID` int NOT NULL,
   `scheduleDate` date DEFAULT NULL,
-  `UsersID` int(11) DEFAULT NULL,
-  `complainee` int(11) DEFAULT NULL,
+  `UsersID` int DEFAULT NULL,
+  `complainee` int DEFAULT NULL,
   `forAll` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'False',
   `scheduleTitle` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ereklamoID` int(11) NOT NULL
+  `ereklamoID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -560,50 +559,51 @@ CREATE TABLE `schedule` (
 --
 
 CREATE TABLE `users` (
-  `UsersID` int(11) NOT NULL,
-  `Firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Middlename` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Lastname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dateofbirth` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `civilStat` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `emailAdd` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `usersPwd` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userGender` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userType` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `profile_pic` varchar(129) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userBarangay` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userPurok` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phoneNum` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `teleNum` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `VerifyStatus` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
-  `userCity` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'None',
-  `Status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Active',
-  `isRenting` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'False',
-  `landlordName` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'None',
-  `landlordContact` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'NONE',
-  `barangayPos` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'None',
-  `userAddress` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userHouseNum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `IsLandlord` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'False'
+  `UsersID` int NOT NULL,
+  `Firstname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Middlename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Lastname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dateofbirth` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `civilStat` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `emailAdd` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usersPwd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userGender` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profile_pic` varchar(129) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userBarangay` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userPurok` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phoneNum` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `teleNum` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VerifyStatus` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
+  `userCity` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'None',
+  `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Active',
+  `landlordName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'None',
+  `landlordContact` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'NONE',
+  `barangayPos` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'None',
+  `userAddress` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userHouseNum` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `IsLandlord` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'False',
+  `isRenting` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'False',
+  `startedLiving` date NOT NULL DEFAULT '0000-00-00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`, `isRenting`, `landlordName`, `landlordContact`, `barangayPos`, `userAddress`, `userHouseNum`, `IsLandlord`) VALUES
-(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Pending', '', 'Active', 'False', 'None', 'NONE', 'None', 'Plaridel Street', '001', 'False'),
-(28, 'Xavier', 'Noez', 'Johnson', '2000-08-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$..PLFwgk8icProv4dHWmruXNRuedfpg9dq7cnvxdb/MNWdItpbt/e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', '', 'Active', 'False', 'None', 'NONE', 'Electrician', 'Plaridel Street', '002', 'False'),
-(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$Z6oSDH5WbQ1idlHl6Z48w.notdDAOGLo4JrrEC8WFwEGq6XhWLEQa', 'Male', 'Captain', '1647869940_RobloxScreenShot20220318_181434207.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'Plaridel Street', '003', 'False'),
-(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False'),
-(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False'),
-(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False'),
-(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False'),
-(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False'),
-(39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'National Highway ', '231', 'False'),
-(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False'),
-(41, 'Test', 'test', 'test', '1999-01-07', 'Single', 'oasdjoajsd@gmail.com', 'test', '$2y$10$lQDZ1bljBtsNTD/X5zHkx.x96HvWKfyde6m/lMPEMm9kTWHIPvcnW', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'False', 'None', 'NONE', 'None', 'test', '2312', 'False');
+INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`, `landlordName`, `landlordContact`, `barangayPos`, `userAddress`, `userHouseNum`, `IsLandlord`, `isRenting`, `startedLiving`) VALUES
+(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Pending', '', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '001', 'False', 'False', '0000-00-00'),
+(28, 'Xavier', 'Noez', 'Johnson', '2000-08-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$..PLFwgk8icProv4dHWmruXNRuedfpg9dq7cnvxdb/MNWdItpbt/e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', '', 'Active', 'None', 'NONE', 'Electrician', 'Plaridel Street', '002', 'True', 'False', '0000-00-00'),
+(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$Z6oSDH5WbQ1idlHl6Z48w.notdDAOGLo4JrrEC8WFwEGq6XhWLEQa', 'Male', 'Captain', '1647869940_RobloxScreenShot20220318_181434207.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '003', 'False', 'False', '0000-00-00'),
+(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False', 'False', '0000-00-00'),
+(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False', 'False', '0000-00-00'),
+(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '0000-00-00'),
+(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '0000-00-00'),
+(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '0000-00-00'),
+(39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'National Highway ', '231', 'False', 'False', '0000-00-00'),
+(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False', 'False', '0000-00-00'),
+(41, 'Test', 'Test', 'Test', '2000-01-01', 'Single', 'asdoh@gmail.com', 'jonardlolz', '$2y$10$b8.b5D1NJ07gDio1zMsxs.25zxCwRN.q6zKbpmObWs/YCdzeQCxKu', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', '28', 'NONE', 'None', 'Test', '241', 'False', 'False', '2022-04-21');
 
 -- --------------------------------------------------------
 
@@ -612,13 +612,13 @@ INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbi
 --
 
 CREATE TABLE `votes` (
-  `voteID` int(11) NOT NULL,
-  `candidateID` int(11) NOT NULL,
-  `UsersID` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `position` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `electionID` int(11) NOT NULL
+  `voteID` int NOT NULL,
+  `candidateID` int NOT NULL,
+  `UsersID` int NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `electionID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -759,104 +759,158 @@ ALTER TABLE `votes`
 -- AUTO_INCREMENT for table `barangay`
 --
 ALTER TABLE `barangay`
-  MODIFY `BarangayID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `BarangayID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `candidateID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  MODIFY `purposeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `documenttype`
 --
 ALTER TABLE `documenttype`
-  MODIFY `DocumentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `election`
 --
 ALTER TABLE `election`
-  MODIFY `electionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `ereklamocategory`
 --
 ALTER TABLE `ereklamocategory`
-  MODIFY `reklamoCatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `reklamoCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ereklamotype`
 --
 ALTER TABLE `ereklamotype`
-  MODIFY `reklamoTypeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `PostID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `PostID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `purok`
 --
 ALTER TABLE `purok`
-  MODIFY `PurokID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `PurokID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `RequestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `scheduleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `scheduleID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `voteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-GN KEY (`purokLeader`) REFERENCES `users` (`UsersID`);
+  MODIFY `voteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `barangay`
+--
+ALTER TABLE `barangay`
+  ADD CONSTRAINT `barangay_ibfk_1` FOREIGN KEY (`brgyCaptain`) REFERENCES `users` (`UsersID`);
+
+--
+-- Constraints for table `candidates`
+--
+ALTER TABLE `candidates`
+  ADD CONSTRAINT `candidates_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `candidates_ibfk_2` FOREIGN KEY (`electionID`) REFERENCES `election` (`electionID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`PostID`) REFERENCES `post` (`PostID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `documenttype`
+--
+ALTER TABLE `documenttype`
+  ADD CONSTRAINT `documenttype_ibfk_1` FOREIGN KEY (`barangayID`) REFERENCES `barangay` (`BarangayID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ereklamo`
+--
+ALTER TABLE `ereklamo`
+  ADD CONSTRAINT `ereklamo_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ereklamotype`
+--
+ALTER TABLE `ereklamotype`
+  ADD CONSTRAINT `ereklamotype_ibfk_1` FOREIGN KEY (`reklamoCatID`) REFERENCES `ereklamocategory` (`reklamoCatID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post`
+--
+ALTER TABLE `post`
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`),
+  ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`);
+
+--
+-- Constraints for table `purok`
+--
+ALTER TABLE `purok`
+  ADD CONSTRAINT `purok_ibfk_1` FOREIGN KEY (`purokLeader`) REFERENCES `users` (`UsersID`);
 
 --
 -- Constraints for table `request`
