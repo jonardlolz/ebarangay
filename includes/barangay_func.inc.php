@@ -19,16 +19,13 @@
         $sql = "UPDATE barangay SET City=?, BarangayName=?, Active=?, brgyCaptain=? WHERE BarangayID=?";
 
         if($row['brgyCaptain'] != "None" && $brgyCaptain != "None"){
-            $a1 = mysqli_query($conn, "UPDATE barangay SET City='$City', BarangayName='$BarangayName', Active='$Active', brgyCaptain=$brgyCaptain WHERE BarangayID=$id");
+            $a1 = mysqli_query($conn, "UPDATE barangay SET City='Mandaue', BarangayName='$BarangayName', Status='$Active', brgyCaptain=$brgyCaptain WHERE BarangayID=$id");
             $a2 = mysqli_query($conn, "UPDATE users SET userType='Captain' WHERE UsersID=$brgyCaptain");
         }
         elseif($brgyCaptain == "None"){
-            $a1 = mysqli_query($conn, "UPDATE barangay SET City='$City', BarangayName='$BarangayName', Active='$Active', brgyCaptain=NULL WHERE BarangayID=$id");
+            $a1 = mysqli_query($conn, "UPDATE barangay SET City='Mandaue', BarangayName='$BarangayName', Status='$Active', brgyCaptain=NULL WHERE BarangayID=$id");
             $a2 = mysqli_query($conn, "SELECT * FROM barangay");
         }
-        
-        
-        
         if($a1 && $a2){
             mysqli_commit($conn);
             header("location: ../barangay.php?error=none");
@@ -66,7 +63,7 @@
             header("location: ../barangay.php?error=stmtfailedcreatepost");
             exit();
         }
-
+        $City = 'City';
         mysqli_stmt_bind_param($stmt, "ss", $City, $BarangayName); 
         if(!mysqli_stmt_execute($stmt)){
             echo("Error description: " . mysqli_error($conn));

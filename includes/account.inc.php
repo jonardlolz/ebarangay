@@ -55,7 +55,7 @@ if(isset($_GET['edit'])):
             <div class="col-sm-6 mb-3 mb-sm-0">
                 <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
                     <option value="<?php echo $userBarangay ?>" hidden selected><?php echo $userBarangay ?></option>
-                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
+                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
                     while($brow = $barangay->fetch_assoc()): ?>  
                         <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
                     <?php endwhile; ?>
@@ -88,6 +88,16 @@ if(isset($_GET['edit'])):
                     <option value="Secretary">Secretary</option>
                     <option value="Purok Leader">Purok Leader</option>
                 </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <input type="password" class="form-control form-control-user"
+                    id="userPwd" placeholder="Password" name="userPwd" required>
+            </div>
+            <div class="col-sm-6">
+                <input type="password" class="form-control form-control-user"
+                    id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
             </div>
         </div>
     </form>
@@ -246,7 +256,7 @@ if(isset($_GET['edit'])):
             <div class="col-sm-6 mb-3 mb-sm-0">
                 <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
                     <option value="" hidden selected>Barangay</option>
-                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
+                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
                     while($brow = $barangay->fetch_assoc()): ?>  
                         <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
                     <?php endwhile; ?>
@@ -272,12 +282,7 @@ if(isset($_GET['edit'])):
             </div>
             <div class="col-lg-6 col-sm-6">
                 <select class="form-control form-control-sm form-select d-inline" name="userType" id="userType">
-                    <option value="none" hidden selected>User Type</option>
-                    <option value="Resident">Resident</option>
-                    <option value="Captain">Barangay Captain</option>
-                    <option value="Treasurer">Treasurer</option>
-                    <option value="Secretary">Secretary</option>
-                    <option value="Purok Leader">Purok Leader</option>
+                    <option value="Captain" selected>Barangay Captain</option>
                 </select>
             </div>
         </div>

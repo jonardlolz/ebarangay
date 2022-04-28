@@ -10,7 +10,7 @@
         $id = $_GET["id"];
         $sql = "UPDATE users SET Firstname=?, Middlename=?, Lastname=?, 
         dateofbirth=?, civilStat=?, userPurok=?, userBarangay=?,
-        emailAdd=?, phoneNum=?, userType=?, userAddress=?, userHouseNum=? WHERE UsersID=?";
+        emailAdd=?, phoneNum=?, userType=?, userAddress=?, userHouseNum=?, usersPwd=? WHERE UsersID=?";
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -18,7 +18,9 @@
             exit();
         }
 
-        mysqli_stmt_bind_param($stmt, "sssssssssssss", $Firstname, $Middlename, $Lastname, $userDOB, $userCivilStat, $userPurok, $userBrgy, $emailAdd, $phoneNum, $userType, $userAddress, $userHouseNum, $id); 
+        $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT); //hashes password to deter hackers
+
+        mysqli_stmt_bind_param($stmt, "ssssssssssssss", $Firstname, $Middlename, $Lastname, $userDOB, $userCivilStat, $userPurok, $userBrgy, $emailAdd, $phoneNum, $userType, $userAddress, $userHouseNum, $hashedpwd, $id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         

@@ -417,15 +417,15 @@ if(isset($_GET['postVerify'])){
     mysqli_begin_transaction($conn);
 
     if(isset($_GET['resident'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['resident']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='False', isRenting='False' WHERE UsersID='{$_GET['resident']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['resident']}');");
     }
     elseif(isset($_GET['renter'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', landlordName='{$_GET['landlord']}', startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['renter']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', landlordName='{$_GET['landlord']}', isLandlord='False', isRenting='True',startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['renter']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['renter']}');");
     }
     elseif(isset($_GET['landlord'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['landlord']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='False', isRenting='True' WHERE UsersID='{$_GET['landlord']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['landlord']}');");
     }
 

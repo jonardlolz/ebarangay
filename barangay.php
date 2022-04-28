@@ -17,10 +17,10 @@
                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
                 <thead >
                     <tr class="bg-gradient-secondary text-white">
-                        <th scope="col">City</th>
                         <th scope="col">Barangay Name</th>
-                        <th scope="col">Active</th>
                         <th>Barangay Captain</th>
+                        <th>Details</th>
+                        <th>Status</th>
                         <th scope="col">Edit</th>
                     </tr>
                 </thead>
@@ -28,14 +28,14 @@
                     <!--Row 1-->
                     <?php 
                         $userCity = "'".$_SESSION['userCity']."'";
-                        $barangay = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM barangay LEFT JOIN users ON barangay.brgyCaptain = users.UsersID;");
+                        $barangay = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name, barangay.Status as brgyStatus FROM barangay LEFT JOIN users ON barangay.brgyCaptain = users.UsersID;");
                         while($row=$barangay->fetch_assoc()):
                     ?>
                     <tr>
-                        <td><?php echo $row["City"] ?></td>
                         <td><?php echo $row["BarangayName"] ?></td>
-                        <td><?php echo $row["Active"] ?></td>
                         <td><?php if($row["name"] != NULL){echo $row["name"];}else{echo "None";}?></td>
+                        <td><button class="btn btn-primary brgy_details" data-id="<?php echo $row["BarangayID"] ?>">Details</button></td>
+                        <td><?php echo $row["brgyStatus"] ?></td>
                         <td>
                             <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_barangay" data-id="<?php echo $row['BarangayID'] ?>" href="javascript:void(0)"></a>
                         </td>
@@ -47,7 +47,6 @@
                 </tbody>
             </table>
         </div>
-
     </div>
     <!-- End of Card Body-->
 </div>                   
@@ -175,6 +174,9 @@ window.start_load = function(){
     $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
         if(this.scrollHeight <= 117)
         $(this).height(0).height(this.scrollHeight);
+    })
+    $('.brgy_details').click(function(){
+        uni_modal("<center><b>Barangay details</b></center></center>","barangay_alt.php?brgyDetails&barangayID="+$(this).attr("data-id"),"modal-xl")
     })
     $('.add_barangay').click(function(){
         uni_modal("<center><b>Add Barangay</b></center></center>","includes/barangay.inc.php")
