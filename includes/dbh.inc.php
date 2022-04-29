@@ -4,7 +4,7 @@
 
 $serverName = "localhost";
 $dbUsername = "root";
-$dbPassword = "789632145";
+$dbPassword = "";
 $dbName = "ebarangaydb";
 
 $conn = mysqli_connect($serverName, $dbUsername, $dbPassword, $dbName);

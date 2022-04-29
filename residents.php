@@ -103,21 +103,21 @@
 
 <div class="card-body" style="font-size: 75%">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="home" aria-selected="true">All</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="residents-tab" data-toggle="tab" href="#residents" role="tab" aria-controls="profile" aria-selected="false">Residents</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="purokleaders-tab" data-toggle="tab" href="#purokleaders" role="tab" aria-controls="contact" aria-selected="false">Purok Leaders</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="officers-tab" data-toggle="tab" href="#officers" role="tab" aria-controls="contact" aria-selected="false">Officers</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="respondents-tab" data-toggle="tab" href="#respondents" role="tab" aria-controls="contact" aria-selected="false">Respondents</a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="home" aria-selected="true">All</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="residents-tab" data-toggle="tab" href="#residents" role="tab" aria-controls="profile" aria-selected="false">Residents</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="purokleaders-tab" data-toggle="tab" href="#purokleaders" role="tab" aria-controls="contact" aria-selected="false">Purok Leaders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="officers-tab" data-toggle="tab" href="#officers" role="tab" aria-controls="contact" aria-selected="false">Officers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="respondents-tab" data-toggle="tab" href="#respondents" role="tab" aria-controls="contact" aria-selected="false">Respondents</a>
+        </li>
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
