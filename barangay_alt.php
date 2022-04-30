@@ -2,7 +2,7 @@
     if(!isset($_GET['brgyDetails'])){
         include_once "header.php";
     } 
-
+    session_start();
     include "includes/dbh.inc.php";
     $sql = $conn->query("SELECT barangay.*, concat(users.Firstname, ' ', users.Lastname) as 
     CaptainName FROM barangay LEFT JOIN users ON barangay.brgyCaptain = users.UsersID WHERE BarangayID = '{$_GET['barangayID']}'");

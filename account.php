@@ -1,102 +1,88 @@
 <?php include_once "header.php" ?>
 
-<!--Begin Page-->
-<div class="container p-4">
-
-<!--Residents Requests-->
-<div class="card shadow mb-4 m-4">
-    <div class="card-header py-3 d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold text-dark">Accounts: Residents and Officers</h6>
-            <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_account" href="javascript:void(0)"></a>
-    </div>
-    
-    <div class="card-body" style="font-size: 75%">
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark" 
-                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                <thead >
-                    <!-- <tr class="bg-gradient-warning">
-                        <th colspan="5">Resident</th>
-                        <th colspan = "2">Address</th>
-                        <th colspan="3">Contacts</th>
-                        <th colspan="2">Options</th>                   
-                    </tr> -->
-                    <tr class="bg-gradient-secondary text-white">
-                        <th scope="col">Name</th>
-                        <th scope="col">User Type</th>
-                        <th scope="col">Barangay</th>
-                        <th scope="col">Purok</th>
-                        <th>Street Address</th>
-                        <th>House #</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!--Row 1-->
-                    <?php 
-                        $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE Status='Active'");
-                        while($row=$accounts->fetch_assoc()):
-                            if($row["userType"] == "Admin"){
-                                continue;
-                            }
-                    ?>
-                    <tr>
-                        <td>
-                            <img class="img-profile rounded-circle <?php 
-                                if($row["userType"] == "Resident"){
-                                    echo "img-res-profile";
-                                }
-                                elseif($row["userType"] == "Purok Leader"){
-                                    echo "img-purokldr-profile";
-                                }
-                                elseif($row["userType"] == "Captain"){
-                                    echo "img-capt-profile";
-                                }
-                                elseif($row["userType"] == "Secretary"){
-                                    echo "img-sec-profile";
-                                }
-                                elseif($row["userType"] == "Treasurer"){
-                                    echo "img-treas-profile";
-                                }
-                                elseif($row["userType"] == "Admin"){
-                                    echo "img-admin-profile";
-                                }
-                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                            
-                            <?php echo $row["name"] ?>
-                        </td>
-                        <td><?php echo $row["userType"] ?></td>
-                        <td><?php echo $row["userBarangay"] ?></td>
-                        <td><?php echo $row["userPurok"] ?></td>
-                        <td><?php echo $row["userAddress"] ?></td>
-                        <td><?php echo $row["userHouseNum"] ?></td>
-                        <td><?php echo $row["username"] ?></td>
-                        <td>
-                            <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
-                            <a class="fas fa-trash fa-md mr-2 text-gray-600 deactivate_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
-                        </td>
-                        
-                        <!--Right Options-->
-                    </tr>
-                    <?php endwhile; ?>
-                    <!--Row 1-->
-                </tbody>
-            </table>
+<div class="col d-flex flex-column px-4">
+    <!--Residents Requests-->
+    <div class="card shadow mb-4 m-4">
+        <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">Accounts: Captains</h6>
+                <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_account" href="javascript:void(0)"></a>
         </div>
-
+    
+        <div class="card-body" style="font-size: 75%">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark"
+                    id="accountTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Name</th>
+                            <th scope="col">Barangay</th>
+                            <th scope="col">Purok</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php
+                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE Status='Active' AND userType='Captain' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident')");
+                            while($row=$accounts->fetch_assoc()):
+                                if($row["userType"] == "Admin"){
+                                    continue;
+                                }
+                        ?>
+                        <tr>
+                            <td>
+                                <img class="img-profile rounded-circle <?php
+                                    if($row["userType"] == "Resident"){
+                                        echo "img-res-profile";
+                                    }
+                                    elseif($row["userType"] == "Purok Leader"){
+                                        echo "img-purokldr-profile";
+                                    }
+                                    elseif($row["userType"] == "Captain"){
+                                        echo "img-capt-profile";
+                                    }
+                                    elseif($row["userType"] == "Secretary"){
+                                        echo "img-sec-profile";
+                                    }
+                                    elseif($row["userType"] == "Treasurer"){
+                                        echo "img-treas-profile";
+                                    }
+                                    elseif($row["userType"] == "Admin"){
+                                        echo "img-admin-profile";
+                                    }
+                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+    
+                                <?php echo $row["name"] ?>
+                            </td>
+                            <td><?php echo $row["userBarangay"] ?></td>
+                            <td><?php echo $row["userPurok"] ?></td>
+                            <td>
+                                <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
+                                <a class="fas fa-trash fa-md mr-2 text-gray-600 deactivate_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
+                            </td>
+    
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
+            </div>
+    
+        </div>
+        <!-- End of Card Body-->
     </div>
-    <!-- End of Card Body-->
-</div>                   
-<!--End of Card-->  
-<!--Residents Requests-->
-</div>
-</div>
-<!--row-->
-</div>
-<!--Content-wrapper-->
+</div>             
+
 
 <script>
+    $(document).ready(function() {
+        $('#accountTable').DataTable({
+            "ordering": false   
+        });
+    } );
+
+
     window.start_load = function(){
 	    $('body').prepend('<div id="preloader2"></div>')
 	  }

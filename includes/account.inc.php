@@ -209,12 +209,8 @@ if(isset($_GET['edit'])):
 
 <?php elseif(isset($_GET['add'])): ?> 
 <div class="container-fluid">
-    <form id="form" action="includes/edit_account.inc.php" class="user" method="post">
-        <!-- <div class="form-group">
-            <input type="text" class="form-control form-control-sm" id="natID"
-                    placeholder="National ID (e.g. XXXX-XXXX-XXXX-XXXX)" name="natID" maxlength="19" required>
-        </div> -->
-        <div class="form-group row">    <!--Nmae-->
+    <!-- <form id="form" action="includes/edit_account.inc.php" class="user" method="post">
+        <div class="form-group row">  
             <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
                 <input type="text" class="form-control form-control-sm" id="FirstName"
                     name="Firstname" placeholder="First Name">
@@ -234,7 +230,7 @@ if(isset($_GET['edit'])):
             </div>
         </div>
         
-        <div class="form-group row"><!--Civil status-->
+        <div class="form-group row">
             <div class="col-sm-6">
                 <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
                     <option value="none" hidden selected disabled>Civil Status</option>
@@ -294,11 +290,42 @@ if(isset($_GET['edit'])):
                 <input type="password" class="form-control form-control-sm" name="userPw" id="userPw" placeholder="Password" required>
             </div>
         </div>
+    </form> -->
+    <form action="">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <label for="">Barangay: </label>
+                </div>
+                <div class="col">
+                    <select name="barangay" id="barangay" onchange="checkCaptain(this.value)">
+                        <option value="">Select Barangay</option>
+                        <?php $brgySql = $conn->query("SELECT * FROM barangay");
+                        while($brgyList = $brgySql->fetch_assoc()): ?>
+                        <option value="<?php echo $brgyList['BarangayID'] ?>"><?php echo $brgyList['BarangayName'] ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <span id="barangayResponse"></span>
+            </div>
+        </div>
     </form>
 </div>
 <?php endif; ?>
 
 <script>
+
+function checkCaptain(str){
+    if(str.length == 0){
+        document.getElementById('barangayResponse').innerHTML = "";
+    }
+    else{
+        document.getElementById('barangayResponse').innerHTML = "Test";
+    }
+}
+
 (function($, undefined) {
 
 "use strict";
