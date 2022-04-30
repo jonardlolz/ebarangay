@@ -3,24 +3,18 @@
 <!--Begin Page-->
 <div class="container p-4">
 
-<!--Residents Requests-->
+<!-- Residents Requests -->
 <div class="card shadow mb-4 m-4">
     <div class="card-header py-3 d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold text-dark">Accounts: Residents and Officers</h6>
+            <h6 class="m-0 font-weight-bold text-dark">Accounts</h6>
             <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_account" href="javascript:void(0)"></a>
     </div>
     
     <div class="card-body" style="font-size: 75%">
         <div class="table-responsive">
             <table class="table table-bordered text-center text-dark" 
-                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                id="accountTable" width="100%" cellspacing="0" cellpadding="0">
                 <thead >
-                    <!-- <tr class="bg-gradient-warning">
-                        <th colspan="5">Resident</th>
-                        <th colspan = "2">Address</th>
-                        <th colspan="3">Contacts</th>
-                        <th colspan="2">Options</th>                   
-                    </tr> -->
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Name</th>
                         <th scope="col">User Type</th>
@@ -33,9 +27,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!--Row 1-->
                     <?php 
-                        $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE Status='Active'");
+                        $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE Status='Active' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident')");
                         while($row=$accounts->fetch_assoc()):
                             if($row["userType"] == "Admin"){
                                 continue;
@@ -76,27 +69,30 @@
                             <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
                             <a class="fas fa-trash fa-md mr-2 text-gray-600 deactivate_account" data-id="<?php echo $row['UsersID'] ?>" href="javascript:void(0)"></a>
                         </td>
-                        
-                        <!--Right Options-->
                     </tr>
                     <?php endwhile; ?>
-                    <!--Row 1-->
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- <div class="card shadow m-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-dark">Accounts</h6>
+        <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_account" href="javascript:void(0)"></a>
+    </div>
+    <div class="card-body ">
 
     </div>
-    <!-- End of Card Body-->
-</div>                   
-<!--End of Card-->  
-<!--Residents Requests-->
-</div>
-</div>
-<!--row-->
-</div>
-<!--Content-wrapper-->
+</div> -->
 
 <script>
+    $(document).ready(function() {
+      $('#accountTable').DataTable({
+          "ordering": false
+      });
+      } );
     window.start_load = function(){
 	    $('body').prepend('<div id="preloader2"></div>')
 	  }
