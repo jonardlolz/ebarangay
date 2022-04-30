@@ -6,7 +6,7 @@
 <!--Residents Requests-->
 <div class="card shadow mb-4 m-4">
     <div class="card-header py-3 d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold text-dark">Barangay</h6>
+            <h6 class="m-0 font-weight-bold text-dark">Barangay </h6>
             <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_barangay" href="javascript:void(0)"></a>
         </button>
     </div>
