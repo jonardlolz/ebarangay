@@ -307,8 +307,8 @@ if(isset($_GET['edit'])):
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <span id="barangayResponse"></span>
+            <div class="row" id="barangayDetails" style="display: none;">
+                
             </div>
         </div>
     </form>
@@ -318,11 +318,12 @@ if(isset($_GET['edit'])):
 <script>
 
 function checkCaptain(str){
+    var brgy = document.getElementById('barangayDetails');
     if(str.length == 0){
-        document.getElementById('barangayResponse').innerHTML = "";
+        brgy.style.display = "none";
     }
     else{
-        document.getElementById('barangayResponse').innerHTML = "Test";
+        brgy.style.display = "block";
     }
 }
 
