@@ -260,7 +260,7 @@ if(isset($_GET['edit'])):
             </div>
             <div class="col-sm-6">
                 <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
-                    <option value="" disabled selected hidden>Purok</option>
+                    <option value="" selected hidden>Purok</option>
                 </select>
             </div>
         </div>
@@ -307,26 +307,35 @@ if(isset($_GET['edit'])):
                     </select>
                 </div>
             </div>
-            <div class="row" id="barangayDetails" style="display: none;">
+            <div class="row" id="barangayDetails">
                 
             </div>
         </div>
     </form>
 </div>
+
+
+<?php 
+    elseif(isset($_GET['getCapt'])):
+        if(isset($_GET['response'])){
+            $captainSql = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as cptName FROM barangay LEFT JOIN users ON brgyCaptain = UsersID WHERE BarangayID={$_GET['response']}"); 
+            $captainName = $captainSql -> fetch_assoc();
+            if($captainName['cptName'] != NULL || $captainName['cptName'] != "" || $captainName['cptName'] != 0){
+                $cptName = $captainName['cptName'];
+            }    
+            else{
+                $cptName = "";
+            }   
+        }
+    
+    echo $cptName === "" ? "None" : $cptName;
+        
+?>
 <?php endif; ?>
 
-<script>
 
-function checkCaptain(str){
-    var brgy = document.getElementById('barangayDetails');
-    if(str.length == 0){
-        brgy.style.display = "none";
-    }
-    else{
-        brgy.style.display = "block";
-    }
-}
 
+<script>    
 (function($, undefined) {
 
 "use strict";
@@ -393,6 +402,26 @@ function changecat(value) {
             catOptions += "<option>" + mealsByCategory[value][categoryId] + "</option>";
         }
         document.getElementById("userPurok").innerHTML = catOptions;
+    }
+} 
+
+function checkCaptain(str){
+    var brgy = document.getElementById('barangayDetails');
+    if(str.length == 0){
+        brgy.innerHTML = "";
+    }
+    else{
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.onload = function(){
+            brgy.innerHTML ="<div class='col'>"+
+                            "<label for=''>Barangay Captain: </label>"+
+                        "</div>"+
+                        "<div class='col'>"+
+                            "<label>" + this.responseText + "</label>"+
+                        "</div>";
+        }
+        xmlhttp.open("GET", "includes/account.inc.php?getCapt&response="+str);
+        xmlhttp.send();
     }
 }
 
