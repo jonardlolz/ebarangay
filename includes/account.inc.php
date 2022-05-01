@@ -310,7 +310,7 @@ if(isset($_GET['edit'])):
             <div class="row" id="barangayDetails">
                 
             </div>
-            <div id="accountDetails" style="display: none;">
+            <div class="m-4" id="accountDetails" style="display: none;">
                 <div class='form-group row'>  
                     <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
                         <input type='text' class='form-control form-control-sm' id='FirstName'
@@ -491,6 +491,7 @@ function checkCaptain(str){
     var brgy = document.getElementById('barangayDetails');
     if(str.length == 0){
         brgy.innerHTML = "";
+        document.getElementById('accountDetails').style.display = "none";   
     }
     else{
         const xmlhttp = new XMLHttpRequest();
@@ -501,7 +502,7 @@ function checkCaptain(str){
                             "<div class='col'>"+
                                 "<label>" + this.responseText + "</label>"+
                             "</div>";
-            document.getElementById('');
+            document.getElementById('accountDetails').style.display = "block";
         }
         xmlhttp.open("GET", "includes/account.inc.php?getCapt&response="+str);
         xmlhttp.send();
