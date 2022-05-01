@@ -310,6 +310,88 @@ if(isset($_GET['edit'])):
             <div class="row" id="barangayDetails">
                 
             </div>
+            <div id="accountDetails" style="display: none;">
+                <div class='form-group row'>  
+                    <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
+                        <input type='text' class='form-control form-control-sm' id='FirstName'
+                            name='Firstname' placeholder='First Name'>
+                    </div>
+                    <div class='col-sm-4 col-md-4'>
+                        <input type='text' class='form-control form-control-sm' id='MiddleName'
+                            name='Middlename' placeholder='Middle Name'>
+                    </div>
+                    <div class='col-sm-4 col-md-4'>
+                        <input type='text' class='form-control form-control-sm' id='LastName'
+                            name='Lastname' placeholder='Last Name'>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <div class='col-sm-6'>
+                        <input type='date' class='form-control form-control-sm' placeholder='Birthdate' name='userDOB' id='userDOB'></input>
+                    </div>
+                </div>
+                
+                <div class='form-group row'>
+                    <div class='col-sm-6'>
+                        <select name='userCivilStat' id='userCivilStat' class='form-control form-control-sm form-select d-inline'>
+                            <option value='none' hidden selected disabled>Civil Status</option>
+                            <option value='Single'>Single</option>
+                            <option value='Married'>Married</option>
+                            <option value='Widowed'>Widowed</option>
+                        </select>
+                    </div>
+                    <div class='col-sm-6'>
+                        <select class='form-control form-control-sm form-select d-inline' id='userGender' placeholder='Gender' name='userGender' required>
+                            <option value='none' disabled hidden selected>Gender</option>
+                            <option value='Male'>Male</option>
+                            <option value='Female'>Female</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class='form-group row'>
+                    <div class='col-sm-6 mb-3 mb-sm-0'>
+                        <select class='form-control form-control-sm form-select d-inline' name='userBrgy' onChange='changecat(this.value);'  id='userBrgy'>
+                            <option value='' hidden selected>Barangay</option>
+                            <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
+                            while($brow = $barangay->fetch_assoc()): ?>  
+                                <option value='<?php echo $brow['BarangayName'] ?>'><?php echo $brow['BarangayName'] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <div class='col-sm-6'>
+                        <select class='form-control form-control-sm form-select d-inline' name='userPurok' id='userPurok'>
+                            <option value='' selected hidden>Purok</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <div class='col-lg-6 col-sm-6'>
+                        <input type='text' class='form-control form-control-sm' name='userAddress' id='userAddress' placeholder='Street Address' required></input>
+                    </div>
+                    <div class='col-lg-6'>
+                        <input type='text' class='form-control form-control-sm' name='userHouseNum' id='userHouseNum' placeholder='House #' required>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <div class='col-lg-6 col-sm-6'>
+                        <input type='email' class='form-control form-control-sm' name='emailAdd' id='emailAdd' placeholder='Email Address'></input>
+                    </div>
+                    <div class='col-lg-6 col-sm-6'>
+                        <select class='form-control form-control-sm form-select d-inline' name='userType' id='userType'>
+                            <option value='Captain' selected>Barangay Captain</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <div class='col-lg-6 col-sm-6'>
+                        <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
+                    </div>
+                    <div class='col-lg-6'>
+                        <input type='password' class='form-control form-control-sm' name='userPw' id='userPw' placeholder='Password' required>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>
@@ -414,11 +496,12 @@ function checkCaptain(str){
         const xmlhttp = new XMLHttpRequest();
         xmlhttp.onload = function(){
             brgy.innerHTML ="<div class='col'>"+
-                            "<label for=''>Barangay Captain: </label>"+
-                        "</div>"+
-                        "<div class='col'>"+
-                            "<label>" + this.responseText + "</label>"+
-                        "</div>";
+                                "<label for=''>Barangay Captain: </label>"+
+                            "</div>"+
+                            "<div class='col'>"+
+                                "<label>" + this.responseText + "</label>"+
+                            "</div>";
+            document.getElementById('');
         }
         xmlhttp.open("GET", "includes/account.inc.php?getCapt&response="+str);
         xmlhttp.send();
