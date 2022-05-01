@@ -313,6 +313,7 @@ if(isset($_GET['edit'])):
                 echo "</div>";
                 echo "<div class='col'>";
                 echo "<label data-id=" . $captainName['brgyCaptain'] . ">" . $captainName['cptName'] . "</label>";
+                echo "<input name='brgyCaptID' value=". $captainName['brgyCaptain'] ." type='hidden'>";
                 echo "</div>";
             }    
             else{
