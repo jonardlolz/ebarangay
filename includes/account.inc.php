@@ -209,89 +209,7 @@ if(isset($_GET['edit'])):
 
 <?php elseif(isset($_GET['add'])): ?> 
 <div class="container-fluid">
-    <!-- <form id="form" action="includes/edit_account.inc.php" class="user" method="post">
-        <div class="form-group row">  
-            <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-sm" id="FirstName"
-                    name="Firstname" placeholder="First Name">
-            </div>
-            <div class="col-sm-4 col-md-4">
-                <input type="text" class="form-control form-control-sm" id="MiddleName"
-                    name="Middlename" placeholder="Middle Name">
-            </div>
-            <div class="col-sm-4 col-md-4">
-                <input type="text" class="form-control form-control-sm" id="LastName"
-                    name="Lastname" placeholder="Last Name">
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-6">
-                <input type="date" class="form-control form-control-sm" placeholder="Birthdate" name="userDOB" id="userDOB"></input>
-            </div>
-        </div>
-        
-        <div class="form-group row">
-            <div class="col-sm-6">
-                <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
-                    <option value="none" hidden selected disabled>Civil Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                </select>
-            </div>
-            <div class="col-sm-6">
-                <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
-                    <option value="none" disabled hidden selected>Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-            
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
-                    <option value="" hidden selected>Barangay</option>
-                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
-                    while($brow = $barangay->fetch_assoc()): ?>  
-                        <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="col-sm-6">
-                <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
-                    <option value="" selected hidden>Purok</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="text" class="form-control form-control-sm" name="userAddress" id="userAddress" placeholder="Street Address" required></input>
-            </div>
-            <div class="col-lg-6">
-                <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address"></input>
-            </div>
-            <div class="col-lg-6 col-sm-6">
-                <select class="form-control form-control-sm form-select d-inline" name="userType" id="userType">
-                    <option value="Captain" selected>Barangay Captain</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="text" class="form-control form-control-sm" name="username" id="username" placeholder="Username" required></input>
-            </div>
-            <div class="col-lg-6">
-                <input type="password" class="form-control form-control-sm" name="userPw" id="userPw" placeholder="Password" required>
-            </div>
-        </div>
-    </form> -->
-    <form action="">
+    <form id="form" action="includes/edit_account.inc.php?addCapt" class="user" method="post">
         <div class="col">
             <div class="row">
                 <div class="col">
@@ -302,7 +220,7 @@ if(isset($_GET['edit'])):
                         <option value="">Select Barangay</option>
                         <?php $brgySql = $conn->query("SELECT * FROM barangay");
                         while($brgyList = $brgySql->fetch_assoc()): ?>
-                        <option value="<?php echo $brgyList['BarangayID'] ?>"><?php echo $brgyList['BarangayName'] ?></option>
+                        <option value="<?php echo $brgyList['BarangayName'] ?>"><?php echo $brgyList['BarangayName'] ?></option>
                         <?php endwhile; ?>
                     </select>
                 </div>
@@ -311,7 +229,7 @@ if(isset($_GET['edit'])):
                 
             </div>
             <div class="m-4" id="accountDetails" style="display: none;">
-                <div class='form-group row'>  
+                <div class='form-group row'>
                     <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
                         <input type='text' class='form-control form-control-sm' id='FirstName'
                             name='Firstname' placeholder='First Name'>
@@ -326,13 +244,10 @@ if(isset($_GET['edit'])):
                     </div>
                 </div>
                 <div class='form-group row'>
-                    <div class='col-sm-6'>
+                    <div class='col'>
                         <input type='date' class='form-control form-control-sm' placeholder='Birthdate' name='userDOB' id='userDOB'></input>
                     </div>
-                </div>
-                
-                <div class='form-group row'>
-                    <div class='col-sm-6'>
+                    <div class='col'>
                         <select name='userCivilStat' id='userCivilStat' class='form-control form-control-sm form-select d-inline'>
                             <option value='none' hidden selected disabled>Civil Status</option>
                             <option value='Single'>Single</option>
@@ -340,23 +255,13 @@ if(isset($_GET['edit'])):
                             <option value='Widowed'>Widowed</option>
                         </select>
                     </div>
+                </div>
+                <div class='form-group row'>
                     <div class='col-sm-6'>
                         <select class='form-control form-control-sm form-select d-inline' id='userGender' placeholder='Gender' name='userGender' required>
                             <option value='none' disabled hidden selected>Gender</option>
                             <option value='Male'>Male</option>
                             <option value='Female'>Female</option>
-                        </select>
-                    </div>
-                    
-                </div>
-                <div class='form-group row'>
-                    <div class='col-sm-6 mb-3 mb-sm-0'>
-                        <select class='form-control form-control-sm form-select d-inline' name='userBrgy' onChange='changecat(this.value);'  id='userBrgy'>
-                            <option value='' hidden selected>Barangay</option>
-                            <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
-                            while($brow = $barangay->fetch_assoc()): ?>  
-                                <option value='<?php echo $brow['BarangayName'] ?>'><?php echo $brow['BarangayName'] ?></option>
-                            <?php endwhile; ?>
                         </select>
                     </div>
                     <div class='col-sm-6'>
@@ -390,7 +295,7 @@ if(isset($_GET['edit'])):
                     <div class='col-lg-6'>
                         <input type='password' class='form-control form-control-sm' name='userPw' id='userPw' placeholder='Password' required>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
     </form>
@@ -400,18 +305,25 @@ if(isset($_GET['edit'])):
 <?php 
     elseif(isset($_GET['getCapt'])):
         if(isset($_GET['response'])){
-            $captainSql = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as cptName FROM barangay LEFT JOIN users ON brgyCaptain = UsersID WHERE BarangayID={$_GET['response']}"); 
+            $captainSql = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as cptName FROM barangay LEFT JOIN users ON brgyCaptain = UsersID WHERE BarangayName='{$_GET['response']}'"); 
             $captainName = $captainSql -> fetch_assoc();
             if($captainName['cptName'] != NULL || $captainName['cptName'] != "" || $captainName['cptName'] != 0){
-                $cptName = $captainName['cptName'];
+                echo "<div class='col'>";
+                echo "<label for=''>Barangay Captain: </label>";
+                echo "</div>";
+                echo "<div class='col'>";
+                echo "<label data-id=" . $captainName['brgyCaptain'] . ">" . $captainName['cptName'] . "</label>";
+                echo "</div>";
             }    
             else{
-                $cptName = "";
+                echo "<div class='col'>";
+                echo "<label for=''>Barangay Captain: </label>";
+                echo "</div>";
+                echo "<div class='col'>";
+                echo "<label data-id=0>None</label>";
+                echo "</div>";
             }   
         }
-    
-    echo $cptName === "" ? "None" : $cptName;
-        
 ?>
 <?php endif; ?>
 
@@ -496,12 +408,8 @@ function checkCaptain(str){
     else{
         const xmlhttp = new XMLHttpRequest();
         xmlhttp.onload = function(){
-            brgy.innerHTML ="<div class='col'>"+
-                                "<label for=''>Barangay Captain: </label>"+
-                            "</div>"+
-                            "<div class='col'>"+
-                                "<label>" + this.responseText + "</label>"+
-                            "</div>";
+            brgy.innerHTML = this.responseText; 
+            changecat(str);
             document.getElementById('accountDetails').style.display = "block";
         }
         xmlhttp.open("GET", "includes/account.inc.php?getCapt&response="+str);

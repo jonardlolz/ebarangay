@@ -32,9 +32,9 @@
             header("location: ../residents.php?error=none");
             exit();
         }
-
+    }
+    elseif(isset($_GET['addCapt'])){
         
-
     }
     elseif(isset($_GET["removeCaptain"])){
         mysqli_begin_transaction($conn);
