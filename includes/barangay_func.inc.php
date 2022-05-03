@@ -54,6 +54,41 @@
         //     exit();
         // }
     }
+    elseif(isset($_GET['addOfficer'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");
+
+        if($a1){
+            mysqli_commit($conn);
+            header("location: ../barangay.php?error=none");
+            exit();
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+    }
+    elseif(isset($_GET['removeOfficer'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE users SET userType='Resident' WHERE UsersID='$id'");
+
+        if($a1){
+            mysqli_commit($conn);
+            header("location: ../barangay.php?error=none");
+            exit();
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+    }
+
 
     else{
         $sql = "INSERT INTO barangay(City, BarangayName) VALUES(?, ?)";

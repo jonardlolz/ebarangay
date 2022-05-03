@@ -150,31 +150,35 @@
                                         <?php while($officalRow = $officials->fetch_assoc()): ?>
                                         <div class="col-sm-4">
                                             <div class="card m-2">
-                                                <div class="card-header">
-                                                    <div class="user-avatar w-100 d-flex justify-content-center">
-                                                        <span class="position-relative">
-                                                            <img class="img-fluid rounded-circle <?php
-                                                            if($officalRow["userType"] == "Resident"){
-                                                                echo "img-res-profile";
-                                                            }
-                                                            elseif($officalRow["userType"] == "Purok Leader"){
-                                                                echo "img-purokldr-profile";
-                                                            }
-                                                            elseif($officalRow["userType"] == "Captain"){
-                                                                echo "img-capt-profile";
-                                                            }
-                                                            elseif($officalRow["userType"] == "Secretary"){
-                                                                echo "img-sec-profile";
-                                                            }
-                                                            elseif($officalRow["userType"] == "Treasurer"){
-                                                                echo "img-treas-profile";
-                                                            }
-                                                            elseif($officalRow["userType"] == "Admin"){
-                                                                echo "img-admin-profile";
-                                                            }
-                                                        ?>" src="img/<?php echo $officalRow['profile_pic'] ?>" style="width:100px; height:100px">
-                                                        </span>
+                                                <div class="position-relative">
+                                                    <div class="card-header">
+                                                        <div class="user-avatar w-100 d-flex justify-content-center">
+                                                            <span class="position-relative">
+                                                                <img class="img-fluid rounded-circle <?php
+                                                                if($officalRow["userType"] == "Resident"){
+                                                                    echo "img-res-profile";
+                                                                }
+                                                                elseif($officalRow["userType"] == "Purok Leader"){
+                                                                    echo "img-purokldr-profile";
+                                                                }
+                                                                elseif($officalRow["userType"] == "Captain"){
+                                                                    echo "img-capt-profile";
+                                                                }
+                                                                elseif($officalRow["userType"] == "Secretary"){
+                                                                    echo "img-sec-profile";
+                                                                }
+                                                                elseif($officalRow["userType"] == "Treasurer"){
+                                                                    echo "img-treas-profile";
+                                                                }
+                                                                elseif($officalRow["userType"] == "Admin"){
+                                                                    echo "img-admin-profile";
+                                                                }
+                                                            ?>" src="img/<?php echo $officalRow['profile_pic'] ?>" style="width:100px; height:100px">
+                                                            </span>
+                                                        </div>
                                                     </div>
+                                                    <a href="javascript:void(0)" class="removeOfficer fas fa-times text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="left:85%;bottom:85%;width:30px;height: 30px" data-id="<?php echo $officalRow['UsersID'] ?>">
+                                                    </a>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="text-center">
@@ -444,6 +448,20 @@
     $('.add_officer').click(function(){
         uni_modal("<center><b>Add Officer</b></center></center>","includes/barangay.inc.php?addOfficer&barangayName="+$(this).attr("data-id"), "modal-md")
     })
+    $('.removeOfficer').click(function(){
+        _conf("Remove officer?","removeOfficer",[$(this).attr('data-id')])
+    })
+    function removeOfficer($id){
+        start_load()
+        $.ajax({
+            url:'includes/barangay_func.inc.php?removeOfficer',
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
+    }
 </script>
 
 <?php include_once "footer.php" ?>
