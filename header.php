@@ -317,6 +317,9 @@
 
         <!-- Captain Sidebar -->
         <?php elseif($_SESSION["userType"] == "Captain") : ?>
+        <?php $brgySql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_SESSION['userBarangay']}'");
+              $brgyData = $brgySql->fetch_assoc();
+        ?>
         <!-- Nav Item - Dashboard -->
         <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
@@ -325,14 +328,9 @@
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>        
-        <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purokLeader.php">
-                Purok Leaders
-            </a>
-        </li> -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purok.php" aria-expanded="true">
-                Purok
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="barangay_alt.php?barangayID=<?php echo $brgyData['BarangayID'] ?>" aria-expanded="true">
+                Barangay
             </a>
         </li>
         <!-- Nav Item - Request -->
