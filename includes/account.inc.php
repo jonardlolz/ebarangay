@@ -293,7 +293,7 @@ if(isset($_GET['edit'])):
                         <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
                     </div>
                     <div class='col-lg-6'>
-                        <input type='password' class='form-control form-control-sm' name='userPw' id='userPw' placeholder='Password' required>
+                        <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
                     </div>
                 </div>  
             </div>
@@ -313,7 +313,7 @@ if(isset($_GET['edit'])):
                 echo "</div>";
                 echo "<div class='col'>";
                 echo "<label data-id=" . $captainName['brgyCaptain'] . ">" . $captainName['cptName'] . "</label>";
-                echo "<input name='brgyCaptID' value=". $captainName['brgyCaptain'] ." type='hidden'>";
+                echo "<input name='existingCapt' value=". $captainName['brgyCaptain'] ." type='hidden'>";
                 echo "</div>";
             }    
             else{
@@ -322,6 +322,7 @@ if(isset($_GET['edit'])):
                 echo "</div>";
                 echo "<div class='col'>";
                 echo "<label data-id=0>None</label>";
+                echo "<input name='existingCapt' value=0 type='hidden'>";
                 echo "</div>";
             }   
         }
