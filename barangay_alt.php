@@ -22,34 +22,37 @@
     </style>
 <?php endif; ?>
 
-<div class="container">
+<div class="col d-flex flex-column px-4">
     <div class="row">
         <div class="col-sm-4">
             <div class="card shadow m-4">
-                <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-dark">
-                        <div class="text-center text-dark">
-                            <div class="user-avatar w-100 d-flex justify-content-center">
-                                <span class="position-relative">
-                                    <img src="img/<?php echo $row["barangay_pic"]; ?>" class="img-fluid img-thumbnail rounded-circle" style="width:150px; height:150px">
-                                    <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
-                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
-                                        <i class="fas fa-camera"></i>
-                                    </a>
-                                    <?php endif; ?>
-                                </span>
+                <div class="position-relative">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-dark">
+                            <div class="text-center text-dark">
+                                <div class="user-avatar w-100 d-flex justify-content-center">
+                                    <span class="position-relative">
+                                        <img src="img/<?php echo $row["barangay_pic"]; ?>" class="img-fluid img-thumbnail rounded-circle" style="width:150px; height:150px">
+                                        <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
+                                            <i class="fas fa-camera"></i>
+                                        </a>
+                                        <?php endif; ?>
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <h5 class="font-weight-bold">Barangay <?php echo $row['BarangayName'] ?></h5>
+                                </div>
                             </div>
-                            <div class="mt-2">
-                                <h5 class="font-weight-bold">Barangay <?php echo $row['BarangayName'] ?></h5>
-                            </div>
-                        </div>
-                    </h6>
+                        </h6>
+                    </div>
+                    <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                        <a href="javascript:void(0)" class="edit_brgy text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:93%;left:85%;width:30px;height: 30px" data-id="<?php echo $row['BarangayID'] ?>">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
-                <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
-                <a href="javascript:void(0)" class="edit_brgy text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:33%;left:85%;width:30px;height: 30px" data-id="<?php echo $row['BarangayID'] ?>">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <?php endif; ?>
+                
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-5">
@@ -126,55 +129,66 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="officials" role="tabpanel" aria-labelledby="officials-tab">
-                            <?php $i = 0; 
-                                $officials = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users 
-                                WHERE (userType='Captain' 
-                                OR userType='Secretary' 
-                                OR userType='Purok Leader'
-                                OR userType='Treasurer')
-                                AND userBarangay='{$row['BarangayName']}'"); ?>
-                            <?php while($i < mysqli_num_rows($officials)): ?>
-                            <div class="row">
-                                <?php while($officalRow = $officials->fetch_assoc()): ?>
-                                <div class="col-sm-4">
-                                    <div class="card m-2">
-                                        <div class="card-header">
-                                            <div class="user-avatar w-100 d-flex justify-content-center">
-                                                <span class="position-relative">
-                                                    <img class="img-fluid rounded-circle <?php 
-                                                    if($officalRow["userType"] == "Resident"){
-                                                        echo "img-res-profile";
-                                                    }
-                                                    elseif($officalRow["userType"] == "Purok Leader"){
-                                                        echo "img-purokldr-profile";
-                                                    }
-                                                    elseif($officalRow["userType"] == "Captain"){
-                                                        echo "img-capt-profile";
-                                                    }
-                                                    elseif($officalRow["userType"] == "Secretary"){
-                                                        echo "img-sec-profile";
-                                                    }
-                                                    elseif($officalRow["userType"] == "Treasurer"){
-                                                        echo "img-treas-profile";
-                                                    }
-                                                    elseif($officalRow["userType"] == "Admin"){
-                                                        echo "img-admin-profile";
-                                                    }
-                                                ?>" src="img/<?php echo $officalRow['profile_pic'] ?>" style="width:100px; height:100px">
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center">
-                                            <h4 class="card-title"><?php echo $officalRow['name'] ?></h4>
-                                            <p class="card-text"><?php echo $officalRow['userType'] ?></p>
-                                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary add_officer" data-id="<?php echo $row['BarangayName'] ?>">Add Officers</button>
                                         </div>
                                     </div>
                                 </div>
-                                <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
+                                <div class="card-body">
+                                    <?php $i = 0;
+                                        $officials = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users
+                                        WHERE (userType='Captain'
+                                        OR userType='Secretary'
+                                        OR userType='Purok Leader'
+                                        OR userType='Treasurer')
+                                        AND userBarangay='{$row['BarangayName']}'"); ?>
+                                    <?php while($i < mysqli_num_rows($officials)): ?>
+                                    <div class="row">
+                                        <?php while($officalRow = $officials->fetch_assoc()): ?>
+                                        <div class="col-sm-4">
+                                            <div class="card m-2">
+                                                <div class="card-header">
+                                                    <div class="user-avatar w-100 d-flex justify-content-center">
+                                                        <span class="position-relative">
+                                                            <img class="img-fluid rounded-circle <?php
+                                                            if($officalRow["userType"] == "Resident"){
+                                                                echo "img-res-profile";
+                                                            }
+                                                            elseif($officalRow["userType"] == "Purok Leader"){
+                                                                echo "img-purokldr-profile";
+                                                            }
+                                                            elseif($officalRow["userType"] == "Captain"){
+                                                                echo "img-capt-profile";
+                                                            }
+                                                            elseif($officalRow["userType"] == "Secretary"){
+                                                                echo "img-sec-profile";
+                                                            }
+                                                            elseif($officalRow["userType"] == "Treasurer"){
+                                                                echo "img-treas-profile";
+                                                            }
+                                                            elseif($officalRow["userType"] == "Admin"){
+                                                                echo "img-admin-profile";
+                                                            }
+                                                        ?>" src="img/<?php echo $officalRow['profile_pic'] ?>" style="width:100px; height:100px">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                    <h4 class="card-title"><?php echo $officalRow['name'] ?></h4>
+                                                    <p class="card-text"><?php echo $officalRow['userType'] ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
+                                    </div>
+                                    <?php endwhile; ?>
+                                </div>
                             </div>
-                            <?php endwhile; ?>
                         </div>
                         <div class="tab-pane fade" id="purok" role="tabpanel" aria-labelledby="purok-tab">
                             <div class="card m-2">
@@ -426,6 +440,9 @@
     })
     $('.add_contact').click(function(){
         uni_modal("<center><b>Barangay Contacts</b></center></center>","includes/barangay.inc.php?addContact&barangayID="+$(this).attr("data-id"), "modal-md")
+    })
+    $('.add_officer').click(function(){
+        uni_modal("<center><b>Add Officer</b></center></center>","includes/barangay.inc.php?addOfficer&barangayName="+$(this).attr("data-id"), "modal-md")
     })
 </script>
 

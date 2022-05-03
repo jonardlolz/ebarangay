@@ -32,9 +32,40 @@
             header("location: ../residents.php?error=none");
             exit();
         }
+    }
+    elseif(isset($_GET['addCapt'])){
+        if(userExists($conn, $username, $emailAdd) !== false){ //checks if user already exists in db
+            header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
+            exit();    //stop the script
+        }
 
-        
+        $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT);
 
+        mysqli_begin_transaction($conn);
+        $a1 = mysqli_query($conn, "UPDATE users SET userType='Resident' WHERE UsersID=$existingCapt");
+        $a2 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
+        civilStat, userGender, userBarangay, userPurok, userAddress, userHouseNum, emailAdd, username, usersPwd, 
+        profile_pic, userType) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userAddress', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Captain')");
+
+        if($a1 && $a2){
+            if(mysqli_commit($conn)){
+                $getCaptSql = $conn->query("SELECT * FROM users WHERE userType='Captain' ORDER BY UsersID DESC LIMIT 1;");
+                $getCapt = $getCaptSql->fetch_assoc();
+                $a3 = mysqli_query($conn, "UPDATE barangay SET brgyCaptain='{$getCapt['UsersID']}' WHERE BarangayName='{$getCapt['userBarangay']}'");
+
+                mysqli_commit($conn);
+                header("location: ../account.php?error=none");
+                exit();
+            }
+            else{
+                echo("Error description: ".mysqli_error($conn));
+                mysqli_rollback($conn);
+            }
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+        }  
     }
     elseif(isset($_GET["removeCaptain"])){
         mysqli_begin_transaction($conn);
@@ -49,8 +80,7 @@
         else{
             echo("Error description: ".mysqli_error($conn));
             mysqli_rollback($conn);
-        }
-            
+        }  
     }
 
     elseif(isset($_GET["removeLeader"])){
@@ -91,12 +121,7 @@
 
     else{   
         if(userExists($conn, $username, $emailAdd) !== false){ //checks if user already exists in db
-        header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
-        exit();    //stop the script
-        }
-
-        if(natIDexists($conn, $natID) !== false){ //checks if user already exists in db
-            header("location: ../account.php?error=natIDexists"); //return to signup.php with an error msg
+            header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
             exit();    //stop the script
         }
 

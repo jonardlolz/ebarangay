@@ -69,6 +69,41 @@
         </div>
     </div>
 </div>
+
+<?php elseif(isset($_GET['addOfficer'])): ?>
+
+<div class="container-fluid">
+    <div class="col">
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="">Resident: </label>
+            </div>
+            <div class="col">
+                <select class="js-select" name="residents" id="residents" style="width: 75%;">
+                    <option value="" disabled hidden selected>Resident</option>
+                    <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}'");
+                    while($residents = $residentSql->fetch_assoc()):
+                    ?>
+                    <option value="<?php echo $residents['UsersID'] ?>"><?php echo $residents['name'] ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="">Position: </label>
+            </div>
+            <div class="col">
+                <select class="js-select" name="userPosition" id="userPosition">
+                    <option value="" selected hidden disabled>Position</option>
+                    <option value="Treasurer">Treasurer</option>
+                    <option value="Treasurer">Secretary</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php elseif(isset($_GET['brgyEdit'])): ?>
 <?php $sql = $conn->query("SELECT * FROM barangay WHERE BarangayID='{$_GET['barangayID']}'");
     $brgyDetail = $sql->fetch_assoc();
@@ -180,3 +215,9 @@
         </div>
     </form>
 <?php endif; ?>
+
+<script>
+    $(document).ready(function() {
+        $('.js-select').select2();
+    });
+</script>

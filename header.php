@@ -39,6 +39,7 @@
     <!--EB CSS-->
     <link href="css/cb2.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     
     <script src="//servedby.studads.com/ads/ads.php?t=MTQxNjk7ODY4OTtzcXVhcmUuc3F1YXJlX2JveA==&index=1"></script>   
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -317,6 +318,9 @@
 
         <!-- Captain Sidebar -->
         <?php elseif($_SESSION["userType"] == "Captain") : ?>
+        <?php $brgySql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_SESSION['userBarangay']}'");
+              $brgyData = $brgySql->fetch_assoc();
+        ?>
         <!-- Nav Item - Dashboard -->
         <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
@@ -325,14 +329,9 @@
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>        
-        <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purokLeader.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purokLeader.php">
-                Purok Leaders
-            </a>
-        </li> -->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purok.php" aria-expanded="true">
-                Purok
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="barangay_alt.php?barangayID=<?php echo $brgyData['BarangayID'] ?>" aria-expanded="true">
+                Barangay
             </a>
         </li>
         <!-- Nav Item - Request -->

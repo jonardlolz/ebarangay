@@ -1,6 +1,11 @@
 <?php include_once "header.php" ?>
 
+
+
 <div class="col d-flex flex-column px-4">
+    <?php if(isset($_GET['error'])): if($_GET['error'] == 'userExists'): ?>
+        <div class="alert alert-danger px-4">User already exists!</div>
+    <?php endif; endif; ?>
     <!--Residents Requests-->
     <div class="card shadow mb-4 m-4">
         <div class="card-header py-3 d-flex justify-content-between">
