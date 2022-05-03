@@ -130,6 +130,36 @@
         </div>
         <!--End of Card-Body-->
     </div>
+    <div class="modal fade" id="ppModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <form action="includes/upload.inc.php" method="POST" enctype="multipart/form-data">
+            <div class="modal-dialog modal-fullscreen-sm-down border border-0" role="document" style="border-color:#384550 ;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Manage Profile Picture</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" name="pp" accept="image/*" onchange="displayImgProfile(this,$(this))">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group d-flex justify-content-center rounded-circle">
+                            <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="" id="profile" class="img-fluid img-thumbnail rounded-circle" style="max-width: calc(50%)">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-dark" name="submit" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
