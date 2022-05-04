@@ -199,7 +199,7 @@
                                 <div class="card-header py-3 d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-dark">Puroks in <?php echo $row['BarangayName'] ?></h6>
                                     <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
-                                    <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" data-id="<?php echo $row['BarangayID'] ?>"></a>
+                                    <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" data-id="<?php echo $row['BarangayName'] ?>"></a>
                                     <?php endif; ?>
                                 </div>
                                 <div class="card-body">
@@ -451,6 +451,12 @@
     $('.removeOfficer').click(function(){
         _conf("Remove officer?","removeOfficer",[$(this).attr('data-id')])
     })
+    $('.add_purok').click(function(){
+        uni_modal("<center><b>Add Purok</b></center></center>","includes/purok.inc.php?addPurok&barangayName="+$(this).attr('data-id'))
+    })
+    $('.edit_purok').click(function(){
+        uni_modal("<center><b>Edit Purok</b></center></center>","includes/purok.inc.php?id="+$(this).attr('data-id'))
+    })
     function removeOfficer($id){
         start_load()
         $.ajax({
@@ -462,6 +468,7 @@
             }
         })
     }
+    
 </script>
 
 <?php include_once "footer.php" ?>

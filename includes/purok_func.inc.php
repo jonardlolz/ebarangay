@@ -41,7 +41,7 @@
         }
     }
 
-    else{
+    elseif(isset($_GET['addPurok'])){
         $sql = "INSERT INTO purok(PurokName, BarangayName) VALUES(?, ?)";
 
         $stmt = mysqli_stmt_init($conn);
@@ -49,7 +49,7 @@
             header("location: ../purok.php?error=stmtfailedcreatepost");
             exit();
         }
-
+        $BarangayName = $_GET['barangayName'];
         mysqli_stmt_bind_param($stmt, "ss", $PurokName, $BarangayName); 
         if(!mysqli_stmt_execute($stmt)){
             echo("Error description: " . mysqli_error($conn));

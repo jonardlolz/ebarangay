@@ -5,18 +5,18 @@
 
 <?php
     if(isset($_GET["id"])):
-        $id = $_GET['id'];
-        $qry = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM purok LEFT JOIN users ON purok.purokLeader = users.UsersID where PurokID = {$_GET['id']}")->fetch_array();
-        foreach($qry as $k => $v){
-            $$k= $v;
-        }
+    $id = $_GET['id'];
+    $qry = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM purok LEFT JOIN users ON purok.purokLeader = users.UsersID where PurokID = {$_GET['id']}")->fetch_array();
+    foreach($qry as $k => $v){
+        $$k= $v;
+    }
 ?>
 <div class="container-fluid">
     <form action="includes/purok_func.inc.php?id=<?php echo $id ?>" class="user" method="post"> 
         <div class="form-group">
             <div class="col-sm-6">
                 <label>Barangay Name: </label>
-                <select name="BarangayName" id="BarangayName" class="form-control form-control-sm form-select d-inline">
+                <select name="BarangayName" id="BarangayName" class="js-select form-control form-control-sm form-select d-inline">
                     <?php 
                         $brgy = $conn->query("SELECT * FROM barangay");
                         while($row=$brgy->fetch_assoc()):
@@ -61,31 +61,33 @@
     </form>
 </div>
 
-<?php else: ?>
-    <form action="includes/purok_func.inc.php" class="user" method="post"> 
-        <div class="form-group row">
-            <div class="col-sm-6">
-                <select name="BarangayName" id="BarangayName" class="form-control form-control-sm form-select d-inline">
-                    <?php if(!isset($_GET["id"])): ?>
-                        <option value="none" selected hidden>Barangay</option>
-                    <?php endif; ?>
-                    <?php 
-                        $brgy = $conn->query("SELECT * FROM barangay");
-                        while($row=$brgy->fetch_assoc()):
-                    ?>
-                        <?php if($BarangayName == $row["BarangayName"]): ?>
-                            <option value="<?php echo $BarangayName ?>" selected><?php echo $BarangayName ?></option>
-                        <?php continue; ?>
-                        <?php endif; ?>
-                        <option value="<?php echo $row["BarangayName"] ?>"><?php echo $row["BarangayName"] ?></option>
-                        <?php endwhile; ?>
-                </select>
+<?php elseif(isset($_GET['addPurok'])): ?>
+    <form action="includes/purok_func.inc.php?addPurok&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post"> 
+        <div class="form-group col">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="">Barangay: </label>
+                </div>
+                <div class="col">
+                    <label for=""><?php echo $_GET['barangayName'] ?></label>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <input type="text" class="form-control form-control-sm" id="PurokName"
-                    name="PurokName" placeholder="Purok Name">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="">Purok Name: </label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control form-control-sm" id="PurokName"
+                        name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                </div>
             </div>
         </div>
     </form>
 
 <?php endif; ?>
+
+<script>
+    $(document).ready(function() {
+        $('.js-select').select2();
+    });
+</script>
