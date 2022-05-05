@@ -789,11 +789,12 @@
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
-                                            $requests = $conn->query("SELECT ereklamo.*, schedule.*, concat(users.Firstname, ' ', users.Lastname) 
-                                            as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                            $requests = $conn->query("SELECT ereklamo.*, schedule.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                            DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                             DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') as checkedDate, 
                                             users.userType, users.profile_pic 
-                                            FROM ereklamo INNER JOIN users 
+                                            FROM ereklamo 
+                                            INNER JOIN users 
                                             ON ereklamo.UsersID=users.UsersID 
                                             INNER JOIN schedule
                                             ON schedule.ereklamoID=ereklamo.ReklamoID
@@ -834,6 +835,7 @@
                                             <td><?php echo $row["scheduleDate"] ?></td>
                                             <td>
                                                 <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a>
+                                                
                                                 <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
                                             </td>
                                             <!--Right Options-->
