@@ -129,15 +129,14 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="officials" role="tabpanel" aria-labelledby="officials-tab">
-                            <div class="card">
-                                <div class="card-header">
+                            <div class="card m-4">
+                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <button class="btn btn-primary add_officer" data-id="<?php echo $row['BarangayName'] ?>">Add Officers</button>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-body">
+                                    <hr>
                                     <?php $i = 0;
                                         $officials = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users
                                         WHERE (userType='Captain'
@@ -205,14 +204,14 @@
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered text-center text-dark" 
-                                            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                            id="purokTable" width="100%" cellspacing="0" cellpadding="0">
                                             <thead>
                                                 <tr class="bg-gradient-secondary text-white">
                                                     <th scope="col">Purok</th> 
                                                     <th>Purok Leader</th>
                                                     <th scope="col">Status</th>
                                                     <?php if($_SESSION['userType'] == 'Captain' && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
-                                                    <th scope="col">Edit</th>
+                                                    <th scope="col">Action</th>
                                                     <?php endif; ?>
                                                 </tr>
                                                 
@@ -220,7 +219,7 @@
                                             <tbody>
                                                 <!--Row 1-->
                                                 <?php 
-                                                    $purok = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name from purok LEFT JOIN users ON purok.purokLeader = users.UsersID WHERE BarangayName='{$row['BarangayName']}'");
+                                                    $purok = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name from purok LEFT JOIN users ON purok.purokLeader = users.UsersID WHERE BarangayName='{$row['BarangayName']}' ORDER BY FIELD(Active, 'Active', 'Inactive')");
                                                     while($purokrow=$purok->fetch_assoc()):
                                                 ?>
                                                 <tr>
@@ -229,7 +228,7 @@
                                                     <td><?php if($purokrow["Active"] == 'True'){ echo 'Active'; }else{ echo 'Inactive'; } ?></td>
                                                     <?php if($_SESSION['userType'] == 'Captain' && $_SESSION['userBarangay'] == $purokrow['BarangayName']): ?>
                                                     <td>
-                                                        <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_purok" data-id="<?php echo $purokrow['PurokID'] ?>" href="javascript:void(0)"></a>
+                                                        <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_purok" data-brgy="<?php echo $row['BarangayName'] ?>" data-id="<?php echo $purokrow['PurokID'] ?>" href="javascript:void(0)"></a>
                                                     </td>
                                                     <?php endif; ?>
                                                     
@@ -317,6 +316,12 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+      $('#purokTable').DataTable({
+        "ordering": false
+      });
+    } );
+    
     function displayImgProfile(input,_this) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
@@ -455,7 +460,7 @@
         uni_modal("<center><b>Add Purok</b></center></center>","includes/purok.inc.php?addPurok&barangayName="+$(this).attr('data-id'))
     })
     $('.edit_purok').click(function(){
-        uni_modal("<center><b>Edit Purok</b></center></center>","includes/purok.inc.php?id="+$(this).attr('data-id'))
+        uni_modal("<center><b>Edit Purok</b></center></center>","includes/purok.inc.php?id="+$(this).attr('data-id')+"&barangayName="+$(this).attr('data-brgy'))
     })
     function removeOfficer($id){
         start_load()

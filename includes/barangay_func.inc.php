@@ -28,7 +28,9 @@
         }
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../barangay.php?error=none");
+            $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName='$BarangayName'");
+            $brgyID = $sql->fetch_assoc();
+            header("location: ../barangay_alt.php?barangayID={$brgyID['BarangayID']}");
             exit();
         }
         else{
@@ -62,7 +64,9 @@
 
         if($a1){
             mysqli_commit($conn);
-            header("location: ../barangay.php?error=none");
+            $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName={$_GET['barangayName']}");
+            $brgyID = $sql->fetch_assoc();
+            header("location: ../barangay_alt.php?barangayID={$brgyID['BarangayID']}");
             exit();
         }
         else{

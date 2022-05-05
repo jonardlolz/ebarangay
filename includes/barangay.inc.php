@@ -72,7 +72,7 @@
 
 <?php elseif(isset($_GET['addOfficer'])): ?>
 
-<form action="includes/barangay_func.inc.php?addOfficer" class="user" method="post">
+<form action="includes/barangay_func.inc.php?addOfficer&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post">
     <div class="container-fluid">
         <div class="col">
             <div class="row">
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col">
                     <select class="js-select" name="residents" id="residents" style="width: 75%;" required>
-                        <option value="" hidden selected>Resident</option>
+                        <option value="" hidden disabled selected>Resident</option>
                         <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}'");
                         while($residents = $residentSql->fetch_assoc()):
                         ?>

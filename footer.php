@@ -225,8 +225,6 @@
 
         $printSection.appendChild(domClone);
     }
-
-
       $(document).ready(function() {
       $('#dataTable').DataTable();
       } );

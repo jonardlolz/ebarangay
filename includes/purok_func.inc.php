@@ -26,12 +26,11 @@
             $a1 = mysqli_query($conn, "UPDATE purok SET BarangayName='$BarangayName', PurokName='$PurokName', Active='$Active', purokLeader=NULL WHERE PurokID=$id");
             $a2 = mysqli_query($conn, "SELECT * FROM purok");
         }
-        
-        
-        
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../purok.php?error=none");
+            $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName='$BarangayName'");
+            $brgyID = $sql->fetch_assoc();
+            header("location: ../barangay_alt.php?barangayID={$brgyID['BarangayID']}");
             exit();
         }
         else{
