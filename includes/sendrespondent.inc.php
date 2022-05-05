@@ -5,29 +5,10 @@
     $id = NULL;
     extract($_POST);
 
-    if(isset($_GET['reklamoid'])){
+    if(isset($_GET['sendRespondent'])){
 
         $id = $_GET['reklamoid'];
         $usersID = $_GET['usersID'];
-        // $sql = "UPDATE ereklamo SET status=?, checkedBy=?, checkedOn=CURRENT_TIMESTAMP WHERE reklamoID=?";
-        // $status = "Respondents sent";
-        // $checkedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
-
-        // $stmt = mysqli_stmt_init($conn);
-        // if(!mysqli_stmt_prepare($stmt, $sql)){
-        //     header("location: ../ereklamo.php?error=stmtfailedcreatepost");
-        //     exit();
-        // }
-
-        // mysqli_stmt_bind_param($stmt, "sss", $status, $checkedBy, $id); 
-        // if(!mysqli_stmt_execute($stmt)){
-        //     header("location: ../ereklamo.php?error=sqlExecError");
-        //     exit();
-        // }
-        // mysqli_stmt_close($stmt);
-        
-        // header("location: ../ereklamo.php?error=none");
-        // exit();
         mysqli_begin_transaction($conn);
 
         $checkedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
@@ -47,7 +28,28 @@
         }
 
     }
-    if(isset($_GET['add'])){?>
+    elseif(isset($_GET['sendMajor'])){
+        $id = $_GET['reklamoid'];
+        $usersID = $_GET['usersID'];
+        mysqli_begin_transaction($conn);
+
+        $checkedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET status='Respondents sent', checkedBy='$checkedBy', checkedOn=CURRENT_TIMESTAMP WHERE reklamoID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, UsersID, type, position) VALUES('Respondents has been sent for your ReklamoID#$id', $usersID, 'ereklamo', 'Resident')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+    }
+    elseif(isset($_GET['add'])){?>
         <div class="container-fluid">
             <form action="includes/sendrespondent.inc.php?postadd" class="user" method="post">
                 <select class="form-select form-select-lg" id="users" placeholder="users" name="users" required>
