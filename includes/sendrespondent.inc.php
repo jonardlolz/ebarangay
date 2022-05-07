@@ -36,7 +36,7 @@
         $checkedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
 
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET status='To be scheduled', checkedBy='$checkedBy', checkedOn=CURRENT_TIMESTAMP WHERE reklamoID=$id");
-        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, UsersID, type, position) VALUES('Respondents has been sent for your ReklamoID#$id', $usersID, 'ereklamo', 'Resident')");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, UsersID, type, position) VALUES('Your reklamo #$id is now being handled.', $usersID, 'ereklamo', 'Resident')");
 
         if($a1 && $a2){
             mysqli_commit($conn);
