@@ -425,8 +425,12 @@
             
             <div class="card-body" style="font-size: 75%">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <?php if($_SESSION['userType'] == "Captain"): ?>
                     <li class="nav-item">
-                        <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                        <a class="nav-link active" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($_SESSION['userType'] != "Captain"): echo 'active'; ?> <?php endif; ?>" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
@@ -437,14 +441,10 @@
                     <li class="nav-item">
                         <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
                     </li>
-                    <?php if($_SESSION['userType'] == "Captain"): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
-                    </li>
                     <?php endif; ?>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="release" role="tabpanel" aria-labelledby="release-tab">
+                    <div class="tab-pane fade <?php if($_SESSION['userType'] != "Captain"): echo 'show active' ?><?php endif; ?>" id="release" role="tabpanel" aria-labelledby="release-tab">
                         <div class="table-responsive">
                             <table class="table table-bordered text-center text-dark" 
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
@@ -726,48 +726,49 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
-                        <div class="container">
+                    <div class="tab-pane fade <?php if($_SESSION['userType'] == "Captain"): echo 'show active'; ?> <?php endif; ?>" id="document" role="tabpanel" aria-labelledby="document-tab">
+                        <div class="container p-4">
+                            <button class="btn btn-primary add_document" data-id="<?php echo $_SESSION['userBarangay'] ?>"><i class="fas fa-plus"></i> New Document</button>
+                            <?php $i = 0;
+                                $documents = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'"); ?>
+                            <?php while($i < mysqli_num_rows($documents)): ?>
                             <div class="row" style="margin: 25px">
-                                <div class="col">
+                                <?php while($documentRow = $documents->fetch_assoc()): ?>
+                                <div class="col-sm-6">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Cedula</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Cedula">Go somewhere</a>
+                                            <h5 class="card-title">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <?php echo $documentRow['documentName'] ?>
+                                                    </div>
+                                                    <div class="col-sm-3" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle" 
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item edit_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item delete_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                            <p class="card-text"><?php echo $documentRow['documentdesc'] ?></p>
+                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="<?php echo $documentRow['documentName'] ?>">View Document</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Barangay Clearance</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Barangay Clearance">Go somewhere</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php $i++; if($i % 2 == 0){ break; } endwhile; ?>
                             </div>
-                            <div class="row" style="margin: 25px">
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Indigency Clearance</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Indigency Clearance">Go somewhere</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col" style="display: none">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Business Permit</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="Business Permit">Go somewhere</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php endwhile; ?>
                         </div>
                     </div>
                 </div>
@@ -971,11 +972,17 @@
     $('.releaseFunc').click(function(){
         _conf("Release the document?","releaseDoc",[$(this).attr('data-id')])
     })
+    $('.edit_document').click(function(){
+        uni_modal("<center><b>Edit document</b></center></center>","includes/document.inc.php?editDocument&documentid="+$(this).attr('data-id'));
+    })
     $('.view_profile').click(function(){
         uni_modal("<center>Profile</center>","profile_alt.php?viewProfile&UsersID="+$(this).attr('data-id'), "modal-lg");
     })
     $('.document_edit').click(function(){
         uni_modal("<center><b>Document edit for " + $(this).attr('data-id') + "</b></center></center>","includes/document.inc.php?viewPurpose&docuType="+$(this).attr('data-id'), "modal-lg");
+    })
+    $('.add_document').click(function(){
+        uni_modal("<center><b>New document </b></center></center>","includes/document.inc.php?addDocument&barangay="+$(this).attr('data-id'));
     })
     function paid_request($id){
         start_load()

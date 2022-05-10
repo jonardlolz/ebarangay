@@ -16,12 +16,6 @@
             <table class="table table-bordered text-center text-dark display" 
                 width="100%" cellspacing="0" cellpadding="0">
                 <thead >
-                    <!-- <tr class="bg-gradient-warning">
-                        <th colspan="5">Resident</th>
-                        <th colspan ="2">Address</th>
-                        <th colspan="2">Contacts</th>
-                        <th colspan="1">Options</th>                   
-                    </tr> -->
                     <tr class="bg-gradient-secondary text-white">
                         <th scope="col">Name</th>
                         <th scope="col">Birthdate</th>
@@ -92,7 +86,7 @@
     </div>
     <!-- End of Card Body-->
 </div>  
-<?php else: ?>
+<?php elseif($_SESSION['userType'] == 'Captain'): ?>
 
 <div class="card shadow mb-4 m-4">
 <div class="card-header py-3 d-flex justify-content-between">
@@ -106,15 +100,13 @@
         <li class="nav-item">
             <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="home" aria-selected="true">All</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="residents-tab" data-toggle="tab" href="#residents" role="tab" aria-controls="profile" aria-selected="false">Residents</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="purokleaders-tab" data-toggle="tab" href="#purokleaders" role="tab" aria-controls="contact" aria-selected="false">Purok Leaders</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="officers-tab" data-toggle="tab" href="#officers" role="tab" aria-controls="contact" aria-selected="false">Officers</a>
-        </li>
+        <?php $puroks = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'"); 
+            while($purokRow = $puroks->fetch_assoc()):
+        ?>
+            <li class="nav-item">
+                <a class="nav-link" id="<?php echo $purokRow['PurokName'] ?>-tab" data-toggle="tab" href="#<?php echo $purokRow['PurokName'] ?>" role="tab" aria-controls="<?php echo $purokRow['PurokName'] ?>" aria-selected="false"><?php echo $purokRow['PurokName'] ?></a>
+            </li>
+        <?php endwhile; ?>
         <li class="nav-item">
             <a class="nav-link" id="respondents-tab" data-toggle="tab" href="#respondents" role="tab" aria-controls="contact" aria-selected="false">Respondents</a>
         </li>
@@ -187,74 +179,66 @@
                 </table>
             </div>
         </div>
-        <div class="tab-pane fade" id="residents" role="tabpanel" aria-labelledby="residents-tab">
+        <?php $puroks = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'"); 
+            while($purokRow = $puroks->fetch_assoc()):
+        ?>
+        <div class="tab-pane fade" id="<?php echo $purokRow['PurokName'] ?>" role="tabpanel" aria-labelledby="<?php echo $purokRow['PurokName'] ?>-tab">
             <div class="table-responsive">
                 <table class="table table-bordered text-center text-dark display" 
                     width="100%" cellspacing="0" cellpadding="0">
                     <thead >
                         <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Name</th>
-                            <th scope="col">User Type</th>
-                            <th scope="col">Barangay</th>
-                            <th scope="col">Purok</th>
-                            <th scope="col">Email Address</th>
-                            <!-- <th scope="col">Phone Number</th>
-                            <th scope="col">Manage</th> -->
+                            <th>Name</th>
+                            
+                            <th>Address</th>
+                            <th>Action</th>
                         </tr>
                         
                     </thead>
                     <tbody>
-                        <!--Row 1-->
                         <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userType='Resident' AND userBarangay='{$_SESSION['userBarangay']}'");
-                            while($row=$accounts->fetch_assoc()):
-                                if($row["userType"] == "Admin"){
-                                    continue;
-                                }
-                        ?>
-                        <tr>
-                            <td>
-                                <img class="img-profile rounded-circle <?php 
-                                    if($row["userType"] == "Resident"){
-                                        echo "img-res-profile";
+                                $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname)
+                                as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}'
+                                AND userPurok='{$_SESSION['userPurok']}';");
+                                while($row=$requests->fetch_assoc()):
+                                    if($row["userType"] == "Admin"){
+                                        continue;
                                     }
-                                    elseif($row["userType"] == "Purok Leader"){
-                                        echo "img-purokldr-profile";
-                                    }
-                                    elseif($row["userType"] == "Captain"){
-                                        echo "img-capt-profile";
-                                    }
-                                    elseif($row["userType"] == "Secretary"){
-                                        echo "img-sec-profile";
-                                    }
-                                    elseif($row["userType"] == "Treasurer"){
-                                        echo "img-treas-profile";
-                                    }
-                                    elseif($row["userType"] == "Admin"){
-                                        echo "img-admin-profile";
-                                    }
-                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                </br>
-                                <?php echo $row["name"] ?>
-                            </td>
-                            <td><?php echo $row["userType"] ?></td>
-                            <td><?php echo $row["userBarangay"] ?></td>
-                            <td><?php echo $row["userPurok"] ?></td>
-                            <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                            <!-- <td><?php echo $row["phoneNum"] ?></td>
-                            <td>
-                                <button class="btn btn-success btn-sm btn-flat edit_account" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Edit</button>
-                            </td> -->
-                            
-                            <!--Right Options-->
-                        </tr>
+                            ?>
+                            <tr>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php 
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    <br>
+                                    <?php echo $row["name"] ?>
+                                </td>
+                                <td><?php echo $row[""] ?></td>
+                            </tr>
                         <?php endwhile; ?>
-                        <!--Row 1-->
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="tab-pane fade" id="purokleaders" role="tabpanel" aria-labelledby="purokleaders-tab">
+        <?php endwhile; ?>
+        <div class="tab-pane fade" id="respondents" role="tabpanel" aria-labelledby="respondents-tab">
             <div class="row">
                 <div class="col">
                     
@@ -269,177 +253,12 @@
                     
                 </div>
                 <div class="col">
-                    <button class="btn btn-primary add_purokleader">Add Purok Leader</button>
+                    <button class="btn btn-primary add_respondent">Add Respondent</button>
                 </div>
             </div>
+            
             <div class="table-responsive">
                 <table class="table table-bordered text-center text-dark display" 
-                    width="100%" cellspacing="0" cellpadding="0">
-                    <thead >
-                        <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Name</th>
-                            <th scope="col">User Type</th>
-                            <th scope="col">Purok</th>
-                            <th>Street Address</th>
-                            <th>House #</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        <!--Row 1-->
-                        <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE Status='Active' AND userType='Purok Leader'");
-                            while($row=$accounts->fetch_assoc()):
-                                if($row["userType"] == "Admin"){
-                                    continue;
-                                }
-                        ?>
-                        <tr>
-                            <td>
-                                <img class="img-profile rounded-circle <?php 
-                                    if($row["userType"] == "Resident"){
-                                        echo "img-res-profile";
-                                    }
-                                    elseif($row["userType"] == "Purok Leader"){
-                                        echo "img-purokldr-profile";
-                                    }
-                                    elseif($row["userType"] == "Captain"){
-                                        echo "img-capt-profile";
-                                    }
-                                    elseif($row["userType"] == "Secretary"){
-                                        echo "img-sec-profile";
-                                    }
-                                    elseif($row["userType"] == "Treasurer"){
-                                        echo "img-treas-profile";
-                                    }
-                                    elseif($row["userType"] == "Admin"){
-                                        echo "img-admin-profile";
-                                    }
-                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                <br>
-                                <?php echo $row["name"] ?>
-                            </td>
-                            <td><?php echo $row["userType"] ?></td>
-                            <td><?php echo $row["userPurok"] ?></td>
-                            <td><?php echo $row["userAddress"] ?></td>
-                            <td><?php echo $row["userHouseNum"] ?></td>
-                            <td><?php echo $row["username"] ?></td>
-                            <td>
-                                <button class="btn btn-danger removeleader" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-trash fa-md"></i> Remove Leader</button>
-                                
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                        <!--Row 1-->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="officers" role="tabpanel" aria-labelledby="officers-tab">
-        <div class="row">
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                <button class="btn btn-primary add_officer">Add officer</button>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark display" 
-                    width="100%" cellspacing="0" cellpadding="0">
-                    <thead >
-                        <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Name</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Barangay</th>
-                            <th scope="col">Purok</th>
-                            <th>Manage</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        <!--Row 1-->
-                        <?php 
-                            $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users 
-                            WHERE (userType = 'Purok Leader' 
-                            OR userType = 'Treasurer' 
-                            OR userType = 'Secretary')
-                            AND userBarangay = '{$_SESSION["userBarangay"]}';");
-                            while($row=$accounts->fetch_assoc()):
-                                if($row["userType"] == "Admin"){
-                                    continue;
-                                }
-                        ?>
-                        <tr>
-                            <td>
-                                <img class="img-profile rounded-circle <?php 
-                                    if($row["userType"] == "Resident"){
-                                        echo "img-res-profile";
-                                    }
-                                    elseif($row["userType"] == "Purok Leader"){
-                                        echo "img-purokldr-profile";
-                                    }
-                                    elseif($row["userType"] == "Captain"){
-                                        echo "img-capt-profile";
-                                    }
-                                    elseif($row["userType"] == "Secretary"){
-                                        echo "img-sec-profile";
-                                    }
-                                    elseif($row["userType"] == "Treasurer"){
-                                        echo "img-treas-profile";
-                                    }
-                                    elseif($row["userType"] == "Admin"){
-                                        echo "img-admin-profile";
-                                    }
-                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                </br>
-                                <?php echo $row["name"] ?>
-                            </td>
-                            <td><?php echo $row["userType"] ?></td>
-                            <td><?php echo $row["userBarangay"] ?></td>
-                            <td><?php echo $row["userPurok"] ?></td>
-                            <td>
-                                <button class="btn btn-success btn-sm btn-flat changePosition" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-edit"></i> Change Position</button>
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                        <!--Row 1-->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="respondents" role="tabpanel" aria-labelledby="respondents-tab">
-        <div class="row">
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                <button class="btn btn-primary add_respondent">Add Respondent</button>
-            </div>
-        </div>
-        
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark display" 
                     width="100%" cellspacing="0" cellpadding="0">
                     <thead >
                         <tr class="bg-gradient-secondary text-white">

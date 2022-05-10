@@ -144,6 +144,74 @@ session_start();
     </div>
 </div>
 
+<?php elseif(isset($_GET['addDocument'])): ?>
+
+<div class="container-fluid">
+    <form action="includes/document.inc.php?postdocumentAdd&barangay=<?php echo $_GET['barangay'] ?>" method="POST">
+        <div class="form-group col">
+            <div class="row">
+                <div class="col">
+                    Document name:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentName">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Document description:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentDesc">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Include fee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="documentFee" id="documentFee" value="True">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<?php elseif(isset($_GET['editDocument'])): ?>
+
+<div class="container-fluid">
+    <?php $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID={$_GET['documentid']}");
+    $documentinfo = $sql->fetch_assoc(); ?>
+    <form action="includes/document.inc.php?postdocumentEdit&barangayid=<?php echo $documentinfo['DocumentID'] ?>" method="POST">
+        <div class="form-group col">
+            <div class="row">
+                <div class="col">
+                    Document name:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentName" value="<?php echo $documentinfo['documentName'] ?>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Document description:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentDesc" value="<?php echo $documentinfo['documentdesc'] ?>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Include fee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="documentFee" id="documentFee" value="True" <?php if($documentinfo['allowFee']=='True'): echo 'checked'; endif; ?>>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <?php elseif(isset($_GET['delete'])):
     extract($_POST);
     $sql = $conn->query("DELETE FROM documentpurpose WHERE purposeID = $id");
@@ -188,6 +256,57 @@ session_start();
     mysqli_stmt_close($stmt);
 
     header("location: ../document.php?error=none"); //no errors were made
+    exit();
+    
+?>
+<?php elseif(isset($_GET['postdocumentAdd'])): 
+    extract($_POST);
+    
+    if($documentFee == ''){
+        $documentFee = 'False';
+    }
+
+    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee)
+            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee')";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+    
+?>
+<?php elseif(isset($_GET['postdocumentEdit'])): 
+    extract($_POST);
+    
+    if($documentFee == ''){
+        $documentFee = 'False';
+    }
+
+    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc' WHERE DocumentID={$_GET['barangayid']}";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
     exit();
     
 ?>
