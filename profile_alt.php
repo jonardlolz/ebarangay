@@ -7,7 +7,7 @@
         include 'includes/dbh.inc.php';
     }
 
-    $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE UsersID='{$_GET['UsersID']}'");
+    $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname, ' ', COALESCE(users.userSuffix,'')) as name FROM users WHERE UsersID='{$_GET['UsersID']}'");
     $row=$profile->fetch_assoc();
 ?>
 
@@ -45,7 +45,7 @@
                 </div>
                 <div class="mt-2">
                     <h5 class="font-weight-bold"><?php echo $row['name'] ?></h5>
-                    <h6 readonly><?php echo $_SESSION["emailAdd"]; ?></h6>
+                    <h6 readonly><?php echo $row["emailAdd"]; ?></h6>
                 </div>
             </div>
             <div class="text-center">
@@ -58,10 +58,8 @@
                     <i class="fas fa-user fa-lg" alt="Pending verification"></i>
                 <?php endif; ?>
                 <a class="edit_account" href="javascript:void(0)" data-id="<?php echo $_GET['UsersID'] ?>"><i class="fas fa-edit fa-lg" data-toggle="modal" data-target="#editProfileModal" data-backdrop="static"></i></a>
-                <!--<button title="oas&#10;djaosjdsoajdjaosdj\nasdasdasdasdasd" type="button" class="btn m-0 btn-circle" onclick="openForm()">
-                    <i class="fas fa-comments fw"></i>
-                </button>-->
-                <?php if($_SESSION['userType'] == "Resident"): ?>
+                <a class="edit_password" href="javascript:void(0)" data-id="<?php echo $_GET['UsersID'] ?>"><i class="fas fa-key fa-lg"></i></a>
+                <?php if($row['userType'] == "Resident"): ?>
                 <a class="view_requests" href="javascript:void(0)"><i class="fas fa-file fa-lg"></i></a>
                 <a class="view_reklamos" href="javascript:void(0)"><i class="fas fa-exclamation-triangle fa-lg"></i></a>
                 <?php else: ?>
@@ -80,27 +78,31 @@
                             <strong>Personal Information</strong><hr>
                         </div>
                         <label class="labels">Name</label>
-                        <input type="text" class="form-control w-75" placeholder="Fname Mname Lname" value="<?php echo "{$_SESSION['Lastname']}, {$_SESSION['Firstname']} {$_SESSION['Middlename']}"?>" readonly>
+                        <input type="text" class="form-control w-75" placeholder="Fname Mname Lname" value="<?php echo "{$row['Firstname']} {$row['Middlename']} {$row['Lastname']} {$row['userSuffix']}"?>" readonly>
                         <label class="labels">Gender</label>
-                        <input type="text" class="form-control w-75" placeholder="Gender" value="<?php echo $_SESSION["userGender"] ?>" readonly>
+                        <input type="text" class="form-control w-75" placeholder="Gender" value="<?php echo $row["userGender"] ?>" readonly>
                         <label class="labels">Birthdate</label>
-                        <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $_SESSION["dateofbirth"] ?>" readonly>
+                        <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["dateofbirth"] ?>" readonly>
+                        <label class="labels">Civil Status</label>
+                        <input type="text" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["civilStat"] ?>" readonly>
                     </div>
                     <div class="p-2">
                         <div>
                             <strong>Address Information</strong><hr>
                         </div>
                         <div class="row-md-4 row-sm-4">
+                            <label class="labels">House Number</label>
+                            <input type="text" class="form-control w-75" value="<?php if($row['teleNum'] == NULL){ echo "None"; }else{ echo $row["userHouseNum"]; }?>" readonly>
                             <label class="labels">Purok</label>
-                            <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userPurok"] ?>" readonly>
-                        </div>
-                        <div class="row-md-4 row-sm-4">
+                            <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $row["userPurok"] ?>" readonly>
                             <label class="labels">Barangay</label>
-                            <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $_SESSION["userBarangay"] ?>" readonly>
+                            <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $row["userBarangay"] ?>" readonly>
                             <label class="labels">Municipality/City</label>
-                            <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $_SESSION["userCity"] ?>" readonly>
-                            
+                            <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $row["userCity"] ?>" readonly>
+                            <label class="labels">Is renting?</label>
+                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $row   ["isRenting"] ?>" readonly>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -110,20 +112,11 @@
                             <strong>Contact Information</strong><hr>
                         </div>
                         <label class="labels">Phone Number</label>
-                        <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["phoneNum"]; }?>" readonly>
+                        <input type="text" class="form-control w-75" value="<?php if($row['phoneNum'] == NULL){ echo "None"; }else{ echo $row["phoneNum"]; }?>" readonly>
                         <label class="labels">Telephone Number</label>
-                        <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["teleNum"]; }?>" readonly>
+                        <input type="text" class="form-control w-75" value="<?php if($row['teleNum'] == NULL){ echo "None"; }else{ echo $row["teleNum"]; }?>" readonly>
                         <label class="labels">Email Address</label>
-                        <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["emailAdd"] ?>" readonly>
-                    </div>
-                    <div class="p-2">
-                        <strong>Address Information</strong><hr>
-                        <label class="labels">Street Address</label>
-                        <input type="text" class="form-control w-75" value="<?php if($_SESSION['phoneNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userAddress"]; }?>" readonly>
-                        <label class="labels">House Number</label>
-                        <input type="text" class="form-control w-75" value="<?php if($_SESSION['teleNum'] == NULL){ echo "None"; }else{ echo $_SESSION["userHouseNum"]; }?>" readonly>
-                        <label class="labels">Is renting?</label>
-                        <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $_SESSION["isRenting"] ?>" readonly>
+                        <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $row["emailAdd"] ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -311,6 +304,9 @@ window.start_load = function(){
     })
     $('.edit_account').click(function(){
         uni_modal("<center><b>Edit Account</b></center></center>","includes/account.inc.php?edit="+$(this).attr('data-id'))
+    })
+    $('.edit_password').click(function(){
+        uni_modal("<center><b>Change Password</b></center></center>","includes/account.inc.php?changePass="+$(this).attr('data-id'))
     })
     $('.delete_request').click(function(){
     _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])

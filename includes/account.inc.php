@@ -12,18 +12,34 @@ if(isset($_GET['edit'])):
 ?>
 <div class="container-fluid">
     <form action="includes/edit_account.inc.php?id=<?php echo $id ?>" class="user" method="post">
+        <div class="m-2">
+            <strong>Personal Information</strong>
+        </div>
         <div class="form-group row">    <!--Nmae-->
-            <div class="col-sm-4 col-md-4 mb-3 mb-sm-0">
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm" id="FirstName"
                     name="Firstname" placeholder="First Name" value="<?php echo $Firstname ?>">
             </div>
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm" id="MiddleName"
                     name="Middlename" placeholder="Middle Name" value="<?php echo $Middlename ?>">
             </div>
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm" id="LastName"
                     name="Lastname" placeholder="Last Name" value="<?php echo $Lastname ?>">
+            </div>
+            <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm" id="suffixName"
+                    name="suffixName" list="suffix" placeholder="Suffix" value="">
+                <datalist id="suffix">
+                    <option value="Jr"></option>
+                    <option value="Sr"></option>
+                    <option value="I"></option>
+                    <option value="II"></option>
+                    <option value="III"></option>
+                    <option value="IV"></option>
+                    <option value="V"></option>
+                </datalist>
             </div>
         </div>
         <div class="form-group row">
@@ -31,9 +47,6 @@ if(isset($_GET['edit'])):
                 <input type="date" class="form-control form-control-sm" placeholder="Birthdate" 
                 name="userDOB" id="userDOB" value="<?php echo $dateofbirth ?>"></input>
             </div>
-        </div>
-        
-        <div class="form-group row"><!--Civil status-->
             <div class="col-sm-6">
                 <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
                     <option value="<?php echo $civilStat ?>" hidden selected><?php echo $civilStat ?></option>
@@ -42,6 +55,8 @@ if(isset($_GET['edit'])):
                     <option value="Widowed">Widowed</option>
                 </select>
             </div>
+        </div>
+        <div class="form-group row"><!--Civil status-->
             <div class="col-sm-6">
                 <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
                     <option value="<?php echo $userGender ?>" hidden selected><?php echo $userGender ?></option>
@@ -49,7 +64,25 @@ if(isset($_GET['edit'])):
                     <option value="Female">Female</option>
                 </select>
             </div>
-            
+        </div>
+        <div class="m-2">
+            <strong>Contact Information</strong>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-6 col-sm-6">
+                <input type="text" class="form-control form-control-sm" name="phoneNum" id="phoneNum" placeholder="Mobile Number" value="<?php echo $phoneNum ?>"></input>
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                <input type="text" class="form-control form-control-sm" name="teleNum" id="teleNum" placeholder="Telephone Number" value="<?php echo $teleNum ?>"></input>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-6 col-sm-6">
+                <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $emailAdd ?>"></input>
+            </div>
+        </div>
+        <div class="m-2">
+            <strong>Address Information</strong>
         </div>
         <div class="form-group row">
             <div class="col-sm-6 mb-3 mb-sm-0">
@@ -68,36 +101,8 @@ if(isset($_GET['edit'])):
             </div>
         </div>
         <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="text" class="form-control form-control-sm" name="userAddress" id="userAddress" placeholder="Street Address" value="<?php echo $userAddress ?>" required></input>
-            </div>
             <div class="col-lg-6">
                 <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $userHouseNum ?>" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $emailAdd ?>"></input>
-            </div>
-            <div class="col-lg-6 col-sm-6">
-                <select class="form-control form-control-sm form-select d-inline" name="userType" id="userType">
-                    <option value="<?php echo $userType ?>" hidden selected><?php echo $userType ?></option>
-                    <option value="Resident">Resident</option>
-                    <option value="Captain">Barangay Captain</option>
-                    <option value="Treasurer">Treasurer</option>
-                    <option value="Secretary">Secretary</option>
-                    <option value="Purok Leader">Purok Leader</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="password" class="form-control form-control-user"
-                    id="userPwd" placeholder="Password" name="userPwd" required>
-            </div>
-            <div class="col-sm-6">
-                <input type="password" class="form-control form-control-user"
-                    id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
             </div>
         </div>
     </form>
@@ -118,6 +123,36 @@ if(isset($_GET['edit'])):
                     <option value="Resident">Resident</option>
                 </select>
             </div>
+        </div>
+    </form>
+</div>
+
+<?php elseif(isset($_GET['changePass'])): ?>
+<div class="container-fluid">
+    <style>
+        #uni_modal .modal-footer{
+            display: none;
+        }
+        #uni_modal .modal-footer.display{
+            display: flex !important; 
+        }
+    </style>
+    <form action="includes/edit_account.inc.php?changePassPost=<?php echo $_GET['changePass'] ?>" class="user" method="post">
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <input type="password" class="form-control form-control-sm"
+                    id="userPwd" placeholder="Password" name="userPwd" required>
+            </div>
+            <div class="col-sm-6">
+                <input type="password" class="form-control form-control-sm"
+                    id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
+            </div>
+        </div>
+        <div class="row" style="display: flex; justify-content: flex-end;">
+            <div class="modal-footer display">
+                <button type="submit" class="btn btn-outline-primary" name="submit" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>        
         </div>
     </form>
 </div>

@@ -27,7 +27,6 @@
     <body>
         <!-- Container -->
         <div class="container">
-            
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
@@ -43,28 +42,40 @@
                                     <h1 class="mb-4 text-capitalize">Create an Account!</h1>
                                 </div>
                                 <form id="form" action="includes/signup.inc.php" class="user" method="post">
-                                    <!-- <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="natID"
-                                            placeholder="National ID (e.g. XXXX-XXXX-XXXX-XXXX)" name="natID" maxlength="19" required>
-                                    </div> -->
+                                    <div>
+                                        <strong>Personal Information</strong>
+                                        <hr>
+                                    </div>
                                     <div class="form-group row">
-                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                        <div class="col-sm-3">
                                             <input type="text" class="form-control form-control-user"
                                                 id="userFirstname" placeholder="First name" name="userFirstname" required>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <input type="text" class="form-control form-control-user"
                                                 id="userMiddlename" placeholder="Middle name" name="userMiddlename" required>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <input type="text" class="form-control form-control-user"
                                                 id="userLastname" placeholder="Last name" name="userLastname" required>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control form-control-user"
+                                                    id="userSuffix" placeholder="Suffix" name="userSuffix" list="suffixList" value="">
+                                            <datalist id="suffixList">
+                                                <option value="Jr"></option>
+                                                <option value="Sr"></option>
+                                                <option value="I"></option>
+                                                <option value="II"></option>
+                                                <option value="III"></option>
+                                                <option value="IV"></option>
+                                                <option value="V"></option>
+                                            </datalist>    
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="date" max="<?php echo date('Y-m-d') ?>" class="form-control form-control-user"
-                                                id="userDOB" name="userDOB" required>
+                                            <input type="text" max="<?php echo date('Y-m-d') ?>" class="form-control form-control-user" placeholder="Birthdate" id="userDOB" name="userDOB" onblur="(this.type='text')" onfocus="(this.type='date')" required>
                                         </div>
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <select class="form-select form-select-lg" id="userCivilStat" placeholder="Civil Status" name="userCivilStat" required>
@@ -84,50 +95,37 @@
                                                 <option value="Female">Female</option>
                                             </select>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <strong>Address Information</strong>
+                                        <hr>
+                                    </div>
+                                    <div class="form-group row">
                                         <div class="col-sm-6">
-                                            <select name="userBarangay" id="userBarangay" class="form-select form-select-lg" onChange="changecat(this.value);">
+                                            <select name="userBarangay" id="userBarangay" class="form-select form-select-lg" onfocus="changecat(this.value);" onChange="changecat(this.value);">
                                                 <option value="" hidden selected>Barangay</option>
-                                                <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Active='True'");
+                                                <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
                                                 while($brow = $barangay->fetch_assoc()): ?>  
                                                 <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
                                                 <?php endwhile; ?>
                                             </select>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <select class="form-select form-select-lg" id="userPurok" placeholder="Purok" name="userPurok" required>
                                                 <option value="none" disabled selected hidden>Purok</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" class="form-control form-control-user" id="userAddress"
-                                            placeholder="Street Address" name="userAddress" required>
-                                        </div>
                                     </div>
-                                    
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                           <input type="text" class="form-control form-control-user" id="userHouseNum"
-                                            placeholder="House #" name="userHouseNum" required>
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                           <input type="checkbox" name="isRenting" id="isRenting" onClick="showLandlord()"> Currently renting?
-                                        </div>
+                                            <input type="text" class="form-control form-control-user" id="userHouseNum"
+                                                placeholder="House #" name="userHouseNum" required>
+                                        </div>        
                                     </div>
-                                    
-                                    <div class="form-group row" id="landlord" style="display: none;">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                           <input type="text" class="form-control form-control-user" id="landlordName"
-                                            placeholder="Landlord's name" name="landlordName">
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                           <input type="text" class="form-control form-control-user" id="landlordContact"
-                                            placeholder="Landlord's phone number" name="landlordContact">
-                                        </div>
+                                    <div>
+                                        <strong>Account Information</strong>
+                                        <hr>
                                     </div>
-
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="text" class="form-control form-control-user" id="userName"

@@ -10,7 +10,7 @@
         require_once 'functions.inc.php';
 
         if(emptyInputLogin($username, $password) !== false){ //check if all inputs aren't empty
-            header("location: ../signup.php?error=emptyinput"); //return to login.php with an error msg
+            header("location: ../login.php?error=emptyinput"); //return to login.php with an error msg
             exit();    //stop the script
         }
 

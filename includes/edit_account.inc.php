@@ -10,7 +10,7 @@
         $id = $_GET["id"];
         $sql = "UPDATE users SET Firstname=?, Middlename=?, Lastname=?, 
         dateofbirth=?, civilStat=?, userPurok=?, userBarangay=?,
-        emailAdd=?, phoneNum=?, userType=?, userAddress=?, userHouseNum=?, usersPwd=? WHERE UsersID=?";
+        emailAdd=?, phoneNum=?, userAddress=?, userHouseNum=?, userSuffix=? WHERE UsersID=?";
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -18,9 +18,7 @@
             exit();
         }
 
-        $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT); //hashes password to deter hackers
-
-        mysqli_stmt_bind_param($stmt, "ssssssssssssss", $Firstname, $Middlename, $Lastname, $userDOB, $userCivilStat, $userPurok, $userBrgy, $emailAdd, $phoneNum, $userType, $userAddress, $userHouseNum, $hashedpwd, $id); 
+        mysqli_stmt_bind_param($stmt, "sssssssssssss", $Firstname, $Middlename, $Lastname, $userDOB, $userCivilStat, $userPurok, $userBrgy, $emailAdd, $phoneNum, $userAddress, $userHouseNum, $suffixName, $id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         
@@ -29,7 +27,7 @@
             exit();
         }
         else{
-            header("location: ../residents.php?error=none");
+            header("location: ../profile_alt.php?UsersID=$id");
             exit();
         }
     }
@@ -99,6 +97,36 @@
             mysqli_rollback($conn);
         }
             
+    }
+
+    elseif(isset($_GET["changePassPost"])){ 
+        $id = $_GET["changePassPost"];
+        if(pwdMatch($userPwd, $userRptPwd) !== false){ //checks if pwd and pwdRpt is the same
+            header("location: ../profile_alt.php?UsersID=$id&error=invpwd"); //return to signup.php with an error msg
+            exit();    //stop the script
+        }
+        $sql = "UPDATE users SET usersPwd=? WHERE UsersID=?";
+
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            header("location: ../account.php?error=stmtfailedcreatepost");
+            exit();
+        }
+
+        $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT); //hashes password to deter hackers
+
+        mysqli_stmt_bind_param($stmt, "ss", $hashedpwd, $id); 
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        
+        if($_SESSION['userType'] == "Admin"){
+            header("location: ../account.php?error=none");
+            exit();
+        }
+        else{
+            header("location: ../profile_alt.php?UsersID=$id");
+            exit();
+        }
     }
 
     elseif(isset($_GET["changePosition"])){

@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -105,7 +104,7 @@ CREATE TABLE `contacts` (
   `contactName` varchar(20) NOT NULL,
   `contactNum` varchar(20) NOT NULL,
   `BarangayID` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `contacts`
@@ -130,7 +129,7 @@ CREATE TABLE `documentpurpose` (
   `studentDiscount` varchar(20) NOT NULL,
   `seniorDiscount` varchar(20) NOT NULL,
   `pwdDiscount` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `documentpurpose`
@@ -151,7 +150,7 @@ CREATE TABLE `documenttype` (
   `DocumentID` int NOT NULL,
   `documentName` varchar(20) NOT NULL,
   `barangayID` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -222,7 +221,7 @@ CREATE TABLE `ereklamocategory` (
   `reklamoCatID` int NOT NULL,
   `reklamoCatName` varchar(50) NOT NULL,
   `reklamoCatBrgy` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ereklamocategory`
@@ -244,7 +243,7 @@ CREATE TABLE `ereklamotype` (
   `reklamoTypeName` varchar(100) NOT NULL,
   `reklamoTypePriority` varchar(20) NOT NULL,
   `reklamoCatID` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ereklamotype`

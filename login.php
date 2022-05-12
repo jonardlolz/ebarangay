@@ -56,11 +56,11 @@ session_destroy();
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user"
                                                     id="Username" name="username" aria-describedby="emailHelp"
-                                                    placeholder="Enter Username">
+                                                    placeholder="Enter Username" required>
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" name="password" class="form-control form-control-user"
-                                                    id="Password" placeholder="Password">
+                                                    id="Password" placeholder="Password" required>
                                             </div>
                                             <?php
                                             if(isset($_GET["error"])){

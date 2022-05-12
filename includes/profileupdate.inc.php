@@ -219,9 +219,6 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <th scope="col">Purpose</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Date Requested</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Date Approved</th>
-                                <th scope="col">Approved By</th>
                                 <th scope="col">Manage</th>
                             </tr>
                         </thead>
@@ -236,11 +233,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <td><?php echo $row["purpose"] ?></td>
                                 <td><?php echo $row["amount"] ?></td>
                                 <td><?php echo date("M d,Y h:i a", strtotime($row['requestedOn'])); ?></td>
-                                <td><?php echo $row["status"] ?></td>
-                                <td><?php if($row['approvedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['approvedOn']));} else{ echo "N/A"; } ?></td>
-                                <td><?php echo $row["approvedBy"] ?></td>
                                 <td>
-                                    
                                     <button class="btn btn-danger btn-sm btn-flat delete_request" data-id="<?php echo $row['RequestID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
                                     data-backdrop="static"
                                     <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
@@ -268,7 +261,6 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <th scope="col">Purpose</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Date Requested</th>
-                                <th scope="col">Status</th>
                                 <th scope="col">Date Approved</th>
                                 <th scope="col">Approved By</th>
                                 <th scope="col">Manage</th>
@@ -285,15 +277,9 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <td><?php echo $row["purpose"] ?></td>
                                 <td><?php echo $row["amount"] ?></td>
                                 <td><?php echo date("M d,Y h:i a", strtotime($row['requestedOn'])); ?></td>
-                                <td><?php echo $row["status"] ?></td>
                                 <td><?php if($row['approvedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['approvedOn']));} else{ echo "N/A"; } ?></td>
                                 <td><?php echo $row["approvedBy"] ?></td>
                                 <td>
-                                    
-                                    <button class="btn btn-danger btn-sm btn-flat delete_request" data-id="<?php echo $row['RequestID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                    data-backdrop="static"
-                                    <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                    else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
                                     <?php if($row['status'] != 'Pending'): ?>
                                     <a target="_blank" href="<?php echo $row['requesturl'] ?>"><img src="https://getpaid.gcash.com/assets/img/paynow.png"></a>
                                     <?php endif;?>
@@ -317,9 +303,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <th scope="col">Purpose</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Date Requested</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Date Approved</th>
-                                <th scope="col">Approved By</th>
+                                <th scope="col">Date Paid</th>
                                 <th scope="col">Manage</th>
                             </tr>
                         </thead>
@@ -334,15 +318,8 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <td><?php echo $row["purpose"] ?></td>
                                 <td><?php echo $row["amount"] ?></td>
                                 <td><?php echo date("M d,Y h:i a", strtotime($row['requestedOn'])); ?></td>
-                                <td><?php echo $row["status"] ?></td>
                                 <td><?php if($row['approvedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['approvedOn']));} else{ echo "N/A"; } ?></td>
-                                <td><?php echo $row["approvedBy"] ?></td>
                                 <td>
-                                    
-                                    <button class="btn btn-danger btn-sm btn-flat delete_request" data-id="<?php echo $row['RequestID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                    data-backdrop="static"
-                                    <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                    else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
                                     <?php if($row['status'] != 'Pending'): ?>
                                     <a target="_blank" href="<?php echo $row['requesturl'] ?>"><img src="https://getpaid.gcash.com/assets/img/paynow.png"></a>
                                     <?php endif;?>
@@ -366,10 +343,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <th scope="col">Purpose</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Date Requested</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Date Approved</th>
-                                <th scope="col">Approved By</th>
-                                <th scope="col">Manage</th>
+                                <th scope="col">Date Claimed</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -383,19 +357,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <td><?php echo $row["purpose"] ?></td>
                                 <td><?php echo $row["amount"] ?></td>
                                 <td><?php echo date("M d,Y h:i a", strtotime($row['requestedOn'])); ?></td>
-                                <td><?php echo $row["status"] ?></td>
                                 <td><?php if($row['approvedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['approvedOn']));} else{ echo "N/A"; } ?></td>
-                                <td><?php echo $row["approvedBy"] ?></td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm btn-flat delete_request" data-id="<?php echo $row['RequestID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                    data-backdrop="static"
-                                    <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                    else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
-                                    <?php if($row['status'] != 'Pending'): ?>
-                                    <a target="_blank" href="<?php echo $row['requesturl'] ?>"><img src="https://getpaid.gcash.com/assets/img/paynow.png"></a>
-                                    <?php endif;?>
-                                </td>
-                                
                                 <!--Right Options-->
                             </tr>
                             <?php endwhile; ?>

@@ -39,11 +39,27 @@
                                         <option value="" hidden selected>Select</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-5 m-1">
-                                    <label>Mode of Payment</label>
-                                    <select name="modeofPayment" id="modeofPayment" class="form-control w-75 form-control-md form-select" required>
-                                        <option value="Cash on Claim" selected>Cash on Claim</option>
-                                    </select>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col">
+                                    <label for="IsRegular"><input type="radio" name="discountCheck" id="IsRegular" onclick="ShowHideDiv()"> None</label>
+                                </div>
+                                <div class="col">
+                                    <label for="IsStudent"><input type="radio" name="discountCheck" id="IsStudent" onclick="ShowHideDiv()"> Are you a student?</label>
+                                </div>
+                                <div class="col">
+                                    <label for="IsPWD"><input type="radio" name="discountCheck" id="IsPWD" onclick="ShowHideDiv()"> Are you a PWD?</label>
+                                </div>
+                                <div class="col">
+                                    <label for="IsSenior"><input type="radio" name="discountCheck" id="IsSenior" onclick="ShowHideDiv()"> Are you a senior?</label>
+                                </div>
+                            </div>
+                            <div class="row p-2" id="fieldID" style="display: none;">
+                                <div class="col">
+                                    <label for="">Please present your ID: </label>
+                                </div>
+                                <div class="col">
+                                    <input type="file" name="discPic" id="discPic">
                                 </div>
                             </div>
                             <?php
@@ -71,11 +87,7 @@
                         <div class="m-3 p-3 text-right">
                             <button class="btn btn-primary border continue" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
                         </div>
-                        
-                    <!-- </form> -->
-
-                    
-                </div>
+                    </div>
                 </div>
                 <!-- End of Nonvoter - Request Form -->
             </div>
@@ -754,6 +766,10 @@
                                                                 <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
                                                             </a>
                                                             <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
                                                             <a class="dropdown-item delete_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
                                                                 <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
                                                             </a>
@@ -762,7 +778,6 @@
                                                 </div>
                                             </h5>
                                             <p class="card-text"><?php echo $documentRow['documentdesc'] ?></p>
-                                            <a href="javascript:void(0)" class="btn btn-primary document_edit" data-id="<?php echo $documentRow['documentName'] ?>">View Document</a>
                                         </div>
                                     </div>
                                 </div>
@@ -819,6 +834,11 @@
 
 
     <script>
+
+    ShowHideDiv();
+    function ShowHideDiv(){
+        var Is = document.getElementById("discountCheck");
+    }
 
     window.start_load = function(){
 	    $('body').prepend('<div id="preloader2"></div>')

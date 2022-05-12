@@ -227,7 +227,7 @@
 
     <div class="dropdown-menu dropdown-menu-sm-right shadow animated--grow-in"
         aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="profile.php?UsersID=<?php echo $_SESSION['UsersID']; ?>">
+        <a class="dropdown-item" href="profile_alt.php?UsersID=<?php echo $_SESSION['UsersID']; ?>">
             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-600"></i>
                 Profile
             </a>

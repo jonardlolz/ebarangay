@@ -5,7 +5,11 @@ session_start();
 
 <?php if(isset($_GET['addPurpose']) || isset($_GET['editPurpose'])): ?>
 <div class="container-fluid">
-    <form action="includes/document.inc.php?add&docuType=<?php echo $_GET['docuType'] ?>" method="POST">
+    <?php if(isset($_GET['addPurpose'])): ?>
+        <form action="includes/document.inc.php?add&docuType=<?php echo $_GET['docuType'] ?>" method="POST">
+    <?php elseif(isset($_GET['editPurpose'])): ?>
+        <form action="includes/document.inc.php?edit&docuType=<?php echo $_GET['docuType'] ?>&purposeID=<?php echo $_GET['purposeID'] ?>" method="POST">
+    <?php endif; ?>
         <?php if(isset($_GET['editPurpose'])){
             $sql = $conn->query("SELECT * FROM documentpurpose WHERE purposeID='{$_GET['purposeID']}'");
             $editPurpose = $sql->fetch_assoc();
@@ -30,59 +34,12 @@ session_start();
                 </input>
             </div>
         </div>
-        <?php if($_GET['docuType'] != "Indigency Clearance"): ?>
-        <div class="form-group row">
-            <div class="col-sm-5" style="text-align: right">
-                <label>Enter fee:</label>
-            </div>
-            <div class="col-sm-4">
-                <input type="number" name="fee" min="0" placeholder="Fee" 
-                <?php if(isset($_GET['editPurpose'])): ?> 
-                    value="<?php echo $editPurpose['price'] ?>">
-                <?php endif; ?>
-            </input>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-5" style="text-align: right">
-                <label>Student's Discount:</label>
-            </div>
-            <div class="col-sm-4">
-                <input type="number" name="studentDiscount" value="0" min="0" max="100" placeholder="Fee"
-                <?php if(isset($_GET['editPurpose'])): ?> 
-                    value="<?php echo $editPurpose['studentDiscount'] ?>">
-                <?php endif; ?>
-                </input> %
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-5" style="text-align: right">
-                <label>Senior's Discount:</label>
-            </div>
-            <div class="col-sm-4">
-                <input type="number" name="seniorDiscount" value="20" min="20" max="100" placeholder="Fee"
-                <?php if(isset($_GET['editPurpose'])): ?> 
-                    value="<?php echo $editPurpose['seniorDiscount'] ?>">
-                <?php endif; ?>
-                </input> %
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-5" style="text-align: right">
-                <label>PWD's Discount:</label>
-            </div>
-            <div class="col-sm-4">
-                <input type="number" name="pwdDiscount" value="0" min="0" max="100" placeholder="Fee"
-                <?php if(isset($_GET['editPurpose'])): ?> 
-                    value="<?php echo $editPurpose['pwdDiscount'] ?>">
-                <?php endif; ?>
-                </input> %
-            </div>
-        </div>
-        <?php endif; ?>
     </form>
 </div>
-<?php elseif(isset($_GET['viewPurpose'])): ?>
+<?php elseif(isset($_GET['viewPurpose'])): 
+    $purposeSql = $conn->query("SELECT documentpurpose.*, documenttype.* FROM documentpurpose LEFT JOIN documenttype ON barangayDoc=documentName WHERE barangayDoc='{$_GET['docuType']}' AND barangay='{$_SESSION['userBarangay']}'");
+    $purpose = $purposeSql->fetch_assoc();
+?>
 <style>
     #uni_modal .modal-footer{
         display: none;
@@ -90,7 +47,7 @@ session_start();
 </style>
 <div class="container-fluid">
     <div class="row justify-content-end">
-        <button class="btn btn-primary add_purpose" data-docu="<?php echo $_GET['docuType'] ?>" style="margin-bottom: 15px">Add Purpose</button>
+        <button class="btn btn-primary add_purpose" data-docu="<?php echo $purpose['barangayDoc'] ?>" style="margin-bottom: 15px">Add Purpose</button>
     </div>
     <div class="row">
         <div class="table-responsive">
@@ -99,12 +56,6 @@ session_start();
                 <thead>
                     <tr class="bg-gradient-secondary text-white">
                         <th>Purpose</th>
-                        <?php if($_GET['docuType'] != "Indigency Clearance"): ?>
-                        <th>Price</th>
-                        <th>Student Discount</th>
-                        <th>Senior Discount</th>
-                        <th>PWD Discount</th>
-                        <?php endif; ?>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -117,12 +68,6 @@ session_start();
                     ?>
                     <tr>
                         <td><?php echo $row['purpose'] ?></td>
-                        <?php if($_GET['docuType'] != "Indigency Clearance"): ?>
-                        <td><?php echo $row['price'] ?></td>
-                        <td><?php echo $row['studentDiscount'] ?> %</td>
-                        <td><?php echo $row['seniorDiscount'] ?> %</td>
-                        <td><?php echo $row['pwdDiscount'] ?> %</td>
-                        <?php endif; ?>
                         <td>
                             <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $_GET['docuType'] ?>"><i class="fas fa-edit"></i></a>
                             <a href="javascript:void(0)" class="delete_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $row['purposeID'] ?>"><i class="fas fa-trash"></i></a>
@@ -197,7 +142,7 @@ session_start();
                     Document description:
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentDesc" value="<?php echo $documentinfo['documentdesc'] ?>">
+                    <input class="form-control form-control-sm" type="text" name="documentDesc" value="<?php echo $documentinfo['documentDesc'] ?>">
                 </div>
             </div>
             <div class="row">
@@ -234,14 +179,8 @@ session_start();
 
 <?php elseif(isset($_GET['add'])): 
     extract($_POST);
-    if($_GET['docuType'] == "Indigency Clearance"){
-        $fee = "0";
-        $studentDiscount = 0;
-        $seniorDiscount = 0;
-        $pwdDiscount = 0;
-    }
-    $sql = "INSERT INTO documentpurpose(purpose, barangayDoc, price, barangay, studentDiscount, seniorDiscount, pwdDiscount)
-            VALUES('$purpose', '{$_GET['docuType']}', $fee, '{$_SESSION['userBarangay']}', $studentDiscount, $seniorDiscount, $pwdDiscount)";
+    $sql = "INSERT INTO documentpurpose(purpose, barangayDoc, barangay)
+            VALUES('$purpose', '{$_GET['docuType']}', '{$_SESSION['userBarangay']}')";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -250,14 +189,33 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../document.php?error=sqlExecError");
+        header("location: ../request.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../document.php?error=none"); //no errors were made
+    header("location: ../request.php?error=none"); //no errors were made
     exit();
     
+?>
+<?php elseif(isset($_GET['edit'])):
+    extract($_POST);
+    $sql = "UPDATE documentpurpose SET purpose='$purpose' WHERE purposeID={$_GET['purposeID']}";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
 ?>
 <?php elseif(isset($_GET['postdocumentAdd'])): 
     extract($_POST);

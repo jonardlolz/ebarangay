@@ -144,8 +144,6 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
-
-    
     <script>
         $('.continue_verify').click(function(){
             var renter = document.getElementById("renter");

@@ -27,7 +27,7 @@
                 <div class="row">
                 <div class="col-8">
                     <div class="container-fluid">
-                        <h1 class="font-weight-normal text-dark text-uppercase text-left">Barangay <?php echo "{$_SESSION['userBarangay']}"  ?></h1>    <!--push-->
+                        <h1 class="font-weight-normal text-dark text-uppercase text-left">Barangay <?php echo "{$_SESSION['userBarangay']} {$_SESSION['userType']}"  ?></h1>    <!--push-->
                         <!-- Post Section -->
                         <?php if(!empty($_SESSION['UsersID']) && $_SESSION['userType'] != "Resident"): ?>
                         <div class="col-md-12">
