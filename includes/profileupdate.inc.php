@@ -463,4 +463,7 @@ if(isset($_GET['viewReklamo'])): ?>
     $(document).ready(function() {
         $('#dataTable2').DataTable();
     } );
+    $('.delete_request').click(function(){
+    _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])
+    })
 </script>

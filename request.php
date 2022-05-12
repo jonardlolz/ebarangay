@@ -28,9 +28,10 @@
                                     <label>Choose document:</label>
                                     <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
                                         <option value="" hidden selected>Select</option>
-                                        <option value="Cedula">Cedula</option>
-                                        <option value="Barangay Clearance">Barangay Clearance</option>
-                                        <option value="Indigency Clearance">Indigency Clearance</option>
+                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                        while($documents = $requestSql->fetch_assoc()): ?>
+                                        <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                        <?php endwhile; ?>
                                     </select>
                                 </div>
                                 <div class="col-lg-5 m-1">
@@ -38,28 +39,6 @@
                                     <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
                                         <option value="" hidden selected>Select</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="row p-2">
-                                <div class="col">
-                                    <label for="IsRegular"><input type="radio" name="discountCheck" id="IsRegular" onclick="ShowHideDiv()"> None</label>
-                                </div>
-                                <div class="col">
-                                    <label for="IsStudent"><input type="radio" name="discountCheck" id="IsStudent" onclick="ShowHideDiv()"> Are you a student?</label>
-                                </div>
-                                <div class="col">
-                                    <label for="IsPWD"><input type="radio" name="discountCheck" id="IsPWD" onclick="ShowHideDiv()"> Are you a PWD?</label>
-                                </div>
-                                <div class="col">
-                                    <label for="IsSenior"><input type="radio" name="discountCheck" id="IsSenior" onclick="ShowHideDiv()"> Are you a senior?</label>
-                                </div>
-                            </div>
-                            <div class="row p-2" id="fieldID" style="display: none;">
-                                <div class="col">
-                                    <label for="">Please present your ID: </label>
-                                </div>
-                                <div class="col">
-                                    <input type="file" name="discPic" id="discPic">
                                 </div>
                             </div>
                             <?php
@@ -80,12 +59,8 @@
                             ?>
                         </section>
                         <br>
-
-                        <!-- <div class="m-3 p-3 text-right">
-                            <button name="submit" class="btn btn-primary border" type="submit">Continue</button>
-                        </div> -->
                         <div class="m-3 p-3 text-right">
-                            <button class="btn btn-primary border continue" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
+                            <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
                         </div>
                     </div>
                 </div>
@@ -268,7 +243,7 @@
             <div class="card-body" style="font-size: 75%">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="home" aria-selected="true">Pending</a>
+                        <a class="nav-link active" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="home" aria-selected="true">Paid</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="profile" aria-selected="false">Released</a>
@@ -286,7 +261,6 @@
                                         <th scope="col">Document Type</th>
                                         <th scope="col">Purpose</th>
                                         <th scope="col">Date Requested</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Manage</th>
                                     </tr>
                                 </thead>
@@ -338,9 +312,7 @@
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row["purpose"] ?></td>
                                         <td><?php echo $row["requestedDate"] ?></td>
-                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td>
-                                            
                                             <button class="btn btn-success releaseFunc" id="releaseFunc" data-id="<?php echo $row["RequestID"] ?>"><i class="fas fa-check"></i> Release</button>
                                             <?php if($row['documentType'] == 'Barangay Clearance'): ?>
                                             <button class="btn btn-primary" id="print" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Print</button>
@@ -529,6 +501,55 @@
                                     <!--Row 1-->
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade <?php if($_SESSION['userType'] == "Captain"): echo 'show active'; ?> <?php endif; ?>" id="document" role="tabpanel" aria-labelledby="document-tab">
+                        <div class="container p-4">
+                            <button class="btn btn-primary add_document" data-id="<?php echo $_SESSION['userBarangay'] ?>"><i class="fas fa-plus"></i> New Document</button>
+                            <?php $i = 0;
+                                $documents = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'"); ?>
+                            <?php while($i < mysqli_num_rows($documents)): ?>
+                            <div class="row" style="margin: 25px">
+                                <?php while($documentRow = $documents->fetch_assoc()): ?>
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <?php echo $documentRow['documentName'] ?>
+                                                    </div>
+                                                    <div class="col-sm-3" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle" 
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item edit_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['DocumentID'] ?>" data-docu="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item delete_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                            <p class="card-text"><?php echo $documentRow['documentdesc'] ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php $i++; if($i % 2 == 0){ break; } endwhile; ?>
+                            </div>
+                            <?php endwhile; ?>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
@@ -738,54 +759,6 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade <?php if($_SESSION['userType'] == "Captain"): echo 'show active'; ?> <?php endif; ?>" id="document" role="tabpanel" aria-labelledby="document-tab">
-                        <div class="container p-4">
-                            <button class="btn btn-primary add_document" data-id="<?php echo $_SESSION['userBarangay'] ?>"><i class="fas fa-plus"></i> New Document</button>
-                            <?php $i = 0;
-                                $documents = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'"); ?>
-                            <?php while($i < mysqli_num_rows($documents)): ?>
-                            <div class="row" style="margin: 25px">
-                                <?php while($documentRow = $documents->fetch_assoc()): ?>
-                                <div class="col-sm-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <?php echo $documentRow['documentName'] ?>
-                                                    </div>
-                                                    <div class="col-sm-3" style="text-align: right;">
-                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
-                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle" 
-                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu shadow"
-                                                            aria-labelledby="userDropdown">
-                                                            <a class="dropdown-item edit_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
-                                                            </a>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
-                                                            </a>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item delete_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </h5>
-                                            <p class="card-text"><?php echo $documentRow['documentdesc'] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php $i++; if($i % 2 == 0){ break; } endwhile; ?>
-                            </div>
-                            <?php endwhile; ?>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- End of Card Body-->
@@ -968,7 +941,7 @@
         title: $msg
         })
     }
-    $('.continue').click(function(){
+    $('.continueRequest').click(function(){
         var ddl = document.getElementById("document");
         var selectedValue = ddl.options[ddl.selectedIndex].value;
         var ddl2 = document.getElementById("purpose");
@@ -980,7 +953,7 @@
             alert("Please select a valid purpose");
         }
         else{
-            verifyInfo_modal("<center><b>Verify Information</b></center>","includes/request.inc.php?verifyInfo&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val()+"&modeofPayment="+$("#modeofPayment").val());
+            verifyInfo_modal("<center><b>Verify Information</b></center>","includes/request.inc.php?continueRequest&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val());
         }  
     })
     $('#print').click(function(){
@@ -999,7 +972,7 @@
         uni_modal("<center>Profile</center>","profile_alt.php?viewProfile&UsersID="+$(this).attr('data-id'), "modal-lg");
     })
     $('.document_edit').click(function(){
-        uni_modal("<center><b>Document edit for " + $(this).attr('data-id') + "</b></center></center>","includes/document.inc.php?viewPurpose&docuType="+$(this).attr('data-id'), "modal-lg");
+        uni_modal("<center><b>Document edit for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?viewPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id'), "modal-lg");
     })
     $('.add_document').click(function(){
         uni_modal("<center><b>New document </b></center></center>","includes/document.inc.php?addDocument&barangay="+$(this).attr('data-id'));
@@ -1027,27 +1000,19 @@
         })
     }
 
-    
-    var mealsByCategory = {
-        Cedula: <?php 
-        $purposes = array();
-        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Cedula' AND barangay='{$_SESSION['userBarangay']}'"); 
-        while($prow = $purpose->fetch_assoc()):
-        $purposes[] = $prow["purpose"]?>
-        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
-        "Barangay Clearance": <?php 
-        $purposes = array();
-        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Barangay Clearance' AND barangay='{$_SESSION['userBarangay']}'"); 
-        while($prow = $purpose->fetch_assoc()):
-        $purposes[] = $prow["purpose"]?>
-        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
-        "Indigency Clearance": <?php 
-        $purposes = array();
-        $purpose = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='Indigency Clearance' AND barangay='{$_SESSION['userBarangay']}'"); 
-        while($prow = $purpose->fetch_assoc()):
-        $purposes[] = $prow["purpose"]?>
-        <?php endwhile; echo json_encode($purposes). ","; $purposes = array();?>
-    }
+    var mealsByCategory = { 
+    <?php    
+        $puroks = array();
+        $barangay = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+        while($brow = $barangay->fetch_assoc()):
+    ?>
+        <?php 
+        echo json_encode($brow["DocumentID"]) ?> : <?php $purok = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='{$brow['DocumentID']}'"); 
+        while($prow = $purok->fetch_assoc()):
+        $puroks[] = $prow["purpose"]?>
+        <?php endwhile; echo json_encode($puroks). ","; $puroks = array();?>
+        <?php endwhile; ?> }
+
 
     function changecat(value) {
         if (value.length == 0) document.getElementById("purpose").innerHTML = "<option>Empty</option>";

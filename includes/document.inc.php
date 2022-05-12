@@ -19,7 +19,7 @@ session_start();
                 <label>Document name:</label>
             </div>
             <div class="col-sm-6">
-                <label><b><?php echo $_GET['docuType']?></b></label>
+                <label><b><?php echo $_GET['docuName']?></b></label>
             </div>
         </div>
         <div class="form-group row">
@@ -37,7 +37,7 @@ session_start();
     </form>
 </div>
 <?php elseif(isset($_GET['viewPurpose'])): 
-    $purposeSql = $conn->query("SELECT documentpurpose.*, documenttype.* FROM documentpurpose LEFT JOIN documenttype ON barangayDoc=documentName WHERE barangayDoc='{$_GET['docuType']}' AND barangay='{$_SESSION['userBarangay']}'");
+    $purposeSql = $conn->query("SELECT documentpurpose.*, documenttype.* FROM documentpurpose LEFT JOIN documenttype ON barangayDoc=documentID WHERE barangayDoc='{$_GET['docuType']}' AND barangay='{$_SESSION['userBarangay']}'");
     $purpose = $purposeSql->fetch_assoc();
 ?>
 <style>
@@ -47,7 +47,7 @@ session_start();
 </style>
 <div class="container-fluid">
     <div class="row justify-content-end">
-        <button class="btn btn-primary add_purpose" data-docu="<?php echo $purpose['barangayDoc'] ?>" style="margin-bottom: 15px">Add Purpose</button>
+        <button class="btn btn-primary add_purpose" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>" style="margin-bottom: 15px">Add Purpose</button>
     </div>
     <div class="row">
         <div class="table-responsive">
@@ -115,11 +115,25 @@ session_start();
                     Include fee?
                 </div>
                 <div class="col">
-                    <input type="checkbox" name="documentFee" id="documentFee" value="True">
+                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" checked>
+                </div>
+            </div>
+            <div class="row" id="priceField">
+                <div class="col">
+                    Price: 
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="0">
                 </div>
             </div>
         </div>
     </form>
+    <script>
+        function showPriceField(){
+            var allowFee = document.getElementById("allowFee");
+            priceField.style.display = allowFee.checked ? "flex" : "none";
+        }
+    </script>
 </div>
 
 <?php elseif(isset($_GET['editDocument'])): ?>
@@ -150,11 +164,26 @@ session_start();
                     Include fee?
                 </div>
                 <div class="col">
-                    <input type="checkbox" name="documentFee" id="documentFee" value="True" <?php if($documentinfo['allowFee']=='True'): echo 'checked'; endif; ?>>
+                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" <?php if($documentinfo['allowFee']=='True'): echo 'checked'; endif; ?>>
+                </div>
+            </div>
+            <div class="row" id="priceField">
+                <div class="col">
+                    Price: 
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="<?php echo $documentinfo['docPrice'] ?>">
                 </div>
             </div>
         </div>
     </form>
+    
+    <script>
+        function showPriceField(){
+            var allowFee = document.getElementById("allowFee");
+            priceField.style.display = allowFee.checked ? "flex" : "none";
+        }
+    </script>
 </div>
 
 <?php elseif(isset($_GET['delete'])):
@@ -222,10 +251,11 @@ session_start();
     
     if($documentFee == ''){
         $documentFee = 'False';
+        $documentPrice = '0';
     }
 
-    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee)
-            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee')";
+    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee, docPrice)
+            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee', '$documentPrice')";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -248,9 +278,10 @@ session_start();
     
     if($documentFee == ''){
         $documentFee = 'False';
+        $documentPrice = '0';
     }
 
-    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc' WHERE DocumentID={$_GET['barangayid']}";
+    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc', docPrice='$documentPrice' WHERE DocumentID={$_GET['barangayid']}";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -413,7 +444,7 @@ session_start();
     })
 
     $('.add_purpose').click(function(){
-        secondary_modal("<center><b>Add purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?addPurpose&docuType="+$(this).attr('data-docu'));
+        secondary_modal("<center><b>Add purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?addPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id'));
     })
     $('.edit_purpose').click(function(){
         secondary_modal("<center><b>Edit purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?editPurpose&docuType="+$(this).attr('data-docu')+"&purposeID="+$(this).attr('data-id'));

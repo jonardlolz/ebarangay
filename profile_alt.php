@@ -308,9 +308,7 @@ window.start_load = function(){
     $('.edit_password').click(function(){
         uni_modal("<center><b>Change Password</b></center></center>","includes/account.inc.php?changePass="+$(this).attr('data-id'))
     })
-    $('.delete_request').click(function(){
-    _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])
-    })
+    
     $('.delete_reklamo').click(function(){
     _conf("Are you sure want to cancel this reklamo?","cancelReklamo",[$(this).attr('data-id')])
     })
