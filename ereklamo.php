@@ -30,12 +30,22 @@
                             <select class="form-control w-75 form-control-md form-select" 
                             name="reklamotype" onChange="changecat(this.value);" required>
                                 <option selected value="" hidden>Select</option>
+                                <optgroup label="Minor">
+                                    <?php 
+                                    $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority='Minor'"); 
+                                    while($categoryRow = $ereklamoCat->fetch_assoc()):
+                                    ?>
+                                    <option value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
+                                    <?php endwhile; ?>
+                                </optgroup>
+                                <optgroup label="Major">
                                 <?php 
-                                $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}'"); 
-                                while($categoryRow = $ereklamoCat->fetch_assoc()):
-                                ?>
-                                <option value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
-                                <?php endwhile; ?>
+                                    $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority='Major'"); 
+                                    while($categoryRow = $ereklamoCat->fetch_assoc()):
+                                    ?>
+                                    <option value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
+                                    <?php endwhile; ?>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="col-lg-5 m-1">
