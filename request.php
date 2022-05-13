@@ -2,7 +2,6 @@
                             
     <!-- Begin Page Content -->
     <div class="col d-flex flex-column px-4">
-        
         <!-- Page Heading --> 
         <div class="d-sm-flex align-items-center justify-content-between">  
             <h3 class="font-weight-bold text-dark">Request Form</h3> 
@@ -19,8 +18,7 @@
         <div class="row">
             <div class="col-md">
                 <div class="container-fluid">
-                <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">    
-                    <!-- <form class="form-group" action="includes/request.inc.php" method="POST" > -->
+                    <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">
                         <section>
                             <strong>Request Document</strong>
                             <div class="row p-2">
@@ -86,6 +84,9 @@
                     <li class="nav-item">
                         <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
+                    </li>
                 </ul>
                     <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
@@ -98,7 +99,6 @@
                                         <th>Requester</th>
                                         <th>Document Type</th>
                                         <th>Amount</th>
-                                        <th>Status</th>
                                         <th>Manage</th>
                                     </tr>
                                 </thead>
@@ -149,7 +149,6 @@
                                         </td>
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row['amount'] ?></td>
-                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td>
                                             <button class="btn btn-success paid_request" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Paid</button>
                                             <a target="_blank" href="<?php echo $row["requesturl"]?>"><button class="btn btn-primary"><i class="fas fa-money-check"></i> Gcash link</button></a>
@@ -171,7 +170,7 @@
                                         <th>Requester</th>
                                         <th>Document Type</th>
                                         <th>Amount</th>
-                                        <th>Status</th>
+                                        <th>Date Paid</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -186,8 +185,7 @@
                                         ON request.UsersID=users.UsersID 
                                         WHERE request.status='Paid' 
                                         AND request.userPurok='{$_SESSION['userPurok']}' 
-                                        AND request.userBarangay='{$_SESSION['userBarangay']}' 
-                                        AND request.userType='{$_SESSION['userType']}'");
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
                                         while($row=$requests->fetch_assoc()):
                                             if($row["userType"] == "Admin"){
                                                 continue;
@@ -220,12 +218,57 @@
                                         </td>
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row['amount'] ?></td>
-                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
+                                        <td><?php echo $row['approvedOn'] ?></td>
                                     </tr>
                                     <?php endwhile; ?>
                                     <!--Row 1-->
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                        <div class="container-fluid">
+                            <section>
+                                <strong>Request Document</strong>
+                                <div class="row p-2">
+                                    <div class="col-lg-6 m-1">
+                                        <label>Choose document:</label>
+                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                            <option value="" hidden selected>Select</option>
+                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                            while($documents = $requestSql->fetch_assoc()): ?>
+                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 m-1">
+                                        <label>Purpose:</label>
+                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                            <option value="" hidden selected>Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php
+                                    if(isset($_GET["error"])){
+                                        if($_GET["error"] == "none"){
+                                            echo "<div class='alert alert-success' role='alert'>
+                                            Your request has been submitted! You can check the status of your 
+                                            request on your profile.
+                                            </div>";
+                                        }
+                                        if($_GET["error"] == "pendingReq"){
+                                            echo "<div class='alert alert-danger' role='alert'>
+                                            Your request has been denied! You still have a pending document 
+                                            in queue.
+                                            </div>";
+                                        }
+                                    }
+                                ?>
+                            </section>
+                            <br>
+                            <div class="m-3 p-3 text-right">
+                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -247,6 +290,10 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="profile" aria-selected="false">Released</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -314,9 +361,9 @@
                                         <td><?php echo $row["requestedDate"] ?></td>
                                         <td>
                                             <button class="btn btn-success releaseFunc" id="releaseFunc" data-id="<?php echo $row["RequestID"] ?>"><i class="fas fa-check"></i> Release</button>
-                                            <?php if($row['documentType'] == 'Barangay Clearance'): ?>
+                                            <!-- <?php if($row['documentType'] == 'Barangay Clearance'): ?>
                                             <button class="btn btn-primary" id="print" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Print</button>
-                                            <?php endif; ?>
+                                            <?php endif; ?> -->
                                         </td>
                                         <!--Right Options-->
                                     </tr>
@@ -395,40 +442,72 @@
                             </table>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                        <div class="container-fluid">
+                            <section>
+                                <strong>Request Document</strong>
+                                <div class="row p-2">
+                                    <div class="col-lg-6 m-1">
+                                        <label>Choose document:</label>
+                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                            <option value="" hidden selected>Select</option>
+                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                            while($documents = $requestSql->fetch_assoc()): ?>
+                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 m-1">
+                                        <label>Purpose:</label>
+                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                            <option value="" hidden selected>Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php
+                                    if(isset($_GET["error"])){
+                                        if($_GET["error"] == "none"){
+                                            echo "<div class='alert alert-success' role='alert'>
+                                            Your request has been submitted! You can check the status of your 
+                                            request on your profile.
+                                            </div>";
+                                        }
+                                        if($_GET["error"] == "pendingReq"){
+                                            echo "<div class='alert alert-danger' role='alert'>
+                                            Your request has been denied! You still have a pending document 
+                                            in queue.
+                                            </div>";
+                                        }
+                                    }
+                                ?>
+                            </section>
+                            <br>
+                            <div class="m-3 p-3 text-right">
+                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- End of Card Body-->
         </div>                     
     </div>       
-
-    <?php elseif($_SESSION["userType"] != "Resident"): ?>
+    <?php elseif($_SESSION["userType"] == "Purok Leader"): ?>
         <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-dark">Requests (<?php echo $_SESSION['userBarangay'] ?>)</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Requests (<?php echo $_SESSION['userBarangay'] ?>)</h6>
             </div>
-            
             <div class="card-body" style="font-size: 75%">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <?php if($_SESSION['userType'] == "Captain"): ?>
                     <li class="nav-item">
-                        <a class="nav-link active" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
+                        <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if($_SESSION['userType'] != "Captain"): echo 'active'; ?> <?php endif; ?>" id="release-tab" data-toggle="tab" href="#release" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                        <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="releasing-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="approved" aria-selected="false">Paid</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
-                    </li>
-                    <?php endif; ?>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade <?php if($_SESSION['userType'] != "Captain"): echo 'show active' ?><?php endif; ?>" id="release" role="tabpanel" aria-labelledby="release-tab">
+                    <div class="tab-pane show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                         <div class="table-responsive">
                             <table class="table table-bordered text-center text-dark" 
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
@@ -438,7 +517,6 @@
                                         <th scope="col">Document Type</th>
                                         <th scope="col">Purpose</th>
                                         <th scope="col">Date Requested</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Manage</th>
                                     </tr>
                                 </thead>
@@ -489,7 +567,6 @@
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row["purpose"] ?></td>
                                         <td><?php echo $row["requestedDate"] ?></td>
-                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                         <td>
                                             <a href="includes/request.inc.php?approveID=<?php echo $row["RequestID"] ?>">
                                                 <button class="btn btn-success approve" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
@@ -503,8 +580,136 @@
                             </table>
                         </div>
                     </div>
-                    
-                    <div class="tab-pane fade <?php if($_SESSION['userType'] == "Captain"): echo 'show active'; ?> <?php endif; ?>" id="document" role="tabpanel" aria-labelledby="document-tab">
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                        <div class="container-fluid">
+                            <section>
+                                <strong>Request Document</strong>
+                                <div class="row p-2">
+                                    <div class="col-lg-6 m-1">
+                                        <label>Choose document:</label>
+                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                            <option value="" hidden selected>Select</option>
+                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                            while($documents = $requestSql->fetch_assoc()): ?>
+                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 m-1">
+                                        <label>Purpose:</label>
+                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                            <option value="" hidden selected>Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php
+                                    if(isset($_GET["error"])){
+                                        if($_GET["error"] == "none"){
+                                            echo "<div class='alert alert-success' role='alert'>
+                                            Your request has been submitted! You can check the status of your 
+                                            request on your profile.
+                                            </div>";
+                                        }
+                                        if($_GET["error"] == "pendingReq"){
+                                            echo "<div class='alert alert-danger' role='alert'>
+                                            Your request has been denied! You still have a pending document 
+                                            in queue.
+                                            </div>";
+                                        }
+                                    }
+                                ?>
+                            </section>
+                            <br>
+                            <div class="m-3 p-3 text-right">
+                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
+                            </div>
+                            <script>
+                                $('.continueRequest').click(function(){
+                                    var ddl = document.getElementById("document");
+                                    var selectedValue = ddl.options[ddl.selectedIndex].value;
+                                    var ddl2 = document.getElementById("purpose");
+                                    var selectedValue2 = ddl2.options[ddl2.selectedIndex].value;
+                                    if (selectedValue == ""){
+                                        alert("Please select a document");
+                                    }
+                                    else if(selectedValue2 == ""){
+                                        alert("Please select a valid purpose");
+                                    }
+                                    else{
+                                        verifyInfo_modal("<center><b>Verify Information</b></center>","includes/request.inc.php?continueRequest&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val());
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+        </div>
+    <?php elseif($_SESSION["userType"] == "Captain"): ?>
+        <div class="card shadow mb-4 m-4">
+            <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">Requests (<?php echo $_SESSION['userBarangay'] ?>)</h6>
+            </div>
+            
+            <div class="card-body" style="font-size: 75%">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                        <div class="container-fluid">
+                            <section>
+                                <strong>Request Document</strong>
+                                <div class="row p-2">
+                                    <div class="col-lg-6 m-1">
+                                        <label>Choose document:</label>
+                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                            <option value="" hidden selected>Select</option>
+                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                            while($documents = $requestSql->fetch_assoc()): ?>
+                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 m-1">
+                                        <label>Purpose:</label>
+                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                            <option value="" hidden selected>Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php
+                                    if(isset($_GET["error"])){
+                                        if($_GET["error"] == "none"){
+                                            echo "<div class='alert alert-success' role='alert'>
+                                            Your request has been submitted! You can check the status of your 
+                                            request on your profile.
+                                            </div>";
+                                        }
+                                        if($_GET["error"] == "pendingReq"){
+                                            echo "<div class='alert alert-danger' role='alert'>
+                                            Your request has been denied! You still have a pending document 
+                                            in queue.
+                                            </div>";
+                                        }
+                                    }
+                                ?>
+                            </section>
+                            <br>
+                            <div class="m-3 p-3 text-right">
+                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane show active" id="document" role="tabpanel" aria-labelledby="document-tab">
                         <div class="container p-4">
                             <button class="btn btn-primary add_document" data-id="<?php echo $_SESSION['userBarangay'] ?>"><i class="fas fa-plus"></i> New Document</button>
                             <?php $i = 0;
@@ -552,144 +757,6 @@
                             <?php endwhile; ?>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
-                        <div class="table-responsive">
-                            <table class="table table-bordered text-center text-dark" 
-                                id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
-                                <thead >
-                                    <tr class="bg-gradient-secondary text-white">
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Document Type</th>
-                                        <th scope="col">Purpose</th>
-                                        <th scope="col">Date Requested</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Managed By</th>
-                                        <th scope="col">Date Managed</th>
-                                    </tr>
-                                    
-                                </thead>
-                                <tbody>
-                                    <!--Row 1-->
-                                    <?php 
-                                        $requests = $conn->query("SELECT request.*, users.UsersID, concat(users.Firstname, ' ', users.Lastname) 
-                                        as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
-                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
-                                        users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
-                                        WHERE request.status='Approved' AND request.userPurok='{$_SESSION['userPurok']}' 
-                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
-                                        while($row=$requests->fetch_assoc()):
-                                            if($row["userType"] == "Admin"){
-                                                continue;
-                                            }
-                                    ?>
-                                    <tr>
-                                        <td>
-                                            <img class="img-profile rounded-circle <?php 
-                                                if($row["userType"] == "Resident"){
-                                                    echo "img-res-profile";
-                                                }
-                                                elseif($row["userType"] == "Purok Leader"){
-                                                    echo "img-purokldr-profile";
-                                                }
-                                                elseif($row["userType"] == "Captain"){
-                                                    echo "img-capt-profile";
-                                                }
-                                                elseif($row["userType"] == "Secretary"){
-                                                    echo "img-sec-profile";
-                                                }
-                                                elseif($row["userType"] == "Treasurer"){
-                                                    echo "img-treas-profile";
-                                                }
-                                                elseif($row["userType"] == "Admin"){
-                                                    echo "img-admin-profile";
-                                                }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                            <br>
-                                            <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a>  
-                                        </td>
-                                        <td><?php echo $row["documentType"] ?></td>
-                                        <td><?php echo $row["purpose"] ?></td>
-                                        <td><?php echo $row["requestedDate"] ?></td>
-                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
-                                        <td><?php if($row["approvedBy"] != NULL){echo $row["approvedBy"];} else{echo "None";} ?></td>
-                                        <td><?php if($row["approvedOn"] != NULL){echo $row["approvedDate"];} else{echo "None";} ?></td>
-                                        <!--Right Options-->
-                                    </tr>
-                                    <?php endwhile; ?>
-                                    <!--Row 1-->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
-                        <div class="table-responsive">
-                            <table class="table table-bordered text-center text-dark" 
-                                id="dataTable3" width="100%" cellspacing="0" cellpadding="0">
-                                <thead >
-                                    <tr class="bg-gradient-secondary text-white">
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Document Type</th>
-                                        <th scope="col">Purpose</th>
-                                        <th scope="col">Date Requested</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Managed By</th>
-                                        <th scope="col">Date Managed</th>
-                                    </tr>
-                                    
-                                </thead>
-                                <tbody>
-                                    <!--Row 1-->
-                                    <?php 
-                                        $requests = $conn->query("SELECT request.*, users.UsersID, concat(users.Firstname, ' ', users.Lastname) 
-                                        as name, DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
-                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
-                                        users.profile_pic FROM request INNER JOIN users ON request.UsersID=users.UsersID 
-                                        WHERE request.status='Paid' AND request.userPurok='{$_SESSION['userPurok']}' 
-                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
-                                        while($row=$requests->fetch_assoc()):
-                                            if($row["userType"] == "Admin"){
-                                                continue;
-                                            }
-                                    ?>
-                                    <tr>
-                                        <td>
-                                            <img class="img-profile rounded-circle <?php 
-                                                if($row["userType"] == "Resident"){
-                                                    echo "img-res-profile";
-                                                }
-                                                elseif($row["userType"] == "Purok Leader"){
-                                                    echo "img-purokldr-profile";
-                                                }
-                                                elseif($row["userType"] == "Captain"){
-                                                    echo "img-capt-profile";
-                                                }
-                                                elseif($row["userType"] == "Secretary"){
-                                                    echo "img-sec-profile";
-                                                }
-                                                elseif($row["userType"] == "Treasurer"){
-                                                    echo "img-treas-profile";
-                                                }
-                                                elseif($row["userType"] == "Admin"){
-                                                    echo "img-admin-profile";
-                                                }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                            <br>
-                                            <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a>  
-                                        </td>
-                                        <td><?php echo $row["documentType"] ?></td>
-                                        <td><?php echo $row["purpose"] ?></td>
-                                        <td><?php echo $row["requestedDate"] ?></td>
-                                        <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
-                                        <td><?php if($row["approvedBy"] != NULL){echo $row["approvedBy"];} else{echo "None";} ?></td>
-                                        <td><?php if($row["approvedOn"] != NULL){echo $row["approvedDate"];} else{echo "None";} ?></td>
-                                        <!--Right Options-->
-                                    </tr>
-                                    <?php endwhile; ?>
-                                    <!--Row 1-->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                     <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
                         <div class="table-responsive">
                             <table class="table table-bordered text-center text-dark" 
@@ -701,8 +768,8 @@
                                         <th scope="col">Purpose</th>
                                         <th scope="col">Date Requested</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Managed By</th>
                                         <th scope="col">Date Managed</th>
+                                        <th scope="col">Released By</th>
                                     </tr>
                                     
                                 </thead>
@@ -749,8 +816,8 @@
                                         <td><?php echo $row["purpose"] ?></td>
                                         <td><?php echo $row["requestedDate"] ?></td>
                                         <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
-                                        <td><?php if($row["approvedBy"] != NULL){echo $row["approvedBy"];} else{echo "None";} ?></td>
                                         <td><?php if($row["approvedOn"] != NULL){echo $row["approvedDate"];} else{echo "None";} ?></td>
+                                        <td><?php if($row["approvedBy"] != NULL){echo $row["approvedBy"];} else{echo "None";} ?></td>
                                         <!--Right Options-->
                                     </tr>
                                     <?php endwhile; ?>
@@ -761,9 +828,8 @@
                     </div>
                 </div>
             </div>
-            <!-- End of Card Body-->
-        </div>        
-        
+        </div>  
+    </div>
     <?php endif; ?>
     
 
@@ -954,7 +1020,7 @@
         }
         else{
             verifyInfo_modal("<center><b>Verify Information</b></center>","includes/request.inc.php?continueRequest&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val());
-        }  
+        }
     })
     $('#print').click(function(){
         print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));

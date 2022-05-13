@@ -1,6 +1,7 @@
 <?php 
     if(!isset($_GET['viewProfile'])){
         include_once 'header.php';
+        
     }
     else{
         session_start();
@@ -10,6 +11,8 @@
     $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname, ' ', COALESCE(users.userSuffix,'')) as name FROM users WHERE UsersID='{$_GET['UsersID']}'");
     $row=$profile->fetch_assoc();
 ?>
+
+<link rel="stylesheet" href="css/cb2.css">
 
 <div class="col d-flex flex-column px-4">
     <div class="card rounded shadow" style="background-color: #dcdce4;">
@@ -99,8 +102,6 @@
                             <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $row["userBarangay"] ?>" readonly>
                             <label class="labels">Municipality/City</label>
                             <input type="text" class="form-control w-75" placeholder="City" value="<?php echo $row["userCity"] ?>" readonly>
-                            <label class="labels">Is renting?</label>
-                            <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $row   ["isRenting"] ?>" readonly>
                         </div>
                         
                     </div>

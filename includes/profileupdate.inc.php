@@ -389,9 +389,7 @@ if(isset($_GET['viewReklamo'])): ?>
                         width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Report Type</th>
                                 <th scope="col">Content</th>
-                                <th scope="col">From</th>
                                 <th scope="col">Date</th>
                             </tr>
                             
@@ -403,9 +401,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 while($row=$accounts->fetch_assoc()):
                             ?>
                             <tr>
-                                <td><?php echo $row["ReportType"] ?></td>
                                 <td><?php echo $row["reportMessage"] ?></td>
-                                <td><?php echo $row["UsersID"] ?></td>
                                 <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
                                 
                                 <!--Right Options-->
@@ -422,9 +418,7 @@ if(isset($_GET['viewReklamo'])): ?>
                         width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Report Type</th>
                                 <th scope="col">Content</th>
-                                <th scope="col">From</th>
                                 <th scope="col">Date</th>
                             </tr>
                             
@@ -436,9 +430,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 while($row=$accounts->fetch_assoc()):
                             ?>
                             <tr>
-                                <td><?php echo $row["ReportType"] ?></td>
                                 <td><?php echo $row["reportMessage"] ?></td>
-                                <td><?php echo $row["UsersID"] ?></td>
                                 <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
                                 
                                 <!--Right Options-->

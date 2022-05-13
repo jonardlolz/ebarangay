@@ -88,7 +88,7 @@
                                 <label for="">Landlord's Name: </label>
                             </div>
                             <div class="col-sm-4">
-                                <select name="landlordName" id="landlordName" required>
+                                <select class="landlordName" name="landlordName" id="landlordName" required>
                                     <option value="">Landlord's name</option>
                                     <?php 
                                         $landlord = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}' AND IsLandlord='True'");
@@ -98,6 +98,9 @@
                                     <?php endwhile; ?>
                                 </select>
                             </div>
+                            <script>
+                                $('.landlordName').select2();
+                            </script>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
@@ -393,7 +396,7 @@
                         <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
                     </a>
                 <?php elseif(isset($_GET["renter"])): ?>
-                    <a href="includes/verify.inc.php?postVerify&landlord=<?php echo $_GET['landlord'] ?>&renter=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                    <a href="includes/verify.inc.php?postVerify&renter=<?php echo $_GET['landlord'] ?>&renter=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
                         <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
                     </a>
                 <?php elseif(isset($_GET["landlord"])): ?>
@@ -423,7 +426,7 @@ if(isset($_GET['postVerify'])){
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['renter']}');");
     }
     elseif(isset($_GET['landlord'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='False', isRenting='True' WHERE UsersID='{$_GET['landlord']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='True', isRenting='False' WHERE UsersID='{$_GET['landlord']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['landlord']}');");
     }
 
