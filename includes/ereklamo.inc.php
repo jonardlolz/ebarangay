@@ -6,7 +6,7 @@
     if(isset($_POST["submit"])){        
         $postsql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatName='{$_POST['reklamotype']}' AND reklamoCatBrgy='{$_SESSION['userBarangay']}'");
         $postreklamo = $postsql->fetch_assoc();
-        if($postreklamo['reklamoTypePriority'] == "Minor"){
+        if($postreklamo['reklamoCatPriority'] == "Minor"){
             mysqli_begin_transaction($conn);
 
             $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', 'N/A', '{$postreklamo['reklamoCatPriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
@@ -23,7 +23,7 @@
                 exit();
             }
         }
-        else if($postreklamo['reklamoTypePriority'] == "Major"){
+        else if($postreklamo['reklamoCatPriority'] == "Major"){
             mysqli_begin_transaction($conn);
 
             $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION['UsersID']}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', '{$_POST['resident']}', '{$postreklamo['reklamoTypePriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
@@ -263,7 +263,7 @@
     }
     if(isset($_GET['ereklamoAddCat'])):?>
         <div class="container-fluid">
-            <form action="includes/ereklamo.inc.php?postCatAdd" class="user" method="post">
+            <form action="includes/ereklamo.inc.php?postCatAdd&priority=<?php echo $_GET['priority'] ?>" class="user" method="post">
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
@@ -279,23 +279,68 @@
     
     <?php
     elseif(isset($_GET['ereklamoEditCat'])):?>
+        <style>
+            .modal-footer{
+                display: none;
+            }
+        </style>
         <div class="container-fluid">
-            <form action="includes/ereklamo.inc.php?postCatEdit&catID=<?php echo $_GET['catID'] ?>" class="user" method="post">
-                <?php
-                $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatID={$_GET['catID']}");
-                $ereklamoRow = $ereklamoCat->fetch_assoc();
-                ?>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <label>Category name: </label>
-                        </div>
-                        <div class="col">
-                            <input type="text" value="<?php echo $ereklamoRow['reklamoCatName'] ?>" placeholder="Category Name" name="catName">
-                        </div>
-                    </div>
+            <?php
+            $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatID={$_GET['catID']}");
+            $ereklamoRow = $ereklamoCat->fetch_assoc();
+            ?>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-category-tab" data-toggle="tab" href="#nav-category" role="tab" aria-controls="nav-category" aria-selected="true">Category name</a>
+                    <a class="nav-item nav-link" id="nav-types-tab" data-toggle="tab" href="#nav-types" role="tab" aria-controls="nav-types" aria-selected="false">Types</a>
                 </div>
-            </form>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-category" role="tabpanel" aria-labelledby="nav-category-tab">
+                    <form action="includes/ereklamo.inc.php?postCatEdit&catID=<?php echo $_GET['catID'] ?>" class="user" method="post">
+                        <div class="m-4">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Category name: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" value="<?php echo $ereklamoRow['reklamoCatName'] ?>" placeholder="Category Name" name="catName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="footer">
+                            <div class="d-flex flex-row-reverse">
+                                <button class="btn btn-primary" type="submit" name="submit" id='submit' style="margin: 0.25rem;">Save</button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal" style="margin: 0.25rem;">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="nav-types" role="tabpanel" aria-labelledby="nav-types-tab">
+                    <form action="includes/ereklamo.inc.php?postTypeAdd&catID=<?php echo $_GET['catID']?>&catName=<?php echo $_GET['catName'] ?>" class="user" method="post">
+                        <div class="form-group m-4">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Type name: </label>
+                                </div>
+                                <div class="col">
+                                    <input type="text" placeholder="Type Name" name="typeName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="footer">
+                            <div class="d-flex flex-row-reverse">
+                                <button class="btn btn-primary" type="submit" name="submit" id='submit' style="margin: 0.25rem;">Save</button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal" style="margin: 0.25rem;">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     
     <?php
@@ -342,18 +387,6 @@
                             <input value="<?php echo $ereklamo['reklamoTypeName'] ?>" type="text" placeholder="Type Name" name="typeName">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <label>Priority: </label>
-                        </div>
-                        <div class="col">
-                            <select name="typePriority" id="typePriority">
-                                <option value="<?php echo $ereklamo['reklamoTypePriority']?>" hidden selected><?php echo $ereklamo['reklamoTypePriority']?></option>
-                                <option value="Minor">Minor</option>
-                                <option value="Major">Major</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>
@@ -363,7 +396,7 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamocategory(reklamoCatName, reklamoCatBrgy) VALUES('$catName', '{$_SESSION['userBarangay']}')");
+        $a1 = mysqli_query($conn, "INSERT INTO ereklamocategory(reklamoCatName, reklamoCatBrgy, reklamoCatPriority) VALUES('$catName', '{$_SESSION['userBarangay']}', '{$_GET['priority']}')");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo category type: $catName', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
@@ -426,7 +459,7 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamotype(reklamoTypeName, reklamoTypePriority, reklamoCatID) VALUES('$typeName', '$typePriority', {$_GET['catID']})");
+        $a1 = mysqli_query($conn, "INSERT INTO ereklamotype(reklamoTypeName, reklamoCatID) VALUES('$typeName', {$_GET['catID']})");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo type for category type: {$_GET['catName']}', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
@@ -447,7 +480,7 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "UPDATE ereklamotype SET reklamoTypeName='{$_POST['typeName']}', reklamoTypePriority='{$_POST['typePriority']}' WHERE reklamoTypeID={$_GET['typeID']}");
+        $a1 = mysqli_query($conn, "UPDATE ereklamotype SET reklamoTypeName='{$_POST['typeName']}' WHERE reklamoTypeID={$_GET['typeID']}");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has modified the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
