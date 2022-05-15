@@ -609,7 +609,7 @@
         function enterChat($message){
             $.ajax({
                 url: './includes/chat.inc.php?sendchat&chatroomID='+<?php echo $_GET['chatroomID'] ?>+'&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
-                type: 'POST',
+                method: 'POST',
                 data:{$postmessage:$message},
                 success: function(data){
                     showChat();
