@@ -41,6 +41,7 @@
             }
         }
     }
+
     else if(isset($_GET["resolvedID"])){
         $id = $_GET["resolvedID"];
         $usersID = $_GET['usersID'];
@@ -76,7 +77,47 @@
             mysqli_rollback($conn);
         }
     }
+    else if(isset($_GET['accept'])){
+        $id = $_GET["reklamoid"];
+        $usersID = $_GET['usersID'];
+        $currentUser = $_SESSION['UsersID'];
+        $userType = $_SESSION['userType'];
+        $Firstname = $_SESSION['Firstname'];
+        $userBarangay = $_SESSION['userBarangay'];
+        $userPurok = $_SESSION['userPurok'];
 
+        $managedBy = "'".$_SESSION['Lastname']. ', ' . $_SESSION['Firstname']."'";
+
+        $ereklamosql=$conn->query("SELECT * FROM ereklamo WHERE ReklamoID=$id");
+        $ereklamodata=$ereklamosql->fetch_assoc();
+
+
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        status='Accepted' WHERE ReklamoID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
+  	    'Your eReklamo#$id has been accepted by $Firstname.', 'ereklamo', 'Resident', $usersID);");
+        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+  	    'eReklamo','$userType $Firstname has accepted ereklamo#$id', '$currentUser', '$userBarangay',
+          '$userPurok');");
+        $a4 = mysqli_query($conn, "INSERT INTO chatroom(roomName, type, idreference) VALUES('ereklamo#$id', 'ereklamo', $id)");
+        $a5 = mysqli_query($conn, "INSERT INTO chat(UsersID, chatroomID, message) VALUES({$_GET['usersID']}, LAST_INSERT_ID(), '{$ereklamodata['comment']}')");
+
+        if($a1 && $a2 && $a3 && $a4 && $a5){
+            mysqli_commit($conn);
+            if($_SESSION['barangayPos'] != "None"){
+                header("location: ../respondent.php?error=none"); 
+                exit();
+            }
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+        }
+    }
     else if(isset($_GET["sendtoHigher"])){
         $id = $_GET["sendtoHigher"];
         $usersID = $_GET['usersID'];
@@ -518,5 +559,62 @@
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
     }
-    
+    else if(isset($_GET['respond'])):
 ?>
+    <style>
+        .modal-footer{
+            display: none;
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="messaging">
+            <div class="inbox_msg">
+                <div class="mesgs">
+                    <div class="msg_history" id="msg_history">
+                        
+                    </div>
+                    <div class="type_msg m-2">
+                        <div class="input_msg_write">
+                            <input type="text" class="write_msg" id="message" placeholder="Type a message" />
+                            <button class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var input = document.getElementById("message");
+
+        input.addEventListener("keypress", function(event){
+            if(event.key === "Enter"){
+                enterChat("test");
+            }
+        });
+
+        $(document).ready(function(){
+            showChat();
+        });
+        
+        function showChat(){
+            $.ajax({
+                url: './includes/chat.inc.php?showchat&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
+                type: 'GET',
+                success: function(data){
+                    $("#msg_history").html(data);
+                }
+            })
+        }
+
+        function enterChat($message){
+            $.ajax({
+                url: './includes/chat.inc.php?sendchat&chatroomID='+<?php echo $_GET['chatroomID'] ?>+'&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
+                type: 'POST',
+                data:{$postmessage:$message},
+                success: function(data){
+                    showChat();
+                }
+            })
+        }
+    </script>
+<?php endif; ?>
