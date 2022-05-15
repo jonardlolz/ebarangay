@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2022 at 01:34 PM
+-- Generation Time: May 15, 2022 at 12:05 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -79,6 +79,55 @@ INSERT INTO `candidates` (`candidateID`, `lastname`, `firstname`, `created_at`, 
 (27, 'Plumber', 'Mr', '2022-03-18 01:51:25', '2022-03-18 01:51:25', 'Test', 'Kamatis', 39, 13, 'Purok Leader'),
 (28, 'Torts', 'Woshua', '2022-03-18 01:51:34', '2022-03-18 01:51:34', 'Test', 'Kamatis', 34, 13, 'Purok Leader'),
 (29, 'Struction', 'Mr', '2022-03-18 01:51:41', '2022-03-18 01:51:41', 'Test', 'Kamatis', 40, 13, 'Purok Leader');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat`
+--
+
+CREATE TABLE `chat` (
+  `chatID` int NOT NULL,
+  `UsersID` int NOT NULL,
+  `chatroomID` int NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `mesgdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chat`
+--
+
+INSERT INTO `chat` (`chatID`, `UsersID`, `chatroomID`, `message`, `mesgdate`) VALUES
+(3, 28, 3, 'Test', '2022-05-15 17:43:46'),
+(4, 31, 3, 'Hello!', '2022-05-15 18:06:56'),
+(5, 31, 3, 'Test123', '2022-05-15 19:56:36'),
+(6, 31, 3, 'Test123', '2022-05-15 19:57:07'),
+(7, 31, 3, 'Test123', '2022-05-15 19:57:43'),
+(8, 31, 3, '', '2022-05-15 19:58:07'),
+(9, 31, 3, '', '2022-05-15 19:58:35'),
+(10, 31, 3, '', '2022-05-15 19:59:13'),
+(11, 31, 3, '', '2022-05-15 19:59:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chatroom`
+--
+
+CREATE TABLE `chatroom` (
+  `chatroomID` int NOT NULL,
+  `roomName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `type` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `idreference` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chatroom`
+--
+
+INSERT INTO `chatroom` (`chatroomID`, `roomName`, `type`, `idreference`) VALUES
+(3, 'ereklamo#34', 'ereklamo', 34);
 
 -- --------------------------------------------------------
 
@@ -220,9 +269,9 @@ CREATE TABLE `ereklamo` (
 
 INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `CreatedOn`, `UpdatedOn`, `comment`, `checkedBy`, `checkedOn`, `complaintLevel`, `complainee`, `scheduledSummon`, `UsersID`, `barangay`, `purok`) VALUES
 (31, 'Residents', 'Drugs', 'Pending', '2022-04-19 22:30:13', '2022-04-19 22:30:13', 'Test', NULL, NULL, 'Major', 34, NULL, 28, 'Paknaan', 'Kamatis'),
-(32, 'Garbages', 'Improper disposal', 'Pending', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', NULL, NULL, 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
+(32, 'Garbages', 'Improper disposal', 'Accepted', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', 'Leader, Purok', '2022-05-15 14:51:18', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis'),
 (33, 'Residents', 'Drugs', 'Pending', '2022-04-25 15:21:20', '2022-04-25 15:21:20', '', NULL, NULL, 'Major', 34, NULL, 28, 'Paknaan', 'Kamatis'),
-(34, 'Garbage', 'Improper disposal', 'Pending', '2022-05-14 21:14:56', '2022-05-14 21:14:56', 'Test', NULL, NULL, 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis');
+(34, 'Garbage', 'Improper disposal', 'Accepted', '2022-05-14 21:14:56', '2022-05-14 21:14:56', 'Test', 'Leader, Purok', '2022-05-15 17:43:46', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -380,7 +429,12 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (112, 'Your Barangay Clearance is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-12 21:49:52', '2022-05-12 21:49:52'),
 (113, 'Your account verification has been approved!', 'Resident', 'Not Read', 46, NULL, '2022-05-12 22:37:17', '2022-05-12 22:37:17'),
 (114, 'Your account verification has been approved!', 'Resident', 'Not Read', 1, NULL, '2022-05-12 22:50:28', '2022-05-12 22:50:28'),
-(115, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-14 21:14:56', '2022-05-14 21:14:56');
+(115, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-14 21:14:56', '2022-05-14 21:14:56'),
+(116, 'Your eReklamo#32 has been accepted by Purok.', 'ereklamo', 'Not Read', 28, 'Resident', '2022-05-15 14:51:18', '2022-05-15 14:51:18'),
+(117, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Not Read', 28, 'Resident', '2022-05-15 16:32:38', '2022-05-15 16:32:38'),
+(118, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Not Read', 28, 'Resident', '2022-05-15 17:31:06', '2022-05-15 17:31:06'),
+(119, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Not Read', 28, 'Resident', '2022-05-15 17:33:08', '2022-05-15 17:33:08'),
+(120, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Not Read', 28, 'Resident', '2022-05-15 17:43:46', '2022-05-15 17:43:46');
 
 -- --------------------------------------------------------
 
@@ -589,7 +643,12 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (142, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:57:07', '2022-05-14 20:57:07', 'Paknaan', 'Kamatis'),
 (143, 'eReklamo', 'Captain has entered a new reklamo category type: test', 29, '2022-05-14 21:10:17', '2022-05-14 21:10:17', 'Paknaan', 'Kamatis'),
 (144, 'eReklamo', 'Captain has entered a new reklamo type for category type: test', 29, '2022-05-14 21:10:28', '2022-05-14 21:10:28', 'Paknaan', 'Kamatis'),
-(145, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 21:10:40', '2022-05-14 21:10:40', 'Paknaan', 'Kamatis');
+(145, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 21:10:40', '2022-05-14 21:10:40', 'Paknaan', 'Kamatis'),
+(146, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#32', 31, '2022-05-15 14:51:18', '2022-05-15 14:51:18', 'Paknaan', 'Kamatis'),
+(147, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 16:32:38', '2022-05-15 16:32:38', 'Paknaan', 'Kamatis'),
+(148, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 17:31:06', '2022-05-15 17:31:06', 'Paknaan', 'Kamatis'),
+(149, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 17:33:08', '2022-05-15 17:33:08', 'Paknaan', 'Kamatis'),
+(150, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 17:43:46', '2022-05-15 17:43:46', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -767,6 +826,20 @@ ALTER TABLE `candidates`
   ADD KEY `electionID` (`electionID`);
 
 --
+-- Indexes for table `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`chatID`),
+  ADD KEY `UsersID` (`UsersID`),
+  ADD KEY `chatroomID` (`chatroomID`);
+
+--
+-- Indexes for table `chatroom`
+--
+ALTER TABLE `chatroom`
+  ADD PRIMARY KEY (`chatroomID`);
+
+--
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
@@ -899,6 +972,18 @@ ALTER TABLE `candidates`
   MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `chatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `chatroom`
+--
+ALTER TABLE `chatroom`
+  MODIFY `chatroomID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
@@ -950,7 +1035,7 @@ ALTER TABLE `ereklamotype`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `post`
@@ -968,7 +1053,7 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
 -- AUTO_INCREMENT for table `request`
@@ -991,6 +1076,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`chatroomID`) REFERENCES `chatroom` (`chatroomID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `documentpurpose`
