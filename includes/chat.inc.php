@@ -36,7 +36,7 @@ else if(isset($_GET['sendchat'])){
     
     mysqli_begin_transaction($conn);
 
-    $a1 = mysqli_query($conn, "INSERT INTO chat(UsersID, chatroomID, message) VALUES({$_SESSION['UsersID']}, {$_GET['chatroomID']}, '$message')");
+    $a1 = mysqli_query($conn, "INSERT INTO chat(UsersID, chatroomID, message) VALUES({$_SESSION['UsersID']}, {$_GET['chatroomID']}, '$postmessage')");
 
     if($a1){
         mysqli_commit($conn);

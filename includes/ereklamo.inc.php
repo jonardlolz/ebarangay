@@ -575,7 +575,7 @@
                     </div>
                     <div class="type_msg m-2">
                         <div class="input_msg_write">
-                            <input type="text" class="write_msg" id="message" placeholder="Type a message" />
+                            <input type="text" autocomplete="off" class="write_msg" id="message" placeholder="Type a message" />
                             <button class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
                         </div>
                     </div>
@@ -588,7 +588,10 @@
 
         input.addEventListener("keypress", function(event){
             if(event.key === "Enter"){
-                enterChat("test");
+                if(input.value != ''){
+                enterChat($("#message").val());
+                input.value = '';
+                }
             }
         });
 
@@ -597,20 +600,23 @@
         });
         
         function showChat(){
+            start_load()
             $.ajax({
                 url: './includes/chat.inc.php?showchat&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
                 type: 'GET',
                 success: function(data){
                     $("#msg_history").html(data);
+                    $("#msg_history").animate({ scrollTop: 20000000 }, "slow");
                 }
             })
         }
 
         function enterChat($message){
+            start_load()
             $.ajax({
                 url: './includes/chat.inc.php?sendchat&chatroomID='+<?php echo $_GET['chatroomID'] ?>+'&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
                 method: 'POST',
-                data:{$postmessage:$message},
+                data:{postmessage:$message},
                 success: function(data){
                     showChat();
                 }
