@@ -8,7 +8,7 @@
         $id = $_GET['scheduleSummon'];
 ?>
 <div class="container-fluid">
-    <form action="includes/ereklamo.inc.php?scheduleID=<?php echo $id ?>&usersID=<?php echo $_GET['usersID'] ?>" class="user" method="post">
+    <form action="includes/ereklamo.inc.php?scheduleID=<?php echo $id ?>&complainant=<?php echo $_GET['usersID'] ?>" class="user" method="post">
         <div class="col">
             <div class="row">
                 <div class="col-sm-4">

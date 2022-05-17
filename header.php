@@ -148,7 +148,8 @@
                 INNER JOIN ereklamo
                 ON idreference=ReklamoID
                 WHERE ereklamo.complainee={$_SESSION['UsersID']}
-                AND ereklamo.status='Ongoing'");
+                AND ereklamo.status='Ongoing'
+                OR ereklamo.status='Scheduled'");
                 while($chatRow = $chatSql->fetch_assoc()):
             ?>
             <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
@@ -463,8 +464,8 @@
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
         </li>        
         <!-- Nav Item - Request -->
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
+        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "payment.php"): ?> <?php echo "active"; endif; ?>">
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "payment.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="payment.php">Payment</a>
         </li>
         <!-- Nav Item - eReklamo-->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">

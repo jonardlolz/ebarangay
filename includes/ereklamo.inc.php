@@ -203,31 +203,22 @@
         $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
   	    'eReklamo','$userType $Firstname has rescheduled ereklamo#$id', '$currentUser', '$userBarangay',
           '$userPurok');");
-        $a4 = mysqli_query($conn, "DELETE FROM schedule WHERE ereklamoID=$id");
 
-        if($a1 && $a2 && $a3 && $a4){
+        if($a1 && $a2 && $a3){
             mysqli_commit($conn);
-            if($_SESSION['barangayPos'] != "None"){
-                header("location: ../respondent.php?error=none"); 
-                exit();
-            }
             header("location: ../ereklamo.php?error=none"); 
             exit();
         }
         else{
             echo("Error description: " . mysqli_error($conn));
-            mysqli_rollback($conn);
-            header("location: ../respondent.php?error=error"); 
+            mysqli_rollback($conn); 
             exit();
         }
-
-        header("location: ../ereklamo.php?error=none"); //no errors were made
-        exit();
     }
 
     else if(isset($_GET["scheduleID"])){
         $id = $_GET["scheduleID"];
-        $usersID = $_GET['usersID'];
+        $usersID = $_GET['complainant'];
         $currentUser = $_SESSION['UsersID'];
         $userType = $_SESSION['userType'];
         $Firstname = $_SESSION['Firstname'];
@@ -239,29 +230,66 @@
         $managedBy = "'".$_SESSION['Lastname']. ', ' . $_SESSION['Firstname']."'";
 
         mysqli_begin_transaction($conn);
-
-        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        status='Scheduled', scheduledSummon='$schedule' WHERE ReklamoID=$id");
-        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
-  	    'Your eReklamo has been scheduled on $schedule', 'ereklamo', 'Resident', $usersID);");
-        $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
-  	    'eReklamo','$userType $Firstname has scheduled ereklamo#$id on $schedule', '$currentUser', '$userBarangay',
-        '$userPurok');");
-        $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID, UsersID, complainee, scheduleTitle) 
-                                    SELECT '$schedule', $id, UsersID, complainee, '{$_POST['scheduleTitle']}'
-                                    FROM ereklamo 
-                                    WHERE ReklamoID=$id;");
-
-        if($a1 && $a2 && $a3 && $a4){
-            mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
-            exit();
+        $scheduleSQL = $conn->query("SELECT * FROM schedule WHERE ereklamoID=$id");
+        $scheduleResult = $scheduleSQL->row_cnt;
+        
+        if($scheduleResult == 0){
+            $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+            status='Scheduled', scheduledSummon='$schedule' WHERE ReklamoID=$id");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
+            'Your eReklamo has been scheduled on $schedule', 'ereklamo', 'Resident', $usersID);");
+            $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+            'eReklamo','$userType $Firstname has scheduled ereklamo#$id on $schedule', '$currentUser', '$userBarangay',
+            '$userPurok');");
+            $a4 = mysqli_query($conn, "INSERT INTO schedule(scheduleDate, ereklamoID, UsersID, complainee, scheduleTitle) 
+            SELECT '$schedule', $id, UsersID, complainee, '{$_POST['scheduleTitle']}'
+            FROM ereklamo 
+            WHERE ReklamoID=$id;");
+            $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) 
+            SELECT 'Your eReklamo has been scheduled on $schedule', 'ereklamo', 'Resident', complainee
+            FROM ereklamo
+            WHERE ReklamoID=$id;");
+            $a6 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES(
+            'An eReklamo has been scheduled on $schedule', 'ereklamo', 'Captain');");
+            if($a1 && $a2 && $a3 && $a4 && $a5 && $a6){
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
+                exit();
+            }
+            else{
+                echo("Error description: " . mysqli_error($conn));
+                echo($schedule);
+                mysqli_rollback($conn);
+                exit();
+            }
         }
-        else{
-            echo("Error description: " . mysqli_error($conn));
-            echo($schedule);
-            mysqli_rollback($conn);
-            exit();
+        else if($scheduleResult > 0){
+            $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+            status='Scheduled', scheduledSummon='$schedule' WHERE ReklamoID=$id");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) VALUES(
+            'Your eReklamo has been scheduled on $schedule', 'ereklamo', 'Resident', $usersID);");
+            $a3 = mysqli_query($conn, "INSERT INTO report(reportType, reportMessage, UsersID, userBarangay, userPurok) VALUES(
+            'eReklamo','$userType $Firstname has scheduled ereklamo#$id on $schedule', '$currentUser', '$userBarangay',
+            '$userPurok');");
+            $a4 = mysqli_query($conn, "UPDATE schedule SET scheduleDate='$schedule', scheduleTitle='{$_POST['scheduleTitle']}' WHERE ereklamoID=$id;");
+            $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, position, UsersID) 
+            SELECT 'Your eReklamo has been scheduled on $schedule', 'ereklamo', 'Resident', complainee
+            FROM ereklamo
+            WHERE ReklamoID=$id;");
+            $a6 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES(
+            'An eReklamo has been scheduled on $schedule', 'ereklamo', 'Captain');");
+            
+            if($a1 && $a2 && $a3 && $a4 && $a5 && $a6){
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
+                exit();
+            }
+            else{
+                echo("Error description: " . mysqli_error($conn));
+                echo($schedule);
+                mysqli_rollback($conn);
+                exit();
+            }
         }
 
         header("location: ../ereklamo.php?error=none"); //no errors were made
@@ -337,6 +365,16 @@
                             <input type="text" placeholder="Category Name" name="catName">
                         </div>
                     </div>
+                    <?php if($_GET['priority'] == 'Major'): ?>
+                    <div class="row">
+                        <div class="col">
+                            <label>Fee: </label>
+                        </div>
+                        <div class="col">
+                            <input type="text" placeholder="Fee" name="reklamoFee">
+                        </div>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </form>
         </div>
@@ -372,6 +410,16 @@
                                         <input type="text" value="<?php echo $ereklamoRow['reklamoCatName'] ?>" placeholder="Category Name" name="catName">
                                     </div>
                                 </div>
+                                <?php if($ereklamoRow['reklamoCatPriority']=='Major'): ?>
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Fee: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" value="<?php echo $ereklamoRow['reklamoFee'] ?>" placeholder="Fee" name="reklamoFee">
+                                    </div>
+                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <hr>
@@ -460,7 +508,7 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamocategory(reklamoCatName, reklamoCatBrgy, reklamoCatPriority) VALUES('$catName', '{$_SESSION['userBarangay']}', '{$_GET['priority']}')");
+        $a1 = mysqli_query($conn, "INSERT INTO ereklamocategory(reklamoCatName, reklamoCatBrgy, reklamoCatPriority, reklamoFee) VALUES('$catName', '{$_SESSION['userBarangay']}', '{$_GET['priority']}', '$reklamoFee')");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo category type: $catName', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
@@ -481,7 +529,7 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "UPDATE ereklamocategory SET reklamoCatName='$catName' WHERE reklamoCatID={$_GET['catID']}");
+        $a1 = mysqli_query($conn, "UPDATE ereklamocategory SET reklamoCatName='$catName', reklamoFee='$reklamoFee' WHERE reklamoCatID={$_GET['catID']}");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has modified reklamo category #{$_GET['catID']}', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
@@ -574,7 +622,7 @@
 
         if($a1 && $a2 && $a3){
             mysqli_commit($conn);
-            header("location: ../respondent.php?error=none"); 
+            header("location: ../ereklamo.php?error=none"); 
             exit();
         }
         else{
@@ -589,14 +637,78 @@
 
         $managedBy = "'".$_SESSION['Firstname']." ".$_SESSION['Lastname']. "'";
 
+        $requestSql = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name, ereklamocategory.reklamoFee as amount FROM ereklamo INNER JOIN ereklamocategory ON ereklamo.reklamotype=ereklamocategory.reklamoCatName INNER JOIN users ON users.UsersID=ereklamo.UsersID WHERE ReklamoID={$_GET['reklamoid']}");
+        $requestData = $requestSql->fetch_assoc();
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://g.payx.ph/payment_request',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => 0,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array(
+            'x-public-key' => 'pk_09ccebf180b94c18cb0f400c00f6282e',
+            'amount' => $requestData['amount'],
+            'description' => 'Payment for services rendered',
+            'customername' => $requestData['name'],
+            'customeremail' => $requestData['emailAdd'],
+            'customermobile' => $requestData['phoneNum']
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $resData = json_decode($response, true, 4);
+
+        echo $resData["data"]["checkouturl"];
+        $paymenturl = $resData["data"]["checkouturl"];
+        print_r($resData);
+
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        status='To Captain' WHERE ReklamoID={$_GET['reklamoid']}");
+        status='To be paid', reklamoFee='{$requestData['amount']}', paymenturl='$paymenturl' WHERE ReklamoID={$_GET['reklamoid']}");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Purok Leader has forwarded reklamo#{$_GET['reklamoid']} to Captain', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
         $a3 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage) VALUES({$_GET['reklamoid']}, {$_SESSION['UsersID']}, '$reportMessage')");
+        $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your ereklamo#{$_GET['reklamoid']} has been forwarded to Capt. Please process the payment.', 'ereklamo', {$_GET['complainantid']})");
+        $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', {$_GET['complaineeid']})");
 
-        if($a1 && $a2 && $a3){
+        if($a1 && $a2 && $a3 && $a4 && $a5){
             mysqli_commit($conn);
-            header("location: ../respondent.php?error=none"); 
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+    }
+    else if(isset($_GET['paid'])){
+        $id = $_GET['reklamoid'];
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $requestSql = $conn->query("SELECT * FROM ereklamo WHERE ReklamoID=$id");
+        $requestData = $requestSql->fetch_assoc();
+
+        $managedBy = "'".$_SESSION['Firstname']." ".$_SESSION['Lastname']."'";
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        status='To Captain' WHERE ReklamoID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Treasurer {$_SESSION['Firstname']} {$_SESSION['Lastname']} has confirmed the payment of ereklamo#$id', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+        $a3 = mysqli_query($conn, "INSERT INTO notifications(type, message, position) VALUES('eReklamo', 'An ereklamo is ready for scheduling!', 'Secretary')");
+        $a4 = mysqli_query($conn, "INSERT INTO notifications(type, message, UsersID, position) VALUES('eReklamo', 'Your payment for the ereklamo#$id has been confirmed by the Treasurer! Please await for your schedule', {$requestData['UsersID']}, 'Resident')");
+
+        if($a1 && $a2 && $a3 && $a4){
+            mysqli_commit($conn);
+            header("location: ../payment.php?error=none"); 
             exit();
         }
         else{
@@ -717,7 +829,7 @@
         </div>
         <div class="footer">
             <div class="d-flex flex-row-reverse">
-                <?php if($_SESSION['userType'] == 'Purok Leader' && $respondResult['status'] != 'Respondents sent'): ?>
+                <?php if($_SESSION['userType'] == 'Purok Leader' && $respondResult['status'] == 'Ongoing'): ?>
                     <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
                         <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
                             <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
@@ -731,14 +843,18 @@
                         <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
                             <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
                         </a>
-                        <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo  ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
+                        <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
                     <?php endif; ?>
                 <?php elseif($_SESSION['userType'] == 'Resident'): ?>
                     <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
-                    <!-- <a href="includes/ereklamo.inc.php?
-                    &reklamoid=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                        <button class="btn btn-primary" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
-                    </a> -->
+                <?php elseif($_SESSION['userType'] == 'Captain'): ?>
+                    <?php if($respondResult['rescheduleCounter'] >= 3): ?>
+                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                        <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-paper-plane"></i> Send to Higher Up</button></a>
+                    <?php elseif($respondResult['rescheduleCounter'] < 3): ?>
+                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                        <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -761,7 +877,7 @@
     </div>
 <?php elseif(isset($_GET['sendtocapt'])): ?>
     <div class="container-fluid">
-        <form action="includes/ereklamo.inc.php?sendtocaptPOST&reklamoid=<?php echo $_GET['reklamoid'] ?>" method="POST">
+        <form action="includes/ereklamo.inc.php?sendtocaptPOST&reklamoid=<?php echo $_GET['reklamoid'] ?>&complainantid=<?php echo $_GET['complainantid'] ?>&complaineeid=<?php echo $_GET['complaineeid'] ?>" method="POST">
             <div class="row">
                 <div class="col">
                     <p>Report Message: </p>
@@ -808,7 +924,7 @@
             secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?sendtopl&reklamoid="+$(this).attr('data-id'), "modal-md")
         })
         $('.forwardtocapt').click(function(){
-            secondary_modal("<center><b>Forward to Captain</b></center></center>","includes/ereklamo.inc.php?sendtocapt&reklamoid="+$(this).attr('data-id'), "modal-md")
+            secondary_modal("<center><b>Forward to Captain</b></center></center>","includes/ereklamo.inc.php?sendtocapt&reklamoid="+$(this).attr('data-id')+"&complainantid="+$(this).attr('data-complainant')+"&complaineeid="+$(this).attr('data-complainee'), "modal-md")
         })
         var input = document.getElementById("message");
 
