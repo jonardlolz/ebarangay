@@ -9,7 +9,7 @@
 </div>
 
 <!-- Content Row -->
-<div class="container p-4">
+<div class="container-fluid">
     <?php if($_SESSION["barangayPos"] != "None"): ?>
         <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
@@ -26,9 +26,7 @@
                                 <th>Name</th>
                                 <th>Reklamo Type</th>
                                 <th>Details</th>
-                                <th>Street Address</th>
                                 <th>House Number</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             
@@ -36,28 +34,18 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                if($_SESSION['barangayPos'] == 'Tanod'){
-                                    $reklamoType = "Resident";
-                                }
-                                elseif($_SESSION['barangayPos'] == 'Electrician'){
-                                    $reklamoType = "Kuryente";
-                                }
-                                elseif($_SESSION['barangayPos'] == 'Plumber'){
-                                    $reklamoType = "Tubig";
-                                }
-                                elseif($_SESSION['barangayPos'] == 'Construction'){
-                                    $reklamoType = "Kalsada";
-                                }
-
                                 $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                 as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                 DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum
+                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, chatroom.chatroomID
                                 FROM ereklamo 
                                 INNER JOIN users 
                                 ON ereklamo.UsersID=users.UsersID 
-                                WHERE ereklamo.status='Respondents sent' 
-                                AND ereklamo.reklamoType='{$reklamoType}'
+                                LEFT JOIN chatroom
+                                ON ereklamo.ReklamoID=chatroom.idreference
+                                AND type='ereklamo'
+                                WHERE ereklamo.status='Respondents sent'  
+                                AND ereklamo.complaintLevel='Minor' 
                                 AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
                                 AND ereklamo.purok='{$_SESSION['userPurok']}'
                                 AND NOT ereklamo.UsersID={$_SESSION['UsersID']}");
@@ -94,13 +82,10 @@
                                 </td>
                                 <td><?php echo $row["reklamoType"] ?></td>
                                 <td><?php echo $row["detail"] ?></td>
-                                <td><?php echo $row["userAddress"] ?></td>
                                 <td><?php echo $row["userHouseNum"] ?></td>
-                                <td><?php if($row["status"] != NULL){echo $row["status"];} else{echo "Pending";} ?></td>
                                 <!-- <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row["ReklamoID"] ?>&usersID=<?php echo $row['UsersID'] ?>"><i class="fas fa-check fa-2x"></i></a></td> -->
-                                <td><a href="includes/ereklamo.inc.php?resolvedID=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success" href=""><i class="fas fa-check"></i> Resolve</button></a>
-                                    <?php if($row["reklamoType"] == "Resident"): ?><a class="set-schedule" href="javascript:void(0)" data-user="<?php echo $row["UsersID"] ?>" data-id="<?php echo $row["ReklamoID"] ?>" ><button type="button" class="btn btn-success" href=""><i class="fas fa-calendar"></i> Set for schedule</button></a></a>
-                                    <?php endif; ?>
+                                <td>
+                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
                                 </td>
                                 <!--Right Options-->
                             </tr>
@@ -281,6 +266,9 @@
          })
         $('.set-schedule').click(function(){
             _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
+        })
+        $('.respond').click(function(){
+            uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
         })
         function set_schedule($id, $user){
                 start_load()

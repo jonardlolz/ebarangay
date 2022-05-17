@@ -24,7 +24,7 @@
           </button>
         </div>
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="display: flex !important;">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
           <a class="btn btn-primary" href="login.php">Logout</a>
         </div>
@@ -96,7 +96,7 @@
       </div>
       <div class="modal-body">
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="display: flex !important;">
         <button type="button" class="btn btn-primary" name="submit" id='submit' onclick="$('#secondary_modal form').submit()">Save</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
@@ -257,6 +257,10 @@
       }
 
       const date = new Date();
+
+      $('.respond').click(function(){
+          uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
+      })
 
       $.ajax({
         url: './includes/jsdbh.inc.php',

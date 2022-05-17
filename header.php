@@ -133,6 +133,45 @@
     <li class="nav-item dropdown no-arrow mx-1" id="notifications" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-envelope fa-fw"></i>
+            <!-- Counter - Alerts -->
+            <span class="badge badge-danger badge-counter">
+            </span>
+        </a>
+        <!-- Dropdown - Alerts -->
+        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+            aria-labelledby="alertsDropdown">
+            <h6 class="dropdown-header">
+                Chats
+            </h6>
+            <?php $chatSql = $conn->query("SELECT * FROM chatroom 
+                INNER JOIN ereklamo
+                ON idreference=ReklamoID
+                WHERE ereklamo.complainee={$_SESSION['UsersID']}
+                AND ereklamo.status='Ongoing'");
+                while($chatRow = $chatSql->fetch_assoc()):
+            ?>
+            <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
+            
+                <a class="respond dropdown-item d-flex align-items-center" href="javascript:void(0)" data-id="<?php echo $chatRow['ReklamoID'] ?>" data-user="<?php echo $chatRow['UsersID'] ?>" data-chat="<?php echo $chatRow['chatroomID']?>">
+                    <div class="mr-3">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="small text-gray-500"></div>
+                        <span class="font-weight-bold"><?php echo $chatRow['roomName'] ?></span>
+                    </div>
+                </a>
+            </div>
+                <?php endwhile; ?>
+            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown no-arrow mx-1" id="notifications" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
+        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
             <!-- Counter - Alerts -->
             <span class="badge badge-danger badge-counter"><?php 

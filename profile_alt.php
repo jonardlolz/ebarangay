@@ -88,6 +88,8 @@
                         <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["dateofbirth"] ?>" readonly>
                         <label class="labels">Civil Status</label>
                         <input type="text" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["civilStat"] ?>" readonly>
+                        <label class="labels">Date Resides</label>
+                        <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["startedLiving"] ?>" readonly>
                     </div>
                     <div class="p-2">
                         <div>

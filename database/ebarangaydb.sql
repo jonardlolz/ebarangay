@@ -699,7 +699,7 @@ CREATE TABLE `requirementlist` (
   `requirementID` int NOT NULL,
   `requirementName` varchar(20) NOT NULL,
   `barangay` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

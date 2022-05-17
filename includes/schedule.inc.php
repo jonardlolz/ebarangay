@@ -15,7 +15,7 @@
                     <label for="scheduleTitle">Schedule Title: </label>
                 </div>
                 <div class="col">
-                    <input name="scheduleTitle" id="scheduleTitle" type="text" required>
+                    <input name="scheduleTitle" id="scheduleTitle" type="text" value="ereklamo#<?php echo $id ?>" required>
                 </div>
             </div>
             <div class="row">

@@ -26,7 +26,6 @@
             mysqli_rollback($conn);
             exit();
         }
-
     }
     elseif(isset($_GET['sendMajor'])){
         $id = $_GET['reklamoid'];
