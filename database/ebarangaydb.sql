@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2022 at 07:23 PM
+-- Generation Time: May 18, 2022 at 09:10 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.28
 
@@ -92,50 +92,57 @@ CREATE TABLE `chat` (
   `UsersID` int(11) NOT NULL,
   `chatroomID` int(11) NOT NULL,
   `message` varchar(255) NOT NULL,
-  `mesgdate` datetime NOT NULL DEFAULT current_timestamp()
+  `mesgdate` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` varchar(20) NOT NULL DEFAULT 'Not Read'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `chat`
 --
 
-INSERT INTO `chat` (`chatID`, `UsersID`, `chatroomID`, `message`, `mesgdate`) VALUES
-(3, 28, 3, 'Test', '2022-05-15 17:43:46'),
-(4, 31, 3, 'Hello!', '2022-05-15 18:06:56'),
-(5, 31, 3, 'Test123', '2022-05-15 19:56:36'),
-(6, 31, 3, 'Test123', '2022-05-15 19:57:07'),
-(7, 31, 3, 'Test123', '2022-05-15 19:57:43'),
-(8, 31, 3, '', '2022-05-15 19:58:07'),
-(9, 31, 3, '', '2022-05-15 19:58:35'),
-(10, 31, 3, '', '2022-05-15 19:59:13'),
-(11, 31, 3, '', '2022-05-15 19:59:39'),
-(12, 31, 3, 'qweqwe', '2022-05-16 14:45:25'),
-(13, 31, 3, 'asdasd', '2022-05-16 14:45:27'),
-(14, 31, 3, 'dasdasd', '2022-05-16 14:45:43'),
-(15, 31, 3, 'aasv', '2022-05-16 14:45:44'),
-(16, 31, 4, 'asdasd', '2022-05-16 14:49:52'),
-(17, 31, 4, 'hello!', '2022-05-16 14:49:54'),
-(18, 31, 3, 'asdasd', '2022-05-16 16:31:41'),
-(19, 31, 3, 'fasf', '2022-05-16 16:31:42'),
-(20, 31, 4, 'adadasd', '2022-05-16 17:18:46'),
-(21, 34, 4, 'dasdasd', '2022-05-16 17:27:18'),
-(22, 34, 4, 'asfasf', '2022-05-16 17:27:19'),
-(23, 28, 5, 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', '2022-05-16 21:14:43'),
-(24, 31, 5, 'chuchuchuchu', '2022-05-16 21:16:06'),
-(25, 31, 5, 'chuchu! ', '2022-05-16 21:16:08'),
-(26, 28, 6, 'OASIJDOAJDOASIJDOIJD', '2022-05-16 21:53:12'),
-(27, 34, 5, 'Hello!', '2022-05-16 21:56:28'),
-(28, 34, 5, 'asdasdjoj', '2022-05-16 21:59:52'),
-(29, 34, 5, 'asdadjahdiahdiuahdiuhdiauhdiuhdaidhiadhaisdhaisdhaihaidhiudhaidhaisdhaisduhaidshaisdhaisduhasiudh', '2022-05-16 22:00:31'),
-(30, 34, 5, 'aasdok asodkaspdo  pasdkpasokd  apsodkapkd adpoakpkaspdok asdokapksd', '2022-05-16 22:02:55'),
-(31, 34, 5, 'aspokasd okasdpokas poaksdp aoskdpaskdpa oksdpak pasodksapokd apo skdpaoskd poaksdpoak posk dpask poksapdok pasokdpok', '2022-05-16 22:03:06'),
-(32, 34, 5, 'hello maam ato na natawag basurero ara para malimpyo inyo area maam', '2022-05-16 22:08:00'),
-(33, 28, 7, '', '2022-05-17 13:57:12'),
-(34, 31, 7, 'asdasd', '2022-05-17 14:05:18'),
-(35, 34, 7, 'asdjoasjdoiaj', '2022-05-17 15:09:29'),
-(36, 31, 7, 'Hello ', '2022-05-17 16:17:34'),
-(37, 28, 8, 'Test', '2022-05-17 17:43:47'),
-(38, 29, 7, 'Hello!', '2022-05-17 19:21:22');
+INSERT INTO `chat` (`chatID`, `UsersID`, `chatroomID`, `message`, `mesgdate`, `status`) VALUES
+(3, 28, 3, 'Test', '2022-05-15 17:43:46', 'Not Read'),
+(4, 31, 3, 'Hello!', '2022-05-15 18:06:56', 'Not Read'),
+(5, 31, 3, 'Test123', '2022-05-15 19:56:36', 'Not Read'),
+(6, 31, 3, 'Test123', '2022-05-15 19:57:07', 'Not Read'),
+(7, 31, 3, 'Test123', '2022-05-15 19:57:43', 'Not Read'),
+(8, 31, 3, '', '2022-05-15 19:58:07', 'Not Read'),
+(9, 31, 3, '', '2022-05-15 19:58:35', 'Not Read'),
+(10, 31, 3, '', '2022-05-15 19:59:13', 'Not Read'),
+(11, 31, 3, '', '2022-05-15 19:59:39', 'Not Read'),
+(12, 31, 3, 'qweqwe', '2022-05-16 14:45:25', 'Not Read'),
+(13, 31, 3, 'asdasd', '2022-05-16 14:45:27', 'Not Read'),
+(14, 31, 3, 'dasdasd', '2022-05-16 14:45:43', 'Not Read'),
+(15, 31, 3, 'aasv', '2022-05-16 14:45:44', 'Not Read'),
+(16, 31, 4, 'asdasd', '2022-05-16 14:49:52', 'Not Read'),
+(17, 31, 4, 'hello!', '2022-05-16 14:49:54', 'Not Read'),
+(18, 31, 3, 'asdasd', '2022-05-16 16:31:41', 'Not Read'),
+(19, 31, 3, 'fasf', '2022-05-16 16:31:42', 'Not Read'),
+(20, 31, 4, 'adadasd', '2022-05-16 17:18:46', 'Not Read'),
+(21, 34, 4, 'dasdasd', '2022-05-16 17:27:18', 'Not Read'),
+(22, 34, 4, 'asfasf', '2022-05-16 17:27:19', 'Not Read'),
+(23, 28, 5, 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', '2022-05-16 21:14:43', 'Not Read'),
+(24, 31, 5, 'chuchuchuchu', '2022-05-16 21:16:06', 'Not Read'),
+(25, 31, 5, 'chuchu! ', '2022-05-16 21:16:08', 'Not Read'),
+(26, 28, 6, 'OASIJDOAJDOASIJDOIJD', '2022-05-16 21:53:12', 'Not Read'),
+(27, 34, 5, 'Hello!', '2022-05-16 21:56:28', 'Not Read'),
+(28, 34, 5, 'asdasdjoj', '2022-05-16 21:59:52', 'Not Read'),
+(29, 34, 5, 'asdadjahdiahdiuahdiuhdiauhdiuhdaidhiadhaisdhaisdhaihaidhiudhaidhaisdhaisduhaidshaisdhaisduhasiudh', '2022-05-16 22:00:31', 'Not Read'),
+(30, 34, 5, 'aasdok asodkaspdo  pasdkpasokd  apsodkapkd adpoakpkaspdok asdokapksd', '2022-05-16 22:02:55', 'Not Read'),
+(31, 34, 5, 'aspokasd okasdpokas poaksdp aoskdpaskdpa oksdpak pasodksapokd apo skdpaoskd poaksdpoak posk dpask poksapdok pasokdpok', '2022-05-16 22:03:06', 'Not Read'),
+(32, 34, 5, 'hello maam ato na natawag basurero ara para malimpyo inyo area maam', '2022-05-16 22:08:00', 'Not Read'),
+(33, 28, 7, '', '2022-05-17 13:57:12', 'Not Read'),
+(34, 31, 7, 'asdasd', '2022-05-17 14:05:18', 'Not Read'),
+(35, 34, 7, 'asdjoasjdoiaj', '2022-05-17 15:09:29', 'Not Read'),
+(36, 31, 7, 'Hello ', '2022-05-17 16:17:34', 'Not Read'),
+(37, 28, 8, 'Test', '2022-05-17 17:43:47', 'Not Read'),
+(38, 29, 7, 'Hello!', '2022-05-17 19:21:22', 'Not Read'),
+(39, 28, 9, 'diaper everywhere', '2022-05-18 10:56:43', 'Not Read'),
+(40, 31, 9, 'hello, we heard your tantrums and we are ready to take action  of your ereklamo. Thank you .', '2022-05-18 11:07:01', 'Not Read'),
+(41, 34, 9, 'your service is being taken care.', '2022-05-18 11:16:42', 'Not Read'),
+(42, 34, 9, '*reklamo', '2022-05-18 11:16:58', 'Not Read'),
+(43, 34, 9, 'service done!', '2022-05-18 11:17:05', 'Not Read'),
+(44, 31, 9, 'bvm', '2022-05-18 11:21:10', 'Not Read');
 
 -- --------------------------------------------------------
 
@@ -160,7 +167,8 @@ INSERT INTO `chatroom` (`chatroomID`, `roomName`, `type`, `idreference`) VALUES
 (5, 'ereklamo#35', 'ereklamo', 35),
 (6, 'ereklamo#36', 'ereklamo', 36),
 (7, 'ereklamo#33', 'ereklamo', 33),
-(8, 'ereklamo#31', 'ereklamo', 31);
+(8, 'ereklamo#31', 'ereklamo', 31),
+(9, 'ereklamo#37', 'ereklamo', 37);
 
 -- --------------------------------------------------------
 
@@ -309,7 +317,8 @@ INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `Created
 (33, 'Complaint to Resident', 'Drugs', 'Scheduled', '2022-04-25 15:21:20', '2022-04-25 15:21:20', '', 'Handson, Roxy', '2022-05-17 20:33:12', 'Major', 34, '2022-05-18', 28, 'Paknaan', 'Kamatis', 4, 0, NULL),
 (34, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-14 21:14:56', '2022-05-14 21:14:56', 'Test', 'Leader, Purok', '2022-05-16 17:00:03', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (35, 'Garbage', 'Improper disposal', 'Incoming', '2022-05-16 21:14:09', '2022-05-16 21:14:09', 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', 'Woshua Torts', '2022-05-16 22:43:33', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
-(36, 'Garbage', 'Improper disposal', 'Ongoing', '2022-05-16 21:52:37', '2022-05-16 21:52:37', 'OASIJDOAJDOASIJDOIJD', 'Leader, Purok', '2022-05-16 21:53:12', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL);
+(36, 'Garbage', 'Improper disposal', 'Ongoing', '2022-05-16 21:52:37', '2022-05-16 21:52:37', 'OASIJDOAJDOASIJDOIJD', 'Leader, Purok', '2022-05-16 21:53:12', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
+(37, 'Garbage', 'Improper disposal', 'Incoming', '2022-05-18 10:54:10', '2022-05-18 10:54:10', 'diaper everywhere', 'Woshua Torts', '2022-05-18 11:17:56', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -358,7 +367,8 @@ INSERT INTO `ereklamoreport` (`ereportID`, `ReklamoID`, `respondentID`, `reportM
 (8, 33, 31, 'test', '2022-05-17 18:42:18'),
 (9, 31, 31, 'test', '2022-05-17 23:20:56'),
 (10, 31, 31, 'test', '2022-05-17 23:24:44'),
-(11, 31, 31, 'Test', '2022-05-17 23:27:25');
+(11, 31, 31, 'Test', '2022-05-17 23:27:25'),
+(12, 37, 34, 'service was done immediately. ', '2022-05-18 11:17:56');
 
 -- --------------------------------------------------------
 
@@ -536,14 +546,17 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (159, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:33:12', '2022-05-17 20:33:12'),
 (160, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 34, 'Resident', '2022-05-17 20:33:12', '2022-05-17 20:33:12'),
 (161, 'An eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-17 20:33:12', '2022-05-17 20:33:12'),
-(162, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Not Read', 28, NULL, '2022-05-17 23:20:56', '2022-05-17 23:20:56'),
-(163, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Not Read', 34, NULL, '2022-05-17 23:20:56', '2022-05-17 23:20:56'),
-(164, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Not Read', 28, NULL, '2022-05-17 23:24:44', '2022-05-17 23:24:44'),
-(165, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Not Read', 34, NULL, '2022-05-17 23:24:44', '2022-05-17 23:24:44'),
-(166, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Not Read', 28, NULL, '2022-05-17 23:27:25', '2022-05-17 23:27:25'),
-(167, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Not Read', 34, NULL, '2022-05-17 23:27:25', '2022-05-17 23:27:25'),
+(162, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 23:20:56', '2022-05-17 23:20:56'),
+(163, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 23:20:56', '2022-05-17 23:20:56'),
+(164, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 23:24:44', '2022-05-17 23:24:44'),
+(165, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 23:24:44', '2022-05-17 23:24:44'),
+(166, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 23:27:25', '2022-05-17 23:27:25'),
+(167, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 23:27:25', '2022-05-17 23:27:25'),
 (169, 'An ereklamo is ready for scheduling!', 'eReklamo', 'Not Read', NULL, 'Secretary', '2022-05-18 01:09:39', '2022-05-18 01:09:39'),
-(170, 'Your payment for the ereklamo#31 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Not Read', 28, 'Resident', '2022-05-18 01:09:39', '2022-05-18 01:09:39');
+(170, 'Your payment for the ereklamo#31 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Read', 28, 'Resident', '2022-05-18 01:09:39', '2022-05-18 01:09:39'),
+(171, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-18 10:54:10', '2022-05-18 10:54:10'),
+(172, 'Your eReklamo#37 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-18 10:56:43', '2022-05-18 10:56:43'),
+(173, 'Respondents has been sent for your ReklamoID#37', 'ereklamo', 'Read', 28, 'Resident', '2022-05-18 11:10:44', '2022-05-18 11:10:44');
 
 -- --------------------------------------------------------
 
@@ -786,7 +799,9 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (186, 'eReklamo', 'Purok Leader has forwarded reklamo#31 to Captain', 31, '2022-05-17 23:24:44', '2022-05-17 23:24:44', 'Paknaan', 'Kamatis'),
 (187, 'eReklamo', 'Purok Leader has forwarded reklamo#31 to Captain', 31, '2022-05-17 23:27:25', '2022-05-17 23:27:25', 'Paknaan', 'Kamatis'),
 (190, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#31', 37, '2022-05-18 01:07:53', '2022-05-18 01:07:53', 'Paknaan', 'Kamatis'),
-(192, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#31', 37, '2022-05-18 01:09:39', '2022-05-18 01:09:39', 'Paknaan', 'Kamatis');
+(192, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#31', 37, '2022-05-18 01:09:39', '2022-05-18 01:09:39', 'Paknaan', 'Kamatis'),
+(193, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#37', 31, '2022-05-18 10:56:43', '2022-05-18 10:56:43', 'Paknaan', 'Kamatis'),
+(194, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-18 11:17:56', '2022-05-18 11:17:56', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1122,13 +1137,13 @@ ALTER TABLE `candidates`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `chatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `chatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `chatroom`
 --
 ALTER TABLE `chatroom`
-  MODIFY `chatroomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `chatroomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -1164,7 +1179,7 @@ ALTER TABLE `election`
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `ReklamoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `ereklamocategory`
@@ -1176,7 +1191,7 @@ ALTER TABLE `ereklamocategory`
 -- AUTO_INCREMENT for table `ereklamoreport`
 --
 ALTER TABLE `ereklamoreport`
-  MODIFY `ereportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ereportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `ereklamotype`
@@ -1188,7 +1203,7 @@ ALTER TABLE `ereklamotype`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+  MODIFY `NotificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
 
 --
 -- AUTO_INCREMENT for table `post`
@@ -1206,7 +1221,7 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
+  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- AUTO_INCREMENT for table `request`
