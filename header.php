@@ -146,17 +146,19 @@
             </h6>
             
             <div id="chatbox" style="overflow-y:overlay; max-height:30vh;">
-                <?php $chatSql = $conn->query("SELECT *, chatroom.idreference FROM chat, 
-                (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                <?php $chatSql = $conn->query("SELECT *, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                INNER JOIN chat 
+                ON max_chat.latest_chat=chat.mesgdate
                 INNER JOIN chatroom
-                ON chatroom.chatroomID=max_chat.chatroomID
+                ON chat.chatroomID=chatroom.chatroomID
                 INNER JOIN ereklamo
-                ON ereklamo.ReklamoID=chatroom.idreference
-                WHERE chat.chatroomID=max_chat.chatroomID
-                AND chat.mesgdate=max_chat.latest_chat
-                AND (ereklamo.complainee={$_SESSION['UsersID']} OR ereklamo.UsersID={$_SESSION['UsersID']})
-                ORDER BY max_chat.latest_chat DESC");
+                ON ereklamo.ReklamoID=chatroom.idreference AND chatroom.type='ereklamo'
+                INNER JOIN users
+                ON chat.UsersID=users.UsersID
+                WHERE ereklamo.UsersID={$_SESSION['UsersID']} OR ereklamo.complainee={$_SESSION['UsersID']}
+                ORDER BY mesgdate DESC");
                 while($chatRow = $chatSql->fetch_assoc()):
+                $date=date_create($chatRow['latest_chat']);
             ?>
                 <a class="respond dropdown-item d-flex align-items-center" href="javascript:void(0)" data-id="<?php echo $chatRow['ReklamoID'] ?>" data-user="<?php echo $chatRow['UsersID'] ?>" data-chat="<?php echo $chatRow['chatroomID']?>">
                     <div class="mr-3">
@@ -166,8 +168,12 @@
                     </div>
                     <div>
                         <span class="font-weight-bold"><?php echo $chatRow['roomName'] ?></span>
-                        <div class="medium text-black-500"><?php  ?></div>
-                        <div class="small text-grey-300">Thurs | 07:10AM</div>
+                        <?php if($chatrow['chat.UsersID'] != $_SESSION['UsersID']): ?>
+                        <div class="medium text-black-500"><?php echo $chatRow['name'] ?> : <?php echo $chatRow['message'] ?></div>
+                        <?php else: ?>
+                        <div class="medium text-black-500">You : <?php echo $chatRow['message'] ?></div>
+                        <?php endif; ?>
+                        <div class="small text-grey-300"><?php echo date_format($date, 'h:i A') ?> | <?php echo date_format($date, 'M d') ?></div>
                         
                     </div>
                 </a>
