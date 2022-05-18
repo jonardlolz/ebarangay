@@ -168,7 +168,7 @@
                     </div>
                     <div>
                         <span class="font-weight-bold"><?php echo $chatRow['roomName'] ?></span>
-                        <?php if($chatrow['chat.UsersID'] != $_SESSION['UsersID']): ?>
+                        <?php if($chatrow['UsersID'] != $_SESSION['UsersID']): ?>
                         <div class="medium text-black-500"><?php echo $chatRow['name'] ?> : <?php echo $chatRow['message'] ?></div>
                         <?php else: ?>
                         <div class="medium text-black-500">You : <?php echo $chatRow['message'] ?></div>
