@@ -829,7 +829,7 @@
         </div>
         <div class="footer">
             <div class="d-flex flex-row-reverse">
-                <?php if($_SESSION['userType'] == 'Purok Leader' && $respondResult['status'] == 'Ongoing'): ?>
+                <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
                     <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
                         <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
                             <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
@@ -845,7 +845,7 @@
                         </a>
                         <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
                     <?php endif; ?>
-                <?php elseif($_SESSION['userType'] == 'Resident'): ?>
+                <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
                     <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
                 <?php elseif($_SESSION['userType'] == 'Captain'): ?>
                     <?php if($respondResult['rescheduleCounter'] >= 3): ?>

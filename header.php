@@ -130,8 +130,8 @@
 
     <?php if(isset($_SESSION["UsersID"]) != NULL) : ?>
     <!-- Nav Item - Alerts -->
-    <li class="nav-item dropdown no-arrow mx-1" id="notifications" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
-        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+    <li class="nav-item dropdown no-arrow mx-1" id="chatbox" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
+        <a class="nav-link dropdown-toggle" href="#" id="chatboxDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
             <!-- Counter - Alerts -->
@@ -140,20 +140,24 @@
         </a>
         <!-- Dropdown - Alerts -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-            aria-labelledby="alertsDropdown">
+            aria-labelledby="chatboxDropdown">
             <h6 class="dropdown-header">
                 Chats
             </h6>
-            <?php $chatSql = $conn->query("SELECT * FROM chatroom 
+            
+            <div id="chatbox" style="overflow-y:overlay; max-height:30vh;">
+                <?php $chatSql = $conn->query("SELECT *, chatroom.idreference FROM chat, 
+                (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                INNER JOIN chatroom
+                ON chatroom.chatroomID=max_chat.chatroomID
                 INNER JOIN ereklamo
-                ON idreference=ReklamoID
-                WHERE ereklamo.complainee={$_SESSION['UsersID']}
-                AND ereklamo.status='Ongoing'
-                OR ereklamo.status='Scheduled'");
+                ON ereklamo.ReklamoID=chatroom.idreference
+                WHERE chat.chatroomID=max_chat.chatroomID
+                AND chat.mesgdate=max_chat.latest_chat
+                AND (ereklamo.complainee={$_SESSION['UsersID']} OR ereklamo.UsersID={$_SESSION['UsersID']})
+                ORDER BY max_chat.latest_chat DESC");
                 while($chatRow = $chatSql->fetch_assoc()):
             ?>
-            <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
-            
                 <a class="respond dropdown-item d-flex align-items-center" href="javascript:void(0)" data-id="<?php echo $chatRow['ReklamoID'] ?>" data-user="<?php echo $chatRow['UsersID'] ?>" data-chat="<?php echo $chatRow['chatroomID']?>">
                     <div class="mr-3">
                         <div class="icon-circle bg-primary">
@@ -161,13 +165,14 @@
                         </div>
                     </div>
                     <div>
-                        <div class="small text-gray-500"></div>
                         <span class="font-weight-bold"><?php echo $chatRow['roomName'] ?></span>
+                        <div class="medium text-black-500"><?php  ?></div>
+                        <div class="small text-grey-300">Thurs | 07:10AM</div>
+                        
                     </div>
                 </a>
-            </div>
                 <?php endwhile; ?>
-            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+            </div>
         </div>
     </li>
     <li class="nav-item dropdown no-arrow mx-1" id="notifications" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
