@@ -41,8 +41,6 @@
     <link href="css/chat-css.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
-    <script src="//servedby.studads.com/ads/ads.php?t=MTQxNjk7ODY4OTtzcXVhcmUuc3F1YXJlX2JveA==&index=1"></script>   
     <script src="vendor/jquery/jquery.min.js"></script>
     <style>
     @media screen and (max-width: 768px) {
@@ -146,7 +144,7 @@
             </h6>
             
             <div id="chatbox" style="overflow-y:overlay; max-height:30vh;">
-                <?php $chatSql = $conn->query("SELECT *, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                <?php $chatSql = $conn->query("SELECT *, chat.UsersID as userchat, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
                 INNER JOIN chat 
                 ON max_chat.latest_chat=chat.mesgdate
                 INNER JOIN chatroom
@@ -168,10 +166,10 @@
                     </div>
                     <div>
                         <span class="font-weight-bold"><?php echo $chatRow['roomName'] ?></span>
-                        <?php if($chatrow['UsersID'] != $_SESSION['UsersID']): ?>
-                        <div class="medium text-black-500"><?php echo $chatRow['name'] ?> : <?php echo $chatRow['message'] ?></div>
+                        <?php if($chatRow['userchat'] != $_SESSION['UsersID']): ?>
+                        <div class="medium text-black-500"><?php echo $chatRow['name'] ?> : <?php echo mb_strimwidth($chatRow['message'], 0, 10, "...") ?></div>
                         <?php else: ?>
-                        <div class="medium text-black-500">You : <?php echo $chatRow['message'] ?></div>
+                        <div class="medium text-black-500">You : <?php echo mb_strimwidth($chatRow['message'], 0, 10, "...") ?></div>
                         <?php endif; ?>
                         <div class="small text-grey-300"><?php echo date_format($date, 'h:i A') ?> | <?php echo date_format($date, 'M d') ?></div>
                         

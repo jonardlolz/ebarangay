@@ -10,7 +10,7 @@
             mysqli_begin_transaction($conn);
 
             $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION["UsersID"]}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', 'N/A', '{$postreklamo['reklamoCatPriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
-            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a reklamo!', 'ereklamo', 'Purok Leader')");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a minor reklamo!', 'ereklamo', 'Purok Leader')");
 
             if($a1 && $a2){
                 mysqli_commit($conn);
@@ -26,8 +26,8 @@
         else if($postreklamo['reklamoCatPriority'] == "Major"){
             mysqli_begin_transaction($conn);
 
-            $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION['UsersID']}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', '{$_POST['resident']}', '{$postreklamo['reklamoTypePriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
-            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a reklamo!', 'ereklamo', 'Purok Leader')");
+            $a1 = mysqli_query($conn, "INSERT INTO ereklamo(UsersID, reklamoType, detail, status, comment, complainee, complaintLevel, barangay, purok) VALUES({$_SESSION['UsersID']}, '{$_POST['reklamotype']}', '{$_POST['detail']}', 'Pending', '{$_POST['comment']}', '{$_POST['resident']}', '{$postreklamo['reklamoCatPriority']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('Resident {$_SESSION['Lastname']}, {$_SESSION['Firstname']} has sent a major reklamo!', 'ereklamo', 'Purok Leader')");
 
             if($a1 && $a2){
                 mysqli_commit($conn);
@@ -764,7 +764,7 @@
                             </div>
                             <div class="type_msg m-2">
                                 <div class="input_msg_write">
-                                    <input type="text" autocomplete="off" class="write_msg" id="message" placeholder="Type a message" />
+                                    <textarea autocomplete="off" class="write_msg" id="message" placeholder="Type a message" style="width: 90%; resize: none;"></textarea>
                                     <button class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
                                 </div>
                             </div>
@@ -776,7 +776,7 @@
         <div class="tab-pane fade" id="nav-report" role="tabpanel" aria-labelledby="nav-report-tab">
             <div class="table-responsive">
                 <table class="table table-bordered text-center text-dark" 
-                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    id="dataTable9" width="100%" cellspacing="0" cellpadding="0">
                     <thead >
                         <tr class="bg-gradient-secondary text-white">
                             <th scope="col">Respondent Name</th>
@@ -826,38 +826,39 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="footer">
-            <div class="d-flex flex-row-reverse">
-                <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
-                    <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
-                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                            <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
-                        </a>
-                        <?php if($respondResult['status'] == 'Ongoing'): ?>
-                        <a href="includes/ereklamo.inc.php?sendRespondent&reklamoid=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                            <button class="btn btn-primary" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Respondent</button>
-                        </a>
+            <div class="footer">
+                <div class="d-flex flex-row-reverse">
+                    <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
+                        <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
+                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
+                            </a>
+                            <?php if($respondResult['status'] == 'Ongoing'): ?>
+                            <a href="includes/ereklamo.inc.php?sendRespondent&reklamoid=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                <button class="btn btn-primary" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Respondent</button>
+                            </a>
+                            <?php endif; ?>
+                        <?php elseif($respondResult['complaintLevel'] == 'Major'):  ?>
+                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
+                            </a>
+                            <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
                         <?php endif; ?>
-                    <?php elseif($respondResult['complaintLevel'] == 'Major'):  ?>
-                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                            <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
-                        </a>
-                        <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
+                    <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
+                        <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
+                    <?php elseif($_SESSION['userType'] == 'Captain'): ?>
+                        <?php if($respondResult['rescheduleCounter'] >= 3): ?>
+                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                            <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-paper-plane"></i> Send to Higher Up</button></a>
+                        <?php elseif($respondResult['rescheduleCounter'] < 3): ?>
+                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                            <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
-                    <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
-                <?php elseif($_SESSION['userType'] == 'Captain'): ?>
-                    <?php if($respondResult['rescheduleCounter'] >= 3): ?>
-                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
-                        <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-paper-plane"></i> Send to Higher Up</button></a>
-                    <?php elseif($respondResult['rescheduleCounter'] < 3): ?>
-                        <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
-                        <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
-                    <?php endif; ?>
-                <?php endif; ?>
+                </div>
             </div>
         </div>
+        
     </div>
 <?php endif; ?>
 
@@ -964,4 +965,8 @@
                 }
             })
         }
+
+        $(document).ready(function() {
+            $('#dataTable9').DataTable();
+        } );
     </script>

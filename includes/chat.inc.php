@@ -39,7 +39,7 @@ if(isset($_GET['showchat'])){
             </div>
             <div class='received_msg'>
                 <div class='received_withd_msg'>
-                    <p>".$chatrow['message']."</p>
+                    <p>". $chatrow['message']."</p>
                 <span class='time_date'> " . date_format($date, 'h:i A') . "   |    " . date_format($date, 'M d') . " </span></div>
             </div>
         </div>";

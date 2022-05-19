@@ -28,14 +28,14 @@
                         <div class="col-lg-6 m-1">
                             <label>Problem:</label>
                             <select class="form-control w-75 form-control-md form-select" 
-                            name="reklamotype" onChange="changecat(this.value);" required>
+                            name="reklamotype" id="reklamoCat" onChange="changecat(this.value);" required>
                                 <option selected value="" hidden>Select</option>
                                 <optgroup label="Minor">
                                     <?php 
                                     $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority='Minor'"); 
                                     while($categoryRow = $ereklamoCat->fetch_assoc()):
                                     ?>
-                                    <option value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
+                                    <option data-priority="<?php echo $categoryRow['reklamoCatPriority'] ?>" value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
                                     <?php endwhile; ?>
                                 </optgroup>
                                 <optgroup label="Major">
@@ -43,27 +43,25 @@
                                     $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority='Major'"); 
                                     while($categoryRow = $ereklamoCat->fetch_assoc()):
                                     ?>
-                                    <option value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
+                                    <option data-priority="<?php echo $categoryRow['reklamoCatPriority'] ?>" value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
                                     <?php endwhile; ?>
                                 </optgroup>
                             </select>
                         </div>
-                        <div class="col-lg-5 m-1">
-                            <label>Specific:</label>
-                            <select id="specific" name="detail" class="form-control w-75 form-control-md form-select" required>
-                                <option value="" hidden selected>Select</option>
-                            </select>
+                        <div class="col-lg-5 m-1" id="specificArea">
                         </div>
                         <div class="col-lg-5 m-1" id="inputArea">
+                        </div>
+                        <div class="col-lg-5 m-1" id="complaineeArea">
                         </div>
                     </div>
                 </section>
                 <br>
                 <section>
-                    <strong>Comments</strong>
+                    <strong>Addition Details</strong>
                     <div class="row p-2">
-                        <label>Additional details:</label>
-                        <textarea name="comment" class="form-control" rows="3" style="resize:none;"></textarea>
+                        <label>Please describe your reklamo in detail to assist you better:</label>
+                        <textarea name="comment" class="form-control" rows="3" style="resize:none;" required></textarea>
                     </div>
                     <?php
                         if(isset($_GET["error"])){
@@ -129,8 +127,8 @@
                                                 <tr class="bg-gradient-secondary text-white">
                                                     <th scope="col">Complainant</th>
                                                     <th>Complainee</th>
+                                                    <th>Complainee Address</th>
                                                     <th scope="col">Reklamo Category</th>
-                                                    <th scope="col">Reklamo Type</th>
                                                     <th scope="col">Date Submitted</th>
                                                     <th scope="col">Manage</th>
                                                 </tr>
@@ -142,7 +140,7 @@
                                                     $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                                     as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
                                                     DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
-                                                    as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile
+                                                    as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile, concat(a.userPurok, ', #', a.userHouseNum) as complaineeAddress
                                                     FROM ereklamo 
                                                     INNER JOIN users 
                                                     ON ereklamo.UsersID=users.UsersID
@@ -151,7 +149,8 @@
                                                     WHERE ereklamo.complaintLevel='Major' 
                                                     AND ereklamo.status='Pending'
                                                     AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
-                                                    AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                                    AND ereklamo.purok='{$_SESSION['userPurok']}'
+                                                    ORDER BY CreatedOn DESC");
                                                     while($row=$requests->fetch_assoc()):
                                                         if($row["userType"] == "Admin"){
                                                             continue;
@@ -206,8 +205,8 @@
                                                         <br>
                                                         <?php echo $row["complainee"] ?>
                                                     </td>
+                                                    <td><?php echo $row["complaineeAddress"] ?></td>
                                                     <td><?php echo $row["reklamoType"] ?></td>
-                                                    <td><?php echo $row["detail"] ?></td>
                                                     <td><?php $date = date_create($row["createdDate"]); 
                                                         echo date_format($date, "F d, Y"); ?></td>
                                                     <td>
@@ -1528,43 +1527,47 @@
     }
 
     function changecat(value) {
-        if (value.length == 0) document.getElementById("specific").innerHTML = "<option></option>";
-        else {
-            var catOptions = "";
-            for (categoryId in problemsByCategory[value]) {
-                catOptions += "<option>" + problemsByCategory[value][categoryId] + "</option>";
-            }
-            document.getElementById("specific").innerHTML = catOptions;
-            if(value == "Resident" || value == "Residents"){
-                $("#inputArea").append(
-                "<label for='resident' id='label'>Resident name: </label><select name='resident'" +
-                "id='resident' class='resident-select form-control w-75 form-control-md' required />"+ 
-                "<datalist id='Resident'>" + "<option value=''>Select</option>" +
-                <?php 
-                    $posts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name 
-                    FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' 
-                    AND userPurok='{$_SESSION['userPurok']}' 
-                    AND userType='Resident'");
-                    while($row=$posts->fetch_assoc()):
-                        if($row["UsersID"] == $_SESSION["UsersID"]){
-                            continue;
-                        }
-                ?>
-                "<option value='<?php echo $row["UsersID"] ?>'><?php echo $row["name"] ?></option>" +
-                <?php endwhile; ?>
-                "</datalist>"
-                );
-                $('.resident-select').select2();
-                // $("#inputArea").show();
-            }
-            else{
-                // $("#inputArea").hide();
-                $('.resident-select').select2('destroy');
-                $("#resident").remove();
-                $("#label").remove();
-                
+        if($("#reklamoCat").find(':selected').data('priority') == 'Minor'){
+            document.getElementById('specificArea').innerHTML = '';
+            $("#specificArea").append(
+                "<label>Specific:</label><select id='specific' name='detail' class='form-control w-75 form-control-md form-select' required><option value='' hidden selected>Select</option></select>"
+            );
+            if (value.length == 0) document.getElementById("specific").innerHTML = "<option></option>";
+            else {
+                var catOptions = "";
+                for (categoryId in problemsByCategory[value]) {
+                    catOptions += "<option>" + problemsByCategory[value][categoryId] + "</option>";
+                }
+                document.getElementById("specific").innerHTML = catOptions;
             }
         }
+        else{
+            document.getElementById('specificArea').innerHTML = '';
+            $("#specificArea").append(
+            "<label for='resident' id='label'>Resident name: </label><select name='resident'" +
+            "id='resident' class='resident-select form-control w-75 form-control-md' required />"+ 
+            "<datalist id='Resident'>" + "<option value=''>Select</option>" +
+            <?php 
+                $posts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name 
+                FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' 
+                AND userPurok='{$_SESSION['userPurok']}' 
+                AND userType='Resident'
+                AND VerifyStatus='Verified'");
+                while($row=$posts->fetch_assoc()):
+                    if($row["UsersID"] == $_SESSION["UsersID"]){
+                        continue;
+                    }
+            ?>
+            "<option value='<?php echo $row["UsersID"] ?>'><?php echo $row["name"] ?></option>" +
+            <?php endwhile; ?>
+            "</datalist>"
+            );
+            $('.resident-select').select2();
+            // $("#inputArea").show();   
+        }
+    }
+    function getUserDetail(value){
+        
     }
     $(document).ready(function() {
         $('#dataTable2').DataTable();

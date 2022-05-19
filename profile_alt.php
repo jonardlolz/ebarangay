@@ -233,6 +233,34 @@ window.start_load = function(){
             }
         })
     }
+    window.secondary_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#secondary_modal .modal-title').html($title)
+                    $('#secondary_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#secondary_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#secondary_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                    }
+                    $('#secondary_modal').modal({
+                    show:true,
+                    backdrop:'static',
+                    keyboard:false,
+                    focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
     window._conf = function($msg='',$func='',$params = []){
         $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
         $('#confirm_modal .modal-body').html($msg)

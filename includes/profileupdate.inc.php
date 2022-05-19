@@ -42,152 +42,100 @@ if(isset($_GET['viewReklamo'])): ?>
 <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pending</a>
+            <a class="nav-link active" id="minor-tab" data-toggle="tab" href="#minor" role="tab" aria-controls="minor" aria-selected="true">Minor</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Respondents sent</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Resolved</a>
+            <a class="nav-link" id="major-tab" data-toggle="tab" href="#major" role="tab" aria-controls="major" aria-selected="false">Major</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center text-dark" 
-                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                    <thead >
-                        <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Reklamo Type</th>
-                            <th scope="col">Detail</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Comment</th>
-                            <th scope="col">Submitted on</th>
-                            <th scope="col">Checked By</th>
-                            <th scope="col">Checked On</th>
-                            <th scope="col">Manage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!--Row 1-->
-                        <?php 
-                            $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']} AND status='Pending'");
-                            while($row=$requests->fetch_assoc()):
-                        ?>
-                        <tr>
-                            <td><?php echo $row["reklamoType"] ?></td>
-                            <td><?php echo $row["detail"] ?></td>
-                            <td><?php echo $row["status"] ?></td>
-                            <td><?php echo $row["comment"] ?></td>
-                            <td><?php echo date("M d,Y h:i a", strtotime($row['CreatedOn'])); ?></td>
-                            <td><?php if($row['checkedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['checkedOn']));} else{ echo "N/A"; } ?></td>
-                            <td><?php echo $row["checkedBy"] ?></td>
-                            <td>
-                                <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                data-backdrop="static"
-                                <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
-                                
-                            </td>
-                            
-                            <!--Right Options-->
-                        </tr>
-                        <?php endwhile; ?>
-                        <!--Row 1-->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center text-dark" 
-                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                    <thead >
-                        <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Reklamo Type</th>
-                            <th scope="col">Detail</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Comment</th>
-                            <th scope="col">Submitted on</th>
-                            <th scope="col">Checked By</th>
-                            <th scope="col">Checked On</th>
-                            <th scope="col">Manage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!--Row 1-->
-                        <?php 
-                            $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']} AND status='Respondents sent'");
-                            while($row=$requests->fetch_assoc()):
-                        ?>
-                        <tr>
-                            <td><?php echo $row["reklamoType"] ?></td>
-                            <td><?php echo $row["detail"] ?></td>
-                            <td><?php echo $row["status"] ?></td>
-                            <td><?php echo $row["comment"] ?></td>
-                            <td><?php echo date("M d,Y h:i a", strtotime($row['CreatedOn'])); ?></td>
-                            <td><?php if($row['checkedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['checkedOn']));} else{ echo "N/A"; } ?></td>
-                            <td><?php echo $row["checkedBy"] ?></td>
-                            <td>
-                                <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                data-backdrop="static"
-                                <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
-                                
-                            </td>
-                            
-                            <!--Right Options-->
-                        </tr>
-                        <?php endwhile; ?>
-                        <!--Row 1-->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center text-dark" 
-                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                    <thead >
-                        <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Reklamo Type</th>
-                            <th scope="col">Detail</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Comment</th>
-                            <th scope="col">Submitted on</th>
-                            <th scope="col">Checked By</th>
-                            <th scope="col">Checked On</th>
-                            <th scope="col">Manage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!--Row 1-->
-                        <?php 
-                            $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']} AND status='Resolved'");
-                            while($row=$requests->fetch_assoc()):
-                        ?>
-                        <tr>
-                            <td><?php echo $row["reklamoType"] ?></td>
-                            <td><?php echo $row["detail"] ?></td>
-                            <td><?php echo $row["status"] ?></td>
-                            <td><?php echo $row["comment"] ?></td>
-                            <td><?php echo date("M d,Y h:i a", strtotime($row['CreatedOn'])); ?></td>
-                            <td><?php if($row['checkedOn'] != NULL){ echo date("M d,Y h:i a", strtotime($row['checkedOn']));} else{ echo "N/A"; } ?></td>
-                            <td><?php echo $row["checkedBy"] ?></td>
-                            <td>
-                                <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                data-backdrop="static"
-                                <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                else{echo '';} ?>><i class="fas fa-trash"></i> Delete</button>
-                                
-                            </td>
-                            
-                            <!--Right Options-->
-                        </tr>
-                        <?php endwhile; ?>
-                        <!--Row 1-->
-                    </tbody>
-                </table>
+        <div class="tab-pane fade show active" id="minor" role="tabpanel" aria-labelledby="minor-tab">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="minorpending-tab" data-toggle="tab" href="#minorpending" role="tab" aria-controls="minorpending" aria-selected="true">Pending</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="minorongoing-tab" data-toggle="tab" href="#minorongoing" role="tab" aria-controls="minorongoing" aria-selected="false">Ongoing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="minorrespondentsent-tab" data-toggle="tab" href="#minorrespondentsent" role="tab" aria-controls="minorrespondentsent" aria-selected="false">Respondents sent</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="minorresolved-tab" data-toggle="tab" href="#minorresolved" role="tab" aria-controls="minorresolved" aria-selected="false">Resolved</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="minorpending" role="tabpanel" aria-labelledby="minorpending-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" 
+                            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                            <thead >
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th scope="col">Reklamo Type</th>
+                                    <th scope="col">Detail</th>
+                                    <th scope="col">Submitted on</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--Row 1-->
+                                <?php 
+                                    $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']} AND status='Pending' AND complaintLevel='Minor'");
+                                    while($row=$requests->fetch_assoc()):
+                                ?>
+                                <tr>
+                                    <td><?php echo $row["reklamoType"] ?></td>
+                                    <td><?php echo $row["detail"] ?></td>
+                                    <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
+                                        data-backdrop="static"
+                                        <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
+                                        else{echo '';} ?>><i class="fas fa-times"></i> Cancel</button>
+                                    </td>
+                                    
+                                    <!--Right Options-->
+                                </tr>
+                                <?php endwhile; ?>
+                                <!--Row 1-->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="minorongoing" role="tabpanel" aria-labelledby="minorongoing-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" 
+                            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                            <thead >
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th scope="col">Reklamo Type</th>
+                                    <th scope="col">Detail</th>
+                                    <th scope="col">Submitted on</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--Row 1-->
+                                <?php 
+                                    $requests = $conn->query("SELECT * FROM ereklamo INNER JOIN chatroom ON ReklamoID=idreference AND chatroom.type='ereklamo' WHERE UsersID={$_SESSION['UsersID']} AND status='Ongoing' AND complaintLevel='Minor'");
+                                    while($row=$requests->fetch_assoc()):
+                                ?>
+                                <tr>
+                                    <td><?php echo $row["reklamoType"] ?></td>
+                                    <td><?php echo $row["detail"] ?></td>
+                                    <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                                    <td>
+                                        <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
+                                    </td>
+                                    
+                                    <!--Right Options-->
+                                </tr>
+                                <?php endwhile; ?>
+                                <!--Row 1-->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -455,7 +403,35 @@ if(isset($_GET['viewReklamo'])): ?>
     $(document).ready(function() {
         $('#dataTable2').DataTable();
     } );
+    $('.respond').click(function(){
+        secondary_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
+    })
     $('.delete_request').click(function(){
     _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])
     })
+    $('.delete_reklamo').click(function(){
+    _conf("Are you sure want to cancel this reklamo?","cancelReklamo",[$(this).attr('data-id')])
+    })
+    function cancelReklamo($id){
+        start_load()
+        $.ajax({
+            url:'includes/deleteReklamo.inc.php',
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
+    }
+    function cancelRequest($id){
+        start_load()
+        $.ajax({
+            url:'includes/deleteRequest.inc.php',
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
+    }
 </script>

@@ -3,7 +3,7 @@
     include 'dbh.inc.php';
 
     extract($_POST);
-    $sql = "DELETE FROM request WHERE RequestID = $id";
+    $sql = "UPDATE request SET status='Cancelled' WHERE RequestID = $id";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../profile.php?error=stmtfailedcreatepost");

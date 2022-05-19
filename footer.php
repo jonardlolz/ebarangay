@@ -244,6 +244,15 @@
       $(document).ready(function() {
           $('#dataTable6').DataTable();
       } );
+      $(document).ready(function() {
+          $('#dataTable7').DataTable();
+      } );
+      $(document).ready(function() {
+          $('#dataTable8').DataTable();
+      } );
+      $(document).ready(function() {
+          $('#dataTable9').DataTable();
+      } );
 
       function notificationRead(){
         $.ajax({
