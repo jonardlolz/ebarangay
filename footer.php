@@ -253,6 +253,7 @@
       $(document).ready(function() {
           $('#dataTable9').DataTable();
       } );
+      
 
       function notificationRead(){
         $.ajax({

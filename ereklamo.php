@@ -132,7 +132,6 @@
                                                     <th scope="col">Date Submitted</th>
                                                     <th scope="col">Manage</th>
                                                 </tr>
-                                                
                                             </thead>
                                             <tbody>
                                                 <!--Row 1-->
@@ -231,7 +230,6 @@
                                                     <th scope="col">Complainant</th>
                                                     <th>Complainee</th>
                                                     <th scope="col">Reklamo Category</th>
-                                                    <th scope="col">Reklamo Type</th>
                                                     <th scope="col">Date Submitted</th>
                                                     <th scope="col">Manage</th>
                                                 </tr>
@@ -310,7 +308,6 @@
                                                         <?php echo $row["complainee"] ?>
                                                     </td>
                                                     <td><?php echo $row["reklamoType"] ?></td>
-                                                    <td><?php echo $row["detail"] ?></td>
                                                     <td><?php $date = date_create($row["createdDate"]); 
                                                         echo date_format($date, "F d, Y"); ?></td>
                                                     <td>
@@ -1566,9 +1563,6 @@
             // $("#inputArea").show();   
         }
     }
-    function getUserDetail(value){
-        
-    }
     $(document).ready(function() {
         $('#dataTable2').DataTable();
     } );
@@ -1700,7 +1694,7 @@
             _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
         })
         $('.respond').click(function(){
-            uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
+            uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
         })
         $('.confirm-schedule').click(function(){
             uni_modal("<center><b>Schedule a summon</b></center></center>","includes/schedule.inc.php?scheduleSummon="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'))

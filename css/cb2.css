@@ -65,7 +65,7 @@ border-radius: 0 0 15px 15px !important;
      box-shadow:none !important;
    outline:0px !important;
 }*/
-.type_msg{
+/* .type_msg{
     background-color: rgba(249, 249, 252, 0.966) !important;
     border:1px solid gray !important;
     color:black !important;
@@ -75,7 +75,7 @@ border-radius: 0 0 15px 15px !important;
     .type_msg:focus{
      box-shadow:none !important;
    outline:0px !important;
-}
+} */
 .attach_btn{
 border-radius: 15px 0 0 15px !important;
 background-color: rgba(0,0,0,0.3) !important;

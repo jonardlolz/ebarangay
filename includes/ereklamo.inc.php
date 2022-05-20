@@ -616,9 +616,9 @@
         $managedBy = "'".$_SESSION['Firstname']." ".$_SESSION['Lastname']. "'";
 
         $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-        status='Incoming' WHERE ReklamoID={$_GET['reklamoid']}");
+        status='Incoming' WHERE ReklamoID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Respondent {$_SESSION['Firstname']} {$_SESSION['Lastname']} has reported back to Purok Leader', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
-        $a3 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage) VALUES({$_GET['reklamoid']}, {$_SESSION['UsersID']}, '$reportMessage')");
+        $a3 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage')");
 
         if($a1 && $a2 && $a3){
             mysqli_commit($conn);
@@ -742,139 +742,175 @@
     $respondSql = $conn->query("SELECT * FROM ereklamo WHERE ReklamoID={$_GET['reklamoid']}");
     $respondResult = $respondSql->fetch_assoc();
 ?>
-    <style>
-        .modal-footer{
-            display: none;
-        }
-    </style>
-    <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-chat-tab" data-toggle="tab" href="#nav-chat" role="tab" aria-controls="nav-chat" aria-selected="true">Chat</a>
-            <a class="nav-item nav-link" id="nav-report-tab" data-toggle="tab" href="#nav-report" role="tab" aria-controls="nav-report" aria-selected="false">Report</a>
-        </div>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab">
-            <div class="container-fluid">
-                <div class="messaging">
-                    <div class="inbox_msg">
-                        <div class="mesgs">
-                            <div class="msg_history" id="msg_history">
-                                
-                            </div>
-                            <div class="type_msg m-2">
-                                <div class="input_msg_write">
-                                    <textarea autocomplete="off" class="write_msg" id="message" placeholder="Type a message" style="width: 90%; resize: none;"></textarea>
-                                    <button class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+    
+    <div class="container-fluid">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-chat-tab" data-toggle="tab" href="#nav-chat" role="tab" aria-controls="nav-chat" aria-selected="true">Chat</a>
+                <a class="nav-item nav-link" id="nav-report-tab" data-toggle="tab" href="#nav-report" role="tab" aria-controls="nav-report" aria-selected="false">Report</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab">
+                <div class="container-fluid">
+                    <div class="messaging">
+                        <div class="inbox_msg">
+                            <div class="mesgs">
+                                <div class="msg_history" id="msg_history">
+        
+                                </div>
+                                <div class="type_msg m-2">
+                                    <div class="input_msg_write">
+                                        <input type="text" autocomplete="off" class="write_msg" id="message" placeholder="Type a message" style="width: 100%; resize: none; word-wrap: break-word;"></input>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="nav-report" role="tabpanel" aria-labelledby="nav-report-tab">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center text-dark" 
-                    id="dataTable9" width="100%" cellspacing="0" cellpadding="0">
-                    <thead >
-                        <tr class="bg-gradient-secondary text-white">
-                            <th scope="col">Respondent Name</th>
-                            <th>Report Message</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        <!--Row 1-->
-                        <?php 
-                            $requests = $conn->query("SELECT ereklamoreport.*, concat(users.Firstname, ' ', users.Lastname) as name, users.userType, users.profile_pic FROM ereklamoreport JOIN users ON respondentID=users.UsersID WHERE ReklamoID={$_GET['reklamoid']}");
-                            while($row=$requests->fetch_assoc()):
-                                if($row["userType"] == "Admin"){
-                                    continue;
-                                }
-                        ?>
-                        <tr>
-                            <td>
-                                <img class="img-profile rounded-circle <?php 
-                                    if($row["userType"] == "Resident"){
-                                        echo "img-res-profile";
+            <div class="tab-pane fade" id="nav-report" role="tabpanel" aria-labelledby="nav-report-tab">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center text-dark"
+                        id="reportTable" width="100%" cellspacing="0" cellpadding="0">
+                        <thead >
+                            <tr class="bg-gradient-secondary text-white">
+                                <th scope="col">Respondent Name</th>
+                                <th>Status</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                            </tr>
+        
+                        </thead>
+                        <tbody>
+                            <!--Row 1-->
+                            <?php
+                                $requests = $conn->query("SELECT ereklamoreport.*, concat(users.Firstname, ' ', users.Lastname) as name, users.userType, users.profile_pic FROM ereklamoreport JOIN users ON respondentID=users.UsersID WHERE ReklamoID={$_GET['reklamoid']} ORDER BY date DESC");
+                                while($row=$requests->fetch_assoc()):
+                                    if($row["userType"] == "Admin"){
+                                        continue;
                                     }
-                                    elseif($row["userType"] == "Purok Leader"){
-                                        echo "img-purokldr-profile";
-                                    }
-                                    elseif($row["userType"] == "Captain"){
-                                        echo "img-capt-profile";
-                                    }
-                                    elseif($row["userType"] == "Secretary"){
-                                        echo "img-sec-profile";
-                                    }
-                                    elseif($row["userType"] == "Treasurer"){
-                                        echo "img-treas-profile";
-                                    }
-                                    elseif($row["userType"] == "Admin"){
-                                        echo "img-admin-profile";
-                                    }
-                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                <br>
-                                <?php echo $row["name"] ?>
-                            </td>
-                            <td><?php echo $row["reportMessage"] ?></td>
-                            <!--Right Options-->
-                        </tr>
-                        <?php endwhile; ?>
-                        <!--Row 1-->
-                    </tbody>
-                </table>
-            </div>
-            <div class="footer">
-                <div class="d-flex flex-row-reverse">
-                    <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
-                        <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
-                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                                <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
-                            </a>
-                            <?php if($respondResult['status'] == 'Ongoing'): ?>
-                            <a href="includes/ereklamo.inc.php?sendRespondent&reklamoid=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                                <button class="btn btn-primary" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Respondent</button>
-                            </a>
+                                    $date = date_create($row['date']);
+                            ?>
+                            <tr>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    <br>
+                                    <?php echo $row["name"] ?>
+                                </td>
+                                <th><?php echo $row['reportStatus'] ?></th>
+                                <td><?php echo $row["reportMessage"] ?></td>
+                                <td><?php echo date_format($date, "m-d-Y") ?></td>
+                                <!--Right Options-->
+                            </tr>
+                            <?php endwhile; ?>
+                            <!--Row 1-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="footer">
+                    <div class="d-flex flex-row-reverse">
+                        <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
+                            <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                    <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
+                                </a>
+                                <?php if($respondResult['status'] == 'Ongoing'): ?>
+                                <a href="includes/ereklamo.inc.php?sendRespondent&reklamoid=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                    <button class="btn btn-primary" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Respondent</button>
+                                </a>
+                                <?php endif; ?>
+                            <?php elseif($respondResult['complaintLevel'] == 'Major'):  ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                    <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
+                                </a>
+                                <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
                             <?php endif; ?>
-                        <?php elseif($respondResult['complaintLevel'] == 'Major'):  ?>
-                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
-                                <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
-                            </a>
-                            <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
+                        <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
+                            <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
+                        <?php elseif($_SESSION['userType'] == 'Captain'): ?>
+                            <?php if($respondResult['rescheduleCounter'] >= 3): ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                                <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-paper-plane"></i> Send to Higher Up</button></a>
+                            <?php elseif($respondResult['rescheduleCounter'] < 3): ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                                <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
-                        <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
-                    <?php elseif($_SESSION['userType'] == 'Captain'): ?>
-                        <?php if($respondResult['rescheduleCounter'] >= 3): ?>
-                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
-                            <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-paper-plane"></i> Send to Higher Up</button></a>
-                        <?php elseif($respondResult['rescheduleCounter'] < 3): ?>
-                            <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
-                            <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
-        
     </div>
+    <script>
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
+        
+        $('#reportTable').DataTable({
+            "pageLength": 2
+        });
+
+    </script>
 <?php endif; ?>
 
 <?php 
     if(isset($_GET['sendtopl'])): ?>
     <div class="container-fluid">
-        <form action="includes/ereklamo.inc.php?sendtoplPOST&reklamoid=<?php echo $_GET['reklamoid'] ?>" method="POST">
-            <div class="row">
-                <div class="col">
-                    <p>Report Message: </p>
-                </div>
-                <div class="col">
-                    <textarea name="reportMessage" class="form-control" rows="3" style="resize:none;"></textarea>
-                </div>
+        <div class="row">
+            <div class="col">
+                <p>Report Message: </p>
             </div>
-        </form>
+            <div class="col-sm-8">
+                <textarea name="reportMessage" id="reportMessage" class="form-control" rows="3" style="resize:none;" required></textarea>
+            </div>
+        </div> 
+        <hr>
+        <div class="d-flex flex-row-reverse">
+            <button class="btn btn-primary confirm" data-id="<?php echo $_GET['reklamoid'] ?>" onclick="checkEmpty($('#reportMessage').val())">Test</button>
+        </div>  
+        <script>
+            $(".container-fluid").parent().siblings(".modal-footer").remove();
+            function checkEmpty($message){
+                if($("#reportMessage").val() == ''){
+                    
+                }
+                else{
+                    $message = "'" + $("#reportMessage").val() + "'";
+                    _conf("Confirm report?","confirmReport", [$message ,$(".confirm").attr('data-id')])
+                    
+                }
+            }
+
+            function confirmReport($message, $id){
+                start_load()
+                $.ajax({
+                    url:'includes/ereklamo.inc.php?sendtoplPOST',
+                    method:'POST',
+                    data:{id:$id, reportMessage: $message},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
+        </script>
     </div>
 <?php elseif(isset($_GET['sendtocapt'])): ?>
     <div class="container-fluid">
@@ -920,6 +956,11 @@
                 }
             })
         }
+        window._conf = function($msg='',$func='',$params = []){
+            $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
+            $('#confirm_modal .modal-body').html($msg)
+            $('#confirm_modal').modal('show')
+        }
 
         $('.sendtopl').click(function(){
             secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?sendtopl&reklamoid="+$(this).attr('data-id'), "modal-md")
@@ -927,6 +968,7 @@
         $('.forwardtocapt').click(function(){
             secondary_modal("<center><b>Forward to Captain</b></center></center>","includes/ereklamo.inc.php?sendtocapt&reklamoid="+$(this).attr('data-id')+"&complainantid="+$(this).attr('data-complainant')+"&complaineeid="+$(this).attr('data-complainee'), "modal-md")
         })
+
         var input = document.getElementById("message");
 
         input.addEventListener("keypress", function(event){
@@ -957,7 +999,7 @@
         function enterChat($message){
             start_load()
             $.ajax({
-                url: './includes/chat.inc.php?sendchat&chatroomID='+<?php echo $_GET['chatroomID'] ?>+'&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
+                url: '',
                 method: 'POST',
                 data:{postmessage:$message},
                 success: function(data){
@@ -966,7 +1008,5 @@
             })
         }
 
-        $(document).ready(function() {
-            $('#dataTable9').DataTable();
-        } );
+        
     </script>
