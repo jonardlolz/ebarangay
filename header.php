@@ -155,9 +155,11 @@
                 ON chat.UsersID=users.UsersID
                 WHERE ereklamo.UsersID={$_SESSION['UsersID']} OR ereklamo.complainee={$_SESSION['UsersID']}
                 ORDER BY mesgdate DESC");
+                $rowsCount = $chatSql->num_rows;
+                if($rowsCount > 0):
                 while($chatRow = $chatSql->fetch_assoc()):
                 $date=date_create($chatRow['latest_chat']);
-            ?>
+                ?>
                 <a class="respond dropdown-item d-flex align-items-center" href="javascript:void(0)" data-id="<?php echo $chatRow['ReklamoID'] ?>" data-user="<?php echo $chatRow['UsersID'] ?>" data-chat="<?php echo $chatRow['chatroomID']?>">
                     <div class="mr-3">
                         <div class="icon-circle bg-primary">
@@ -176,6 +178,9 @@
                     </div>
                 </a>
                 <?php endwhile; ?>
+                <?php elseif($rowsCount <= 0): ?>
+                    <p class="dropdown-item text-center small text-gray-500" href="#">No open chats right now!</p>
+                <?php endif; ?>
             </div>
         </div>
     </li>

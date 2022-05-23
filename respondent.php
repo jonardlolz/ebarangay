@@ -211,32 +211,32 @@
 
 	}
 	window.uni_modal = function($title = '' , $url='',$size=""){
-	      start_load()
-	      $.ajax({
-	          url:$url,
-	          error:err=>{
-	              console.log()
-	              alert("An error occured")
-	          },
-	          success:function(resp){
-	              if(resp){
-	                  $('#uni_modal .modal-title').html($title)
-	                  $('#uni_modal .modal-body').html(resp)
-	                  if($size != ''){
-	                      $('#uni_modal .modal-dialog').addClass($size)
-	                  }else{
-	                      $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
-	                  }
-	                  $('#uni_modal').modal({
-	                    show:true,
-	                    backdrop:'static',
-	                    keyboard:false,
-	                    focus:true
-	                  })
-	                  end_load()
-	              }
-	          }
-	      })
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#uni_modal .modal-title').html($title)
+                    $('#uni_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#uni_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-lg")
+                    }
+                    $('#uni_modal').modal({
+                    show:true,
+                    backdrop:'static',
+                    keyboard:false,
+                    focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
 	  }
 	  window._conf = function($msg='',$func='',$params = []){
 	     $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
@@ -268,7 +268,7 @@
             _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
         })
         $('.respond').click(function(){
-            uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
+            uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
         })
         function set_schedule($id, $user){
                 start_load()
