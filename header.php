@@ -207,6 +207,17 @@
                 Alerts Center
             </h6>
             <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
+            <a class="dropdown-item d-flex align-items-center promptSchedule" href="javascript:void(0)">
+                <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                        <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="small text-gray-500">May 23,2022 04:23 AM</div>
+                    <span class="font-weight-bold">Captain has scheduled your meeting, please confirm your attendance.</span>
+                </div>
+            </a>
             <?php 
             if($_SESSION['userType'] == 'Resident'){
                 $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']}) ORDER BY NotificationID DESC LIMIT 10;";

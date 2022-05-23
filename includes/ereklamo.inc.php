@@ -609,145 +609,27 @@
         header("location: ../ereklamo.php?error=none"); //no errors were made
         exit();
     }
-    else if(isset($_GET['reportPost'])){
+    else if(isset($_GET['sendtoplPOST'])){
         extract($_POST);
         mysqli_begin_transaction($conn);
 
         $managedBy = "'".$_SESSION['Firstname']." ".$_SESSION['Lastname']. "'";
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus')");
+        $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+        status='Incoming' WHERE ReklamoID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Respondent {$_SESSION['Firstname']} {$_SESSION['Lastname']} has reported back to Purok Leader', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+        $a3 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage')");
 
-        if($_SESSION['barangayPos'] != "None"){
-            $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A responder has sent a report for ereklamo#$id', 'ereklamo', 'Purok Leader')");
-            $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-            status='Incoming' WHERE ReklamoID=$id");
-
-            if($a1){
-                mysqli_commit($conn);
-                header("location: ../ereklamo.php?error=none"); 
-                exit();
-            }
-            else{
-                echo("Error description: " . mysqli_error($conn));
-                mysqli_rollback($conn); 
-                exit();
-            }
+        if($a1 && $a2 && $a3){
+            mysqli_commit($conn);
+            header("location: ../ereklamo.php?error=none"); 
+            exit();
         }
-        elseif($_SESSION['userType'] == 'Purok Leader'){
-            if($reportStatus == 'Resolved'){
-                $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Purok Leader has resolved your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
-                $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-                status='Resolved' WHERE ReklamoID=$id");
-            }
-            elseif($reportStatus == 'Forward to Captain'){
-                $requestSql = $conn->query("SELECT *, ereklamo.UsersID as complaineeID, concat(users.Firstname, ' ', users.Lastname) as name, ereklamocategory.reklamoFee as amount FROM ereklamo INNER JOIN ereklamocategory ON ereklamo.reklamotype=ereklamocategory.reklamoCatName INNER JOIN users ON users.UsersID=ereklamo.UsersID WHERE ReklamoID=$id");
-                $requestData = $requestSql->fetch_assoc();
-
-                $curl = curl_init();
-
-                curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://g.payx.ph/payment_request',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_SSL_VERIFYPEER => 0,
-                CURLOPT_SSL_VERIFYHOST => 0,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => array(
-                    'x-public-key' => 'pk_09ccebf180b94c18cb0f400c00f6282e',
-                    'amount' => $requestData['amount'],
-                    'description' => 'Payment for services rendered',
-                    'customername' => $requestData['name'],
-                    'customeremail' => $requestData['emailAdd'],
-                    'customermobile' => $requestData['phoneNum']
-                ),
-                ));
-
-                $response = curl_exec($curl);
-                curl_close($curl);
-
-                $resData = json_decode($response, true, 4);
-
-                echo $resData["data"]["checkouturl"];
-                $paymenturl = $resData["data"]["checkouturl"];
-                print_r($resData);
-
-                $a2 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-                status='To be paid', reklamoFee='{$requestData['amount']}', paymenturl='$paymenturl' WHERE ReklamoID=$id");
-                $a3 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Purok Leader has forwarded reklamo#$id to Captain', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
-                $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your ereklamo#$id has been forwarded to Capt. Please process the payment.', 'ereklamo', {$requestData['complaineeID']})");
-                $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', {$requestData['complaineeID']})");
-            }
-
-            if($a1 && $a2 && $a3){
-                mysqli_commit($conn);
-                header("location: ../ereklamo.php?error=none"); 
-                exit();
-            }
-            else{
-                echo("Error description: " . mysqli_error($conn));
-                mysqli_rollback($conn);
-                exit();
-            }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
         }
-        elseif($_SESSION['userType'] == 'Captain'){
-            if($reportStatus == 'Resolved'){
-                $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Captain has resolved your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
-                $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-                status='Resolved' WHERE ReklamoID=$id");
-
-                if($a1 && $a2 && $a3){
-                    mysqli_commit($conn);
-                    header("location: ../ereklamo.php?error=none"); 
-                    exit();
-                }
-                else{
-                    echo("Error description: " . mysqli_error($conn));
-                    mysqli_rollback($conn); 
-                    exit();
-                }
-            }
-            elseif($reportStatus == 'Reschedule'){
-                $a2 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-                status='Reschedule', rescheduleCounter = rescheduleCounter+1 WHERE ReklamoID=$id");
-                $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Captain rescheduled your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
-                $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Captain rescheduled your ereklamo#$id', 'ereklamo', complainee, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
-                $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) SELECT 'Captain has requested a rescheduling for ereklamo#$id', 'ereklamo', 'Secretary' FROM ereklamo WHERE ReklamoID=$id");
-
-                if($a1 && $a2 && $a3 && $a4 && $a5){
-                    mysqli_commit($conn);
-                    header("location: ../ereklamo.php?error=none"); 
-                    exit();
-                }
-                else{
-                    echo("Error description: " . mysqli_error($conn));
-                    mysqli_rollback($conn); 
-                    exit();
-                }
-            }
-            elseif($reportStatus == 'Forward to LUPON'){
-                $a1 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
-                status='Send to LUPON', rescheduleCounter = 0 WHERE ReklamoID=$id");
-                $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Captain has forward your reklamo#$id to the LUPON', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
-                $a3 = mysqli_query($conn, "DELETE FROM schedule WHERE ereklamoID=$id"); 
-                $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Captain has forward your reklamo#$id to the LUPON', 'ereklamo', complainee, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
-
-                if($a1 && $a2 && $a3 && $a4){
-                    mysqli_commit($conn);
-                    header("location: ../ereklamo.php?error=none"); 
-                    exit();
-                }
-                else{
-                    echo("Error description: " . mysqli_error($conn));
-                    mysqli_rollback($conn); 
-                    exit();
-                }
-            }
-        }
-        
     }
     else if(isset($_GET['sendtocaptPOST'])){
         extract($_POST);
@@ -888,7 +770,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-report" role="tabpanel" aria-labelledby="nav-report-tab">
-                <div class="table-responsive" style="overflow-y: overlay; max-height: 400px;">
+                <div class="table-responsive">
                     <table class="table table-bordered text-center text-dark"
                         id="reportTable" width="100%" cellspacing="0" cellpadding="0">
                         <thead >
@@ -898,6 +780,7 @@
                                 <th>Message</th>
                                 <th>Date</th>
                             </tr>
+        
                         </thead>
                         <tbody>
                             <!--Row 1-->
@@ -946,7 +829,33 @@
                 </div>
                 <div class="footer">
                     <div class="d-flex flex-row-reverse">
-                        <button class="btn btn-primary report" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Report</button>
+                        <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
+                            <?php if($respondResult['complaintLevel'] == 'Minor'): ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                    <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
+                                </a>
+                                <?php if($respondResult['status'] == 'Ongoing'): ?>
+                                <a href="includes/ereklamo.inc.php?sendRespondent&reklamoid=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                    <button class="btn btn-primary" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Respondent</button>
+                                </a>
+                                <?php endif; ?>
+                            <?php elseif($respondResult['complaintLevel'] == 'Major'):  ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>">
+                                    <button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button>
+                                </a>
+                                <button class="btn btn-primary forwardtocapt" data-complainant="<?php echo $respondResult['UsersID'] ?>" data-complainee="<?php echo $respondResult['complainee'] ?>" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Forward to Captain</button>
+                            <?php endif; ?>
+                        <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
+                            <button class="btn btn-primary sendtopl" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Report back to PL</button>
+                        <?php elseif($_SESSION['userType'] == 'Captain'): ?>
+                            <?php if($respondResult['rescheduleCounter'] >= 3): ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                                <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-paper-plane"></i> Send to Higher Up</button></a>
+                            <?php elseif($respondResult['rescheduleCounter'] < 3): ?>
+                                <a href="includes/ereklamo.inc.php?resolvedID=<?php echo $_GET['reklamoid'] ?>&usersID=<?php echo $_GET['usersID'] ?>"><button class="btn btn-success" style="margin: 0.25rem;"><i class="fas fa-check"></i> Resolve</button></a>
+                                <a href="includes/ereklamo.inc.php?rescheduleID=<?php echo $respondResult['ReklamoID'] ?>&usersID=<?php echo $respondResult['UsersID'] ?>"><button type="button" class="btn btn-danger" href=""><i class="fas fa-calendar"></i> Reschedule</button></a>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -956,86 +865,65 @@
         $(".container-fluid").parent().siblings(".modal-footer").remove();
         
         $('#reportTable').DataTable({
-            "pageLength": 2,
-            "paging": false
+            "pageLength": 2
         });
 
     </script>
+
+    
+<?php elseif(isset($_GET['promptSchedule'])): ?>
+<div class="container-fluid">
+    <div class="col">
+        <div class="row">
+            <p>Your schedule will be on May 25, 2022. Please confirm your attendance.</p>
+        </div>
+    </div>
+    <hr>
+    <div class="d-flex flex-row-reverse footer">
+        <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Will attend</button>
+        <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Will not attend</button>
+    </div>
+</div>
+<script>
+    $(".container-fluid").parent().siblings(".modal-footer").remove();
+</script>
+    
 <?php endif; ?>
 
 <?php 
-    if(isset($_GET['report'])): ?>
+    if(isset($_GET['sendtopl'])): ?>
     <div class="container-fluid">
-        <?php $dataSql = $conn->query("SELECT * FROM ereklamo WHERE ReklamoID={$_GET['reklamoid']}");
-        $dataResult = $dataSql->fetch_assoc();
-        ?>    
-            <div class="row" style="margin-bottom: 10px">
-                <div class="col">Status</div>
-                <div class="col-sm-8">
-                    <select name="status" id="reportStatus">
-                        <option value="">Select</option>
-                        <option value="Resolved">Resolved</option>
-                        <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
-                            <?php if($dataResult['complaintLevel'] == 'Minor'): ?>
-                                
-                            <?php elseif($dataResult['complaintLevel'] == 'Major'): ?>
-                                <option value="Forward to Captain">Forward to Captain</option>
-                            <?php endif; ?>
-                        <?php elseif($_SESSION['userType'] == 'Captain'): ?>
-                            <option value="Forward to LUPON">Forward to LUPON</option>
-                            <?php if($dataResult['rescheduleCounter'] < 3): ?>
-                            <option value="Reschedule">Reschedule</option>
-                            <?php endif; ?>
-                        <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
-                            <option value="Unresolved">Unresolved</option>
-                        <?php endif; ?>
-                    </select>
-                </div>
+        <div class="row">
+            <div class="col">
+                <p>Report Message: </p>
             </div>
-            <div class="row" style="margin-bottom: 10px">
-                <div class="col">
-                    <p>Report Message: </p>
-                </div>
-                <div class="col-sm-8">
-                    <textarea name="reportMessage" id="reportMessage" class="form-control" rows="3" style="resize:none;" required></textarea>
-                </div>
+            <div class="col-sm-8">
+                <textarea name="reportMessage" id="reportMessage" class="form-control" rows="3" style="resize:none;" required></textarea>
             </div>
-            <div class="row" id="alert">
-                <div class='col'>
-                    <div class='alert alert-danger'>Please fill the required fields</div>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex flex-row-reverse">
-                <button class="btn btn-primary confirm" data-id="<?php echo $_GET['reklamoid'] ?>" onclick="checkEmpty($('#reportMessage').val())">Send</button> 
-            </div>
+        </div> 
+        <hr>
+        <div class="d-flex flex-row-reverse">
+            <button class="btn btn-primary confirm" data-id="<?php echo $_GET['reklamoid'] ?>" onclick="checkEmpty($('#reportMessage').val())">Test</button>
+        </div>  
         <script>
-            document.getElementById("alert").style.display = "none";
             $(".container-fluid").parent().siblings(".modal-footer").remove();
             function checkEmpty($message){
-                var ddl = document.getElementById("reportStatus");
-                var selectedValue = ddl.options[ddl.selectedIndex].value;
-                if($("#reportMessage").val() == '' || selectedValue == ''){
-                    document.getElementById("alert").style.display = "block";
+                if($("#reportMessage").val() == ''){
+                    
                 }
                 else{
                     $message = "'" + $("#reportMessage").val() + "'";
-                    $reportStatus = "'" + $("#reportStatus").val() + "'";
-                    _conf("Confirm report?","confirmReport", [$message ,$(".confirm").attr('data-id'), $reportStatus])
+                    _conf("Confirm report?","confirmReport", [$message ,$(".confirm").attr('data-id')])
                     
                 }
             }
 
-            function confirmReport($message, $id, $status){
+            function confirmReport($message, $id){
                 start_load()
                 $.ajax({
-                    url:'includes/ereklamo.inc.php?reportPost',
+                    url:'includes/ereklamo.inc.php?sendtoplPOST',
                     method:'POST',
-                    data:{
-                        id:$id, 
-                        reportMessage: $message,
-                        reportStatus: $status    
-                    },
+                    data:{id:$id, reportMessage: $message},
                     success:function(){
                         location.reload()
                     }
@@ -1093,8 +981,8 @@
             $('#confirm_modal').modal('show')
         }
 
-        $('.report').click(function(){
-            secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?report&reklamoid="+$(this).attr('data-id'), "modal-md")
+        $('.sendtopl').click(function(){
+            secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?sendtopl&reklamoid="+$(this).attr('data-id'), "modal-md")
         })
         $('.forwardtocapt').click(function(){
             secondary_modal("<center><b>Forward to Captain</b></center></center>","includes/ereklamo.inc.php?sendtocapt&reklamoid="+$(this).attr('data-id')+"&complainantid="+$(this).attr('data-complainant')+"&complaineeid="+$(this).attr('data-complainee'), "modal-md")
