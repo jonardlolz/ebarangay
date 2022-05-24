@@ -271,9 +271,6 @@
       $('.respond').click(function(){
           uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
       })
-      $('.promptSchedule').click(function(){
-          uni_modal("<center><b>Confirm attendance</b></center></center>","includes/ereklamo.inc.php?promptSchedule", "modal-md")
-      })
 
       $.ajax({
         url: './includes/jsdbh.inc.php',
