@@ -1147,6 +1147,7 @@
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-ereklamo-tab" data-toggle="tab" href="#nav-ereklamo" role="tab" aria-controls="nav-ereklamo" aria-selected="true">eReklamo</a>
+                    <a class="nav-item nav-link" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">For scheduling</a>
                     <a class="nav-item nav-link" id="nav-scheduled-tab" data-toggle="tab" href="#nav-scheduled" role="tab" aria-controls="nav-scheduled" aria-selected="false">Scheduled</a>
                     <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#nav-resolved" role="tab" aria-controls="nav-resolved" aria-selected="false">Resolved</a>
                 </div>
@@ -1268,6 +1269,104 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" 
+                            id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                            <thead >
+                                <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Complainant</th>
+                                        <th>Complainee</th>
+                                        <th scope="col">Reklamo Type</th>
+                                        <th scope="col">Manage</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                <!--Row 1-->
+                                <?php 
+                                    $requests = $conn->query("SELECT chatroom.chatroomID, ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                    as complainantName, users.profile_pic as complainantProfile, users.userType as complainantType, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                    DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                    as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile
+                                    FROM ereklamo 
+                                    INNER JOIN users 
+                                    ON ereklamo.UsersID=users.UsersID
+                                    INNER JOIN chatroom
+                                    ON chatroom.idreference=ereklamo.ReklamoID
+                                    INNER JOIN users a
+                                    ON ereklamo.complainee=a.UsersID
+                                    WHERE ereklamo.complaintLevel='Major' 
+                                    AND (ereklamo.status='To Captain' OR
+                                    ereklamo.status='Reschedule')
+                                    AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                    AND ereklamo.purok='{$_SESSION['userPurok']}'
+                                    ORDER BY checkedOn DESC");
+                                    while($row=$requests->fetch_assoc()):
+                                        if($row["userType"] == "Admin"){
+                                            continue;
+                                        }
+                                ?>
+                                <tr>
+                                    <td>
+                                        <img class="img-profile rounded-circle <?php 
+                                            if($row["complainantType"] == "Resident"){
+                                                echo "img-res-profile";
+                                            }
+                                            elseif($row["complainantType"] == "Purok Leader"){
+                                                echo "img-purokldr-profile";
+                                            }
+                                            elseif($row["complainantType"] == "Captain"){
+                                                echo "img-capt-profile";
+                                            }
+                                            elseif($row["complainantType"] == "Secretary"){
+                                                echo "img-sec-profile";
+                                            }
+                                            elseif($row["complainantType"] == "Treasurer"){
+                                                echo "img-treas-profile";
+                                            }
+                                            elseif($row["complainantType"] == "Admin"){
+                                                echo "img-admin-profile";
+                                            }
+                                        ?>" src="img/<?php echo $row["complainantProfile"] ?>" width="40" height="40"/>
+                                        <br>
+                                        <?php echo $row["complainantName"] ?>
+                                    </td>
+                                    <td>
+                                        <img class="img-profile rounded-circle <?php 
+                                            if($row["userType"] == "Resident"){
+                                                echo "img-res-profile";
+                                            }
+                                            elseif($row["userType"] == "Purok Leader"){
+                                                echo "img-purokldr-profile";
+                                            }
+                                            elseif($row["userType"] == "Captain"){
+                                                echo "img-capt-profile";
+                                            }
+                                            elseif($row["userType"] == "Secretary"){
+                                                echo "img-sec-profile";
+                                            }
+                                            elseif($row["userType"] == "Treasurer"){
+                                                echo "img-treas-profile";
+                                            }
+                                            elseif($row["userType"] == "Admin"){
+                                                echo "img-admin-profile";
+                                            }
+                                        ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                        <br>
+                                        <?php echo $row["complainee"] ?>
+                                    </td>
+                                    <td><?php echo $row["reklamoType"] ?></td>
+                                    <td>
+                                        <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                    </td>
+                                    <!--Right Options-->
+                                </tr>
+                                <?php endwhile; ?>
+                                <!--Row 1-->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-scheduled" role="tabpanel" aria-labelledby="nav-scheduled-tab">
@@ -1636,9 +1735,11 @@
             if(this.scrollHeight <= 117)
             $(this).height(0).height(this.scrollHeight);
         })
+
         $('.set-schedule').click(function(){
             _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
         })
+
         $('.respond').click(function(){
             uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
         })

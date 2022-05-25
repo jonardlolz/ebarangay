@@ -254,7 +254,10 @@
           $('#dataTable9').DataTable();
       } );
       
-
+      $('.promptSchedule').click(function(){
+          uni_modal("<center><b>Confirm attendance</b></center></center>","includes/ereklamo.inc.php?promptSchedule", "modal-md")
+      })
+      
       function notificationRead(){
         $.ajax({
           url: './includes/notifications.inc.php?read',

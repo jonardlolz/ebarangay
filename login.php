@@ -93,6 +93,9 @@ session_destroy();
                                         <div class="text-center">
                                             <a class="small" href="signup.php">Create an Account!</a>
                                         </div>
+                                        <div class="text-center">
+                                            <a class="small" href="forgotpass.php">Forgot your password?</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -20,6 +20,8 @@ if(isset($_POST["submit"])){
     $userHouseNum = $_POST["userHouseNum"]; 
     $landlordName = $_POST["landlordName"];
     $landlordContact = $_POST["landlordContact"];
+    $secretQuestion = $_POST["secretQuestion"];
+    $secretAnswer = $_POST["secretAnswer"];
 
 
     //linking php files for reference
@@ -71,7 +73,7 @@ if(isset($_POST["submit"])){
         createRenterUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $landlordName, $landlordContact, $userAddress, $userHouseNum);
     }
     else{
-        createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $userAddress, $userHouseNum);
+        createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $userAddress, $userHouseNum, $secretQuestion, $secretAnswer);
     }
 
 

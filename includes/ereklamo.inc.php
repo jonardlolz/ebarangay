@@ -381,11 +381,6 @@
     
     <?php
     elseif(isset($_GET['ereklamoEditCat'])):?>
-        <style>
-            .modal-footer{
-                display: none;
-            }
-        </style>
         <div class="container-fluid">
             <?php
             $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatID={$_GET['catID']}");
@@ -861,10 +856,13 @@
     $respondResult = $respondSql->fetch_assoc();
 ?>
     
-    <div class="container-fluid">
+    <div class="container-fluid" id="respond">
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-chat-tab" data-toggle="tab" href="#nav-chat" role="tab" aria-controls="nav-chat" aria-selected="true">Chat</a>
+                <?php if($respondResult['status'] == 'To Captain'): ?>
+                <a class="nav-item nav-link" id="nav-schedule-tab" data-toggle="tab" href="#nav-schedule" role="tab" aria-controls="nav-schedule" aria-selected="true">Schedule</a>
+                <?php endif; ?>
                 <a class="nav-item nav-link" id="nav-report-tab" data-toggle="tab" href="#nav-report" role="tab" aria-controls="nav-report" aria-selected="false">Report</a>
             </div>
         </nav>
@@ -887,6 +885,36 @@
                     </div>
                 </div>
             </div>
+            <?php if($respondResult['status'] == 'To Captain'):?>
+            <div class="tab-pane show" id="nav-schedule" role="tabpanel" aria-labelledby="nav-schedule-tab">
+                <form action="includes/ereklamo.inc.php?scheduleID=<?php echo $_GET['reklamoid'] ?>&complainant=<?php echo $_GET['usersID'] ?>" class="user" method="post">
+                <div class="m-2">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="scheduleTitle">Schedule Title: </label>
+                                </div>
+                                <div class="col">
+                                    <input name="scheduleTitle" id="scheduleTitle" type="text" value="ereklamo#<?php echo $_GET['reklamoid'] ?>" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="schedule">Date: </label>
+                                </div>
+                                <div class="col">
+                                    <input name="schedule" type="date" min="<?php $date = date("Y-m-d"); $date1 = str_replace('-', '/', $date); $tomorrow = date('Y-m-d',strtotime($date1 . "+1 days")); echo $tomorrow; ?>" value="<?php echo $tomorrow; ?>" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="footer d-flex flex-row-reverse">
+                        <button class="btn btn-success"><i class="fas fa-calendar"></i> Set schedule</button>
+                    </div>
+                </form>
+            </div>
+            <?php endif; ?>
             <div class="tab-pane fade" id="nav-report" role="tabpanel" aria-labelledby="nav-report-tab">
                 <div class="table-responsive" style="overflow-y: overlay; max-height: 400px;">
                     <table class="table table-bordered text-center text-dark"
@@ -944,22 +972,42 @@
                         </tbody>
                     </table>
                 </div>
+                <hr>
+                <?php if($respondResult['status'] != 'To Captain'):?>
                 <div class="footer">
                     <div class="d-flex flex-row-reverse">
                         <button class="btn btn-primary report" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Report</button>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
     <script>
-        $(".container-fluid").parent().siblings(".modal-footer").remove();
+        $("#respond").parent().siblings(".modal-footer").remove();
         
         $('#reportTable').DataTable({
             "pageLength": 2,
             "paging": false
         });
 
+    </script>
+
+    <?php elseif(isset($_GET['promptSchedule'])): ?>
+    <div class="container-fluid">
+        <div class="col">
+            <div class="row">
+                <p>Your schedule will be on May 25, 2022. Please confirm your attendance.</p>
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex flex-row-reverse footer">
+            <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Will attend</button>
+            <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Will not attend</button>
+        </div>
+    </div>
+    <script>
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
     </script>
 <?php endif; ?>
 

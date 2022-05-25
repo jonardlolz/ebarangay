@@ -159,10 +159,10 @@ function editUser($conn, $Firstname, $Middlename, $Lastname, $UserAge, $dateofbi
     exit();
 }
 
-function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $userAddress, $userHouseNum){
+function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $pwd, $gender, $userBrgy, $userPurok, $userAddress, $userHouseNum, $secretQuestion, $secretAnswer){
     $sql = "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, civilStat, 
-    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity, userAddress, userHouseNum) 
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
+    emailAdd, username, usersPwd, userGender, userType, profile_pic, userBarangay, userPurok, userCity, userAddress, userHouseNum, secretQuestion, secretAnswer) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; //sql statement, insert data into users table
     $profile_pic = "profile_picture.jpg";
     $userType = "Resident";
     $userCity = "Mandaue";
@@ -174,7 +174,7 @@ function createUser($conn, $Firstname, $Middlename, $Lastname, $dateofbirth, $ci
 
     $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT); //hashes password to deter hackers
 
-    mysqli_stmt_bind_param($stmt, "ssssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity, $userAddress, $userHouseNum); 
+    mysqli_stmt_bind_param($stmt, "ssssssssssssssssss", $Firstname, $Middlename, $Lastname, $dateofbirth, $civilStat, $userEmail, $userName, $hashedpwd, $gender, $userType, $profile_pic, $userBrgy, $userPurok, $userCity, $userAddress, $userHouseNum, $secretQuestion, $secretAnswer); 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
         exit();

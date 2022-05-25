@@ -146,7 +146,20 @@
                                                 id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
                                         </div>
                                     </div>
-                                    
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <select class="form-select form-select-lg" name="secretQuestion" id="privateQuestion">
+                                                <option value="" hidden>Secret Question</option>
+                                                <option>What is your mother's maiden name?</option>
+                                                <option>What is your first pet's name?</option>
+                                                <option>What's the name of your first bestfriend?</option>
+                                                <option>What's the name of the school you first went to?</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" name="secretAnswer" class="form-control form-control-user" placeholder="Private answer" required>
+                                        </div>
+                                    </div>
     
                                     <?php
                                         if(isset($_GET["error"])){
