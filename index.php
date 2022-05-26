@@ -154,16 +154,16 @@
                                     <p class="content-field"><?php echo $row['postMessage'] ?></p>
                                     
                                     <a href="javascript:void(0)" class="d-none show-content" >Show More</a>
-                                    <?php if(is_dir('img/'.$row['PostID'])): ?>
+                                    <?php if(is_dir('img/posts/'.$row['PostID'])): ?>
                                     <div class="gallery mb-2">
                                         <?php
-                                        $gal = scandir('img/'.$row['PostID']);
+                                        $gal = scandir('img/posts/'.$row['PostID']);
                                         unset($gal[0]);
                                         unset($gal[1]);
                                         $count =count($gal);
                                         $i = 0;
                                         foreach($gal as $k => $v):
-                                            $mime = mime_content_type('img/'.$row['PostID'].'/'.$v);
+                                            $mime = mime_content_type('img/posts/'.$row['PostID'].'/'.$v);
                                             $i++;
                                             if($i > 4)
                                             break;
@@ -185,15 +185,15 @@
                                             </div>
                                             <?php endif; ?>
                                             <?php if(strstr($mime,'image')): ?>
-                                                <a href="img/<?php echo $row['PostID'].'/'.$v ?>" class="lightbox-items" data-toggle="lightbox<?php echo $row['PostID'] ?>" data-slide="<?php echo $k ?>" data-title="" data-gallery="gallery"  data-id="<?php echo $row['PostID'] ?>">
-                                            <img src="img/<?php echo $row['PostID'].'/'.$v ?>" class="gallery__img" alt="Image 1">
+                                                <a href="img/posts/<?php echo $row['PostID'].'/'.$v ?>" class="lightbox-items" data-toggle="lightbox<?php echo $row['PostID'] ?>" data-slide="<?php echo $k ?>" data-title="" data-gallery="gallery"  data-id="<?php echo $row['PostID'] ?>">
+                                            <img src="img/posts/<?php echo $row['PostID'].'/'.$v ?>" class="gallery__img" alt="Image 1">
                                             </a>
                                             <?php else: ?>
                                                 <?php if($count > 1): ?>
-                                                    <a href="img/<?php echo $row['PostID'].'/'.$v ?>" class="lightbox-items" data-toggle="lightbox<?php echo $row['PostID'] ?>" data-slide="<?php echo $k ?>" data-title="" data-gallery="gallery">
+                                                    <a href="img/posts/<?php echo $row['PostID'].'/'.$v ?>" class="lightbox-items" data-toggle="lightbox<?php echo $row['PostID'] ?>" data-slide="<?php echo $k ?>" data-title="" data-gallery="gallery">
                                                 <?php endif; ?>
                                                 <video <?php echo $count == 1 ? "controls" : '' ?> class="gallery__img">
-                                                    <source src="img/<?php echo $row['PostID'].'/'.$v ?>" type="<?php echo $mime ?>">
+                                                    <source src="img/posts/<?php echo $row['PostID'].'/'.$v ?>" type="<?php echo $mime ?>">
                                                 </video>
                                                 <?php if($count > 1): ?>
                                                 </a>

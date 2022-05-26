@@ -13,6 +13,24 @@
         $firstname = $_SESSION["Firstname"];
         $lastname = $_SESSION["Lastname"];
         $name = "$firstname $lastname";
+        $sql = $conn->query("SELECT * FROM users WHERE UsersID={$_SESSION['UsersID']}");
+        $dataDateDiff = $sql->fetch_assoc();
+        
+        if($dataDateDiff['startedLiving'] != NULL){
+            $date1 = $dataDateDiff['startedLiving'];
+            $date2 = date("Y-m-d");
+
+            $date1 = strtotime($date1);
+            $date2 = strtotime($date2);
+
+            $year1 = date("Y", $date1);
+            $year2 = date("Y", $date2);
+
+            $month1 = date('m', $date1);
+            $month2 = date('m', $date2);
+
+            $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+        }
     }
 ?>
 
@@ -207,6 +225,7 @@
                 Alerts Center
             </h6>
             <div id="notifications" style="overflow-y:overlay; max-height:30vh;">
+            <?php if(false): ?>
             <a class="dropdown-item d-flex align-items-center promptSchedule" href="javascript:void(0)">
                 <div class="mr-3">
                     <div class="icon-circle bg-primary">
@@ -218,6 +237,7 @@
                     <span class="font-weight-bold">Captain has scheduled your meeting, please confirm your attendance.</span>
                 </div>
             </a>
+            <?php endif; ?>
             <?php 
             if($_SESSION['userType'] == 'Resident'){
                 $query = "SELECT * FROM notifications WHERE (UsersID={$_SESSION['UsersID']}) ORDER BY NotificationID DESC LIMIT 10;";

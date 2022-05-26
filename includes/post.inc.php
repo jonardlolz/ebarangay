@@ -35,14 +35,14 @@
             if(isset($img)){
                 $id = mysqli_insert_id($conn);
                 echo $id;
-				mkdir('../img/'.$id);
+				mkdir('../img/posts/'.$id);
 				for($i = 0 ; $i< count($img);$i++){
 					list($type, $img[$i]) = explode(';', $img[$i]);
 					list(, $img[$i])      = explode(',', $img[$i]);
 					$img[$i] = str_replace(' ', '+', $img[$i]);
 					$img[$i] = base64_decode($img[$i]);
 					$fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
-					$upload = file_put_contents('../img/'.$id.'/'.$fname,$img[$i]);
+					$upload = file_put_contents('../img/posts/'.$id.'/'.$fname,$img[$i]);
 					$data = " file_path = '".$fname."' ";
 				}
             }
@@ -66,14 +66,14 @@
             if(isset($img)){
                 $id = mysqli_insert_id($conn);
                 echo $id;
-				mkdir('../img/'.$id);
+				mkdir('../img/posts/'.$id);
 				for($i = 0 ; $i< count($img);$i++){
 					list($type, $img[$i]) = explode(';', $img[$i]);
 					list(, $img[$i])      = explode(',', $img[$i]);
 					$img[$i] = str_replace(' ', '+', $img[$i]);
 					$img[$i] = base64_decode($img[$i]);
 					$fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
-					$upload = file_put_contents('../img/'.$id.'/'.$fname,$img[$i]);
+					$upload = file_put_contents('../img/posts/'.$id.'/'.$fname,$img[$i]);
 					$data = " file_path = '".$fname."' ";
 				}
             }

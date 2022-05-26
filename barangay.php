@@ -1,7 +1,7 @@
 <?php include_once "header.php" ?>
 
 <!--Begin Page-->
-<div class="container p-4">
+<div class="col d-flex flex-column px-4">
 
 <!--Residents Requests-->
 <div class="card shadow mb-4 m-4">

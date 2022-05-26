@@ -885,7 +885,7 @@
                     </div>
                 </div>
             </div>
-            <?php if($respondResult['status'] == 'To Captain'):?>
+            <?php if($respondResult['status'] == 'To Captain' && $_SESSION['userType'] == 'Captain'):?>
             <div class="tab-pane show" id="nav-schedule" role="tabpanel" aria-labelledby="nav-schedule-tab">
                 <form action="includes/ereklamo.inc.php?scheduleID=<?php echo $_GET['reklamoid'] ?>&complainant=<?php echo $_GET['usersID'] ?>" class="user" method="post">
                 <div class="m-2">
@@ -1153,8 +1153,8 @@
         input.addEventListener("keypress", function(event){
             if(event.key === "Enter"){
                 if(input.value != ''){
-                enterChat($("#message").val());
-                input.value = '';
+                    enterChat($("#message").val());
+                    input.value = '';
                 }
             }
         });
@@ -1178,7 +1178,7 @@
         function enterChat($message){
             start_load()
             $.ajax({
-                url: '',
+                url: './includes/chat.inc.php?sendchat&chatroomID='+<?php echo $_GET['chatroomID'] ?>+'&reklamoid='+<?php echo $_GET['reklamoid'] ?>,
                 method: 'POST',
                 data:{postmessage:$message},
                 success: function(data){
