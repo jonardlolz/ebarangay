@@ -2,7 +2,7 @@
 
 <div class="col d-flex flex-column">
 <!--Begin Page-->
-<div class="container-fluid">
+<div class="col d-flex flex-column px-4">
 
 <!--Residents Requests-->
 <?php if($_SESSION["userType"] == "Purok Leader"): ?>

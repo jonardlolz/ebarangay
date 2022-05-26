@@ -110,6 +110,14 @@
                                 <input type="date" name="date" id="dateRenter" max="<?php echo date("Y-m-d") ?>">
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Voter: </label>    
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="checkbox" name="IsVoter" id="IsVoter">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row" id="landlordStat" style="display: none">
