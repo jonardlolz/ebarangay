@@ -61,93 +61,107 @@
 
     </style>
     <div class="container-fluid">  
-        <form action="includes/verify.inc.php?continueVerify">
-            <div class="col">
-                <div class="row">
-                    <div class="col">
-                        <input type="radio" id="resident" value="resident" name="residentStat"
-                        onclick="ShowHideDiv()" checked>
-                        <label for="">Resident</label>
-                    </div>
-                    <div class="col">
-                        <input type="radio" id="renter" value="renter" name="residentStat"
-                        onclick="ShowHideDiv()">
-                        <label for="">Renter</label>
-                    </div>
-                    <div class="col">
-                        <input type="radio" id="landlord" value="landlord" name="residentStat" 
-                        onclick="ShowHideDiv()">
-                        <label for="">Landlord</label>
-                    </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <input type="radio" id="resident" value="resident" name="residentStat"
+                    onclick="ShowHideDiv()" checked>
+                    <label for="">Resident</label>
                 </div>
-                <div class="row" id="renterStat" style="display: none">
-                    <hr>
-                    <div class="col">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="">Landlord's Name: </label>
-                            </div>
-                            <div class="col-sm-4">
-                                <select class="landlordName" name="landlordName" id="landlordName" required>
-                                    <option value="">Landlord's name</option>
-                                    <?php 
-                                        $landlord = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}' AND IsLandlord='True'");
-                                        while($landlordRow = $landlord->fetch_assoc()):
-                                    ?>
-                                    <option value="<?php echo $landlordRow['UsersID'] ?>"><?php echo $landlordRow['name'] ?></option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-                            <script>
-                                $('.landlordName').select2();
-                            </script>
+                <div class="col">
+                    <input type="radio" id="renter" value="renter" name="residentStat"
+                    onclick="ShowHideDiv()">
+                    <label for="">Lessee</label>
+                </div>
+                <div class="col">
+                    <input type="radio" id="landlord" value="landlord" name="residentStat" 
+                    onclick="ShowHideDiv()">
+                    <label for="">Lessor</label>
+                </div>
+            </div>
+            <div class="row" id="renterStat" style="display: none">
+                <hr>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Lessor's Name: </label>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="">Date rented: </label>    
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="date" name="date" id="dateRenter" max="<?php echo date("Y-m-d") ?>">
-                            </div>
+                        <div class="col-sm-4">
+                            <select class="landlordName" name="landlordName" id="landlordName" required>
+                                <option value="">Landlord's name</option>
+                                <?php 
+                                    $landlord = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM users WHERE userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}' AND IsLandlord='True'");
+                                    while($landlordRow = $landlord->fetch_assoc()):
+                                ?>
+                                <option value="<?php echo $landlordRow['UsersID'] ?>"><?php echo $landlordRow['name'] ?></option>
+                                <?php endwhile; ?>
+                            </select>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="">Voter: </label>    
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="checkbox" name="IsVoter" id="IsVoter">
-                            </div>
+                        <script>
+                            $('.landlordName').select2();
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Date resides: </label>    
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="date" name="date" id="dateRenter" max="<?php echo date("Y-m-d") ?>">
                         </div>
                     </div>
-                </div>
-                <div class="row" id="landlordStat" style="display: none">
-                    <hr>
-                    <div class="col">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="">Date lived: </label>    
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="date" name="date" id="dateLandlord" max="<?php echo date("Y-m-d") ?>">
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Voter: </label>    
                         </div>
-                    </div>
-                </div>
-                <div class="row" id="residentStat" style="display: none">
-                    <hr>
-                    <div class="col">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="">Date lived: </label>    
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="date" name="date" id="dateResident" max="<?php echo date("Y-m-d") ?>">
-                            </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" name="IsRenterVoter" id="IsRenterVoter">
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+            <div class="row" id="landlordStat" style="display: none">
+                <hr>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Date resides: </label>    
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="date" name="date" id="dateLandlord" max="<?php echo date("Y-m-d") ?>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Voter: </label>    
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" name="IsLandlordVoter" id="IsLandlordVoter">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="residentStat" style="display: none">
+                <hr>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Date resides: </label>    
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="date" name="date" id="dateResident" max="<?php echo date("Y-m-d") ?>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Voter: </label>    
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" name="IsResidentVoter" id="IsResidentVoter">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer display py-1 px-1" style="float:right;">
         <div class="d-block w-100">
@@ -170,7 +184,12 @@
                     alert("Landlord name is empty!");
                 }
                 else{
-                    uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&renter&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&landlord="+landlordName.value,"modal-lg");
+                    if($("#IsRenterVoter").is(":checked")){
+                        uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&renter&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&landlord="+landlordName.value+"&IsVoter=True","modal-lg");
+                    }
+                    else{
+                        uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&renter&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&landlord="+landlordName.value+"&IsVoter=False","modal-lg");
+                    }
                 }
             }
             else if(landlord.checked){
@@ -179,7 +198,12 @@
                     alert("Date is empty!");
                 }
                 else{
-                    uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&landlord&usersID="+$(this).attr('data-id')+"&date="+date.value.toString(),"modal-lg")
+                    if($("#IsLandlordVoter").is(":checked")){
+                        uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&landlord&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&IsVoter=True","modal-lg")
+                    }
+                    else{
+                        uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&landlord&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&IsVoter=False","modal-lg")
+                    }
                 }
             }
             else if(resident.checked){
@@ -188,7 +212,12 @@
                     alert("Date is empty!");
                 }
                 else{
-                    uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&resident&usersID="+$(this).attr('data-id')+"&date="+date.value.toString(),"modal-lg")
+                    if($("#IsResidentVoter").is(":checked")){
+                        uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&resident&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&IsVoter=True","modal-lg")
+                    }
+                    else{
+                        uni_modal("<center><b>Confirm Information</b></center></center>","includes/verify.inc.php?continueVerify&resident&usersID="+$(this).attr('data-id')+"&date="+date.value.toString()+"&IsVoter=False","modal-lg")
+                    }
                 }
             }
         })
@@ -388,6 +417,14 @@
                                                     <?php echo date_format(date_create($_GET["date"]), "F d,Y") ?>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="">Voter: </label>
+                                                </div>
+                                                <div class="col">
+                                                    <?php echo $_GET['IsVoter'] ?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -400,15 +437,15 @@
         <div class="modal-footer display py-1 px-1" style="float:right;">
             <div class="d-block w-100">
                 <?php if(isset($_GET["resident"])): ?>
-                    <a href="includes/verify.inc.php?postVerify&resident=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                    <a href="includes/verify.inc.php?postVerify&resident=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>&isvoter=<?php echo $_GET['IsVoter'] ?>">
                         <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
                     </a>
                 <?php elseif(isset($_GET["renter"])): ?>
-                    <a href="includes/verify.inc.php?postVerify&renter=<?php echo $_GET['landlord'] ?>&renter=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                    <a href="includes/verify.inc.php?postVerify&renter=<?php echo $_GET['landlord'] ?>&renter=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>&isvoter=<?php echo $_GET['IsVoter'] ?>">
                         <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
                     </a>
                 <?php elseif(isset($_GET["landlord"])): ?>
-                    <a href="includes/verify.inc.php?postVerify&landlord=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>">
+                    <a href="includes/verify.inc.php?postVerify&landlord=<?php echo $row['UsersID'] ?>&date=<?php echo $_GET['date'] ?>&isvoter=<?php echo $_GET['IsVoter'] ?>">
                         <button type="button" class="continue_verify btn btn-primary" data-id="">Verify</button>
                     </a>
                 <?php endif; ?>
@@ -426,15 +463,15 @@ if(isset($_GET['postVerify'])){
     mysqli_begin_transaction($conn);
 
     if(isset($_GET['resident'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='False', isRenting='False' WHERE UsersID='{$_GET['resident']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='False', isRenting='False', IsVoter='{$_GET['isvoter']}' WHERE UsersID='{$_GET['resident']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['resident']}');");
     }
     elseif(isset($_GET['renter'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', landlordName='{$_GET['landlord']}', isLandlord='False', isRenting='True',startedLiving='{$_GET['date']}' WHERE UsersID='{$_GET['renter']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', landlordName='{$_GET['landlord']}', isLandlord='False', isRenting='True',startedLiving='{$_GET['date']}', IsVoter='{$_GET['isvoter']}' WHERE UsersID='{$_GET['renter']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['renter']}');");
     }
     elseif(isset($_GET['landlord'])){
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='True', isRenting='False' WHERE UsersID='{$_GET['landlord']}'");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', startedLiving='{$_GET['date']}', isLandlord='True', isRenting='False', IsVoter='{$_GET['isvoter']}' WHERE UsersID='{$_GET['landlord']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['landlord']}');");
     }
 
@@ -451,13 +488,13 @@ if(isset($_GET['postVerify'])){
 ?>
 
 <script>
-    ShowHideDiv();
-    function ShowHideDiv(){
-        var renter = document.getElementById("renter");
-        var landlord = document.getElementById("landlord");
-        var resident = document.getElementById("resident");
-        renterStat.style.display = renter.checked ? "block" : "none";
-        landlordStat.style.display = landlord.checked ? "block" : "none";
-        residentStat.style.display = resident.checked ? "block" : "none";
-    }
+ShowHideDiv();
+function ShowHideDiv(){
+    var renter = document.getElementById("renter");
+    var landlord = document.getElementById("landlord");
+    var resident = document.getElementById("resident");
+    document.getElementById("renterStat").style.display = renter.checked ? "block" : "none";
+    document.getElementById("landlordStat").style.display = landlord.checked ? "block" : "none";
+    document.getElementById("residentStat").style.display = resident.checked ? "block" : "none";
+}
 </script>

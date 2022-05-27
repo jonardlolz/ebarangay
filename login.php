@@ -52,7 +52,7 @@ session_destroy();
                                         <div class="text-center">
                                             <h1 class="text-dark-900 mb-4 text-dark">Welcome to EBARANGAY!</h1>
                                         </div>
-                                        <form action="includes/login.inc.php" class="user" method="post">
+                                        <form action="includes/login.inc.php" class="user" method="post" autocomplete="off">
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user"
                                                     id="Username" name="username" aria-describedby="emailHelp"

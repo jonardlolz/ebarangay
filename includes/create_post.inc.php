@@ -67,7 +67,6 @@ if(isset($_GET['id'])):
 		<!-- Uploaded files section -->
 		<div class="c-row" id="">
 			<div id="file-display" class="column">
-
 				<?php 
 				if(isset($id)):
 				if(is_dir('../img/'.$id)):
@@ -115,12 +114,11 @@ if(isset($_GET['id'])):
 		
 	</form>
 	<div class="imgF" style="display: none " id="img-clone">
-			<span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+		<span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
 </div>
 
 
 <?php else: ?>
-
 	<div class="container-fluid">
 	<form action="includes/post.inc.php" class="user" method="post">
 		<input type="hidden" name="id" value="<?php echo isset($PostID) ? $PostID : '' ?>">
@@ -264,11 +262,17 @@ if(isset($_GET['id'])):
 						imgF.appendChild(img);
 						document.querySelector('#file-display').appendChild(imgF)
 				}
-		reader.readAsDataURL(input.files[k]);
-		})
-		rem_func()
+			reader.readAsDataURL(input.files[k]);
+			})
+			rem_func()
+		}
     }
-    }
+	function rem_func(_this){
+		_this.closest('.imgF').remove();
+		if($('#drop .imgF').length <= 0){
+			$('#drop').append('<span id="dname" class="text-center">Drop Files Here <br> or <br> <label for="chooseFile"><strong>Choose File</strong></label></span>')
+		}
+	}
 	$('#content').on('change keyup keydown paste cut', function () {
 		if(this.scrollHeight <= 250)
         $(this).height(0).height(this.scrollHeight);

@@ -60,30 +60,44 @@ if(isset($_GET["continueRequest"])){ ?>
 <?php } 
 if(isset($_GET["addRequest"])){
     extract($_POST);
-    $notif = $conn->query("SELECT * FROM request WHERE UsersID={$_SESSION['UsersID']} AND status='Pending'");
-    $row_cnt = mysqli_num_rows($notif);
-    if($row_cnt >= 1){
-        header("location: ../request.php?error=pendingReq");
-        exit();
-    }
+    $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID=$document");
+    $data = $sql->fetch_assoc();
+
     $userType = 'Purok Leader';
-    if($document == 'Cedula'){
+    if($data['documentName'] == 'Cedula'){
         $amount = 5 + ($monthlySalary / 1000);
     }
     else{
-        $amount = $price;
+        $amount = $data['docPrice'];
     }
     
     mysqli_begin_transaction($conn);
 
+    $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has requested a {$data['documentName']}', 'request', '$userType')");
     $a1 = mysqli_query($conn, "INSERT INTO request (UsersID, userBarangay, userPurok, documentType, purpose, amount, userType)
-    SELECT {$_SESSION['UsersID']}, userBarangay, userPurok, '$document', '$purpose', $amount, '$userType'
+    SELECT {$_SESSION['UsersID']}, userBarangay, userPurok, '{$data['documentName']}', '$purpose', $amount, 'Purok Leader'
     FROM users
     WHERE users.UsersID = {$_SESSION['UsersID']};");
-    $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has requested a $document', 'request', '$userType')");
+    
 
     if($a2 && $a1){
+        if(isset($img)){
+            $id = mysqli_insert_id($conn);
+            echo $id;
+            mkdir('../img/erequest/'.$id);
+            for($i = 0 ; $i< count($img);$i++){
+                list($type, $img[$i]) = explode(';', $img[$i]);
+                list(, $img[$i])      = explode(',', $img[$i]);
+                $img[$i] = str_replace(' ', '+', $img[$i]);
+                $img[$i] = base64_decode($img[$i]);
+                $fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+                $upload = file_put_contents('../img/erequest/'.$id.'/'.$fname,$img[$i]);
+                $data = " file_path = '".$fname."' ";
+            }
+        }
+
         mysqli_commit($conn);
+
         header("location: ../request.php?error=none"); 
         exit();
     }
@@ -129,10 +143,25 @@ elseif(isset($_GET["release"])){
         exit();
     }
 }
-elseif(isset($_GET['success'])){
-    echo "Success!";
-}
+elseif(isset($_GET['additionalInput'])){
+    $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID={$_GET['DocumentID']}");
+    $result = "";
+    $data = $sql->fetch_assoc();
 
+    if($data['documentName'] == 'Cedula'){
+        $result .= "<label>Enter monthly salary: </label><input class='form-control' style='width: 75%' type='text' name='monthlySalary' id='monthlySalary' required>";
+    }
+    else{
+        if($data['allowFee'] == 'True'){
+            $result .= "<p>Price: <b>". $data['docPrice'] ."</b></p>";
+        }
+        else{
+            $result .= "<p>Price: <b>Free</b></p>";
+        }
+    }
+    
+    echo $result;
+}
 elseif(isset($_GET["approveID"])){
     $id = $_GET['approveID'];
 
@@ -307,5 +336,86 @@ if(isset($_GET['paid'])){
     // header("location: ../request.php?error=none"); //no errors were made
     // exit();
 }
+if(isset($_GET['viewRequirement'])): 
+$gal = scandir('../img/erequest/'.$_GET['id']);
+unset($gal[0]);
+unset($gal[1]);
+$count =count($gal);
+$i = 0;?>
+    
+    <style>
+        .slide img,.slide video{
+            max-width:100%;
+            max-height:100%;
+        }
+        #uni_modal .modal-footer{
+            display:none
+        }
+    </style>
+    <script src="./vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
+    <div class="container-fluid" style="height:75vh">
+        <div class="row h-100">
+            <div class="col bg-dark h-100">
+                <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
+                    <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
+                    <?php
+                        foreach($gal as $k => $v):
+                            $mime = mime_content_type('../img/erequest/'.$_GET['id'].'/'.$v);
+                            $i++;
+                    ?>
+                    <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
+                    <?php if(strstr($mime,'image')): ?>
+                        <img src="./img/erequest/<?php echo $_GET['id'].'/'.$v ?>" class="" alt="Image 1">
+                    <?php else: ?>
+                        <video controls class="">
+                                <source src="./img/erequest/<?php echo $_GET['id'].'/'.$v ?>" type="<?php echo $mime ?>">
+                        </video>
+                    <?php endif; ?>
+                    </div>
+                    <?php endforeach; ?>
+                    <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#next').click(function(){
+        var cslide = $('.slide:visible').attr('data-slide')
+        if(cslide == '<?php echo $i ?>'){
+            return false;
+        }
+        $('.slide:visible').removeClass('d-flex').addClass("d-none")
+        $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
+    })
+    $('#prev').click(function(){
+        var cslide = $('.slide:visible').attr('data-slide')
+        if(cslide == 1){
+            return false;
+        }
+        $('.slide:visible').removeClass('d-flex').addClass("d-none")
+        $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
+    })
+    $('.comment-textfield').on('keypress', function (e) {
+        if(e.which == 13 && e.shiftKey == false){
+            var post_id = $(this).attr('data-id')
+            var comment = $(this).val()
+            $(this).val('')
+            $.ajax({
+                url:'includes/comment.inc.php',
+                method:'POST',
+                data:{post_id:post_id,comment:comment},
+                success:function(){
+                    location.reload();
+                }
+            })
+            return false;
+            }
+    })
+    $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
+        if(this.scrollHeight <= 117)
+        $(this).height(0).height(this.scrollHeight);
+    })
+</script>
 
-?>
+<?php endif; ?>

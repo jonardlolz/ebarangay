@@ -36,6 +36,33 @@ session_start();
         </div>
     </form>
 </div>
+
+<?php elseif(isset($_GET['addRequirement']) || isset($_GET['editRequirement'])): ?>
+<div class="container-fluid">
+    <?php if(isset($_GET['addRequirement'])): ?>
+        <form action="includes/document.inc.php?addRequirementPost&docuType=<?php echo $_GET['docuType'] ?>" method="POST">
+    <?php elseif(isset($_GET['editRequirement'])): ?>
+        <form action="includes/document.inc.php?editRequirementPost&docuType=<?php echo $_GET['docuType'] ?>&requirementID=<?php echo $_GET['requirementID'] ?>" method="POST">
+    <?php endif; ?>
+        <?php if(isset($_GET['editRequirement'])){
+            $sql = $conn->query("SELECT * FROM requirementlist WHERE requirementID='{$_GET['requirementID']}'");
+            $editPurpose = $sql->fetch_assoc();
+        } ?>
+        <div class="form-group row">
+            <div class="col-sm-5" style="text-align: right">
+                <label>Requirement Name:</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="requirementName" placeholder="Requirement Name" 
+                <?php if(isset($_GET['editRequirement'])): ?> 
+                    value="<?php echo $editPurpose['requirementName'] ?>">
+                <?php endif; ?>
+                </input>
+            </div>
+        </div>
+    </form>
+</div>
+
 <?php elseif(isset($_GET['viewPurpose'])): 
     $purposeSql = $conn->query("SELECT documentpurpose.*, documenttype.* FROM documentpurpose LEFT JOIN documenttype ON barangayDoc=documentID WHERE barangayDoc='{$_GET['docuType']}' AND barangay='{$_SESSION['userBarangay']}'");
     $purpose = $purposeSql->fetch_assoc();
@@ -46,47 +73,179 @@ session_start();
     }
 </style>
 <div class="container-fluid">
-    <div class="row justify-content-end">
-        <button class="btn btn-primary add_purpose" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>" style="margin-bottom: 15px">Add Purpose</button>
-    </div>
-    <div class="row">
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark" 
-            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                <thead>
-                    <tr class="bg-gradient-secondary text-white">
-                        <th>Purpose</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                        $sql=$conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='{$_GET['docuType']}' AND barangay='{$_SESSION['userBarangay']}'");
-                        $x = 0;
-                        while($row=$sql->fetch_assoc()):
-                        
-                    ?>
-                    <tr>
-                        <td><?php echo $row['purpose'] ?></td>
-                        <td>
-                            <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $_GET['docuType'] ?>"><i class="fas fa-edit"></i></a>
-                            <a href="javascript:void(0)" class="delete_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $row['purposeID'] ?>"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    
-                    <?php 
-                        $x++; endwhile; 
-                        if($x <= 0):
-                    ?>
-                    <tr>
-                        <td colspan="6" class="align-center">No data in this table.</td>
-                        
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="purposes-tab" data-toggle="tab" href="#purposes" role="tab" aria-controls="purposes" aria-selected="false">Purposes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="requirements-tab" data-toggle="tab" href="#requirements" role="tab" aria-controls="requirements" aria-selected="false">Requirements</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+            <div class="container-fluid m-3">
+                <?php $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID={$_GET['docuType']}");
+                $documentinfo = $sql->fetch_assoc(); ?>
+                <form action="includes/document.inc.php?postdocumentEdit&barangayid=<?php echo $documentinfo['DocumentID'] ?>" method="POST">
+                    <div class="form-group col">
+                        <div class="form-group row">
+                            <div class="col">
+                                Document name:
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" type="text" name="documentName" value="<?php echo $documentinfo['documentName'] ?>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Document description:
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" type="text" name="documentDesc" value="<?php echo $documentinfo['documentDesc'] ?>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Minimum months residing in Barangay:
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" type="text" name="minimumMos" value="<?php echo $documentinfo['minimumMos'] ?>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Required voter?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True" <?php if($documentinfo['VoterRequired']=='True'): echo 'checked'; endif; ?>>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Include fee?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" <?php if($documentinfo['allowFee']=='True'): echo 'checked'; endif; ?>>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="priceField">
+                            <div class="col">
+                                Price: 
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="<?php echo $documentinfo['docPrice'] ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit "class="btn-sm btn-success">Save</button>
+                    </div>
+                </form>
+                <script>
+                    showPriceField();
+                    function showPriceField(){
+                        var allowFee = document.getElementById("allowFee");
+                        priceField.style.display = allowFee.checked ? "flex" : "none";
+                    }
+                </script>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="purposes" role="tabpanel" aria-labelledby="purposes-tab">
+            <div class="container-fluid">
+                <div class="d-flex flex-row-reverse m-2">
+                    <button class="btn btn-primary add_purpose" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>">Add Purpose</button>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" 
+                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th>Purpose</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    $sql=$conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='{$_GET['docuType']}' AND barangay='{$_SESSION['userBarangay']}'");
+                                    $x = 0;
+                                    while($row=$sql->fetch_assoc()):
+                                    
+                                ?>
+                                <tr>
+                                    <td><?php echo $row['purpose'] ?></td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $_GET['docuType'] ?>"><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="delete_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $row['purposeID'] ?>"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                
+                                <?php 
+                                    $x++; endwhile; 
+                                    if($x <= 0):
+                                ?>
+                                <tr>
+                                    <td colspan="6" class="align-center">No data in this table.</td>
+                                    
+                                </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="requirements" role="tabpanel" aria-labelledby="requirements-tab">
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-row-reverse m-2">
+                    <button class="btn btn-primary add_requirement" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>">Add Requirement</button>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" 
+                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th>Requirement</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    $sql=$conn->query("SELECT * FROM requirementlist WHERE DocumentID={$_GET['docuType']}");
+                                    $x = 0;
+                                    while($row=$sql->fetch_assoc()):
+                                    
+                                ?>
+                                <tr>
+                                    <td><?php echo $row['requirementName'] ?></td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="edit_requirement" data-id="<?php echo $row['requirementID'] ?>" data-docu="<?php echo $_GET['docuType'] ?>"><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="delete_requirement" data-id="<?php echo $row['requirementID'] ?>" data-docu="<?php echo $row['requirementID'] ?>"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                
+                                <?php 
+                                    $x++; endwhile; 
+                                    if($x <= 0):
+                                ?>
+                                <tr>
+                                    <td colspan="6" class="align-center">No data in this table.</td>
+                                    
+                                </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    
 </div>
 
 <?php elseif(isset($_GET['addDocument'])): ?>
@@ -94,7 +253,7 @@ session_start();
 <div class="container-fluid">
     <form action="includes/document.inc.php?postdocumentAdd&barangay=<?php echo $_GET['barangay'] ?>" method="POST">
         <div class="form-group col">
-            <div class="row">
+            <div class="form-group row">
                 <div class="col">
                     Document name:
                 </div>
@@ -102,7 +261,7 @@ session_start();
                     <input class="form-control form-control-sm" type="text" name="documentName">
                 </div>
             </div>
-            <div class="row">
+            <div class="form-group row">
                 <div class="col">
                     Document description:
                 </div>
@@ -110,7 +269,23 @@ session_start();
                     <input class="form-control form-control-sm" type="text" name="documentDesc">
                 </div>
             </div>
-            <div class="row">
+            <div class="form-group row">
+                <div class="col">
+                    Minimum months residing in Barangay:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="number" name="minimumMos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Required voter?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True">
+                </div>
+            </div>
+            <div class="form-group row">
                 <div class="col">
                     Include fee?
                 </div>
@@ -118,7 +293,7 @@ session_start();
                     <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" checked>
                 </div>
             </div>
-            <div class="row" id="priceField">
+            <div class="form-group row" id="priceField">
                 <div class="col">
                     Price: 
                 </div>
@@ -206,6 +381,27 @@ session_start();
     exit();
 ?>
 
+<?php elseif(isset($_GET['delete_document'])):
+    extract($_POST);
+    $sql = "DELETE FROM documenttype WHERE DocumentID=$id";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+
+?>
+
 <?php elseif(isset($_GET['add'])): 
     extract($_POST);
     $sql = "INSERT INTO documentpurpose(purpose, barangayDoc, barangay)
@@ -246,6 +442,67 @@ session_start();
     header("location: ../request.php?error=none"); //no errors were made
     exit();
 ?>
+
+<?php elseif(isset($_GET['addRequirementPost'])): 
+    extract($_POST);
+    $sql = "INSERT INTO requirementlist(requirementName, DocumentID)
+            VALUES('$requirementName', '{$_GET['docuType']}')";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+    
+?>
+<?php elseif(isset($_GET['editRequirementPost'])):
+    extract($_POST);
+    $sql = "UPDATE requirementlist SET requirementName='$requirementName' WHERE requirementID={$_GET['requirementID']}";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+?>
+<?php elseif(isset($_GET['deleteRequirement'])):
+    extract($_POST);
+    $sql = "DELETE FROM requirementlist WHERE requirementID=$id";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+?>
+
 <?php elseif(isset($_GET['postdocumentAdd'])): 
     extract($_POST);
     
@@ -253,9 +510,12 @@ session_start();
         $documentFee = 'False';
         $documentPrice = '0';
     }
+    if($requiredVoter == ''){
+        $requiredVoter = 'False';
+    }
 
-    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee, docPrice)
-            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee', '$documentPrice')";
+    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee, docPrice, VoterRequired, minimumMos)
+            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee', '$documentPrice', '$requiredVoter', '$minimumMos')";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -280,8 +540,12 @@ session_start();
         $documentFee = 'False';
         $documentPrice = '0';
     }
+    if($requiredVoter == ''){
+        $requiredVoter = 'False';
+    }
 
-    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc', docPrice='$documentPrice' WHERE DocumentID={$_GET['barangayid']}";
+
+    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc', docPrice='$documentPrice', minimumMos='$minimumMos', VoterRequired='$requiredVoter' WHERE DocumentID={$_GET['barangayid']}";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -452,10 +716,30 @@ session_start();
     $('.delete_purpose').click(function(){
         _conf("Are you sure you want to delete this purpose?","deletePurpose",[$(this).attr('data-id')]);
     })
+    $('.add_requirement').click(function(){
+        secondary_modal("<center><b>Add requirement for " + "<?php echo $documentinfo['documentName'] ?>" + "</b></center></center>","includes/document.inc.php?addRequirement&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id'));
+    })
+    $('.edit_requirement').click(function(){
+        secondary_modal("<center><b>Edit requirement for " + "<?php echo $documentinfo['documentName'] ?>" + "</b></center></center>","includes/document.inc.php?editRequirement&docuType="+$(this).attr('data-docu')+"&requirementID="+$(this).attr('data-id'));
+    })
+    $('.delete_requirement').click(function(){
+        _conf("Are you sure you want to delete this requirement?","deleteRequirement",[$(this).attr('data-id')]);
+    })
     function deletePurpose($id){
         start_load()
         $.ajax({
             url:'includes/document.inc.php?delete',
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
+    }
+    function deleteRequirement($id){
+        start_load()
+        $.ajax({
+            url:'includes/document.inc.php?deleteRequirement',
             method:'POST',
             data:{id:$id},
             success:function(){

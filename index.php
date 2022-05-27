@@ -570,11 +570,11 @@
         })
         $('.lightbox-items').click(function(e){
             e.preventDefault()
-            uni_modal("","view_attach.php?id="+$(this).attr('data-id'),"large")
+            uni_modal("","includes/post.inc.php?viewAttach&id="+$(this).attr('data-id'),"modal-lg")
         })
         $('.view_more').click(function(e){
             e.preventDefault()
-            uni_modal("","view_attach.php?id="+$(this).attr('data-id'),"large")
+            uni_modal("","includes/post.inc.php?viewAttach&id="+$(this).attr('data-id'),"modal-lg")
         })
         $('.like').click(function(){
             var _this = $(this)
