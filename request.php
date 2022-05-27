@@ -668,10 +668,14 @@
                                         <td><?php echo $row["purpose"] ?></td>
                                         <td><?php echo $row["requestedDate"] ?></td>
                                         <td>
-                                            <button class="btn btn-primary viewRequirement" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-eye"></i> View</button>
-                                            <!-- <a href="includes/request.inc.php?approveID=<?php echo $row["RequestID"] ?>">
+                                            <?php if(is_dir("img/erequest/".$row['RequestID'])): ?>
+                                                <button class="btn btn-primary viewRequirement" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-eye"></i> View</button>
+                                            <?php else: ?>
+                                                <a href="includes/request.inc.php?approveID=<?php echo $row["RequestID"] ?>">
                                                 <button class="btn btn-success approve" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
-                                            </a> -->
+                                                </a>
+                                            <?php endif; ?>
+                                            
                                         </td>
                                         <!--Right Options-->
                                     </tr>
@@ -1177,7 +1181,7 @@
         }
     })
     $('.viewRequirement').click(function(){
-        uni_modal("","includes/request.inc.php?viewRequirement&id="+$(this).attr('data-id'), "modal-lg");
+        uni_modal("Requirements given","includes/request.inc.php?viewRequirement&id="+$(this).attr('data-id'), "modal-lg");
     })
     $('#print').click(function(){
         print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));

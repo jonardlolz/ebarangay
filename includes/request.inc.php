@@ -378,6 +378,10 @@ $i = 0;?>
             </div>
         </div>
     </div>
+    <div class="footer d-flex flex-row-reverse">
+        <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Approve</button>
+        <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Disapprove</button>
+    </div>
 </div>
 <script>
     $('#next').click(function(){
