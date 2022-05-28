@@ -179,6 +179,7 @@
                                 <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
                             <?php elseif($row['electionStatus'] == "Ongoing"): ?>
                                 <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
+                                <button class="btn btn-danger btn-sm cancel_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-times"></i> Cancel</button>
                             <?php elseif($row['electionStatus'] == "Finished"): ?>
                                 <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
                             <?php endif; ?>
@@ -459,6 +460,9 @@
         $('.finish_election').click(function(){
         _conf("Finishing election cannot be undone. <br> Do you want to continue? ","finishElection",[$(this).attr('data-id')])
         })
+        $('.cancel_election').click(function(){
+        _conf("Cancelling election will result to no winners. <br> Do you want to continue? ","cancelElection",[$(this).attr('data-id')])
+        })
         function startElection($id){
                 start_load()
                 $.ajax({
@@ -481,6 +485,17 @@
                     }
                 })
             }
+        function cancelElection($id){
+            start_load()
+            $.ajax({
+                url:'includes/finishElection.inc.php?cancel',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         function deleteCandidate($id){
                 start_load()
                 $.ajax({

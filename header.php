@@ -3,15 +3,14 @@
     error_reporting(E_ALL ^ E_NOTICE);
     session_start();
     include 'includes/dbh.inc.php';
-    $userCheck = $conn->query("SELECT * FROM users WHERE UsersID={$_SESSION['UsersID']}")->fetch_assoc();
-    if($userCheck['Status'] == 'Deactivated'){
-        header("location: reactivate.php");
-    }
-
     if(isset($_SESSION["UsersID"]) == NULL)
     {
         header("location: login.php");//return to login.php if error
         exit();     //stop the script
+    }
+    $userCheck = $conn->query("SELECT * FROM users WHERE UsersID={$_SESSION['UsersID']}")->fetch_assoc();
+    if($userCheck['Status'] == 'Deactivated'){
+        header("location: reactivate.php");
     }
     else{
         $profile_pic = $_SESSION["profile_pic"];

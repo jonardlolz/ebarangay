@@ -54,6 +54,7 @@
 
     <script src="vendor/chart.js/Chart.js"></script>
     <script>
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
         <?php
             $elections = $conn->query("SELECT electionID, UsersID, candidateID, MAX(voteResults) as voteResults, position, concat(Firstname, ' ', Lastname) as name
             FROM (SELECT candidates.UsersID, votes.candidateID, COUNT(votes.candidateID) as voteResults, votes.position, votes.electionID, users.Firstname, users.Lastname

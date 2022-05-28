@@ -41,6 +41,26 @@ if(isset($_GET['finish'])){
 
 }
 
+else if(isset($_GET['cancel'])){
+    $sql = $conn->query("UPDATE election SET electionStatus='Cancelled' WHERE electionID=$id");
+
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        header("location: ../election.php?error=stmtfailed");
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        header("location: ../election.php?error=sqlExecError");
+        exit();
+    }
+
+    mysqli_stmt_close($stmt);
+    
+    header("location: ../election.php?error=none");
+    exit();
+}
+
 else if(isset($_GET['start'])){
     $sql = $conn->query("UPDATE election SET electionStatus='Ongoing' WHERE electionID=$id");
 
