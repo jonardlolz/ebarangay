@@ -11,101 +11,147 @@ if(isset($_GET['edit'])):
 	}
 ?>
 <div class="container-fluid">
-    <form action="includes/edit_account.inc.php?id=<?php echo $id ?>" class="user" method="post">
-        <div class="m-2">
-            <strong>Personal Information</strong>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-account-tab" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="true">Account</a>
+            <?php if($userType == 'Resident'): ?>
+            <a class="nav-item nav-link" id="nav-deactivation-tab" data-toggle="tab" href="#nav-deactivation" role="tab" aria-controls="nav-deactivation" aria-selected="false">Deactivation</a>
+            <?php endif; ?>
         </div>
-        <div class="form-group row">    <!--Nmae-->
-            <div class="col-sm-3">
-                <input type="text" class="form-control form-control-sm" id="FirstName"
-                    name="Firstname" placeholder="First Name" value="<?php echo $Firstname ?>">
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+            <form action="includes/edit_account.inc.php?id=<?php echo $id ?>" class="user" method="post">
+                <div class="m-2">
+                    <strong>Personal Information</strong>
+                </div>
+                <div class="form-group row">    <!--Nmae-->
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-sm" id="FirstName"
+                            name="Firstname" placeholder="First Name" value="<?php echo $Firstname ?>">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-sm" id="MiddleName"
+                            name="Middlename" placeholder="Middle Name" value="<?php echo $Middlename ?>">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-sm" id="LastName"
+                            name="Lastname" placeholder="Last Name" value="<?php echo $Lastname ?>">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-sm" id="suffixName"
+                            name="suffixName" list="suffix" placeholder="Suffix" value="">
+                        <datalist id="suffix">
+                            <option value="Jr"></option>
+                            <option value="Sr"></option>
+                            <option value="I"></option>
+                            <option value="II"></option>
+                            <option value="III"></option>
+                            <option value="IV"></option>
+                            <option value="V"></option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="date" class="form-control form-control-sm" placeholder="Birthdate" 
+                        name="userDOB" id="userDOB" value="<?php echo $dateofbirth ?>"></input>
+                    </div>
+                    <div class="col-sm-6">
+                        <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
+                            <option value="<?php echo $civilStat ?>" hidden selected><?php echo $civilStat ?></option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row"><!--Civil status-->
+                    <div class="col-sm-6">
+                        <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
+                            <option value="<?php echo $userGender ?>" hidden selected><?php echo $userGender ?></option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="m-2">
+                    <strong>Contact Information</strong>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-6 col-sm-6">
+                        <input type="text" class="form-control form-control-sm" name="phoneNum" id="phoneNum" placeholder="Mobile Number" value="<?php echo $phoneNum ?>"></input>
+                    </div>
+                    <div class="col-lg-6 col-sm-6">
+                        <input type="text" class="form-control form-control-sm" name="teleNum" id="teleNum" placeholder="Telephone Number" value="<?php echo $teleNum ?>"></input>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-6 col-sm-6">
+                        <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $emailAdd ?>"></input>
+                    </div>
+                </div>
+                <div class="m-2">
+                    <strong>Address Information</strong>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
+                            <option value="<?php echo $userBarangay ?>" hidden selected><?php echo $userBarangay ?></option>
+                            <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
+                            while($brow = $barangay->fetch_assoc()): ?>  
+                                <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
+                            <option value="<?php echo $userPurok ?>" selected hidden><?php echo $userPurok ?></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $userHouseNum ?>" required>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+        <?php if($userType == 'Resident'): ?>
+        <div class="tab-pane fade" id="nav-deactivation" role="tabpanel" aria-labelledby="nav-deactivation-tab">
+            <div class="d-flex justify-content-center m-4">
+                <button class="btn btn-danger deactivate_account" data-id="<?php echo $id ?>"><i class="fas fa-danger"></i> Deactivate Account</button>
             </div>
-            <div class="col-sm-3">
-                <input type="text" class="form-control form-control-sm" id="MiddleName"
-                    name="Middlename" placeholder="Middle Name" value="<?php echo $Middlename ?>">
-            </div>
-            <div class="col-sm-3">
-                <input type="text" class="form-control form-control-sm" id="LastName"
-                    name="Lastname" placeholder="Last Name" value="<?php echo $Lastname ?>">
-            </div>
-            <div class="col-sm-3">
-                <input type="text" class="form-control form-control-sm" id="suffixName"
-                    name="suffixName" list="suffix" placeholder="Suffix" value="">
-                <datalist id="suffix">
-                    <option value="Jr"></option>
-                    <option value="Sr"></option>
-                    <option value="I"></option>
-                    <option value="II"></option>
-                    <option value="III"></option>
-                    <option value="IV"></option>
-                    <option value="V"></option>
-                </datalist>
+            <div class="d-flex justify-content-center m-4">
+                <section>
+                    <i style="color: #c41508;">Your account will be disabled. Your comments and posts will be hidden from other users. This is only temporary and you can reactivate again.</i>
+                </section>
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-sm-6">
-                <input type="date" class="form-control form-control-sm" placeholder="Birthdate" 
-                name="userDOB" id="userDOB" value="<?php echo $dateofbirth ?>"></input>
-            </div>
-            <div class="col-sm-6">
-                <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline">
-                    <option value="<?php echo $civilStat ?>" hidden selected><?php echo $civilStat ?></option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row"><!--Civil status-->
-            <div class="col-sm-6">
-                <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
-                    <option value="<?php echo $userGender ?>" hidden selected><?php echo $userGender ?></option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-        </div>
-        <div class="m-2">
-            <strong>Contact Information</strong>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="text" class="form-control form-control-sm" name="phoneNum" id="phoneNum" placeholder="Mobile Number" value="<?php echo $phoneNum ?>"></input>
-            </div>
-            <div class="col-lg-6 col-sm-6">
-                <input type="text" class="form-control form-control-sm" name="teleNum" id="teleNum" placeholder="Telephone Number" value="<?php echo $teleNum ?>"></input>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6 col-sm-6">
-                <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $emailAdd ?>"></input>
-            </div>
-        </div>
-        <div class="m-2">
-            <strong>Address Information</strong>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
-                    <option value="<?php echo $userBarangay ?>" hidden selected><?php echo $userBarangay ?></option>
-                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
-                    while($brow = $barangay->fetch_assoc()): ?>  
-                        <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="col-sm-6">
-                <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok">
-                    <option value="<?php echo $userPurok ?>" selected hidden><?php echo $userPurok ?></option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-6">
-                <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $userHouseNum ?>" required>
-            </div>
-        </div>
-    </form>
+        <?php endif; ?>
+    </div>
+    <script>
+        
+        $('.deactivate_account').click(function(){
+            _conf("Are you sure you want to deactivate your account?","deactivateAccount",[$(this).attr('data-id')])
+        })
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
+        function deactivateAccount($id){
+        start_load()
+            $.ajax({
+                url:'includes/account.inc.php?deactivateAccount',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.replace("login.php");
+                }
+            })
+        }
+    </script>
 </div>
 
 <?php elseif(isset($_GET['changePosition'])):
@@ -222,6 +268,8 @@ if(isset($_GET['edit'])):
     $('.deleteCategory').click(function(){
         _conf("Delete category?","deleteCat",[$(this).attr('data-id')])
     })
+    
+
 
     function deleteCat($id){
         start_load()
@@ -642,6 +690,43 @@ if(isset($_GET['edit'])):
             mysqli_rollback($conn);
         }  
     }
+}
+
+?>
+
+<?php if(isset($_GET['deactivateAccount'])){
+    extract($_POST);
+    mysqli_begin_transaction($conn);
+    
+    $a1 = mysqli_query($conn, "UPDATE users SET status='Deactivated' WHERE UsersID=$id");
+ 
+    if($a1){
+        mysqli_commit($conn);
+        header("location: ../login.php");
+        exit();
+    }
+    else{
+        echo("Error description: ".mysqli_error($conn));
+        mysqli_rollback($conn);
+    }  
+}
+?>
+
+<?php if(isset($_GET['activateAccount'])){
+    extract($_POST);
+    mysqli_begin_transaction($conn);
+    
+    $a1 = mysqli_query($conn, "UPDATE users SET status='Active' WHERE UsersID={$_GET['UsersID']}");
+    
+    if($a1){
+        mysqli_commit($conn);
+        header("location: ../index.php");
+        exit();
+    }
+    else{
+        echo("Error description: ".mysqli_error($conn));
+        mysqli_rollback($conn);
+    }  
 }
 
 ?>

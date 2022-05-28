@@ -42,100 +42,152 @@ if(isset($_GET['viewReklamo'])): ?>
 <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="minor-tab" data-toggle="tab" href="#minor" role="tab" aria-controls="minor" aria-selected="true">Minor</a>
+            <a class="nav-link active" id="minorpending-tab" data-toggle="tab" href="#minorpending" role="tab" aria-controls="minorpending" aria-selected="true">Pending</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="major-tab" data-toggle="tab" href="#major" role="tab" aria-controls="major" aria-selected="false">Major</a>
+            <a class="nav-link" id="minorongoing-tab" data-toggle="tab" href="#minorongoing" role="tab" aria-controls="minorongoing" aria-selected="false">Ongoing</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="minorrespondentsent-tab" data-toggle="tab" href="#minorrespondentsent" role="tab" aria-controls="minorrespondentsent" aria-selected="false">Respondents sent</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="minorresolved-tab" data-toggle="tab" href="#minorresolved" role="tab" aria-controls="minorresolved" aria-selected="false">Resolved</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="minor" role="tabpanel" aria-labelledby="minor-tab">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="minorpending-tab" data-toggle="tab" href="#minorpending" role="tab" aria-controls="minorpending" aria-selected="true">Pending</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="minorongoing-tab" data-toggle="tab" href="#minorongoing" role="tab" aria-controls="minorongoing" aria-selected="false">Ongoing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="minorrespondentsent-tab" data-toggle="tab" href="#minorrespondentsent" role="tab" aria-controls="minorrespondentsent" aria-selected="false">Respondents sent</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="minorresolved-tab" data-toggle="tab" href="#minorresolved" role="tab" aria-controls="minorresolved" aria-selected="false">Resolved</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="minorpending" role="tabpanel" aria-labelledby="minorpending-tab">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center text-dark" 
-                            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                            <thead >
-                                <tr class="bg-gradient-secondary text-white">
-                                    <th scope="col">Reklamo Type</th>
-                                    <th scope="col">Detail</th>
-                                    <th scope="col">Submitted on</th>
-                                    <th scope="col">Manage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!--Row 1-->
-                                <?php 
-                                    $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']} AND status='Pending' AND complaintLevel='Minor'");
-                                    while($row=$requests->fetch_assoc()):
-                                ?>
-                                <tr>
-                                    <td><?php echo $row["reklamoType"] ?></td>
-                                    <td><?php echo $row["detail"] ?></td>
-                                    <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
-                                    <td>
-                                        <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
-                                        data-backdrop="static"
-                                        <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
-                                        else{echo '';} ?>><i class="fas fa-times"></i> Cancel</button>
-                                    </td>
-                                    
-                                    <!--Right Options-->
-                                </tr>
-                                <?php endwhile; ?>
-                                <!--Row 1-->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="minorongoing" role="tabpanel" aria-labelledby="minorongoing-tab">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center text-dark" 
-                            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                            <thead >
-                                <tr class="bg-gradient-secondary text-white">
-                                    <th scope="col">Reklamo Type</th>
-                                    <th scope="col">Detail</th>
-                                    <th scope="col">Submitted on</th>
-                                    <th scope="col">Manage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!--Row 1-->
-                                <?php 
-                                    $requests = $conn->query("SELECT * FROM ereklamo INNER JOIN chatroom ON ReklamoID=idreference AND chatroom.type='ereklamo' WHERE UsersID={$_SESSION['UsersID']} AND status='Ongoing' AND complaintLevel='Minor'");
-                                    while($row=$requests->fetch_assoc()):
-                                ?>
-                                <tr>
-                                    <td><?php echo $row["reklamoType"] ?></td>
-                                    <td><?php echo $row["detail"] ?></td>
-                                    <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
-                                    <td>
-                                        <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
-                                    </td>
-                                    
-                                    <!--Right Options-->
-                                </tr>
-                                <?php endwhile; ?>
-                                <!--Row 1-->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="tab-pane fade show active" id="minorpending" role="tabpanel" aria-labelledby="minorpending-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Reklamo Type</th>
+                            <th scope="col">Detail</th>
+                            <th scope="col">Submitted on</th>
+                            <th scope="col">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $requests = $conn->query("SELECT * FROM ereklamo WHERE UsersID={$_SESSION['UsersID']} AND status='Pending' AND complaintLevel='Minor'");
+                            while($row=$requests->fetch_assoc()):
+                        ?>
+                        <tr>
+                            <td><?php echo $row["reklamoType"] ?></td>
+                            <td><?php echo $row["detail"] ?></td>
+                            <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm btn-flat delete_reklamo" data-id="<?php echo $row['ReklamoID'] ?>" data-toggle="modal" data-target="#confirm_modal" 
+                                data-backdrop="static"
+                                <?php if($row['status'] != 'Pending'){ echo 'disabled';} 
+                                else{echo '';} ?>><i class="fas fa-times"></i> Cancel</button>
+                            </td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="minorongoing" role="tabpanel" aria-labelledby="minorongoing-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Reklamo Type</th>
+                            <th scope="col">Detail</th>
+                            <th scope="col">Submitted on</th>
+                            <th scope="col">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $requests = $conn->query("SELECT * FROM ereklamo INNER JOIN chatroom ON ReklamoID=idreference AND chatroom.type='ereklamo' WHERE UsersID={$_SESSION['UsersID']} AND status='Ongoing' AND complaintLevel='Minor'");
+                            while($row=$requests->fetch_assoc()):
+                        ?>
+                        <tr>
+                            <td><?php echo $row["reklamoType"] ?></td>
+                            <td><?php echo $row["detail"] ?></td>
+                            <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                            <td>
+                                <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
+                            </td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="minorrespondentsent" role="tabpanel" aria-labelledby="minorrespondentsent-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Reklamo Type</th>
+                            <th scope="col">Detail</th>
+                            <th scope="col">Submitted on</th>
+                            <th scope="col">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $requests = $conn->query("SELECT * FROM ereklamo INNER JOIN chatroom ON ReklamoID=idreference AND chatroom.type='ereklamo' WHERE UsersID={$_SESSION['UsersID']} AND (status='Respondents Sent' OR status='Incoming') AND complaintLevel='Minor'");
+                            while($row=$requests->fetch_assoc()):
+                        ?>
+                        <tr>
+                            <td><?php echo $row["reklamoType"] ?></td>
+                            <td><?php echo $row["detail"] ?></td>
+                            <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                            <td>
+                                <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
+                            </td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="minorresolved" role="tabpanel" aria-labelledby="minorresolved-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Reklamo Type</th>
+                            <th scope="col">Detail</th>
+                            <th scope="col">Submitted on</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $requests = $conn->query("SELECT * FROM ereklamo INNER JOIN chatroom ON ReklamoID=idreference AND chatroom.type='ereklamo' WHERE UsersID={$_SESSION['UsersID']} AND status='Resolved' AND complaintLevel='Minor'");
+                            while($row=$requests->fetch_assoc()):
+                        ?>
+                        <tr>
+                            <td><?php echo $row["reklamoType"] ?></td>
+                            <td><?php echo $row["detail"] ?></td>
+                            <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

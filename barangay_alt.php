@@ -141,7 +141,6 @@
                                         $officials = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users
                                         WHERE (userType='Captain'
                                         OR userType='Secretary'
-                                        OR userType='Purok Leader'
                                         OR userType='Treasurer')
                                         AND userBarangay='{$row['BarangayName']}'"); ?>
                                     <?php while($i < mysqli_num_rows($officials)): ?>
@@ -176,8 +175,10 @@
                                                             </span>
                                                         </div>
                                                     </div>
+                                                    <?php if($officalRow['userType'] != 'Captain'): ?>
                                                     <a href="javascript:void(0)" class="removeOfficer fas fa-times text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="left:85%;bottom:85%;width:30px;height: 30px" data-id="<?php echo $officalRow['UsersID'] ?>">
                                                     </a>
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="text-center">
