@@ -31,6 +31,50 @@
             exit();
         }
     }
+    elseif(isset($_GET['addAccount'])){
+        if(userExists($conn, $username, $emailAdd) !== false){ //checks if user already exists in db
+            header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
+            exit();    //stop the script
+        }
+
+        $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT);
+
+        mysqli_begin_transaction($conn);
+        
+        $a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
+        civilStat, userGender, userBarangay, userPurok, userHouseNum, emailAdd, username, usersPwd, 
+        profile_pic, userType) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Resident')");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Account', 'Captain $name has added a new Resident', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../residents.php?error=none");
+            exit();
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
+        }  
+    }
+    elseif(isset($_GET['changeSecret'])){
+        $sql = "UPDATE users SET secretQuestion=?, secretAnswer=? WHERE UsersID=?"; //sql statement, insert data into users table
+
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            header("location: ../profile_alt.php?error&UsersID=".$_GET['changeSecret']);
+            exit();
+        }
+
+        mysqli_stmt_bind_param($stmt, "sss", $secretQuestion, $secretAnswer, $_GET['changeSecret']); 
+        if(!mysqli_stmt_execute($stmt)){
+            echo("Error description: " . mysqli_error($conn));
+            exit();
+        }
+        mysqli_stmt_close($stmt);
+
+        header("location: ../profile_alt.php?noerror&UsersID=".$_GET['changeSecret']);
+        exit();
+    }
     elseif(isset($_GET['addCapt'])){
         if(userExists($conn, $username, $emailAdd) !== false){ //checks if user already exists in db
             header("location: ../account.php?error=userExists"); //return to signup.php with an error msg

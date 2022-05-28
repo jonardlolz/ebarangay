@@ -14,7 +14,7 @@ session_destroy();
         header("location: forgotpass.php?changePass&UsersID={$sqlData['UsersID']}");
     }
     else{
-        header("location: forgotpass.php?wrong&username='{$_GET['username']}'");
+        header("location: forgotpass.php?wrong&username={$_GET['username']}");
     }
 }
 ?>
@@ -79,7 +79,7 @@ session_destroy();
                                                             placeholder="Enter Username" required>
                                                     </div>
                                                     <?php if($row_cnt <= 0): ?>
-                                                    <div class="alert alert-danger">Account does not exist.</div>
+                                                    <div class="alert alert-danger">Account does not exist</div>
                                                     <?php endif; ?>
                                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                                     Submit
@@ -96,6 +96,9 @@ session_destroy();
                                                                 id="secretAnswer" name="secretAnswer" aria-describedby="secretAnswer"
                                                                 placeholder="Secret Answer" required>
                                                         </div>
+                                                        <?php if(isset($_GET['wrong'])): ?>
+                                                        <div class="alert alert-danger">Wrong answer</div>
+                                                        <?php endif; ?>
                                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                                         Submit
                                                         </button>

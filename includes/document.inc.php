@@ -117,6 +117,22 @@ session_start();
                         </div>
                         <div class="form-group row">
                             <div class="col">
+                                Allow lessee?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True" <?php if($documentinfo['allowLessee']=='True'): echo 'checked'; endif; ?>>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="requireNoteField">
+                            <div class="col">
+                                Require note from Lessor?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" name="requireNote" id="requireNote" value="True" <?php if($documentinfo['requireLessorNote']=='True'): echo 'checked'; endif; ?>>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
                                 Required voter?
                             </div>
                             <div class="col">
@@ -146,6 +162,12 @@ session_start();
                     </div>
                 </form>
                 <script>
+                    showNoteField();
+                    function showNoteField(){
+                        var allowLessee = document.getElementById("allowLessee");
+                        requireNoteField.style.display = allowLessee.checked ? "flex" : "none";
+                    }
+
                     showPriceField();
                     function showPriceField(){
                         var allowFee = document.getElementById("allowFee");
@@ -279,6 +301,22 @@ session_start();
             </div>
             <div class="form-group row">
                 <div class="col">
+                    Allow lessee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True">
+                </div>
+            </div>
+            <div class="form-group row" id="requireNoteField">
+                <div class="col">
+                    Require note from Lessor?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="requireNote" id="requireNote" value="True">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
                     Required voter?
                 </div>
                 <div class="col">
@@ -298,12 +336,17 @@ session_start();
                     Price: 
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="0">
+                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
                 </div>
             </div>
         </div>
     </form>
     <script>
+        function showNoteField(){
+            var allowLessee = document.getElementById("allowLessee");
+            requireNoteField.style.display = allowLessee.checked ? "flex" : "none";
+        }
+
         function showPriceField(){
             var allowFee = document.getElementById("allowFee");
             priceField.style.display = allowFee.checked ? "flex" : "none";
@@ -332,6 +375,38 @@ session_start();
                 </div>
                 <div class="col">
                     <input class="form-control form-control-sm" type="text" name="documentDesc" value="<?php echo $documentinfo['documentDesc'] ?>">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Minimum months residing in Barangay:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="number" name="minimumMos" value="<?php echo $documentinfo['minimumMos'] ?>">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Allow lessee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True" <?php if($documentinfo['allowLessee']=='True'): echo 'checked'; endif; ?>>
+                </div>
+            </div>
+            <div class="form-group row" id="requireNoteField">
+                <div class="col">
+                    Require note from Lessor?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="requireNote" id="requireNote" value="True" <?php if($documentinfo['requireNote']=='True'): echo 'checked'; endif; ?>>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Required voter?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True" <?php if($documentinfo['requiredVoter']=='True'): echo 'checked'; endif; ?>>
                 </div>
             </div>
             <div class="row">
@@ -513,9 +588,18 @@ session_start();
     if($requiredVoter == ''){
         $requiredVoter = 'False';
     }
+    if($allowLessee == ''){
+        $allowLessee = 'False';
+        $requireNote = 'False';
+    }
+    elseif($allowLessee == 'True'){
+        if($requireNote == ''){
+            $requireNote = 'False';
+        }
+    }
 
-    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee, docPrice, VoterRequired, minimumMos)
-            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee', '$documentPrice', '$requiredVoter', '$minimumMos')";
+    $sql = "INSERT INTO documenttype(documentName, barangayName, documentDesc, allowFee, docPrice, VoterRequired, minimumMos, allowLessee, requireLessorNote)
+            VALUES('$documentName', '{$_GET['barangay']}', '$documentDesc', '$documentFee', '$documentPrice', '$requiredVoter', '$minimumMos', '$allowLessee', '$requireNote')";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -543,9 +627,18 @@ session_start();
     if($requiredVoter == ''){
         $requiredVoter = 'False';
     }
+    if($allowLessee == ''){
+        $allowLessee = 'False';
+        $requireNote = 'False';
+    }
+    elseif($allowLessee == 'True'){
+        if($requireNote == ''){
+            $requireNote = 'False';
+        }
+    }
 
 
-    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc', docPrice='$documentPrice', minimumMos='$minimumMos', VoterRequired='$requiredVoter' WHERE DocumentID={$_GET['barangayid']}";
+    $sql = "UPDATE documenttype SET documentName='$documentName', allowFee='$documentFee', documentdesc='$documentDesc', docPrice='$documentPrice', minimumMos='$minimumMos', VoterRequired='$requiredVoter', allowLessee='$allowLessee', requireLessorNote='$requireNote' WHERE DocumentID={$_GET['barangayid']}";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));

@@ -60,52 +60,106 @@ if(isset($_GET["continueRequest"])){ ?>
 <?php } 
 if(isset($_GET["addRequest"])){
     extract($_POST);
-    $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID=$document");
-    $data = $sql->fetch_assoc();
+    if($_SESSION['userType'] == 'Purok Leader' || $_SESSION['userType'] == 'Treasurer' || $_SESSION['userType'] == 'Secretary' || $_SESSION['userType'] == 'Councilor' || $_SESSION['userType'] == 'Captain' ){
+        $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID=$document");
+        $data = $sql->fetch_assoc();
 
-    $userType = 'Purok Leader';
-    if($data['documentName'] == 'Cedula'){
-        $amount = 5 + ($monthlySalary / 1000);
-    }
-    else{
-        $amount = $data['docPrice'];
-    }
-    
-    mysqli_begin_transaction($conn);
-
-    $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has requested a {$data['documentName']}', 'request', '$userType')");
-    $a1 = mysqli_query($conn, "INSERT INTO request (UsersID, userBarangay, userPurok, documentType, purpose, amount, userType)
-    SELECT {$_SESSION['UsersID']}, userBarangay, userPurok, '{$data['documentName']}', '$purpose', $amount, 'Purok Leader'
-    FROM users
-    WHERE users.UsersID = {$_SESSION['UsersID']};");
-    
-
-    if($a2 && $a1){
-        if(isset($img)){
-            $id = mysqli_insert_id($conn);
-            echo $id;
-            mkdir('../img/erequest/'.$id);
-            for($i = 0 ; $i< count($img);$i++){
-                list($type, $img[$i]) = explode(';', $img[$i]);
-                list(, $img[$i])      = explode(',', $img[$i]);
-                $img[$i] = str_replace(' ', '+', $img[$i]);
-                $img[$i] = base64_decode($img[$i]);
-                $fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
-                $upload = file_put_contents('../img/erequest/'.$id.'/'.$fname,$img[$i]);
-                $data = " file_path = '".$fname."' ";
-            }
+        $userType = 'Purok Leader';
+        if($data['documentName'] == 'Cedula'){
+            $amount = 5 + ($monthlySalary / 1000);
         }
+        else{
+            $amount = $data['docPrice'];
+        }
+        
+        mysqli_begin_transaction($conn);
 
-        mysqli_commit($conn);
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A new request is ready for payment', 'request', 'Treasurer')");
+        $a1 = mysqli_query($conn, "INSERT INTO request (UsersID, userBarangay, userPurok, status, documentType, purpose, amount, userType)
+        SELECT {$_SESSION['UsersID']}, userBarangay, userPurok, 'Approved', '{$data['documentName']}', '$purpose', $amount, 'Treasurer'
+        FROM users
+        WHERE users.UsersID = {$_SESSION['UsersID']};");
+        
 
-        header("location: ../request.php?error=none"); 
-        exit();
+        if($a2 && $a1){
+            if(isset($img)){
+                $id = mysqli_insert_id($conn);
+                echo $id;
+                mkdir('../img/erequest/'.$id);
+                for($i = 0 ; $i< count($img);$i++){
+                    list($type, $img[$i]) = explode(';', $img[$i]);
+                    list(, $img[$i])      = explode(',', $img[$i]);
+                    $img[$i] = str_replace(' ', '+', $img[$i]);
+                    $img[$i] = base64_decode($img[$i]);
+                    $fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+                    $upload = file_put_contents('../img/erequest/'.$id.'/'.$fname,$img[$i]);
+                    $data = " file_path = '".$fname."' ";
+                }
+            }
+
+            mysqli_commit($conn);
+            if($_SESSION['userType'] == 'Treasuer'){
+                header("location: ../payment.php?error=none"); 
+                exit();
+            }
+            header("location: ../request.php?error=none"); 
+            exit();
+        }
+        else{
+            mysqli_rollback($conn);
+            header("location: ../request.php?error=error"); 
+            exit();
+        }
     }
     else{
-        mysqli_rollback($conn);
-        header("location: ../request.php?error=error"); 
-        exit();
+        $sql = $conn->query("SELECT * FROM documenttype WHERE DocumentID=$document");
+        $data = $sql->fetch_assoc();
+
+        $userType = 'Purok Leader';
+        if($data['documentName'] == 'Cedula'){
+            $amount = 5 + ($monthlySalary / 1000);
+        }
+        else{
+            $amount = $data['docPrice'];
+        }
+        
+        mysqli_begin_transaction($conn);
+
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A resident has requested a {$data['documentName']}', 'request', '$userType')");
+        $a1 = mysqli_query($conn, "INSERT INTO request (UsersID, userBarangay, userPurok, documentType, purpose, amount, userType)
+        SELECT {$_SESSION['UsersID']}, userBarangay, userPurok, '{$data['documentName']}', '$purpose', $amount, 'Purok Leader'
+        FROM users
+        WHERE users.UsersID = {$_SESSION['UsersID']};");
+        
+
+        if($a2 && $a1){
+            if(isset($img)){
+                $id = mysqli_insert_id($conn);
+                echo $id;
+                mkdir('../img/erequest/'.$id);
+                for($i = 0 ; $i< count($img);$i++){
+                    list($type, $img[$i]) = explode(';', $img[$i]);
+                    list(, $img[$i])      = explode(',', $img[$i]);
+                    $img[$i] = str_replace(' ', '+', $img[$i]);
+                    $img[$i] = base64_decode($img[$i]);
+                    $fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+                    $upload = file_put_contents('../img/erequest/'.$id.'/'.$fname,$img[$i]);
+                    $data = " file_path = '".$fname."' ";
+                }
+            }
+
+            mysqli_commit($conn);
+
+            header("location: ../request.php?error=none"); 
+            exit();
+        }
+        else{
+            mysqli_rollback($conn);
+            header("location: ../request.php?error=error"); 
+            exit();
+        }
     }
+    
 }
 elseif(isset($_GET["release"])){
     $id = $_POST['id'];
@@ -271,6 +325,36 @@ elseif(isset($_GET["approveID"])){
         }
     }
 }
+elseif(isset($_GET["disapproveID"])){
+    $id = $_GET['disapproveID'];
+
+    $requestRes = $conn->query("
+    SELECT request.*, users.Firstname, users.Lastname, users.emailAdd, users.phoneNum
+    FROM request 
+    INNER JOIN users 
+    ON request.UsersID = users.UsersID
+    WHERE requestID = {$id};
+    ");
+    $requestData = $requestRes->fetch_assoc();
+
+    $approvedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
+
+    $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', 'Purok Leader has disapproved request#$id for not meeting the requirements.', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
+    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='Disapproved', request.userType='Purok Leader' WHERE RequestID=$id");
+    $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has disapproved your request for {$requestData['documentType']}. Reason: The request did not meet the requirements.', 'request', '{$requestData['UsersID']}', 'Resident')");
+
+    
+    if($a1 && $a2 && $a3){
+        mysqli_commit($conn);
+        header("location: ../request.php?error=none"); //no errors were made
+        exit();
+    }
+    else{
+        mysqli_rollback($conn);
+        header("location: ../request.php?error=error"); //no errors were made
+        exit();
+    }
+}
 elseif(isset($_GET["declineID"])){
     $id = $_GET["declineID"];
 
@@ -336,8 +420,39 @@ if(isset($_GET['paid'])){
     // header("location: ../request.php?error=none"); //no errors were made
     // exit();
 }
+if(isset($_GET['unpaid'])){
+    extract($_POST);
+
+    $requestRes = $conn->query("
+    SELECT request.*, users.Firstname, users.Lastname, users.emailAdd, users.phoneNum
+    FROM request 
+    INNER JOIN users 
+    ON request.UsersID = users.UsersID
+    WHERE requestID = {$id};
+    ");
+    $requestData = $requestRes->fetch_assoc();
+
+    $approvedBy = "'".$_SESSION['Lastname']. ', ' . $_SESSION['Firstname']."'";
+    
+    mysqli_begin_transaction($conn);
+    $reportMessage = "Treasurer ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has cancelled the payment for RequestID#". $id;
+    $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
+    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy=$approvedBy, status='Cancelled', request.userType='Treasurer' WHERE RequestID=$id");
+    $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('Your {$requestData['documentType']} is has been cancelled for not paying in time.', 'request', '{$requestData['UsersID']}', 'Resident')");
+
+    if($a1 && $a2 && $a4){
+        mysqli_commit($conn);
+        header("location: ../request.php?error=none"); //no errors were made
+        exit();
+    }
+    else{
+        mysqli_rollback($conn);
+        header("location: ../request.php?error=error"); //no errors were made
+        exit();
+    }
+}
 if(isset($_GET['viewRequirement'])): 
-$gal = scandir('../img/erequest/'.$_GET['id']);
+$gal = scandir('../img/erequest/'.$_GET['RequestID']);
 unset($gal[0]);
 unset($gal[1]);
 $count =count($gal);
@@ -353,22 +468,27 @@ $i = 0;?>
         }
     </style>
     <script src="./vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
+    <?php 
+    $documentSql=$conn->query("SELECT * FROM request INNER JOIN documenttype ON documenttype.documentName=request.documentType AND documenttype.BarangayName='{$_SESSION['userBarangay']}' WHERE RequestID={$_GET['RequestID']}")->fetch_assoc(); 
+    $userSql=$conn->query("SELECT * FROM users WHERE UsersID={$documentSql['UsersID']}")->fetch_assoc();
+    $requirementsSql=$conn->query("SELECT * FROM requirementlist WHERE DocumentID={$documentSql['DocumentID']}");
+    ?>
     <div class="container-fluid" style="height:75vh">
         <div class="row h-100">
-            <div class="col bg-dark h-100">
+            <div class="col-lg-7 bg-dark h-100">
                 <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
                     <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
                     <?php
                         foreach($gal as $k => $v):
-                            $mime = mime_content_type('../img/erequest/'.$_GET['id'].'/'.$v);
+                            $mime = mime_content_type('../img/erequest/'.$_GET['RequestID'].'/'.$v);
                             $i++;
                     ?>
                     <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
                     <?php if(strstr($mime,'image')): ?>
-                        <img src="./img/erequest/<?php echo $_GET['id'].'/'.$v ?>" class="" alt="Image 1">
+                        <img src="./img/erequest/<?php echo $_GET['RequestID'].'/'.$v ?>" class="" alt="Image 1">
                     <?php else: ?>
                         <video controls class="">
-                                <source src="./img/erequest/<?php echo $_GET['id'].'/'.$v ?>" type="<?php echo $mime ?>">
+                                <source src="./img/erequest/<?php echo $_GET['RequestID'].'/'.$v ?>" type="<?php echo $mime ?>">
                         </video>
                     <?php endif; ?>
                     </div>
@@ -376,11 +496,35 @@ $i = 0;?>
                     <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
                 </div>
             </div>
+            <div class="col-lg-5">
+                <div class="d-flex flex-row">
+                    Requirements for 
+                </div>
+                <div class="d-flex flex-row">
+                    <b><?php echo $documentSql['documentType'] ?></b>
+                </div>
+                <div class="d-flex flex=row">
+                    <ul>
+                        <?php if($documentSql['requireLessorNote'] == 'True'): ?>
+                            <?php if($userSql['isRenting']): ?>
+                                <li>Lessor note</li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php while($row = $requirementsSql->fetch_assoc()): ?>
+                        <li><?php echo $row['requirementName'] ?></li>
+                        <?php endwhile; ?>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <div class="footer d-flex flex-row-reverse">
-        <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Approve</button>
+        <a href="includes/request.inc.php?approveID=<?php echo $_GET["RequestID"] ?>">
+            <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Approve</button>
+        </a>
+        <a href="includes/request.inc.php?disapproveID=<?php echo $_GET["RequestID"] ?>">
         <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Disapprove</button>
+        </a>
     </div>
 </div>
 <script>

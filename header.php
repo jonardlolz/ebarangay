@@ -146,8 +146,10 @@
 <!-- Topbar Navbar -->
 <ul class="navbar-nav ml-auto">
 
+    <?php if($_SESSION['userType'] != "Admin"): ?>
     <?php if(isset($_SESSION["UsersID"]) != NULL) : ?>
     <!-- Nav Item - Alerts -->
+    <?php if($_SESSION['userType'] == "Captain" || $_SESSION['userType'] == "Purok Leader" || $_SESSION['userType'] == "Resident" || $_SESSION['barangayPos'] != "None"): ?>
     <li class="nav-item dropdown no-arrow mx-1" id="chatbox" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
         <a class="nav-link dropdown-toggle" href="#" id="chatboxDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -204,6 +206,7 @@
             </div>
         </div>
     </li>
+    <?php endif; ?>
     <li class="nav-item dropdown no-arrow mx-1" id="notifications" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -283,6 +286,7 @@
         </div>
     </li>
     <?php endif; ?>
+    <?php endif; ?>
      
     <!-- Nav Item - User Information -->
     <li class="nav-item dropdown no-arrow">
@@ -354,11 +358,6 @@
         <?php if($_SESSION["userType"] == "Admin") : ?>      
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "account.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "account.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="account.php">
-                <span>Accounts</span>
-            </a>
-        </li>
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "captain.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "captain.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="captain.php">
                 <span>Captains</span>
             </a>
         </li>

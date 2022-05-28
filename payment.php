@@ -5,8 +5,367 @@
         <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-dark">Payments (<?php echo $_SESSION['userBarangay'] ?>)</h6>
         </div>
-        
         <div class="card-body" style="font-size: 75%">
+            <div class="tab-pane fade show active" id="erequest" role="tabpanel" aria-labelledby="erequest-tab">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending payments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="unpaid-tab" data-toggle="tab" href="#unpaid" role="tab" aria-controls="unpaid" aria-selected="false">Unpaid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th>Request ID</th>
+                                        <th>Requester</th>
+                                        <th>Document Type</th>
+                                        <th>Amount</th>
+                                        <th>Manage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                        DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, 
+                                        users.userType, users.profile_pic 
+                                        FROM request 
+                                        INNER JOIN users 
+                                        ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Approved' 
+                                        AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}' 
+                                        AND request.userType='{$_SESSION['userType']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $row["RequestID"] ?></td>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"]; ?>
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row['amount'] ?></td>
+                                        <td>
+                                            <button class="btn btn-success paid_request" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Paid</button>
+                                            <button class="btn btn-danger unpaid_request" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-times"></i> Unpaid</button>
+                                            <a target="_blank" href="<?php echo $row["requesturl"]?>"><button class="btn btn-primary"><i class="fas fa-money-check"></i> Gcash link</button></a>
+                                            <!-- <button data-link="<?php echo $row['requesturl'] ?>" class="btn btn-primary viewGcash"><i class="fas fa-money-check"></i> Gcash link</button> -->
+                                        </td>
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th>Requester</th>
+                                        <th>Document Type</th>
+                                        <th>Amount</th>
+                                        <th>Date Paid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                        DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, 
+                                        users.userType, users.profile_pic 
+                                        FROM request 
+                                        INNER JOIN users 
+                                        ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Paid' 
+                                        AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row['amount'] ?></td>
+                                        <td><?php echo $row['approvedOn'] ?></td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="unpaid" role="tabpanel" aria-labelledby="unpaid-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th>Requester</th>
+                                        <th>Document Type</th>
+                                        <th>Amount</th>
+                                        <th>Date Cancelled</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                        DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, 
+                                        users.userType, users.profile_pic 
+                                        FROM request 
+                                        INNER JOIN users 
+                                        ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Cancelled' 
+                                        AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row['amount'] ?></td>
+                                        <td><?php echo $row['approvedOn'] ?></td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                        <div class="container-fluid">
+                            <form action="includes/request.inc.php?addRequest" id="requestForm" method="POST">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <section>
+                                            <strong>Request Document</strong>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6 m-1">
+                                                    <label>Choose document:</label>
+                                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                        while($documents = $requestSql->fetch_assoc()): ?>
+                                                        <?php 
+                                                            if($diff <= $documents['minimumMos']){
+                                                                continue;
+                                                            }
+                                                            if($documents['allowLessee'] == "False"){
+                                                                if($userSql['isRenting'] == "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                            if($documents['VoterRequired'] == "True"){
+                                                                if($userSql['IsVoter'] != "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                                        <?php endwhile; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-5 m-1">
+                                                    <label>Purpose:</label>
+                                                    <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row p-2" id="requirementArea">
+                                                <div class="col-lg">
+                                                    <label>Requirement Needed: </label>
+                                                    <ul id="listofrequirements">
+                                                    </ul>
+                                                    <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
+                                                    <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                                                    <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                                                </div>
+                                                <div class="col-lg m-1" id="additionalInput">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6" id="">
+                                                    <div id="file-display" class="d-flex flex-row m-2">
+
+                                                        <?php 
+                                                        if(isset($id)):
+                                                        if(is_dir('../img/'.$id)):
+                                                        $gal = scandir('../img/'.$PostID);
+                                                        unset($gal[0]);
+                                                        unset($gal[1]);
+                                                        foreach($gal as $k=>$v):
+                                                            $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                                                            $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                            $data = base64_encode($img); 
+                                                        ?>
+                                                            <div class="imgF">
+                                                                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                                <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                                                <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                                                <?php if(strstr($mime,'image')): ?>
+                                                                <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                                <?php else: ?>
+                                                                <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                        <?php endif; ?>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="requestWarning" class="alert alert-danger" style="display: none;">
+                                                
+                                            </div>
+                                            <?php
+                                                if(isset($_GET["error"])){
+                                                    if($_GET["error"] == "none"){
+                                                        echo "<div class='alert alert-success' role='alert'>
+                                                        Your request has been submitted! You can check the status of your
+                                                        request on your profile.
+                                                        </div>";
+                                                    }
+                                                    if($_GET["error"] == "pendingReq"){
+                                                        echo "<div class='alert alert-danger' role='alert'>
+                                                        Your request has been denied! You still have a pending document
+                                                        in queue.
+                                                        </div>";
+                                                    }
+                                                }
+                                            ?>
+                                        </section>
+                                        <br>
+                                        <div class="m-3 p-3 text-right">
+                                            <button type="button" onclick="checkInputs()" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
+                                        </div>
+                                        <div class="imgF" style="display: none " id="img-clone">
+                                            <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </form>
+                            <script>
+                                function checkInputs(){
+                                    if(document.getElementById("requirementPic").style.display == "flex"){
+                                        if($("#postF").get(0).files.length === 0){
+                                            document.getElementById("requestWarning").innerHTML = "Please upload the requirements listed";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
+                                        }
+                                    } 
+                                    if(document.getElementById("additionalInput").innerHTML != ""){
+                                        if($("#monthlySalary").val() == ""){
+                                            document.getElementById("requestWarning").innerHTML = "Please enter a valid monthly salary";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
+                                        }
+                                        
+                                    }    
+                                    $('#requestForm').submit();
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card-body" style="font-size: 75%">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="erequest-tab" data-toggle="tab" href="#erequest" role="tab" aria-controls="erequest" aria-selected="true">eRequest</a>
@@ -43,7 +402,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!--Row 1-->
                                         <?php 
                                             $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
                                             DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
@@ -93,10 +451,8 @@
                                                 <button class="btn btn-success paid_request" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Paid</button>
                                                 <a target="_blank" href="<?php echo $row["requesturl"]?>"><button class="btn btn-primary"><i class="fas fa-money-check"></i> Gcash link</button></a>
                                             </td>
-                                            <!--Right Options-->
                                         </tr>
                                         <?php endwhile; ?>
-                                        <!--Row 1-->
                                     </tbody>
                                 </table>
                             </div>
@@ -114,7 +470,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!--Row 1-->
                                         <?php 
                                             $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
                                             DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
@@ -161,7 +516,6 @@
                                             <td><?php echo $row['approvedOn'] ?></td>
                                         </tr>
                                         <?php endwhile; ?>
-                                        <!--Row 1-->
                                     </tbody>
                                 </table>
                             </div>
@@ -236,7 +590,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!--Row 1-->
                                         <?php 
                                             $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM ereklamo INNER JOIN users ON users.UsersID=ereklamo.UsersID WHERE ereklamo.status='To be paid'");
                                             while($row=$requests->fetch_assoc()):
@@ -277,7 +630,6 @@
                                             </td>
                                         </tr>
                                         <?php endwhile; ?>
-                                        <!--Row 1-->
                                     </tbody>
                                 </table>
                             </div>
@@ -294,7 +646,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!--Row 1-->
                                         <?php 
                                             $requests = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM ereklamo INNER JOIN users ON users.UsersID=ereklamo.UsersID WHERE ereklamo.status='To Captain'");
                                             while($row=$requests->fetch_assoc()):
@@ -331,7 +682,6 @@
                                             <td><?php echo $row['reklamoFee'] ?></td>
                                         </tr>
                                         <?php endwhile; ?>
-                                        <!--Row 1-->
                                     </tbody>
                                 </table>
                             </div>
@@ -339,9 +689,7 @@
                     </div>
                 </div>
             </div>
-            
-            
-        </div>
+        </div> -->
         <!-- End of Card Body-->              
     </div>
 </div>
@@ -463,14 +811,30 @@
         $('#confirm_modal .modal-body').html($msg)
         $('#confirm_modal').modal('show')
     }
-
+    $('.viewGcash').click(function(){
+        uni_modal("<center><b>Gcash Status</b></center></center>", "" + "example.net")
+    })
     $('.paid_request').click(function(){
         _conf("Confirm this is paid?","paid_request",[$(this).attr('data-id')])
+    })
+    $('.unpaid_request').click(function(){
+        _conf("Confirm this is unpaid?","unpaid_request",[$(this).attr('data-id')])
     })
     function paid_request($id){
         start_load()
         $.ajax({
             url:'includes/request.inc.php?paid='+$(this).attr('data-id'),
+            method:'POST',
+            data:{id:$id},
+            success:function(){
+                location.reload()
+            }
+        })
+    }
+    function unpaid_request($id){
+        start_load()
+        $.ajax({
+            url:'includes/request.inc.php?unpaid='+$(this).attr('data-id'),
             method:'POST',
             data:{id:$id},
             success:function(){
@@ -490,6 +854,167 @@
             data:{id:$id},
             success:function(){
                 location.reload()
+            }
+        })
+    }
+
+    if('<?php echo isset($_GET['upload']) ?>' == 1){
+		$('#postF').trigger('click')
+	}
+	if('<?php echo isset($_GET['id']) ?>' == 1){
+		$('[name="content"]').trigger('keyup')
+	}
+	$('[name="file[]"]').change(function(){
+		displayUpload(this)
+	})
+	function displayUpload(input){
+        if(document.getElementById("requestWarning").style.display == "flex"){
+            document.getElementById("requestWarning").style.display = "none";
+        } 
+    	if (input.files) {
+		Object.keys(input.files).map(function(k){
+			var reader = new FileReader();
+				var t = input.files[k].type;
+				var _types = ['video/mp4','image/x-png','image/png','image/gif','image/jpeg','image/jpg'];
+				if(_types.indexOf(t) == -1)
+					return false;
+				reader.onload = function (e) {
+					// $('#cimg').attr('src', e.target.result);
+				var bin = e.target.result;
+				var fname = input.files[k].name;
+				var imgF = document.getElementById('img-clone');
+					imgF = imgF.cloneNode(true);
+					imgF.removeAttribute('id')
+					imgF.removeAttribute('style')
+					if(t == "video/mp4"){
+						var img = document.createElement("video");
+						}else{
+						var img = document.createElement("img");
+						}
+						var fileinput = document.createElement("input");
+						var fileinputName = document.createElement("input");
+						fileinput.setAttribute('type','hidden')
+						fileinputName.setAttribute('type','hidden')
+						fileinput.setAttribute('name','img[]')
+						fileinputName.setAttribute('name','imgName[]')
+						fileinput.value = bin
+						fileinputName.value = fname
+						img.classList.add("imgDropped")
+						img.src = bin;
+						imgF.appendChild(fileinput);
+						imgF.appendChild(fileinputName);
+						imgF.appendChild(img);
+						document.querySelector('#file-display').appendChild(imgF)
+				}
+			reader.readAsDataURL(input.files[k]);
+			})
+			rem_func()
+		}
+    }
+	function rem_func(_this){
+		_this.closest('.imgF').remove();
+		if($('#drop .imgF').length <= 0){
+			$('#drop').append('<span id="dname" class="text-center">Drop Files Here <br> or <br> <label for="chooseFile"><strong>Choose File</strong></label></span>')
+		}
+	}
+    var mealsByCategory = { 
+    <?php    
+        $puroks = array();
+        $barangay = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+        while($brow = $barangay->fetch_assoc()):
+    ?>
+        <?php 
+        echo json_encode($brow["DocumentID"]) ?> : <?php $purok = $conn->query("SELECT * FROM documentpurpose WHERE barangayDoc='{$brow['DocumentID']}'"); 
+        while($prow = $purok->fetch_assoc()):
+        $puroks[] = $prow["purpose"]?>
+        <?php endwhile; echo json_encode($puroks). ","; $puroks = array();?>
+        <?php endwhile; ?> 
+
+    }
+
+    var requirementsByDocument = { 
+    <?php    
+        $requirements = array();
+        $document = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+        while($drow = $document->fetch_assoc()):
+    ?>
+        <?php 
+        echo json_encode($drow["DocumentID"]) ?> : <?php $requirementsql = $conn->query("SELECT * FROM requirementlist WHERE DocumentID='{$drow['DocumentID']}'"); 
+        while($rrow = $requirementsql->fetch_assoc()):
+        $requirements[] = $rrow["requirementName"]?>
+        <?php endwhile; echo json_encode($requirements). ","; $requirements = array();?>
+        <?php endwhile; ?> 
+        
+    }
+
+    function changecat(value) {
+        if (value.length == 0) document.getElementById("purpose").innerHTML = "<option>Empty</option>";
+        else {
+            var requirenote = $("#document").find(':selected').attr('data-id');
+            var lessee = $("#document").find(':selected').attr('data-user');
+            var requirements = "";
+            var catOptions = "";
+
+            additionalInput(value);
+
+            if(mealsByCategory[value].length != 0){
+                for (categoryId in mealsByCategory[value]) {
+                    catOptions += "<option>" + mealsByCategory[value][categoryId] + "</option>";
+                }
+                document.getElementById("purpose").innerHTML = catOptions;
+            }
+            if(requirementsByDocument[value].length != 0){
+                for (requirementID in requirementsByDocument[value]) {
+                    requirements += "<li>" + requirementsByDocument[value][requirementID] + "</li>";
+                }   
+                if(String(lessee) == "True"){
+                    if(String(requirenote) == "True"){
+                        requirements += "<li>Note from your Lessor</li>";
+                    }
+                }
+                document.getElementById("listofrequirements").innerHTML = requirements;
+                document.getElementById("requirementPic").style.display = "flex";
+            }
+            else if(requirementsByDocument[value].length == 0){
+                if(String(lessee) == "True"){
+                    if(String(requirenote) == "True"){
+                        requirements += "<li>Note from your Lessor</li>";
+                        document.getElementById("requirementPic").style.display = "flex";
+                    }
+                    else if(String(requirenote) != "True"){
+                        requirements += "<li>No requirements</li>";
+                        document.getElementById("requirementPic").style.display = "none";
+                    }
+                }
+                else{
+                    requirements += "<li>No requirements</li>";
+                    document.getElementById("requirementPic").style.display = "none";
+                }
+                
+                document.getElementById("listofrequirements").innerHTML = requirements;
+            }
+            else if(mealsByCategory[value].length == 0){
+                catOptions += "<option value=''>Empty</option>";
+                document.getElementById("purpose").innerHTML = catOptions;
+            }
+        }
+    }
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+    } );
+    
+    $(document).ready(function() {
+        $('#dataTable2').DataTable();
+    } );
+
+    
+    function additionalInput($documentID){
+        start_load()
+        $.ajax({
+            url: './includes/request.inc.php?additionalInput&DocumentID='+$documentID,
+            type: 'GET',
+            success: function(data){
+                $("#additionalInput").html(data);
             }
         })
     }

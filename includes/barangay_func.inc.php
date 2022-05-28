@@ -16,20 +16,26 @@
         $id = $_GET["id"];
         mysqli_begin_transaction($conn);
 
+        $residentData = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE UsersID=$brgyCaptain")->fetch_assoc();
         $sql = "UPDATE barangay SET City=?, BarangayName=?, Active=?, brgyCaptain=? WHERE BarangayID=?";
 
         if($row['brgyCaptain'] != "None" && $brgyCaptain != "None"){
             $a1 = mysqli_query($conn, "UPDATE barangay SET City='Mandaue', BarangayName='$BarangayName', Status='$Active', brgyCaptain=$brgyCaptain WHERE BarangayID=$id");
             $a2 = mysqli_query($conn, "UPDATE users SET userType='Captain' WHERE UsersID=$brgyCaptain");
+            $a3 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID) VALUES('Barangay', 'Admin has assigned {$residentData['name']} as the new Captain for $BarangayName', {$_SESSION['UsersID']})");
         }
         elseif($brgyCaptain == "None"){
             $a1 = mysqli_query($conn, "UPDATE barangay SET City='Mandaue', BarangayName='$BarangayName', Status='$Active', brgyCaptain=NULL WHERE BarangayID=$id");
             $a2 = mysqli_query($conn, "SELECT * FROM barangay");
+            $a3 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID) VALUES('Barangay', 'Barangay has updated Barangay $BarangayName', {$_SESSION['UsersID']})");
         }
-        if($a1 && $a2){
+        if($a1 && $a2 && $a3){
             mysqli_commit($conn);
             $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName='$BarangayName'");
             $brgyID = $sql->fetch_assoc();
+            if($_SESSION['userType'] == 'Admin'){
+                header("location: ../barangay.php");
+            }
             header("location: ../barangay_alt.php?barangayID={$brgyID['BarangayID']}");
             exit();
         }
@@ -95,22 +101,20 @@
 
 
     else{
-        $sql = "INSERT INTO barangay(City, BarangayName) VALUES(?, ?)";
+        extract($_POST);
+        mysqli_begin_transaction($conn);
 
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../barangay.php?error=stmtfailedcreatepost");
+        $a1 = mysqli_query($conn, "INSERT INTO barangay(City, BarangayName) VALUES('Paknaan', '$BarangayName')");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID) VALUES('Barangay', 'Admin has created a new Barangay: $BarangayName', {$_SESSION['UsersID']})");
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../barangay.php");
             exit();
         }
-        $City = 'City';
-        mysqli_stmt_bind_param($stmt, "ss", $City, $BarangayName); 
-        if(!mysqli_stmt_execute($stmt)){
-            echo("Error description: " . mysqli_error($conn));
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
             exit();
         }
-        mysqli_stmt_close($stmt);
-        
-        header("location: ../barangay.php?error=none");
-        exit();
     }
 ?>

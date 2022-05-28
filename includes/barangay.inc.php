@@ -36,7 +36,7 @@
                                 <option value="None" hidden selected>None</option>
                             <?php endif; ?>
                             <option value="None">None</option>
-                            <?php $brgy = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident'");
+                            <?php $brgy = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users INNER JOIN barangay ON barangay.BarangayName=users.userBarangay WHERE userType='Resident' AND barangay.BarangayID={$_GET['id']}");
                                 while($brgyRow = $brgy->fetch_assoc()): ?>
                                 <option value="<?php echo $brgyRow["UsersID"] ?>"><?php echo $brgyRow["name"]; ?></option>
                             <?php endwhile; ?>

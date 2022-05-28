@@ -324,6 +324,7 @@ if(isset($_GET['viewReklamo'])): ?>
         }
     </style>
     <div class="container-fluid">
+        <?php if($_SESSION['userType'] != 'Admin'): ?>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-ereklamo-tab" data-toggle="tab" href="#nav-ereklamo" role="tab" aria-controls="nav-ereklamo" aria-selected="true">eReklamo</a>
@@ -390,6 +391,32 @@ if(isset($_GET['viewReklamo'])): ?>
                 </div>
             </div>
         </div>
+        <?php else: ?>
+        <div class="table-responsive">
+            <table id="dataTable1" class="table table-bordered text-center text-dark display" 
+                width="100%" cellspacing="0" cellpadding="0">
+                <thead >
+                    <tr class="bg-gradient-secondary text-white">
+                        <th scope="col">Content</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <!--Row 1-->
+                    <?php 
+                        $accounts = $conn->query("SELECT * FROM report WHERE UsersID={$_SESSION['UsersID']}");
+                        while($row=$accounts->fetch_assoc()):
+                    ?>
+                    <tr>
+                        <td><?php echo $row["reportMessage"] ?></td>
+                        <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
     </div>
 
 <?php elseif(isset($_GET['editProfile'])): ?>

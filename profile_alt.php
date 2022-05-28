@@ -67,8 +67,30 @@
                 <a class="view_reklamos" href="javascript:void(0)"><i class="fas fa-exclamation-triangle fa-lg"></i></a>
                 <?php else: ?>
                 <a class="view_report" data-id="<?php echo $_GET['UsersID'] ?>" href="javascript:void(0)"><i class="fas fa-history fa-lg"></i></a>
-                
                 <?php endif; ?>
+            </div>
+            <div class="text-center">
+                <h6 class="m-2">
+                    <?php $detail="";
+                    if($row['IsVoter'] == "True"){
+                        $detail .= "Voter";
+                    }
+                    if($row['IsVoter'] == "False"){
+                        $detail .= "Non-Voter";
+                    }
+                    if($row['isRenting'] == "True"){
+                        $detail .= ", Renter";
+                    }
+                    if($row['IsLandlord'] == "True"){
+                        $detail .= ", Landlord";
+                    }
+                    if($row['IsLandlord'] == "False" && $row['isRenting'] == "False"){
+                        $detail .= ", Resident";
+                    }
+                
+                    echo $detail;
+                    ?>
+                </h6>
             </div>
         </div>
         <!--End of Card-Header-->

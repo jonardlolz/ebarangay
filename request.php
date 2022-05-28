@@ -1,5 +1,6 @@
 <?php include 'header.php'; ?>
                             
+    <?php $userData=$conn->query("SELECT * FROM users WHERE UsersID={$_SESSION['UsersID']}")->fetch_assoc(); ?>
     <!-- Begin Page Content -->
     <div class="col d-flex flex-column px-4">
         <!-- Page Heading --> 
@@ -14,158 +15,144 @@
                 You're still unverified!
             </div>
             <?php else: ?>
-                <?php if($diff >= 6):  ?>
-                    <form action="includes/request.inc.php?addRequest" method="POST">
-                        <div class="row">
-                            <div class="col-md">
-                                <div class="container-fluid">
-                                    <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">
-                                        <section>
-                                            <strong>Request Document</strong>
-                                            <div class="row p-2">
-                                                <div class="col-lg-6 m-1">
-                                                    <label>Choose document:</label>
-                                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
-                                                        <option value="" hidden selected>Select</option>
-                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-                                                        while($documents = $requestSql->fetch_assoc()): ?>
-                                                        <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
-                                                        <?php endwhile; ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-5 m-1">
-                                                    <label>Purpose:</label>
-                                                    <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
-                                                        <option value="" hidden selected>Select</option>
-                                                    </select>
-                                                </div>
+                <?php $userSql=$conn->query("SELECT * FROM users WHERE UsersID={$_SESSION['UsersID']}")->fetch_assoc(); ?>
+                <form action="includes/request.inc.php?addRequest" id="requestForm" method="POST">
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="container-fluid">
+                                <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">
+                                    <section>
+                                        <strong>Request Document</strong>
+                                        <div class="row p-2">
+                                            <div class="col-lg-6 m-1">
+                                                <label>Choose document:</label>
+                                                <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                                    <option value="" hidden selected>Select</option>
+                                                    <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                    while($documents = $requestSql->fetch_assoc()): ?>
+                                                    <?php 
+                                                        if($diff <= $documents['minimumMos']){
+                                                            continue;
+                                                        }
+                                                        if($documents['allowLessee'] == "False"){
+                                                            if($userSql['isRenting'] == "True"){
+                                                                continue;
+                                                            }
+                                                        }
+                                                        if($documents['VoterRequired'] == "True"){
+                                                            if($userSql['IsVoter'] != "True"){
+                                                                continue;
+                                                            }
+                                                        }
+                                                    ?>
+                                                    <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                                    <?php endwhile; ?>
+                                                </select>
                                             </div>
-                                            <div class="row p-2" id="requirementArea">
-                                                <div class="col-lg">
-                                                    <label>Requirement Needed: </label>
-                                                    <ul id="listofrequirements">
-                                                    </ul>
-                                                    <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
-                                                    <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*,video/*">
-                                                    <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
-                                                </div>
-                                                <div class="col-lg m-1" id="additionalInput">
+                                            <div class="col-lg-5 m-1">
+                                                <label>Purpose:</label>
+                                                <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                                    <option value="" hidden selected>Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row p-2" id="requirementArea">
+                                            <div class="col-lg">
+                                                <label>Requirement Needed: </label>
+                                                <ul id="listofrequirements">
+                                                </ul>
+                                                <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
+                                                <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                                                <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                                            </div>
+                                            <div class="col-lg m-1" id="additionalInput">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row p-2">
+                                            <div class="col-lg-6" id="">
+                                                <div id="file-display" class="d-flex flex-row m-2">
+
+                                                    <?php 
+                                                    if(isset($id)):
+                                                    if(is_dir('../img/'.$id)):
+                                                    $gal = scandir('../img/'.$PostID);
+                                                    unset($gal[0]);
+                                                    unset($gal[1]);
+                                                    foreach($gal as $k=>$v):
+                                                        $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                                                        $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                        $data = base64_encode($img); 
+                                                    ?>
+                                                        <div class="imgF">
+                                                            <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                            <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                                            <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                                            <?php if(strstr($mime,'image')): ?>
+                                                            <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                            <?php else: ?>
+                                                            <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                    <?php endif; ?>
                                                     
                                                 </div>
                                             </div>
-                                            <div class="row p-2">
-                                                <div class="col-lg-6" id="">
-                                                    <div id="file-display" class="d-flex flex-row m-2">
-
-                                                        <?php 
-                                                        if(isset($id)):
-                                                        if(is_dir('../img/'.$id)):
-                                                        $gal = scandir('../img/'.$PostID);
-                                                        unset($gal[0]);
-                                                        unset($gal[1]);
-                                                        foreach($gal as $k=>$v):
-                                                            $mime = mime_content_type('../img/'.$PostID.'/'.$v);
-                                                            $img = file_get_contents('../img/'.$PostID.'/'.$v); 
-                                                            $data = base64_encode($img); 
-                                                        ?>
-                                                            <div class="imgF">
-                                                                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
-                                                                <input type="hidden" name="img[]" value="<?php echo $data ?>">
-                                                                <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
-                                                                <?php if(strstr($mime,'image')): ?>
-                                                                <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
-                                                                <?php else: ?>
-                                                                <video src="img/<?php echo $row['file_path'] ?>"></video>
-                                                                <?php endif; ?>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                        <?php endif; ?>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php
-                                                if(isset($_GET["error"])){
-                                                    if($_GET["error"] == "none"){
-                                                        echo "<div class='alert alert-success' role='alert'>
-                                                        Your request has been submitted! You can check the status of your
-                                                        request on your profile.
-                                                        </div>";
-                                                    }
-                                                    if($_GET["error"] == "pendingReq"){
-                                                        echo "<div class='alert alert-danger' role='alert'>
-                                                        Your request has been denied! You still have a pending document
-                                                        in queue.
-                                                        </div>";
-                                                    }
+                                        </div>
+                                        <div id="requestWarning" class="alert alert-danger" style="display: none;">
+                                            
+                                        </div>
+                                        <?php
+                                            if(isset($_GET["error"])){
+                                                if($_GET["error"] == "none"){
+                                                    echo "<div class='alert alert-success' role='alert'>
+                                                    Your request has been submitted! You can check the status of your
+                                                    request on your profile.
+                                                    </div>";
                                                 }
-                                            ?>
-                                        </section>
-                                        <br>
-                                        <div class="m-3 p-3 text-right">
-                                            <button type="submit" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
-                                        </div>
-                                        <div class="imgF" style="display: none " id="img-clone">
-		                                    <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
-                                    </div>
-                                </div>
-                                <!-- End of Nonvoter - Request Form -->
-                            </div>
-                        </div>
-                    </form>
-                <?php else: ?>
-                <div class="row">
-                    <div class="col-md">
-                        <div class="container-fluid">
-                            <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">
-                                <section>
-                                    <strong>Request Document</strong>
-                                    <div class="row p-2">
-                                        <div class="col-lg-6 m-1">
-                                            <label>Choose document:</label>
-                                            <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
-                                                <option value="" hidden selected>Select</option>
-                                                <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-                                                while($documents = $requestSql->fetch_assoc()): ?>
-                                                <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
-                                                <?php endwhile; ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-5 m-1">
-                                            <label>Purpose:</label>
-                                            <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
-                                                <option value="" hidden selected>Select</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <?php
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "none"){
-                                                echo "<div class='alert alert-success' role='alert'>
-                                                Your request has been submitted! You can check the status of your 
-                                                request on your profile.
-                                                </div>";
+                                                if($_GET["error"] == "pendingReq"){
+                                                    echo "<div class='alert alert-danger' role='alert'>
+                                                    Your request has been denied! You still have a pending document
+                                                    in queue.
+                                                    </div>";
+                                                }
                                             }
-                                            if($_GET["error"] == "pendingReq"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Your request has been denied! You still have a pending document 
-                                                in queue.
-                                                </div>";
-                                            }
-                                        }
-                                    ?>
-                                </section>
-                                <br>
-                                <div class="m-3 p-3 text-right">
-                                    <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
+                                        ?>
+                                    </section>
+                                    <br>
+                                    <div class="m-3 p-3 text-right">
+                                        <button type="button" onclick="checkInputs()" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
+                                    </div>
+                                    <div class="imgF" style="display: none " id="img-clone">
+                                        <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
                                 </div>
                             </div>
+                            <!-- End of Nonvoter - Request Form -->
                         </div>
-                        <!-- End of Nonvoter - Request Form -->
                     </div>
-                </div>
-            <?php endif; ?>
+                </form>
+                <script>
+                    function checkInputs(){
+                        if(document.getElementById("requirementPic").style.display == "flex"){
+                            if($("#postF").get(0).files.length === 0){
+                                document.getElementById("requestWarning").innerHTML = "Please upload the requirements listed";
+                                document.getElementById("requestWarning").style.display = "flex";
+                                return;
+                            }
+                        } 
+                        if(document.getElementById("additionalInput").innerHTML != ""){
+                            if($("#monthlySalary").val() == ""){
+                                document.getElementById("requestWarning").innerHTML = "Please enter a valid monthly salary";
+                                document.getElementById("requestWarning").style.display = "flex";
+                                return;
+                            }
+                            
+                        }    
+                        $('#requestForm').submit();
+                    }
+                </script>
         <?php endif; ?>
     </div>
 
@@ -328,47 +315,138 @@
                     </div>
                     <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
                         <div class="container-fluid">
-                            <section>
-                                <strong>Request Document</strong>
-                                <div class="row p-2">
-                                    <div class="col-lg-6 m-1">
-                                        <label>Choose document:</label>
-                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
-                                            <option value="" hidden selected>Select</option>
-                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-                                            while($documents = $requestSql->fetch_assoc()): ?>
-                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
-                                            <?php endwhile; ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-5 m-1">
-                                        <label>Purpose:</label>
-                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
-                                            <option value="" hidden selected>Select</option>
-                                        </select>
+                            <form action="includes/request.inc.php?addRequest" id="requestForm" method="POST">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <section>
+                                            <strong>Request Document</strong>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6 m-1">
+                                                    <label>Choose document:</label>
+                                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                        while($documents = $requestSql->fetch_assoc()): ?>
+                                                        <?php 
+                                                            if($diff <= $documents['minimumMos']){
+                                                                continue;
+                                                            }
+                                                            if($documents['allowLessee'] == "False"){
+                                                                if($userSql['isRenting'] == "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                            if($documents['VoterRequired'] == "True"){
+                                                                if($userSql['IsVoter'] != "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                                        <?php endwhile; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-5 m-1">
+                                                    <label>Purpose:</label>
+                                                    <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row p-2" id="requirementArea">
+                                                <div class="col-lg">
+                                                    <label>Requirement Needed: </label>
+                                                    <ul id="listofrequirements">
+                                                    </ul>
+                                                    <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
+                                                    <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                                                    <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                                                </div>
+                                                <div class="col-lg m-1" id="additionalInput">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6" id="">
+                                                    <div id="file-display" class="d-flex flex-row m-2">
+
+                                                        <?php 
+                                                        if(isset($id)):
+                                                        if(is_dir('../img/'.$id)):
+                                                        $gal = scandir('../img/'.$PostID);
+                                                        unset($gal[0]);
+                                                        unset($gal[1]);
+                                                        foreach($gal as $k=>$v):
+                                                            $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                                                            $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                            $data = base64_encode($img); 
+                                                        ?>
+                                                            <div class="imgF">
+                                                                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                                <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                                                <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                                                <?php if(strstr($mime,'image')): ?>
+                                                                <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                                <?php else: ?>
+                                                                <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                        <?php endif; ?>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="requestWarning" class="alert alert-danger" style="display: none;">
+                                                
+                                            </div>
+                                            <?php
+                                                if(isset($_GET["error"])){
+                                                    if($_GET["error"] == "none"){
+                                                        echo "<div class='alert alert-success' role='alert'>
+                                                        Your request has been submitted! You can check the status of your
+                                                        request on your profile.
+                                                        </div>";
+                                                    }
+                                                    if($_GET["error"] == "pendingReq"){
+                                                        echo "<div class='alert alert-danger' role='alert'>
+                                                        Your request has been denied! You still have a pending document
+                                                        in queue.
+                                                        </div>";
+                                                    }
+                                                }
+                                            ?>
+                                        </section>
+                                        <br>
+                                        <div class="m-3 p-3 text-right">
+                                            <button type="button" onclick="checkInputs()" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
+                                        </div>
+                                        <div class="imgF" style="display: none " id="img-clone">
+                                            <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
                                     </div>
                                 </div>
-                                <?php
-                                    if(isset($_GET["error"])){
-                                        if($_GET["error"] == "none"){
-                                            echo "<div class='alert alert-success' role='alert'>
-                                            Your request has been submitted! You can check the status of your 
-                                            request on your profile.
-                                            </div>";
+                            </form>
+                            <script>
+                                function checkInputs(){
+                                    if(document.getElementById("requirementPic").style.display == "flex"){
+                                        if($("#postF").get(0).files.length === 0){
+                                            document.getElementById("requestWarning").innerHTML = "Please upload the requirements listed";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
                                         }
-                                        if($_GET["error"] == "pendingReq"){
-                                            echo "<div class='alert alert-danger' role='alert'>
-                                            Your request has been denied! You still have a pending document 
-                                            in queue.
-                                            </div>";
+                                    } 
+                                    if(document.getElementById("additionalInput").innerHTML != ""){
+                                        if($("#monthlySalary").val() == ""){
+                                            document.getElementById("requestWarning").innerHTML = "Please enter a valid monthly salary";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
                                         }
-                                    }
-                                ?>
-                            </section>
-                            <br>
-                            <div class="m-3 p-3 text-right">
-                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
-                            </div>
+                                        
+                                    }    
+                                    $('#requestForm').submit();
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -544,47 +622,143 @@
                     </div>
                     <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
                         <div class="container-fluid">
-                            <section>
-                                <strong>Request Document</strong>
-                                <div class="row p-2">
-                                    <div class="col-lg-6 m-1">
-                                        <label>Choose document:</label>
-                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
-                                            <option value="" hidden selected>Select</option>
-                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-                                            while($documents = $requestSql->fetch_assoc()): ?>
-                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
-                                            <?php endwhile; ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-5 m-1">
-                                        <label>Purpose:</label>
-                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
-                                            <option value="" hidden selected>Select</option>
-                                        </select>
+                            <form action="includes/request.inc.php?addRequest" id="requestForm" method="POST">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <div class="container-fluid">
+                                            <div class="shadow p-4 border border-4" style="border-color: #3c4a56;">
+                                                <section>
+                                                    <strong>Request Document</strong>
+                                                    <div class="row p-2">
+                                                        <div class="col-lg-6 m-1">
+                                                            <label>Choose document:</label>
+                                                            <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                                                <option value="" hidden selected>Select</option>
+                                                                <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                                while($documents = $requestSql->fetch_assoc()): ?>
+                                                                <?php 
+                                                                    if($diff <= $documents['minimumMos']){
+                                                                        continue;
+                                                                    }
+                                                                    if($documents['allowLessee'] == "False"){
+                                                                        if($userSql['isRenting'] == "True"){
+                                                                            continue;
+                                                                        }
+                                                                    }
+                                                                    if($documents['VoterRequired'] == "True"){
+                                                                        if($userSql['IsVoter'] != "True"){
+                                                                            continue;
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                                                <?php endwhile; ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-5 m-1">
+                                                            <label>Purpose:</label>
+                                                            <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                                                <option value="" hidden selected>Select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2" id="requirementArea">
+                                                        <div class="col-lg">
+                                                            <label>Requirement Needed: </label>
+                                                            <ul id="listofrequirements">
+                                                            </ul>
+                                                            <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
+                                                            <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                                                            <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                                                        </div>
+                                                        <div class="col-lg m-1" id="additionalInput">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-lg-6" id="">
+                                                            <div id="file-display" class="d-flex flex-row m-2">
+
+                                                                <?php 
+                                                                if(isset($id)):
+                                                                if(is_dir('../img/'.$id)):
+                                                                $gal = scandir('../img/'.$PostID);
+                                                                unset($gal[0]);
+                                                                unset($gal[1]);
+                                                                foreach($gal as $k=>$v):
+                                                                    $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                                                                    $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                                    $data = base64_encode($img); 
+                                                                ?>
+                                                                    <div class="imgF">
+                                                                        <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                                        <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                                                        <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                                                        <?php if(strstr($mime,'image')): ?>
+                                                                        <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                                        <?php else: ?>
+                                                                        <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                                        <?php endif; ?>
+                                                                    </div>
+                                                                <?php endforeach; ?>
+                                                                <?php endif; ?>
+                                                                <?php endif; ?>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="requestWarning" class="alert alert-danger" style="display: none;">
+                                                        
+                                                    </div>
+                                                    <?php
+                                                        if(isset($_GET["error"])){
+                                                            if($_GET["error"] == "none"){
+                                                                echo "<div class='alert alert-success' role='alert'>
+                                                                Your request has been submitted! You can check the status of your
+                                                                request on your profile.
+                                                                </div>";
+                                                            }
+                                                            if($_GET["error"] == "pendingReq"){
+                                                                echo "<div class='alert alert-danger' role='alert'>
+                                                                Your request has been denied! You still have a pending document
+                                                                in queue.
+                                                                </div>";
+                                                            }
+                                                        }
+                                                    ?>
+                                                </section>
+                                                <br>
+                                                <div class="m-3 p-3 text-right">
+                                                    <button type="button" onclick="checkInputs()" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
+                                                </div>
+                                                <div class="imgF" style="display: none " id="img-clone">
+                                                    <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                            </div>
+                                        </div>
+                                        <!-- End of Nonvoter - Request Form -->
                                     </div>
                                 </div>
-                                <?php
-                                    if(isset($_GET["error"])){
-                                        if($_GET["error"] == "none"){
-                                            echo "<div class='alert alert-success' role='alert'>
-                                            Your request has been submitted! You can check the status of your 
-                                            request on your profile.
-                                            </div>";
+                            </form>
+                            <script>
+                                function checkInputs(){
+                                    if(document.getElementById("requirementPic").style.display == "flex"){
+                                        if($("#postF").get(0).files.length === 0){
+                                            document.getElementById("requestWarning").innerHTML = "Please upload the requirements listed";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
                                         }
-                                        if($_GET["error"] == "pendingReq"){
-                                            echo "<div class='alert alert-danger' role='alert'>
-                                            Your request has been denied! You still have a pending document 
-                                            in queue.
-                                            </div>";
+                                    } 
+                                    if(document.getElementById("additionalInput").innerHTML != ""){
+                                        if($("#monthlySalary").val() == ""){
+                                            document.getElementById("requestWarning").innerHTML = "Please enter a valid monthly salary";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
                                         }
-                                    }
-                                ?>
-                            </section>
-                            <br>
-                            <div class="m-3 p-3 text-right">
-                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
-                            </div>
+                                        
+                                    }    
+                                    $('#requestForm').submit();
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -601,6 +775,9 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="disapproved-tab" data-toggle="tab" href="#disapproved" role="tab" aria-controls="disapproved" aria-selected="false">Disapproved</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
@@ -633,7 +810,8 @@
                                         WHERE request.status='Pending' 
                                         AND request.userPurok='{$_SESSION['userPurok']}' 
                                         AND request.userBarangay='{$_SESSION['userBarangay']}' 
-                                        AND request.userType='{$_SESSION['userType']}'");
+                                        AND request.userType='{$_SESSION['userType']}'
+                                        ORDER BY requestedOn DESC");
                                         while($row=$requests->fetch_assoc()):
                                             if($row["userType"] == "Admin"){
                                                 continue;
@@ -685,65 +863,205 @@
                             </table>
                         </div>
                     </div>
+                    <div class="tab-pane" id="disapproved" role="tabpanel" aria-labelledby="disapproved-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Document Type</th>
+                                        <th scope="col">Purpose</th>
+                                        <th scope="col">Date Requested</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                        DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
+                                        users.profile_pic 
+                                        FROM request 
+                                        INNER JOIN users 
+                                        ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Disapproved' 
+                                        AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}' 
+                                        AND request.userType='{$_SESSION['userType']}'
+                                        ORDER BY requestedOn DESC");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row["purpose"] ?></td>
+                                        <td><?php echo $row["requestedDate"] ?></td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
                         <div class="container-fluid">
-                            <section>
-                                <strong>Request Document</strong>
-                                <div class="row p-2">
-                                    <div class="col-lg-6 m-1">
-                                        <label>Choose document:</label>
-                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
-                                            <option value="" hidden selected>Select</option>
-                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-                                            while($documents = $requestSql->fetch_assoc()): ?>
-                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
-                                            <?php endwhile; ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-5 m-1">
-                                        <label>Purpose:</label>
-                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
-                                            <option value="" hidden selected>Select</option>
-                                        </select>
+                            <form action="includes/request.inc.php?addRequest" id="requestForm" method="POST">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <section>
+                                            <strong>Request Document</strong>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6 m-1">
+                                                    <label>Choose document:</label>
+                                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                        while($documents = $requestSql->fetch_assoc()): ?>
+                                                        <?php 
+                                                            if($diff <= $documents['minimumMos']){
+                                                                continue;
+                                                            }
+                                                            if($documents['allowLessee'] == "False"){
+                                                                if($userSql['isRenting'] == "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                            if($documents['VoterRequired'] == "True"){
+                                                                if($userSql['IsVoter'] != "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                                        <?php endwhile; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-5 m-1">
+                                                    <label>Purpose:</label>
+                                                    <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row p-2" id="requirementArea">
+                                                <div class="col-lg">
+                                                    <label>Requirement Needed: </label>
+                                                    <ul id="listofrequirements">
+                                                    </ul>
+                                                    <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
+                                                    <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                                                    <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                                                </div>
+                                                <div class="col-lg m-1" id="additionalInput">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6" id="">
+                                                    <div id="file-display" class="d-flex flex-row m-2">
+
+                                                        <?php 
+                                                        if(isset($id)):
+                                                        if(is_dir('../img/'.$id)):
+                                                        $gal = scandir('../img/'.$PostID);
+                                                        unset($gal[0]);
+                                                        unset($gal[1]);
+                                                        foreach($gal as $k=>$v):
+                                                            $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                                                            $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                            $data = base64_encode($img); 
+                                                        ?>
+                                                            <div class="imgF">
+                                                                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                                <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                                                <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                                                <?php if(strstr($mime,'image')): ?>
+                                                                <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                                <?php else: ?>
+                                                                <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                        <?php endif; ?>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="requestWarning" class="alert alert-danger" style="display: none;">
+                                                
+                                            </div>
+                                            <?php
+                                                if(isset($_GET["error"])){
+                                                    if($_GET["error"] == "none"){
+                                                        echo "<div class='alert alert-success' role='alert'>
+                                                        Your request has been submitted! You can check the status of your
+                                                        request on your profile.
+                                                        </div>";
+                                                    }
+                                                    if($_GET["error"] == "pendingReq"){
+                                                        echo "<div class='alert alert-danger' role='alert'>
+                                                        Your request has been denied! You still have a pending document
+                                                        in queue.
+                                                        </div>";
+                                                    }
+                                                }
+                                            ?>
+                                        </section>
+                                        <br>
+                                        <div class="m-3 p-3 text-right">
+                                            <button type="button" onclick="checkInputs()" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
+                                        </div>
+                                        <div class="imgF" style="display: none " id="img-clone">
+                                            <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
                                     </div>
                                 </div>
-                                <?php
-                                    if(isset($_GET["error"])){
-                                        if($_GET["error"] == "none"){
-                                            echo "<div class='alert alert-success' role='alert'>
-                                            Your request has been submitted! You can check the status of your 
-                                            request on your profile.
-                                            </div>";
-                                        }
-                                        if($_GET["error"] == "pendingReq"){
-                                            echo "<div class='alert alert-danger' role='alert'>
-                                            Your request has been denied! You still have a pending document 
-                                            in queue.
-                                            </div>";
-                                        }
-                                    }
-                                ?>
-                            </section>
-                            <br>
-                            <div class="m-3 p-3 text-right">
-                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
-                            </div>
+                            </form>
                             <script>
-                                $('.continueRequest').click(function(){
-                                    var ddl = document.getElementById("document");
-                                    var selectedValue = ddl.options[ddl.selectedIndex].value;
-                                    var ddl2 = document.getElementById("purpose");
-                                    var selectedValue2 = ddl2.options[ddl2.selectedIndex].value;
-                                    if (selectedValue == ""){
-                                        alert("Please select a document");
-                                    }
-                                    else if(selectedValue2 == ""){
-                                        alert("Please select a valid purpose");
-                                    }
-                                    else{
-                                        verifyInfo_modal("<center><b>Verify Information</b></center>","includes/request.inc.php?continueRequest&usersid="+$(this).attr("data-id") +"&docType="+$("#document").val()+"&purpose="+$("#purpose").val());
-                                    }
-                                })
+                                function checkInputs(){
+                                    if(document.getElementById("requirementPic").style.display == "flex"){
+                                        if($("#postF").get(0).files.length === 0){
+                                            document.getElementById("requestWarning").innerHTML = "Please upload the requirements listed";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
+                                        }
+                                    } 
+                                    if(document.getElementById("additionalInput").innerHTML != ""){
+                                        if($("#monthlySalary").val() == ""){
+                                            document.getElementById("requestWarning").innerHTML = "Please enter a valid monthly salary";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
+                                        }
+                                        
+                                    }    
+                                    $('#requestForm').submit();
+                                }
                             </script>
                         </div>
                     </div>
@@ -811,51 +1129,6 @@
                                 <?php $i++; if($i % 2 == 0){ break; } endwhile; ?>
                             </div>
                             <?php endwhile; ?>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
-                        <div class="container-fluid">
-                            <section>
-                                <strong>Request Document</strong>
-                                <div class="row p-2">
-                                    <div class="col-lg-6 m-1">
-                                        <label>Choose document:</label>
-                                        <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
-                                            <option value="" hidden selected>Select</option>
-                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-                                            while($documents = $requestSql->fetch_assoc()): ?>
-                                            <option value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
-                                            <?php endwhile; ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-5 m-1">
-                                        <label>Purpose:</label>
-                                        <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
-                                            <option value="" hidden selected>Select</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <?php
-                                    if(isset($_GET["error"])){
-                                        if($_GET["error"] == "none"){
-                                            echo "<div class='alert alert-success' role='alert'>
-                                            Your request has been submitted! You can check the status of your 
-                                            request on your profile.
-                                            </div>";
-                                        }
-                                        if($_GET["error"] == "pendingReq"){
-                                            echo "<div class='alert alert-danger' role='alert'>
-                                            Your request has been denied! You still have a pending document 
-                                            in queue.
-                                            </div>";
-                                        }
-                                    }
-                                ?>
-                            </section>
-                            <br>
-                            <div class="m-3 p-3 text-right">
-                                <button class="btn btn-primary border continueRequest" data-id="<?php echo $_SESSION['UsersID']; ?>" >Continue</button>
-                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
@@ -927,6 +1200,142 @@
                             </table>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                        <div class="container-fluid">
+                            <form action="includes/request.inc.php?addRequest" id="requestForm" method="POST">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <section>
+                                            <strong>Request Document</strong>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6 m-1">
+                                                    <label>Choose document:</label>
+                                                    <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                        while($documents = $requestSql->fetch_assoc()): ?>
+                                                        <?php 
+                                                            if($diff <= $documents['minimumMos']){
+                                                                continue;
+                                                            }
+                                                            if($documents['allowLessee'] == "False"){
+                                                                if($userSql['isRenting'] == "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                            if($documents['VoterRequired'] == "True"){
+                                                                if($userSql['IsVoter'] != "True"){
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
+                                                        <?php endwhile; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-5 m-1">
+                                                    <label>Purpose:</label>
+                                                    <select name="purpose" id="purpose" class="form-control w-75 form-control-md form-select" required>
+                                                        <option value="" hidden selected>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row p-2" id="requirementArea">
+                                                <div class="col-lg">
+                                                    <label>Requirement Needed: </label>
+                                                    <ul id="listofrequirements">
+                                                    </ul>
+                                                    <!-- <input style="display: none;" class="form-control-file" type="file" name="requirementPic[]" id="requirementPic" accept="image/*" multiple> -->
+                                                    <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                                                    <button id="requirementPic" style="display: none;" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                                                </div>
+                                                <div class="col-lg m-1" id="additionalInput">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row p-2">
+                                                <div class="col-lg-6" id="">
+                                                    <div id="file-display" class="d-flex flex-row m-2">
+
+                                                        <?php 
+                                                        if(isset($id)):
+                                                        if(is_dir('../img/'.$id)):
+                                                        $gal = scandir('../img/'.$PostID);
+                                                        unset($gal[0]);
+                                                        unset($gal[1]);
+                                                        foreach($gal as $k=>$v):
+                                                            $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                                                            $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                            $data = base64_encode($img); 
+                                                        ?>
+                                                            <div class="imgF">
+                                                                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                                <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                                                <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                                                <?php if(strstr($mime,'image')): ?>
+                                                                <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                                <?php else: ?>
+                                                                <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                        <?php endif; ?>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="requestWarning" class="alert alert-danger" style="display: none;">
+                                                
+                                            </div>
+                                            <?php
+                                                if(isset($_GET["error"])){
+                                                    if($_GET["error"] == "none"){
+                                                        echo "<div class='alert alert-success' role='alert'>
+                                                        Your request has been submitted! You can check the status of your
+                                                        request on your profile.
+                                                        </div>";
+                                                    }
+                                                    if($_GET["error"] == "pendingReq"){
+                                                        echo "<div class='alert alert-danger' role='alert'>
+                                                        Your request has been denied! You still have a pending document
+                                                        in queue.
+                                                        </div>";
+                                                    }
+                                                }
+                                            ?>
+                                        </section>
+                                        <br>
+                                        <div class="m-3 p-3 text-right">
+                                            <button type="button" onclick="checkInputs()" class="btn btn-primary border" data-id="<?php echo $_SESSION['UsersID']; ?>" >Submit</button>
+                                        </div>
+                                        <div class="imgF" style="display: none " id="img-clone">
+                                            <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </form>
+                            <script>
+                                function checkInputs(){
+                                    if(document.getElementById("requirementPic").style.display == "flex"){
+                                        if($("#postF").get(0).files.length === 0){
+                                            document.getElementById("requestWarning").innerHTML = "Please upload the requirements listed";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
+                                        }
+                                    } 
+                                    if(document.getElementById("additionalInput").innerHTML != ""){
+                                        if($("#monthlySalary").val() == ""){
+                                            document.getElementById("requestWarning").innerHTML = "Please enter a valid monthly salary";
+                                            document.getElementById("requestWarning").style.display = "flex";
+                                            return;
+                                        }
+                                        
+                                    }    
+                                    $('#requestForm').submit();
+                                }
+                            </script>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>  
@@ -975,68 +1384,7 @@
 
     <script>
 
-    if('<?php echo isset($_GET['upload']) ?>' == 1){
-		$('#postF').trigger('click')
-	}
-	if('<?php echo isset($_GET['id']) ?>' == 1){
-		$('[name="content"]').trigger('keyup')
-	}
-	$('[name="file[]"]').change(function(){
-		displayUpload(this)
-	})
-	function displayUpload(input){
-    	if (input.files) {
-		Object.keys(input.files).map(function(k){
-			var reader = new FileReader();
-				var t = input.files[k].type;
-				var _types = ['video/mp4','image/x-png','image/png','image/gif','image/jpeg','image/jpg'];
-				if(_types.indexOf(t) == -1)
-					return false;
-				reader.onload = function (e) {
-					// $('#cimg').attr('src', e.target.result);
-				var bin = e.target.result;
-				var fname = input.files[k].name;
-				var imgF = document.getElementById('img-clone');
-					imgF = imgF.cloneNode(true);
-					imgF.removeAttribute('id')
-					imgF.removeAttribute('style')
-					if(t == "video/mp4"){
-						var img = document.createElement("video");
-						}else{
-						var img = document.createElement("img");
-						}
-						var fileinput = document.createElement("input");
-						var fileinputName = document.createElement("input");
-						fileinput.setAttribute('type','hidden')
-						fileinputName.setAttribute('type','hidden')
-						fileinput.setAttribute('name','img[]')
-						fileinputName.setAttribute('name','imgName[]')
-						fileinput.value = bin
-						fileinputName.value = fname
-						img.classList.add("imgDropped")
-						img.src = bin;
-						imgF.appendChild(fileinput);
-						imgF.appendChild(fileinputName);
-						imgF.appendChild(img);
-						document.querySelector('#file-display').appendChild(imgF)
-				}
-			reader.readAsDataURL(input.files[k]);
-			})
-			rem_func()
-		}
-    }
-	function rem_func(_this){
-		_this.closest('.imgF').remove();
-		if($('#drop .imgF').length <= 0){
-			$('#drop').append('<span id="dname" class="text-center">Drop Files Here <br> or <br> <label for="chooseFile"><strong>Choose File</strong></label></span>')
-		}
-	}
-
-    ShowHideDiv();
-    function ShowHideDiv(){
-        var Is = document.getElementById("discountCheck");
-    }
-
+    
     window.start_load = function(){
 	    $('body').prepend('<div id="preloader2"></div>')
         }
@@ -1181,7 +1529,7 @@
         }
     })
     $('.viewRequirement').click(function(){
-        uni_modal("Requirements given","includes/request.inc.php?viewRequirement&id="+$(this).attr('data-id'), "modal-lg");
+        uni_modal("Requirements given","includes/request.inc.php?viewRequirement&RequestID="+$(this).attr('data-id'), "modal-lg");
     })
     $('#print').click(function(){
         print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));
@@ -1239,6 +1587,66 @@
         })
     }
 
+    if('<?php echo isset($_GET['upload']) ?>' == 1){
+		$('#postF').trigger('click')
+	}
+	if('<?php echo isset($_GET['id']) ?>' == 1){
+		$('[name="content"]').trigger('keyup')
+	}
+	$('[name="file[]"]').change(function(){
+		displayUpload(this)
+	})
+	function displayUpload(input){
+        if(document.getElementById("requestWarning").style.display == "flex"){
+            document.getElementById("requestWarning").style.display = "none";
+        } 
+    	if (input.files) {
+		Object.keys(input.files).map(function(k){
+			var reader = new FileReader();
+				var t = input.files[k].type;
+				var _types = ['video/mp4','image/x-png','image/png','image/gif','image/jpeg','image/jpg'];
+				if(_types.indexOf(t) == -1)
+					return false;
+				reader.onload = function (e) {
+					// $('#cimg').attr('src', e.target.result);
+				var bin = e.target.result;
+				var fname = input.files[k].name;
+				var imgF = document.getElementById('img-clone');
+					imgF = imgF.cloneNode(true);
+					imgF.removeAttribute('id')
+					imgF.removeAttribute('style')
+					if(t == "video/mp4"){
+						var img = document.createElement("video");
+						}else{
+						var img = document.createElement("img");
+						}
+						var fileinput = document.createElement("input");
+						var fileinputName = document.createElement("input");
+						fileinput.setAttribute('type','hidden')
+						fileinputName.setAttribute('type','hidden')
+						fileinput.setAttribute('name','img[]')
+						fileinputName.setAttribute('name','imgName[]')
+						fileinput.value = bin
+						fileinputName.value = fname
+						img.classList.add("imgDropped")
+						img.src = bin;
+						imgF.appendChild(fileinput);
+						imgF.appendChild(fileinputName);
+						imgF.appendChild(img);
+						document.querySelector('#file-display').appendChild(imgF)
+				}
+			reader.readAsDataURL(input.files[k]);
+			})
+			rem_func()
+		}
+    }
+	function rem_func(_this){
+		_this.closest('.imgF').remove();
+		if($('#drop .imgF').length <= 0){
+			$('#drop').append('<span id="dname" class="text-center">Drop Files Here <br> or <br> <label for="chooseFile"><strong>Choose File</strong></label></span>')
+		}
+	}
+
     var mealsByCategory = { 
     <?php    
         $puroks = array();
@@ -1256,15 +1664,15 @@
 
     var requirementsByDocument = { 
     <?php    
-        $puroks = array();
-        $barangay = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
-        while($brow = $barangay->fetch_assoc()):
+        $requirements = array();
+        $document = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+        while($drow = $document->fetch_assoc()):
     ?>
         <?php 
-        echo json_encode($brow["DocumentID"]) ?> : <?php $purok = $conn->query("SELECT * FROM requirementlist WHERE DocumentID='{$brow['DocumentID']}'"); 
-        while($prow = $purok->fetch_assoc()):
-        $puroks[] = $prow["requirementName"]?>
-        <?php endwhile; echo json_encode($puroks). ","; $puroks = array();?>
+        echo json_encode($drow["DocumentID"]) ?> : <?php $requirementsql = $conn->query("SELECT * FROM requirementlist WHERE DocumentID='{$drow['DocumentID']}'"); 
+        while($rrow = $requirementsql->fetch_assoc()):
+        $requirements[] = $rrow["requirementName"]?>
+        <?php endwhile; echo json_encode($requirements). ","; $requirements = array();?>
         <?php endwhile; ?> 
         
     }
@@ -1272,9 +1680,11 @@
     function changecat(value) {
         if (value.length == 0) document.getElementById("purpose").innerHTML = "<option>Empty</option>";
         else {
+            var requirenote = $("#document").find(':selected').attr('data-id');
+            var lessee = $("#document").find(':selected').attr('data-user');
             var requirements = "";
             var catOptions = "";
-            
+
             additionalInput(value);
 
             if(mealsByCategory[value].length != 0){
@@ -1286,14 +1696,32 @@
             if(requirementsByDocument[value].length != 0){
                 for (requirementID in requirementsByDocument[value]) {
                     requirements += "<li>" + requirementsByDocument[value][requirementID] + "</li>";
+                }   
+                if(String(lessee) == "True"){
+                    if(String(requirenote) == "True"){
+                        requirements += "<li>Note from your Lessor</li>";
+                    }
                 }
                 document.getElementById("listofrequirements").innerHTML = requirements;
                 document.getElementById("requirementPic").style.display = "flex";
             }
             else if(requirementsByDocument[value].length == 0){
-                requirements += "<li>No requirements</li>";
+                if(String(lessee) == "True"){
+                    if(String(requirenote) == "True"){
+                        requirements += "<li>Note from your Lessor</li>";
+                        document.getElementById("requirementPic").style.display = "flex";
+                    }
+                    else if(String(requirenote) != "True"){
+                        requirements += "<li>No requirements</li>";
+                        document.getElementById("requirementPic").style.display = "none";
+                    }
+                }
+                else{
+                    requirements += "<li>No requirements</li>";
+                    document.getElementById("requirementPic").style.display = "none";
+                }
+                
                 document.getElementById("listofrequirements").innerHTML = requirements;
-                document.getElementById("requirementPic").style.display = "none";
             }
             else if(mealsByCategory[value].length == 0){
                 catOptions += "<option value=''>Empty</option>";

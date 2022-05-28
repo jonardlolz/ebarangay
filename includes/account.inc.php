@@ -246,24 +246,61 @@ if(isset($_GET['edit'])):
             display: flex !important; 
         }
     </style>
-    <form action="includes/edit_account.inc.php?changePassPost=<?php echo $_GET['changePass'] ?>" class="user" method="post">
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="password" class="form-control form-control-sm"
-                    id="userPwd" placeholder="Password" name="userPwd" required>
-            </div>
-            <div class="col-sm-6">
-                <input type="password" class="form-control form-control-sm"
-                    id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
-            </div>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-password-tab" data-toggle="tab" href="#nav-password" role="tab" aria-controls="nav-password" aria-selected="false">Password</a>
+            <a class="nav-item nav-link" id="nav-secret-tab" data-toggle="tab" href="#nav-secret" role="tab" aria-controls="nav-secret" aria-selected="true">Secret Question</a>
         </div>
-        <div class="row" style="display: flex; justify-content: flex-end;">
-            <div class="modal-footer display">
-                <button type="submit" class="btn btn-outline-primary" name="submit" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-            </div>        
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade m-3 show active" id="nav-password" role="tabpanel" aria-labelledby="nav-password-tab">
+            <form action="includes/edit_account.inc.php?changePassPost=<?php echo $_GET['changePass'] ?>" class="user" method="post">
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="password" class="form-control form-control-sm"
+                            id="userPwd" placeholder="Password" name="userPwd" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control form-control-sm"
+                            id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: flex-end;">
+                    <div class="modal-footer display">
+                        <button type="submit" class="btn btn-outline-primary" name="submit" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    </div>        
+                </div>
+            </form>
         </div>
-    </form>
+        <div class="tab-pane fade m-3" id="nav-secret" role="tabpanel" aria-labelledby="nav-secret-tab">
+            <form action="includes/edit_account.inc.php?changeSecret=<?php echo $_GET['changePass'] ?>" class="user" method="post">
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <select class="form-control form-control-sm form-select d-inline" name="secretQuestion" id="secretQuestion">
+                            <option value="" hidden>Secret Question</option>
+                            <option>What is your mother's maiden name?</option>
+                            <option>What is your first pet's name?</option>
+                            <option>What's the name of your first bestfriend?</option>
+                            <option>What's the name of the school you first went to?</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control form-control-sm"
+                            id="secretAnswer" placeholder="Secret Answer" name="secretAnswer" required>
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: flex-end;">
+                    <div class="modal-footer display">
+                        <button type="submit" class="btn btn-outline-primary" name="submit" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    </div>        
+                </div>
+            </form>
+        </div>
+        
+    </div>
+    
 </div>
 
 <?php elseif(isset($_GET['addOfficer'])): ?>
@@ -353,129 +390,194 @@ if(isset($_GET['edit'])):
 
 <?php elseif(isset($_GET['add'])): ?> 
 <div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="addresident-tab" data-toggle="tab" href="#addresident" role="tab" aria-controls="addresident" aria-selected="true">Resident</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="addcategory-tab" data-toggle="tab" href="#addcategory" role="tab" aria-controls="addcategory" aria-selected="true">Category</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="addresident" role="tabpanel" aria-labelledby="addresident-tab">
-            <form id="form" action="includes/edit_account.inc.php?addCapt" class="user" method="post">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <label for="">Barangay: </label>
-                        </div>
-                        <div class="col">
-                            <select name="barangay" id="barangay" onchange="checkCaptain(this.value)">
-                                <option value="">Select Barangay</option>
-                                <?php $brgySql = $conn->query("SELECT * FROM barangay");
-                                while($brgyList = $brgySql->fetch_assoc()): ?>
-                                <option value="<?php echo $brgyList['BarangayName'] ?>"><?php echo $brgyList['BarangayName'] ?></option>
-                                <?php endwhile; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row" id="barangayDetails">
-            
-                    </div>
-                    <div class="m-4" id="accountDetails" style="display: none;">
-                        <div class='form-group row'>
-                            <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
-                                <input type='text' class='form-control form-control-sm' id='FirstName'
-                                    name='Firstname' placeholder='First Name'>
+    <?php if($_SESSION['userType'] != "Admin"): ?>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="addresident-tab" data-toggle="tab" href="#addresident" role="tab" aria-controls="addresident" aria-selected="true">Resident</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="addcategory-tab" data-toggle="tab" href="#addcategory" role="tab" aria-controls="addcategory" aria-selected="true">Category</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="addresident" role="tabpanel" aria-labelledby="addresident-tab">
+                <form id="form" action="includes/edit_account.inc.php?addAccount" class="user" method="post">
+                    <div class="col">
+                        <div class="m-4" id="accountDetails">
+                            <div class='form-group row'>
+                                <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
+                                    <input type='text' class='form-control form-control-sm' id='FirstName'
+                                        name='Firstname' placeholder='First Name'>
+                                </div>
+                                <div class='col-sm-4 col-md-4'>
+                                    <input type='text' class='form-control form-control-sm' id='MiddleName'
+                                        name='Middlename' placeholder='Middle Name'>
+                                </div>
+                                <div class='col-sm-4 col-md-4'>
+                                    <input type='text' class='form-control form-control-sm' id='LastName'
+                                        name='Lastname' placeholder='Last Name'>
+                                </div>
                             </div>
-                            <div class='col-sm-4 col-md-4'>
-                                <input type='text' class='form-control form-control-sm' id='MiddleName'
-                                    name='Middlename' placeholder='Middle Name'>
+                            <div class='form-group row'>
+                                <div class='col'>
+                                    <input type='date' class='form-control form-control-sm' placeholder='Birthdate' name='userDOB' id='userDOB'></input>
+                                </div>
+                                <div class='col'>
+                                    <select name='userCivilStat' id='userCivilStat' class='form-control form-control-sm form-select d-inline'>
+                                        <option value='none' hidden selected disabled>Civil Status</option>
+                                        <option value='Single'>Single</option>
+                                        <option value='Married'>Married</option>
+                                        <option value='Widowed'>Widowed</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class='col-sm-4 col-md-4'>
-                                <input type='text' class='form-control form-control-sm' id='LastName'
-                                    name='Lastname' placeholder='Last Name'>
+                            <div class='form-group row'>
+                                <div class='col'>
+                                    <select class='form-control form-control-sm form-select d-inline' id='userGender' placeholder='Gender' name='userGender' required>
+                                        <option value='none' disabled hidden selected>Gender</option>
+                                        <option value='Male'>Male</option>
+                                        <option value='Female'>Female</option>
+                                    </select>
+                                </div>
+                                <div class='col'>
+                                    <select class='form-control form-control-sm form-select d-inline' name='userPurok' id='userPurok'>
+                                        <option value='' selected hidden>Purok</option>
+                                        <?php $purokSql = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'"); 
+                                        while($purokData = $purokSql->fetch_assoc()):
+                                        ?>
+                                        <option value='<?php echo $purokData['PurokName'] ?>'><?php echo $purokData['PurokName'] ?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <input type='date' class='form-control form-control-sm' placeholder='Birthdate' name='userDOB' id='userDOB'></input>
+                            <div class='form-group row'>
+                                <div class='col'>
+                                    <input type='text' class='form-control form-control-sm' name='userHouseNum' id='userHouseNum' placeholder='House #' required>
+                                </div>
+                                <div class='col'>
+                                    <input type='email' class='form-control form-control-sm' name='emailAdd' id='emailAdd' placeholder='Email Address'></input>
+                                </div>
                             </div>
-                            <div class='col'>
-                                <select name='userCivilStat' id='userCivilStat' class='form-control form-control-sm form-select d-inline'>
-                                    <option value='none' hidden selected disabled>Civil Status</option>
-                                    <option value='Single'>Single</option>
-                                    <option value='Married'>Married</option>
-                                    <option value='Widowed'>Widowed</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <select class='form-control form-control-sm form-select d-inline' id='userGender' placeholder='Gender' name='userGender' required>
-                                    <option value='none' disabled hidden selected>Gender</option>
-                                    <option value='Male'>Male</option>
-                                    <option value='Female'>Female</option>
-                                </select>
-                            </div>
-                            <div class='col'>
-                                <select class='form-control form-control-sm form-select d-inline' name='userPurok' id='userPurok'>
-                                    <option value='' selected hidden>Purok</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <input type='text' class='form-control form-control-sm' name='userAddress' id='userAddress' placeholder='Street Address' required></input>
-                            </div>
-                            <div class='col'>
-                                <input type='text' class='form-control form-control-sm' name='userHouseNum' id='userHouseNum' placeholder='House #' required>
-                            </div>
-                        </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <input type='email' class='form-control form-control-sm' name='emailAdd' id='emailAdd' placeholder='Email Address'></input>
-                            </div>
-                            <div class='col'>
-                                <select class='form-control form-control-sm form-select d-inline' name='userType' id='userType'>
-                                    <option value='Captain' selected>Barangay Captain</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
-                            </div>
-                            <div class='col'>
-                                <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
+                            <div class='form-group row'>
+                                <div class='col'>
+                                    <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
+                                </div>
+                                <div class='col'>
+                                    <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr>
-                <div class="footer d-flex flex-row-reverse">
-                    <button type="submit" class="btn btn-success">Add</button>
-                </div>
-            </form>
-        </div>
-        <div class="tab-pane fade" id="addcategory" role="tabpanel" aria-labelledby="addcategory-tab">
-            <div class="container-fluid">
-                <form action="includes/account.inc.php?addCategoryPost" class="user" method="post">
-                    <div class="form-group row">    
-                        <div class="col">
-                            <label>Category Name: </label>
-                        </div>
-                        <div class="col-sm-7">
-                            <input name="catName" id="catName" placeholder="Category Name" class="form-control form-control-sm d-inline" type="text">
-                        </div>
-                    </div>
+                    <hr>
                     <div class="footer d-flex flex-row-reverse">
-                        <button name="captsubmit" type="submit" class="btn btn-success">Add</button>
+                        <button type="submit" class="btn btn-success">Add</button>
                     </div>
                 </form>
             </div>
+            <div class="tab-pane fade" id="addcategory" role="tabpanel" aria-labelledby="addcategory-tab">
+                <div class="container-fluid">
+                    <form action="includes/account.inc.php?addCategoryPost" class="user" method="post">
+                        <div class="form-group row">    
+                            <div class="col">
+                                <label>Category Name: </label>
+                            </div>
+                            <div class="col-sm-7">
+                                <input name="catName" id="catName" placeholder="Category Name" class="form-control form-control-sm d-inline" type="text">
+                            </div>
+                        </div>
+                        <div class="footer d-flex flex-row-reverse">
+                            <button name="captsubmit" type="submit" class="btn btn-success">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+    <?php else: ?>
+        <form id="form" action="includes/edit_account.inc.php?addCapt" class="user" method="post">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <label for="">Barangay: </label>
+                    </div>
+                    <div class="col">
+                        <select name="barangay" id="barangay" onchange="checkCaptain(this.value)">
+                            <option value="">Select Barangay</option>
+                            <?php $brgySql = $conn->query("SELECT * FROM barangay");
+                            while($brgyList = $brgySql->fetch_assoc()): ?>
+                            <option value="<?php echo $brgyList['BarangayName'] ?>"><?php echo $brgyList['BarangayName'] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="barangayDetails">
+        
+                </div>
+                <div class="m-4" id="accountDetails" style="display: none;">
+                    <div class='form-group row'>
+                        <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
+                            <input type='text' class='form-control form-control-sm' id='FirstName'
+                                name='Firstname' placeholder='First Name'>
+                        </div>
+                        <div class='col-sm-4 col-md-4'>
+                            <input type='text' class='form-control form-control-sm' id='MiddleName'
+                                name='Middlename' placeholder='Middle Name'>
+                        </div>
+                        <div class='col-sm-4 col-md-4'>
+                            <input type='text' class='form-control form-control-sm' id='LastName'
+                                name='Lastname' placeholder='Last Name'>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col'>
+                            <input type='date' class='form-control form-control-sm' placeholder='Birthdate' name='userDOB' id='userDOB'></input>
+                        </div>
+                        <div class='col'>
+                            <select name='userCivilStat' id='userCivilStat' class='form-control form-control-sm form-select d-inline'>
+                                <option value='none' hidden selected disabled>Civil Status</option>
+                                <option value='Single'>Single</option>
+                                <option value='Married'>Married</option>
+                                <option value='Widowed'>Widowed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col'>
+                            <select class='form-control form-control-sm form-select d-inline' id='userGender' placeholder='Gender' name='userGender' required>
+                                <option value='none' disabled hidden selected>Gender</option>
+                                <option value='Male'>Male</option>
+                                <option value='Female'>Female</option>
+                            </select>
+                        </div>
+                        <div class='col'>
+                            <select class='form-control form-control-sm form-select d-inline' name='userPurok' id='userPurok'>
+                                <option value='' selected hidden>Purok</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col'>
+                            <input type='text' class='form-control form-control-sm' name='userHouseNum' id='userHouseNum' placeholder='House #' required>
+                        </div>
+                        <div class='col'>
+                            <input type='email' class='form-control form-control-sm' name='emailAdd' id='emailAdd' placeholder='Email Address'></input>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col'>
+                            <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
+                        </div>
+                        <div class='col'>
+                            <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="footer d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-success">Add</button>
+            </div>
+        </form>
+    <?php endif; ?>
 
     <script>
         $(".container-fluid").parent().siblings(".modal-footer").remove();
