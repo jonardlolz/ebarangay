@@ -13,8 +13,9 @@ session_start();
                     <?php $residents = $conn->query("SELECT * FROM users 
                                                     WHERE users.userType = 'Resident'
                                                     AND userBarangay='Paknaan' 
-                                                    AND userPurok='Kamatis'");
+                                                    AND userPurok='{$_GET['purok']}'");
                         while($brow = $residents->fetch_assoc()): 
+                            
                             if(in_array($brow['UsersID'], $_SESSION['arrayCandidate'])){ continue; }?>  
                             <option value="<?php echo $brow['UsersID'] ?>"><?php echo $brow["Firstname"].' '.$brow["Lastname"] ?></option>
                         <?php 
