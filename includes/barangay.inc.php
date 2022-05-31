@@ -59,6 +59,11 @@
         </div>
     </form>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#brgyCaptain').select2();
+    });
+</script>
 
 <?php elseif(isset($_GET["brgydetails"])): ?>
 
@@ -72,39 +77,60 @@
 
 <?php elseif(isset($_GET['addOfficer'])): ?>
 
-<form action="includes/barangay_func.inc.php?addOfficer&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post">
     <div class="container-fluid">
-        <div class="col">
+        <form action="includes/barangay_func.inc.php?addOfficer&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post">
             <div class="row">
-                <div class="col-sm-4">
-                    <label for="">Resident: </label>
-                </div>
                 <div class="col">
-                    <select class="js-select" name="residents" id="residents" style="width: 75%;" required>
-                        <option value="" hidden disabled selected>Resident</option>
-                        <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}'");
-                        while($residents = $residentSql->fetch_assoc()):
-                        ?>
-                        <option value="<?php echo $residents['UsersID'] ?>"><?php echo $residents['name'] ?></option>
-                        <?php endwhile; ?>
-                    </select>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="">Resident: </label>
+                        </div>
+                        <div class="col">
+                            <select class="js-select" name="residents" id="residents" style="width: 75%;" required>
+                                <option value="" hidden disabled selected>Resident</option>
+                                <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}'");
+                                while($residents = $residentSql->fetch_assoc()):
+                                ?>
+                                <option value="<?php echo $residents['UsersID'] ?>"><?php echo $residents['name'] ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="">Position: </label>
+                        </div>
+                        <div class="col">
+                            <select class="js-select" name="userPosition" id="userPosition" required>
+                                <option value="" selected hidden>Position</option>
+                                <option value="Treasurer">Treasurer</option>
+                                <option value="Treasurer">Secretary</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px; display: none;">
+                        <div class="col">
+                            <div class="alert alert-danger">
+                                Test
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
-                    <label for="">Position: </label>
-                </div>
                 <div class="col">
-                    <select class="js-select" name="userPosition" id="userPosition" required>
-                        <option value="" selected hidden>Position</option>
-                        <option value="Treasurer">Treasurer</option>
-                        <option value="Treasurer">Secretary</option>
-                    </select>
+                    <hr>
                 </div>
             </div>
-        </div>
+            <div class="footer d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
     </div>
-</form>
+   <script>
+       $(".container-fluid").parent().siblings(".modal-footer").remove();
+   </script>
+
 
 <?php elseif(isset($_GET['brgyEdit'])): ?>
 <?php $sql = $conn->query("SELECT * FROM barangay WHERE BarangayID='{$_GET['barangayID']}'");
@@ -118,7 +144,7 @@
                     Telephone
                 </div>
                 <div class="col">
-                    <input type="text" name="brgyTelephone" value="<?php echo $brgyDetail['brgyTelephone'] ?>">
+                    <input type="text" name="brgyTelephone" value="<?php echo $brgyDetail['brgyTelephone'] ?>" required>
                 </div>
             </div>
             <div class="row">
@@ -138,8 +164,19 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+        <div class="footer d-flex flex-row-reverse">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
     </form>  
 </div>
+<script>
+    $(".container-fluid").parent().siblings(".modal-footer").remove();
+</script>
 
 <?php elseif(isset($_GET["addContact"])): ?>
     <form action="includes/barangay.inc.php?postContact&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">

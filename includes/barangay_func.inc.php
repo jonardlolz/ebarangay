@@ -70,7 +70,7 @@
 
         if($a1){
             mysqli_commit($conn);
-            $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName={$_GET['barangayName']}");
+            $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_GET['barangayName']}'");
             $brgyID = $sql->fetch_assoc();
             header("location: ../barangay_alt.php?barangayID={$brgyID['BarangayID']}");
             exit();

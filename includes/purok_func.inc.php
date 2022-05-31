@@ -6,12 +6,13 @@
 
     if(isset($_GET["id"])){
         $checkLeader = $conn->query("SELECT * FROM purok WHERE PurokID='{$_GET['id']}'");
-        $row = $checkLeader->fetch_assoc();
-        if($row['purokLeader'] != NULL || $row['purokLeader'] == "None"){
-            $leaderID = $row['purokLeader'];
-            $rmvLdr = $conn->prepare("UPDATE users SET userType='Resident' WHERE UsersID=?"); 
-            $rmvLdr->bind_param("s", $leaderID);
-            $rmvLdr->execute();
+        while($row = $checkLeader->fetch_assoc()){
+            if($row['purokLeader'] != NULL || $row['purokLeader'] == "None"){
+                $leaderID = $row['purokLeader'];
+                $rmvLdr = $conn->prepare("UPDATE users SET userType='Resident' WHERE UsersID=?"); 
+                $rmvLdr->bind_param("s", $leaderID);
+                $rmvLdr->execute();
+            }
         }
         $id = $_GET["id"];
         mysqli_begin_transaction($conn);

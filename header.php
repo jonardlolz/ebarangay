@@ -158,9 +158,6 @@
         <a class="nav-link dropdown-toggle" href="#" id="chatboxDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
-            <!-- Counter - Alerts -->
-            <span class="badge badge-danger badge-counter">
-            </span>
         </a>
         <!-- Dropdown - Alerts -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -170,17 +167,51 @@
             </h6>
             
             <div id="chatbox" style="overflow-y:overlay; max-height:30vh;">
-                <?php $chatSql = $conn->query("SELECT *, chat.UsersID as userchat, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
-                INNER JOIN chat 
-                ON max_chat.latest_chat=chat.mesgdate
-                INNER JOIN chatroom
-                ON chat.chatroomID=chatroom.chatroomID
-                INNER JOIN ereklamo
-                ON ereklamo.ReklamoID=chatroom.idreference AND chatroom.type='ereklamo'
-                INNER JOIN users
-                ON chat.UsersID=users.UsersID
-                WHERE ereklamo.UsersID={$_SESSION['UsersID']} OR ereklamo.complainee={$_SESSION['UsersID']}
-                ORDER BY mesgdate DESC");
+                <?php 
+                
+                if($_SESSION['userType'] == 'Resident'){
+                    $chatSql = $conn->query("SELECT *, chat.UsersID as userchat, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                    INNER JOIN chat 
+                    ON max_chat.latest_chat=chat.mesgdate
+                    INNER JOIN chatroom
+                    ON chat.chatroomID=chatroom.chatroomID
+                    INNER JOIN ereklamo
+                    ON ereklamo.ReklamoID=chatroom.idreference AND chatroom.type='ereklamo'
+                    INNER JOIN users
+                    ON chat.UsersID=users.UsersID
+                    WHERE (ereklamo.UsersID={$_SESSION['UsersID']} OR 
+                    ereklamo.complainee={$_SESSION['UsersID']}) AND
+                    ereklamo.status='Ongoing' OR
+                    ereklamo.status='Respondents sent'
+                    ORDER BY mesgdate DESC");
+                }
+                elseif($_SESSION['barangayPos'] != 'None'){
+                    $chatSql = $conn->query("SELECT *, chat.UsersID as userchat, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                    INNER JOIN chat 
+                    ON max_chat.latest_chat=chat.mesgdate
+                    INNER JOIN chatroom
+                    ON chat.chatroomID=chatroom.chatroomID
+                    INNER JOIN ereklamo
+                    ON ereklamo.ReklamoID=chatroom.idreference AND chatroom.type='ereklamo'
+                    INNER JOIN users
+                    ON chat.UsersID=users.UsersID
+                    WHERE ereklamo.status='Respondents sent'
+                    ORDER BY mesgdate DESC");
+                }
+                else{
+                    $chatSql = $conn->query("SELECT *, chat.UsersID as userchat, latest_chat, concat(users.Firstname, ' ', users.Lastname) as name FROM (SELECT chatroomID, MAX(chat.mesgdate) as latest_chat FROM chat GROUP BY chatroomID) max_chat
+                    INNER JOIN chat 
+                    ON max_chat.latest_chat=chat.mesgdate
+                    INNER JOIN chatroom
+                    ON chat.chatroomID=chatroom.chatroomID
+                    INNER JOIN ereklamo
+                    ON ereklamo.ReklamoID=chatroom.idreference AND chatroom.type='ereklamo'
+                    INNER JOIN users
+                    ON chat.UsersID=users.UsersID
+                    WHERE ereklamo.status='Ongoing' OR
+                    ereklamo.status='Respondents sent'
+                    ORDER BY mesgdate DESC");
+                }
                 $rowsCount = $chatSql->num_rows;
                 if($rowsCount > 0):
                 while($chatRow = $chatSql->fetch_assoc()):
@@ -488,11 +519,6 @@
         <!-- Nav Item - report-->
         <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
-        </li>
-                                        
-        <!-- Nav Item - Officials-->
-        <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "officials.php"): ?> <?php echo "active"; endif; ?>">
-            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "officials.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="officials.php">Officials</a>
         </li>
         
         <!-- Divider -->

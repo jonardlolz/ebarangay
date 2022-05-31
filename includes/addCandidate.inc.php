@@ -52,6 +52,11 @@ session_start();
             </div>
         </div>
     </form>
+    <script>
+        $(document).ready(function() {
+            $('#resident').select2();
+        });
+    </script>
 </div>
 
 <?php elseif(isset($_GET["id"])): ?>

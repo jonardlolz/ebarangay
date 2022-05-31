@@ -9,103 +9,102 @@
         $row_cnt = mysqli_num_rows($notif);
         if($row_cnt <= 0):
     ?>
-<!-- Content Row -->
-<div class="row">
-    <div class="col">
-        <div class="container-fluid">
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Election</h1>
-            </div>
-            <?php if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): ?>
-                <div class='alert alert-danger' role='alert' style="text-align: center">
-                    You're still unverified!
+
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Election</h1>
+    </div>
+    <?php if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): ?>
+        <div class='alert alert-danger' role='alert' style="text-align: center">
+            You're still unverified!
+        </div>
+        
+    
+
+
+    <?php else: ?>
+    <?php 
+        $posts = $conn->query("SELECT * FROM election WHERE electionStatus='Ongoing' AND barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}'");
+        $row_cnt = mysqli_num_rows($posts);
+        if($row_cnt > 0):
+            while($row=$posts->fetch_assoc()):
+    ?>
+    <form action="includes/vote.inc.php?electionID=<?php echo $row['electionID'] ?>" class="user" method="post">
+        <div class="card shadow mb-3">
+            <div class="card-header m-0 p-1">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800"><?php echo $row["electionTitle"]; ?></h1>
                 </div>
-                
-            
-
-
-            <?php else: ?>
-            <?php 
-                $posts = $conn->query("SELECT * FROM election WHERE electionStatus='Ongoing' AND barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}'");
-                $row_cnt = mysqli_num_rows($posts);
-                if($row_cnt > 0):
-                    while($row=$posts->fetch_assoc()):
-            ?>
-            <form action="includes/vote.inc.php?electionID=<?php echo $row['electionID'] ?>" class="user" method="post">
+            </div>
+            <div class="card-body">
+                <?php 
+                    $i = 0;
+                    $posi = array("Purok Leader");
+                    while($i < count($posi)):
+                ?>
                 <div class="card shadow mb-3">
                     <div class="card-header m-0 p-1">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800"><?php echo $row["electionTitle"]; ?></h1>
+                            <h1 class="h3 mb-0 text-gray-800"><?php echo $posi[$i] ?></h1>
                         </div>
                     </div>
                     <div class="card-body">
-                        <?php 
-                            $i = 0;
-                            $posi = array("Purok Leader");
-                            while($i < count($posi)):
-                        ?>
-                        <div class="card shadow mb-3">
-                            <div class="card-header m-0 p-1">
-                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 class="h3 mb-0 text-gray-800"><?php echo $posi[$i] ?></h1>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <?php 
-                                    $cands = $conn->query("SELECT candidates.*, users.profile_pic FROM candidates 
-                                    INNER JOIN users ON users.UsersID=candidates.UsersID 
-                                    INNER JOIN election ON election.electionID = candidates.electionID
-                                    WHERE position='{$posi[$i]}' AND election.electionStatus='Ongoing' AND election.barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}'");
-                                    while($crow=$cands->fetch_assoc()):
-                                        $crow["position"] = str_replace(" ", "", $crow["position"]);
-                                    ?>
-                                    <!-- Earnings (Monthly) Card Example -->
-                                    <div class="col-xl-4 col-md-6 mb-4">
-                                        <div class="card border-left-primary shadow h-100 py-2">
-                                            <div class="card-body">
-                                                <input type="radio" class="flat-red" name="<?php echo $crow["position"] ?>" value="<?php echo $crow["candidateID"] ?>" style="position: absolute;">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
-                                                            <b><?php echo $crow["lastname"]. ", " . $crow["firstname"] ?></b></div>
-                                                        <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
-                                                            Running for:  <b><?php echo $crow["position"] ?></b></div>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <img src="img/<?php echo $crow["profile_pic"] ?>" alt="EBARANGAY LOGO" width="70rem" height="80rem">
-                                                    </div>
-                                                </div>
+                        <div class="row">
+                            <?php 
+                            $cands = $conn->query("SELECT candidates.*, users.profile_pic FROM candidates 
+                            INNER JOIN users ON users.UsersID=candidates.UsersID 
+                            INNER JOIN election ON election.electionID = candidates.electionID
+                            WHERE position='{$posi[$i]}' AND election.electionStatus='Ongoing' AND election.barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}'");
+                            while($crow=$cands->fetch_assoc()):
+                                $crow["position"] = str_replace(" ", "", $crow["position"]);
+                            ?>
+                            <!-- Earnings (Monthly) Card Example -->
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <input type="radio" class="flat-red" name="<?php echo $crow["position"] ?>" value="<?php echo $crow["candidateID"] ?>" style="position: absolute;">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
+                                                    <b><?php echo $crow["lastname"]. ", " . $crow["firstname"] ?></b></div>
+                                                <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
+                                                    Running for:  <b><?php echo $crow["position"] ?></b></div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <img src="img/<?php echo $crow["profile_pic"] ?>" alt="EBARANGAY LOGO" width="70rem" height="80rem">
                                             </div>
                                         </div>
                                     </div>
-                                    <?php endwhile; ?>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                            </div>
+                            <?php endwhile; ?>
                         </div>
-                        <?php $i++; endwhile; ?>
                     </div>
-                    <div class="card-footer" style="margin-left: auto;">
-                        <button type="submit" class="btn btn-primary" name="submit" id='submit'>Save</button>
+                    <div class="card-footer">
                     </div>
                 </div>
-                <?php endwhile; ?>
-            </form>
-
-            <?php else: ?>
-
-                <div class='alert alert-warning' role='alert' style="text-align: center">
-                    No election is currently running!
-                </div>
-
-            <?php endif; ?>
-            <?php endif; ?>
+                <?php $i++; endwhile; ?>
+            </div>
+            <div class="card-footer" style="margin-left: auto;">
+                <button type="submit" class="btn btn-primary" name="submit" id='submit'>Save</button>
+            </div>
         </div>
-    </div>
+        <?php endwhile; ?>
+    </form>
+
+    <?php else: ?>
+
+        <div class='alert alert-warning' role='alert' style="text-align: center">
+            No election is currently running!
+        </div>
+
+    <?php endif; ?>
+    <?php endif; ?>
 </div>
+
+
 
 <?php else: ?>
 
@@ -129,80 +128,73 @@
 
 <?php elseif($_SESSION["userType"] == "Captain"): ?>
 
-<div class="container p-4">
-
-<!--Residents Requests-->
-<div class="card shadow mb-4 m-4">
-    <div class="card-header py-3 d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold text-dark">Elections</h6>
-            <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_election" href="javascript:void(0)"></a>
-    </div>
-    
-    <div class="card-body" style="font-size: 75%">
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark" 
-                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                <thead >
-                    <tr class="bg-gradient-secondary text-white">
-                        <th scope="col">Election Title</th>
-                        <th scope="col">Purok</th>
-                        <th scope="col">Date Created</th>
-                        <th scope="col">Candidates</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Manage</th>
-                    </tr>
-                    
-                </thead>
-                <tbody>
-                    <!--Row 1-->
-                    <?php 
-                        $election = $conn->query("SELECT election.*, 
-                        concat(users.Firstname, ' ', users.Lastname) as name,
-                        users.profile_pic, 
-                        users.userType FROM election 
-                        INNER JOIN users ON election.created_by = users.UsersID 
-                        WHERE barangay='{$_SESSION['userBarangay']}'");
-                        while($row=$election->fetch_assoc()):
-                    ?>
-                    <tr>
-                        <td><?php echo $row["electionTitle"] ?></td>
-                        <td><?php echo $row["purok"] ?></td>
-                        <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
-                        <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
-                        <td>
-                            <?php echo $row["electionStatus"] ?>
-                        </td>
-                        <td>
-                            <?php if($row['electionStatus'] == "Paused"): ?>
-                                <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
-                                <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
-                                <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
-                            <?php elseif($row['electionStatus'] == "Ongoing"): ?>
-                                <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
-                                <button class="btn btn-danger btn-sm cancel_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-times"></i> Cancel</button>
-                            <?php elseif($row['electionStatus'] == "Finished"): ?>
-                                <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
-                            <?php endif; ?>
-                            
-                        </td>
-                        
-                        <!--Right Options-->
-                    </tr>
-                    <?php endwhile; ?>
-                    <!--Row 1-->
-                </tbody>
-            </table>
+<div class="col d-flex flex-column">
+    <div class="card shadow mb-4 m-4">
+        <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">Elections</h6>
+                <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_election" href="javascript:void(0)"></a>
         </div>
+        
+        <div class="card-body" style="font-size: 75%">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Election Title</th>
+                            <th scope="col">Purok</th>
+                            <th scope="col">Date Created</th>
+                            <th scope="col">Candidates</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Manage</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $election = $conn->query("SELECT election.*, 
+                            concat(users.Firstname, ' ', users.Lastname) as name,
+                            users.profile_pic, 
+                            users.userType FROM election 
+                            INNER JOIN users ON election.created_by = users.UsersID 
+                            WHERE barangay='{$_SESSION['userBarangay']}'");
+                            while($row=$election->fetch_assoc()):
+                        ?>
+                        <tr>
+                            <td><?php echo $row["electionTitle"] ?></td>
+                            <td><?php echo $row["purok"] ?></td>
+                            <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
+                            <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                            <td>
+                                <?php echo $row["electionStatus"] ?>
+                            </td>
+                            <td>
+                                <?php if($row['electionStatus'] == "Paused"): ?>
+                                    <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
+                                    <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
+                                <?php elseif($row['electionStatus'] == "Ongoing"): ?>
+                                    <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
+                                    <button class="btn btn-danger btn-sm cancel_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-times"></i> Cancel</button>
+                                <?php elseif($row['electionStatus'] == "Finished"): ?>
+                                    <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
+                                <?php endif; ?>
+                                
+                            </td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
+            </div>
 
-    </div>
-    <!-- End of Card Body-->
-</div> 
-<!--Residents Requests-->
+        </div>
+        <!-- End of Card Body-->
+    </div> 
 </div>
-</div>
-<!--row-->
-</div>
-<!--Content-wrapper-->
 
 <?php endif; ?>
 

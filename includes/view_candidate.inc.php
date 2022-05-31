@@ -8,12 +8,15 @@
         $sql = $conn->query("SELECT * FROM election WHERE electionID = {$_GET['electionID']}");
         $row = $sql->fetch_assoc();
     ?>
-<div>
-    <button class='btn btn-primary btn-sm btn-flat add_candidate ml-3' href='javascript:void(0)' <?php if($row['electionStatus'] == 'Ongoing' || $row['electionStatus'] == 'Finished'){echo 'disabled';} ?>><i class="fas fa-plus"> Add candidate</i></button>
-</div>
+
 
 <div class="container-fluid">
-    
+    <?php if($row['electionStatus'] == "Paused"): ?>
+        <div class="d-flex flex-row-reverse">
+            <button class='btn btn-primary btn-sm btn-flat add_candidate ml-3' href='javascript:void(0)'><i class="fas fa-plus"></i> Add candidate</button>
+        </div>
+     <?php endif; ?>
+
     <div class="table-responsive">
         <table class="table table-bordered text-center text-dark" 
             id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
@@ -24,7 +27,9 @@
                     <th scope="col">Name</th>
                     <th scope="col">Position</th>
                     <th scope="col">Platform</th>
+                    <?php if($row['electionStatus'] == "Paused"): ?>
                     <th scope="col">Edit</th>
+                    <?php endif; ?>
                 </tr>
                 
             </thead>
@@ -74,10 +79,11 @@
                     </td>
                     <td><?php echo $row["position"] ?></td>
                     <td><?php echo $row["platform"] ?></td>
+                    <?php if($row['electionStatus'] == "Paused"): ?>
                     <td>
                         <button class="btn btn-danger btn-sm delete_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>" <?php if($row['electionStatus'] == "Ongoing"){echo "Disabled";} ?>><i class="fas fa-trash"></i> Remove</button>
                     </td>
-                    
+                    <?php endif; ?>
                     <!--Right Options-->
                 </tr>
                 <?php 

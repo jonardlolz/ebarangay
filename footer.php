@@ -229,31 +229,6 @@
       $('#dataTable').DataTable();
       } );
       
-      $(document).ready(function() {
-          $('#dataTable2').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable3').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable4').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable5').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable6').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable7').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable8').DataTable();
-      } );
-      $(document).ready(function() {
-          $('#dataTable9').DataTable();
-      } );
-      
       $('.promptSchedule').click(function(){
           uni_modal("<center><b>Confirm attendance</b></center></center>","includes/ereklamo.inc.php?promptSchedule", "modal-md")
       })
@@ -272,7 +247,7 @@
       const date = new Date();
 
       $('.respond').click(function(){
-          uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
+          uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
       })
 
       $.ajax({
