@@ -19,7 +19,7 @@ session_start();
                 <label>Document name:</label>
             </div>
             <div class="col-sm-6">
-                <label><b><?php echo $_GET['docuName']?></b></label>
+                <label><b><?php if(isset($_GET['docuName'])){ echo $_GET['docuName']; }?></b></label>
             </div>
         </div>
         <div class="form-group row">
@@ -109,42 +109,10 @@ session_start();
                         </div>
                         <div class="form-group row">
                             <div class="col">
-                                Minimum months residing in Barangay:
-                            </div>
-                            <div class="col">
-                                <input class="form-control form-control-sm" type="text" name="minimumMos" value="<?php echo $documentinfo['minimumMos'] ?>">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col">
-                                Allow lessee?
-                            </div>
-                            <div class="col">
-                                <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True" <?php if($documentinfo['allowLessee']=='True'): echo 'checked'; endif; ?>>
-                            </div>
-                        </div>
-                        <div class="form-group row" id="requireNoteField">
-                            <div class="col">
-                                Require note from Lessor?
-                            </div>
-                            <div class="col">
-                                <input type="checkbox" name="requireNote" id="requireNote" value="True" <?php if($documentinfo['requireLessorNote']=='True'): echo 'checked'; endif; ?>>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col">
-                                Required voter?
-                            </div>
-                            <div class="col">
-                                <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True" <?php if($documentinfo['VoterRequired']=='True'): echo 'checked'; endif; ?>>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col">
                                 Include fee?
                             </div>
                             <div class="col">
-                                <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" <?php if($documentinfo['allowFee']=='True'): echo 'checked'; endif; ?>>
+                                <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" <?php if($documentinfo['allowFee'] == 'True'){ echo 'checked';}  ?>>
                             </div>
                         </div>
                         <div class="form-group row" id="priceField">
@@ -155,6 +123,97 @@ session_start();
                                 <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="<?php echo $documentinfo['docPrice'] ?>">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Voter required?
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="radio" id="voterTrue" onchange="checkVoter()" name="requiredVoter" value="True" <?php if($documentinfo['VoterRequired'] == 'True'){ echo 'checked'; }  ?>>
+                                        <label for="voterTrue">True</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="radio" id="voterFalse" onchange="checkVoter()" name="requiredVoter" value="False" <?php if($documentinfo['VoterRequired'] == 'False'){ echo 'checked'; }  ?>>
+                                        <label for="voterFalse">False</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-2 m-2" id="lesseeSection" style="display: none; border-width: 1px; border-style: solid; border-color: #C6C3C3">
+                            <div class="form-group row">
+                                <div class="col">
+                                    Minimum months residing in Barangay:
+                                </div>
+                                <div class="col">
+                                    <input class="form-control form-control-sm" type="number" name="minimumMos" value="<?php echo $documentinfo['minimumMos'] ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col">
+                                    Allow lessee?
+                                </div>
+                                <div class="col">
+                                    <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True" <?php if($documentinfo['allowLessee'] == 'True'){ echo 'checked'; }  ?>>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="requireNoteField" style="display: none;">
+                                <div class="col">
+                                    Require note from Lessor?
+                                </div>
+                                <div class="col">
+                                    <input type="checkbox" name="requireNote" id="requireNote" value="True" <?php if($documentinfo['requireLessorNote'] == 'True'){ echo 'checked'; }  ?>>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group row">
+                            <div class="col">
+                                Minimum months residing in Barangay:
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" type="number" name="minimumMos">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Allow lessee?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="requireNoteField">
+                            <div class="col">
+                                Require note from Lessor?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" name="requireNote" id="requireNote" value="True">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Required voter?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Include fee?
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" checked>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="priceField">
+                            <div class="col">
+                                Price: 
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
+                            </div>
+                        </div> -->
                     </div>
                     <hr>
                     <div class="d-flex flex-row-reverse">
@@ -162,13 +221,18 @@ session_start();
                     </div>
                 </form>
                 <script>
+                    checkVoter();
                     showNoteField();
+                    function checkVoter(){
+                        var requiredVoterTrue = document.getElementById("voterTrue");
+                        var requiredVoterFalse = document.getElementById("voterFalse");
+                        lesseeSection.style.display = requiredVoterFalse.checked ? "block" : "none";
+                    }
+                    
                     function showNoteField(){
                         var allowLessee = document.getElementById("allowLessee");
                         requireNoteField.style.display = allowLessee.checked ? "flex" : "none";
                     }
-
-                    showPriceField();
                     function showPriceField(){
                         var allowFee = document.getElementById("allowFee");
                         priceField.style.display = allowFee.checked ? "flex" : "none";
@@ -201,7 +265,7 @@ session_start();
                                 <tr>
                                     <td><?php echo $row['purpose'] ?></td>
                                     <td>
-                                        <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $_GET['docuType'] ?>"><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>"><i class="fas fa-edit"></i></a>
                                         <a href="javascript:void(0)" class="delete_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $row['purposeID'] ?>"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
@@ -293,6 +357,65 @@ session_start();
             </div>
             <div class="form-group row">
                 <div class="col">
+                    Include fee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" checked>
+                </div>
+            </div>
+            <div class="form-group row" id="priceField">
+                <div class="col">
+                    Price: 
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Voter required?
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <input type="radio" id="voterTrue" onchange="checkVoter()" name="requiredVoter" value="True">
+                            <label for="voterTrue">True</label>
+                        </div>
+                        <div class="col">
+                            <input type="radio" id="voterFalse" onchange="checkVoter()" name="requiredVoter" value="False">
+                            <label for="voterFalse">False</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-2 m-2" id="lesseeSection" style="display: none; border-width: 1px; border-style: solid; border-color: #C6C3C3">
+                <div class="form-group row">
+                    <div class="col">
+                        Minimum months residing in Barangay:
+                    </div>
+                    <div class="col">
+                        <input class="form-control form-control-sm" type="number" name="minimumMos">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                        Allow lessee?
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True">
+                    </div>
+                </div>
+                <div class="form-group row" id="requireNoteField" style="display: none;">
+                    <div class="col">
+                        Require note from Lessor?
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" name="requireNote" id="requireNote" value="True">
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group row">
+                <div class="col">
                     Minimum months residing in Barangay:
                 </div>
                 <div class="col">
@@ -338,10 +461,15 @@ session_start();
                 <div class="col">
                     <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
                 </div>
-            </div>
+            </div> -->
         </div>
     </form>
     <script>
+        function checkVoter(){
+            var requiredVoterTrue = document.getElementById("voterTrue");
+            var requiredVoterFalse = document.getElementById("voterFalse");
+            lesseeSection.style.display = requiredVoterFalse.checked ? "block" : "none";
+        }
         function showNoteField(){
             var allowLessee = document.getElementById("allowLessee");
             requireNoteField.style.display = allowLessee.checked ? "flex" : "none";
@@ -361,7 +489,7 @@ session_start();
     $documentinfo = $sql->fetch_assoc(); ?>
     <form action="includes/document.inc.php?postdocumentEdit&barangayid=<?php echo $documentinfo['DocumentID'] ?>" method="POST">
         <div class="form-group col">
-            <div class="row">
+            <div class="form-group row">
                 <div class="col">
                     Document name:
                 </div>
@@ -369,7 +497,7 @@ session_start();
                     <input class="form-control form-control-sm" type="text" name="documentName" value="<?php echo $documentinfo['documentName'] ?>">
                 </div>
             </div>
-            <div class="row">
+            <div class="form-group row">
                 <div class="col">
                     Document description:
                 </div>
@@ -379,45 +507,13 @@ session_start();
             </div>
             <div class="form-group row">
                 <div class="col">
-                    Minimum months residing in Barangay:
-                </div>
-                <div class="col">
-                    <input class="form-control form-control-sm" type="number" name="minimumMos" value="<?php echo $documentinfo['minimumMos'] ?>">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col">
-                    Allow lessee?
-                </div>
-                <div class="col">
-                    <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True" <?php if($documentinfo['allowLessee']=='True'): echo 'checked'; endif; ?>>
-                </div>
-            </div>
-            <div class="form-group row" id="requireNoteField">
-                <div class="col">
-                    Require note from Lessor?
-                </div>
-                <div class="col">
-                    <input type="checkbox" name="requireNote" id="requireNote" value="True" <?php if($documentinfo['requireNote']=='True'): echo 'checked'; endif; ?>>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col">
-                    Required voter?
-                </div>
-                <div class="col">
-                    <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True" <?php if($documentinfo['requiredVoter']=='True'): echo 'checked'; endif; ?>>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
                     Include fee?
                 </div>
                 <div class="col">
-                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" <?php if($documentinfo['allowFee']=='True'): echo 'checked'; endif; ?>>
+                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" <?php if($documentinfo['allowFee'] == 'True'){ echo 'checked';}  ?>>
                 </div>
             </div>
-            <div class="row" id="priceField">
+            <div class="form-group row" id="priceField">
                 <div class="col">
                     Price: 
                 </div>
@@ -425,10 +521,113 @@ session_start();
                     <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="<?php echo $documentinfo['docPrice'] ?>">
                 </div>
             </div>
+            <div class="form-group row">
+                <div class="col">
+                    Voter required?
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <input type="radio" id="voterTrue" onchange="checkVoter()" name="requiredVoter" value="True" <?php if($documentinfo['VoterRequired'] == 'True'){ echo 'checked'; }  ?>>
+                            <label for="voterTrue">True</label>
+                        </div>
+                        <div class="col">
+                            <input type="radio" id="voterFalse" onchange="checkVoter()" name="requiredVoter" value="False" <?php if($documentinfo['VoterRequired'] == 'True'){ echo 'checked'; }  ?>>
+                            <label for="voterFalse">False</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-2 m-2" id="lesseeSection" style="display: none; border-width: 1px; border-style: solid; border-color: #C6C3C3">
+                <div class="form-group row">
+                    <div class="col">
+                        Minimum months residing in Barangay:
+                    </div>
+                    <div class="col">
+                        <input class="form-control form-control-sm" type="number" name="minimumMos" value="<?php echo $documentinfo['minimumMos'] ?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                        Allow lessee?
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True" <?php if($documentinfo['allowLessee'] == 'True'){ echo 'checked'; }  ?>>
+                    </div>
+                </div>
+                <div class="form-group row" id="requireNoteField" style="display: none;">
+                    <div class="col">
+                        Require note from Lessor?
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" name="requireNote" id="requireNote" value="True" <?php if($documentinfo['requireLessorNote'] == 'True'){ echo 'checked'; }  ?>>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group row">
+                <div class="col">
+                    Minimum months residing in Barangay:
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="number" name="minimumMos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Allow lessee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True">
+                </div>
+            </div>
+            <div class="form-group row" id="requireNoteField">
+                <div class="col">
+                    Require note from Lessor?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="requireNote" id="requireNote" value="True">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Required voter?
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    Include fee?
+                </div>
+                <div class="col">
+                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" checked>
+                </div>
+            </div>
+            <div class="form-group row" id="priceField">
+                <div class="col">
+                    Price: 
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
+                </div>
+            </div> -->
         </div>
     </form>
     
     <script>
+        checkVoter();
+        showNoteField();
+        function checkVoter(){
+            var requiredVoterTrue = document.getElementById("voterTrue");
+            var requiredVoterFalse = document.getElementById("voterFalse");
+            lesseeSection.style.display = requiredVoterFalse.checked ? "block" : "none";
+        }
+        
+        function showNoteField(){
+            var allowLessee = document.getElementById("allowLessee");
+            requireNoteField.style.display = allowLessee.checked ? "flex" : "none";
+        }
         function showPriceField(){
             var allowFee = document.getElementById("allowFee");
             priceField.style.display = allowFee.checked ? "flex" : "none";
@@ -585,15 +784,13 @@ session_start();
         $documentFee = 'False';
         $documentPrice = '0';
     }
-    if($requiredVoter == ''){
-        $requiredVoter = 'False';
-    }
-    if($allowLessee == ''){
+    if($requiredVoter == 'True'){
+        $minimumMos = 0;
         $allowLessee = 'False';
         $requireNote = 'False';
     }
-    elseif($allowLessee == 'True'){
-        if($requireNote == ''){
+    elseif($requiredVoter == 'False'){
+        if($allowLessee == 'False'){
             $requireNote = 'False';
         }
     }
@@ -624,16 +821,20 @@ session_start();
         $documentFee = 'False';
         $documentPrice = '0';
     }
-    if($requiredVoter == ''){
-        $requiredVoter = 'False';
-    }
-    if($allowLessee == ''){
+    if($requiredVoter == 'True'){
+        $minimumMos = 0;
         $allowLessee = 'False';
         $requireNote = 'False';
     }
-    elseif($allowLessee == 'True'){
-        if($requireNote == ''){
+    elseif($requiredVoter == 'False'){
+        if($allowLessee == ''){
+            $allowLessee = 'False';
             $requireNote = 'False';
+        }
+        elseif($allowLessee == 'True'){
+            if($requireNote == ''){
+                $requireNote = 'False';
+            }
         }
     }
 
@@ -804,7 +1005,7 @@ session_start();
         secondary_modal("<center><b>Add purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?addPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id'));
     })
     $('.edit_purpose').click(function(){
-        secondary_modal("<center><b>Edit purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?editPurpose&docuType="+$(this).attr('data-docu')+"&purposeID="+$(this).attr('data-id'));
+        secondary_modal("<center><b>Edit purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?editPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id')+"&purposeID="+$(this).attr('data-id'));
     })
     $('.delete_purpose').click(function(){
         _conf("Are you sure you want to delete this purpose?","deletePurpose",[$(this).attr('data-id')]);

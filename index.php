@@ -269,9 +269,24 @@
                                             <div class="col-auto">
                                                 <small><span class="text-mute timestamp" style="margin-left: auto;"><?php echo date("M d,Y h:i A",strtotime($crow['date_created'])) ?></span></small>
                                             </div>
-                                            
-                                            <!--Right Options-->
-                                            <!--Right Options-->
+                                            <?php if($_SESSION['UsersID'] == $crow['UsersID']): ?>
+                                            <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                <button type="button" class="dropdown-toggle btn m-0 btn-circle" 
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                </button>
+                                                <div class="dropdown-menu shadow"
+                                                    aria-labelledby="userDropdown">
+                                                    <a class="dropdown-item edit_comment" data-id="<?php echo $crow['CommentsID'] ?>" href="javascript:void(0)">
+                                                        <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
+                                                    </a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item delete_comment" data-id="<?php echo $crow['CommentsID'] ?>" href="javascript:void(0)">
+                                                        <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                     <?php endwhile; ?>
@@ -319,13 +334,14 @@
                 
                                 <div class="days"></div>
                             </div>
-                        </div>         
-                        <div class="card shadow mb-3">
+                        </div> 
+                        <!-- No billing account, can't use this :( -->        
+                        <!-- <div class="card shadow mb-3">
                             
                             <div class="card-body">
                                 <div id="map"></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!--End of Content Row-->
@@ -528,25 +544,42 @@
             $(this).height(0).height(this.scrollHeight);
         })
         $('#write_post').click(function(){
-            uni_modal("<center><b>Create Post</b></center></center>","includes/create_post.inc.php")
+            uni_modal("<center><b>Create Post</b></center></center>","includes/create_post.inc.php?add")
         })
         $('.edit_post').click(function(){
             uni_modal("<center><b>Edit Post</b></center></center>","includes/create_post.inc.php?id="+$(this).attr('data-id'))
         })
+        $('.edit_comment').click(function(){
+            uni_modal("<center><b>Edit Post</b></center></center>","includes/create_post.inc.php?commentedit&commentID="+$(this).attr('data-id'))
+        })
+        $('.delete_comment').click(function(){
+            _conf("Are you sure you want to delete this comment?","delete_comment",[$(this).attr('data-id')])
+        })
         $('.delete_post').click(function(){
-           _conf("Are you sure to delete this post?","delete_post",[$(this).attr('data-id')])
+            _conf("Are you sure you want to delete this post?","delete_post",[$(this).attr('data-id')])
         })
         function delete_post($id){
-                start_load()
-                $.ajax({
-                    url:'includes/delete_post.inc.php',
-                    method:'POST',
-                    data:{id:$id},
-                    success:function(){
-                        location.reload()
-                    }
-                })
-            }
+            start_load()
+            $.ajax({
+                url:'includes/delete_post.inc.php',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+        function delete_comment($id){
+            start_load()
+            $.ajax({
+                url:'includes/create_post.inc.php?commentdeletePOST',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         $('#upload_post').click(function(){
             uni_modal("<center><b>Create Post</b></center></center>","includes/create_post.inc.php?upload=1")
         })

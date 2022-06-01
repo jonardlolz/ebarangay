@@ -1419,14 +1419,133 @@
             <div class="m-2">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-minorpending-tab" data-toggle="tab" href="#nav-minorpending" role="tab" aria-controls="nav-minorpending" aria-selected="true">Pending</a>
+                        <a class="nav-item nav-link active" id="nav-ereklamo-tab" data-toggle="tab" href="#nav-ereklamo" role="tab" aria-controls="nav-ereklamo" aria-selected="true">eReklamo</a>
+                        <a class="nav-item nav-link" id="nav-minorpending-tab" data-toggle="tab" href="#nav-minorpending" role="tab" aria-controls="nav-minorpending" aria-selected="true">Pending</a>
                         <a class="nav-item nav-link" id="nav-ongoing-tab" data-toggle="tab" href="#nav-ongoing" role="tab" aria-controls="nav-ongoing" aria-selected="false">Ongoing</a>
                         <a class="nav-item nav-link" id="nav-respondentsent-tab" data-toggle="tab" href="#nav-respondentsent" role="tab" aria-controls="nav-respondentsent" aria-selected="false">On Respondent</a>
                         <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#nav-resolved" role="tab" aria-controls="nav-resolved" aria-selected="false">Resolved</a>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-minorpending" role="tabpanel" aria-labelledby="nav-minorpending-tab">
+                    <div class="tab-pane fade show active" id="nav-ereklamo" role="tabpanel" aria-labelledby="nav-ereklamo-tab">
+                        <div class="row">
+                            <!-- <div class="col m-4">
+                                <div class="card" style="min-height: 200px">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col">
+                                                <strong>
+                                                    Major
+                                                </strong>
+                                            </div>
+                                            <div class="col-sm-2" style="text-align: right;">
+                                                <a class="add_ereklamoCat" data-priority="Major" href="javascript:void(0)"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="accordion">
+                                            <?php $majorSql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatPriority = 'Major'");
+                                            $i = 0;
+                                            $allRows = $majorSql->num_rows;
+                                            while($majorRow = $majorSql->fetch_assoc()):
+                                            ?>
+                                            <div class="row">
+                                                <div class="col" data-toggle="collapse" data-target="#collapse<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>" aria-expanded="true" aria-controls="collapse<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>">
+                                                    <?php echo $majorRow['reklamoCatName'] ?>
+                                                </div>
+                                                <div class="col-sm-3" style="text-align: right;">
+                                                    <a class="edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $majorRow['reklamoCatID'] ?>" data-name="<?php echo $majorRow['reklamoCatName'] ?>"><i class="fas fa-edit"></i></a>
+                                                    <a class="delete_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $majorRow['reklamoCatID'] ?>" data-name="<?php echo $majorRow['reklamoCatName'] ?>"><i class="fas fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body">
+                                                    <div id="collapse<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>" class="collapse-show" aria-labelledby="heading<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>" data-parent="#accordion">
+                                                        <div class="col">
+                                                            <?php $minorType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$majorRow['reklamoCatID']}");
+                                                            while($minorTypeRow = $minorType->fetch_assoc()): 
+                                                            ?>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <?php echo $minorTypeRow['reklamoTypeName'] ?>
+                                                                </div>
+                                                                <div class="col-sm-2" style="text-align right;">
+                                                                    <a class="edit_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-edit"></i></a>
+                                                                    <a class="delete_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-trash"></i></a>
+                                                                </div>
+                                                                <hr>    
+                                                            </div>
+                                                            <?php endwhile; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php endwhile; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col m-4">
+                                <div class="col-sm-6 card" style="min-height: 200px">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col">
+                                                <strong>
+                                                    eReklamo
+                                                </strong>
+                                            </div>
+                                            <div class="col-sm-2" style="text-align: right;">
+                                                <a class="add_ereklamoCat" data-priority="Minor" href="javascript:void(0)"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="accordion">
+                                            <?php $minorSql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatPriority = 'Minor'");
+                                            $i = 0;
+                                            $allRows = $minorSql->num_rows;
+                                            while($minorRow = $minorSql->fetch_assoc()):
+                                            ?>
+                                            <div class="row">
+                                                <div class="col" data-toggle="collapse" data-target="#collapse<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>" aria-expanded="true" aria-controls="collapse<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>">
+                                                    <?php echo $minorRow['reklamoCatName'] ?>
+                                                </div>
+                                                <div class="col-sm-3" style="text-align: right;">
+                                                    <a class="edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $minorRow['reklamoCatID'] ?>" data-name="<?php echo $minorRow['reklamoCatName'] ?>"><i class="fas fa-edit"></i></a>
+                                                    <a class="delete_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $minorRow['reklamoCatID'] ?>" data-name="<?php echo $minorRow['reklamoCatName'] ?>"><i class="fas fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body">
+                                                    <div id="collapse<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>" class="collapse-show" aria-labelledby="heading<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>" data-parent="#accordion">
+                                                        <div class="col">
+                                                            <?php $minorType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$minorRow['reklamoCatID']}");
+                                                            while($minorTypeRow = $minorType->fetch_assoc()): 
+                                                            ?>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <?php echo $minorTypeRow['reklamoTypeName'] ?>
+                                                                </div>
+                                                                <div class="col-sm-2" style="text-align right;">
+                                                                    <a class="edit_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-edit"></i></a>
+                                                                    <a class="delete_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-trash"></i></a>
+                                                                </div>
+                                                                <hr>    
+                                                            </div>
+                                                            <?php endwhile; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php endwhile; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-minorpending" role="tabpanel" aria-labelledby="nav-minorpending-tab">
                         <div class="table-responsive">
                             <table class="table table-bordered text-center text-dark" 
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">

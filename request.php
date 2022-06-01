@@ -1095,8 +1095,8 @@
                             <?php while($i < mysqli_num_rows($documents)): ?>
                             <div class="row" style="margin: 25px">
                                 <?php while($documentRow = $documents->fetch_assoc()): ?>
-                                <div class="col-sm-6">
-                                    <div class="card">
+                                <div class="col-sm-4">
+                                    <div class="card" style="min-height: 100px;">
                                         <div class="card-body">
                                             <h5 class="card-title">
                                                 <div class="row">
@@ -1126,7 +1126,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php $i++; if($i % 2 == 0){ break; } endwhile; ?>
+                                <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
                             </div>
                             <?php endwhile; ?>
                         </div>

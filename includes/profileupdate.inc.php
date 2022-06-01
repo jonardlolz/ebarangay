@@ -115,7 +115,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <td><?php echo $row["detail"] ?></td>
                                 <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
                                 <td>
-                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
+                                    <a class="openChat" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
                                 </td>
                                 
                                 <!--Right Options-->
@@ -149,7 +149,7 @@ if(isset($_GET['viewReklamo'])): ?>
                                 <td><?php echo $row["detail"] ?></td>
                                 <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
                                 <td>
-                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
+                                    <a class="openChat" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a> 
                                 </td>
                                 
                                 <!--Right Options-->
@@ -203,8 +203,8 @@ if(isset($_GET['viewReklamo'])): ?>
                 "paging": false
             });
         } );
-        $('.respond').click(function(){
-            secondary_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
+        $('.openChat').click(function(){
+            secondary_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
         })
         $('.delete_request').click(function(){
             _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])
@@ -425,7 +425,7 @@ if(isset($_GET['viewReklamo'])): ?>
                 "paging": false
             });
         } );
-        $('.respond').click(function(){
+        $('.openChat').click(function(){
             secondary_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
         })
         $('.delete_request').click(function(){
@@ -475,7 +475,7 @@ if(isset($_GET['viewReklamo'])): ?>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-ereklamo" role="tabpanel" aria-labelledby="nav-ereklamo-tab">
                 <div class="table-responsive">
-                    <table id="dataTable1" class="table table-bordered text-center text-dark display" 
+                    <table id="dataTable" class="table table-report table-bordered text-center text-dark display" 
                         width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
@@ -504,7 +504,7 @@ if(isset($_GET['viewReklamo'])): ?>
             </div>
             <div class="tab-pane fade show" id="nav-erequest" role="tabpanel" aria-labelledby="nav-erequest-tab">
                 <div class="table-responsive">
-                    <table id="dataTable2" class="table table-bordered text-center text-dark display" 
+                    <table id="dataTable" class="table table-report table-bordered text-center text-dark display" 
                         width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
@@ -572,7 +572,7 @@ if(isset($_GET['viewReklamo'])): ?>
                 "paging": false
             });
         } );
-        $('.respond').click(function(){
+        $('.openChat').click(function(){
             secondary_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-md")
         })
         $('.delete_request').click(function(){

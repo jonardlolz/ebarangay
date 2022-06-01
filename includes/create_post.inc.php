@@ -118,7 +118,7 @@ if(isset($_GET['id'])):
 </div>
 
 
-<?php else: ?>
+<?php elseif(isset($_GET['add'])): ?>
 	<div class="container-fluid">
 	<form action="includes/post.inc.php" class="user" method="post">
 		<input type="hidden" name="id" value="<?php echo isset($PostID) ? $PostID : '' ?>">
@@ -205,7 +205,66 @@ if(isset($_GET['id'])):
 			<span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
 </div>
 
+<?php elseif(isset($_GET['commentedit'])): ?>
+
+	<div class="container-fluid">
+		<form action="includes/create_post.inc.php?commenteditPOST&commentID=<?php echo $_GET['commentID'] ?>" method="POST">
+		<?php $comment = $conn->query("SELECT * FROM comments WHERE CommentsID={$_GET['commentID']}")->fetch_assoc(); ?>
+			<div class="col">
+				<div class="row">
+					<div class="col">
+						<textarea class="form-control form-control-user" value="" name="comment" id="comment" cols="30" rows="10"><?php echo $comment['comment'] ?></textarea>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<hr>
+					</div>
+				</div>
+				<div class="footer d-flex flex-row-reverse">
+					<button class="btn btn-success btn-sm">Save</button>
+				</div>
+			</div>
+		</form>
+	</div>
 <?php endif; ?>
+
+<?php if(isset($_GET['commenteditPOST'])){
+	extract($_POST);
+
+    mysqli_begin_transaction($conn);
+    $a1 = mysqli_query($conn, "UPDATE comments SET comment='$comment' WHERE CommentsID={$_GET['commentID']}");
+
+    if($a1){
+        mysqli_commit($conn);
+        header("location: ../index.php?error=none");
+        exit();
+    }
+    else{
+        echo("Error description: ".mysqli_error($conn));
+        mysqli_rollback($conn);
+    }
+}
+
+if(isset($_GET['commentdeletePOST'])){
+	extract($_POST);
+
+	mysqli_begin_transaction($conn);
+	$a1 = mysqli_query($conn, "DELETE FROM comments WHERE CommentsID=$id");
+
+	if($a1){
+		mysqli_commit($conn);
+		header("location: ../index.php?error=none");
+		exit();
+	}
+	else{
+		echo("Error description: ".mysqli_error($conn));
+		mysqli_rollback($conn);
+	}
+	
+}
+
+?>
 <style>
 	#uni_modal .modal-footer{
 		display: none;
