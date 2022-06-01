@@ -1,0 +1,23 @@
+Use-cases:
+
+Request
+ereklamos (types)
+Reklamo
+Account
+Payment
+Profile
+Election
+Voting
+eBulletin
+Message
+Notif 
+Report
+
+changes to be made:
+-redesign resident table
+-add councilor
+-eusa ang ereklamo and request into one (services)
+-seperate reports using tab
+-find a new design for choosing reisdents (dont use select)
+-change cedula from monthly salary to annual salary
+

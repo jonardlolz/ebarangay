@@ -83,11 +83,11 @@
                 <div class="col">
                     <div class="row">
                         <div class="col-sm-4">
-                            <label for="">Resident: </label>
+                            <label for="">Name: </label>
                         </div>
                         <div class="col">
                             <select class="js-select" name="residents" id="residents" style="width: 75%;" required>
-                                <option value="" hidden disabled selected>Resident</option>
+                                <option value="" hidden disabled selected>Name</option>
                                 <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}'");
                                 while($residents = $residentSql->fetch_assoc()):
                                 ?>
@@ -103,9 +103,18 @@
                         <div class="col">
                             <select class="js-select" name="userPosition" id="userPosition" required>
                                 <option value="" selected hidden>Position</option>
-                                <option value="Treasurer">Treasurer</option>
+                                <option value="Secretary">Treasurer</option>
                                 <option value="Treasurer">Secretary</option>
+                                <option value="Councilor">Councilor</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            Role:
+                        </div>
+                        <div class="col">
+                            <input class="form-control form-control-sm" type="text">
                         </div>
                     </div>
                     <div class="row" style="margin-top: 10px; display: none;">
