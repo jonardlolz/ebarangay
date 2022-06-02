@@ -31,9 +31,9 @@ Resident
 
 
 FDD:
-Account       document  complaint   resident    payment     services
-register      create    create      add         cancel      ereklamo
-edit          edit      edit        edit        confirm       Lsend
+Account       document  complaint   resident    payment     services    reports   notification
+register      create    create      add         cancel      ereklamo    view      view
+edit          edit      edit        edit        confirm       Lsend               receive
 add           delete    delete                  pay           Lreceive
 deactivate                                                    Lresolve
 verify                                                      erequest

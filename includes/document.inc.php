@@ -16,7 +16,7 @@ session_start();
         } ?>
         <div class="form-group row">
             <div class="col-sm-5" style="text-align: right">
-                <label>Document name:</label>
+                <label>Document name: </label>
             </div>
             <div class="col-sm-6">
                 <label><b><?php if(isset($_GET['docuName'])){ echo $_GET['docuName']; }?></b></label>
@@ -265,7 +265,7 @@ session_start();
                                 <tr>
                                     <td><?php echo $row['purpose'] ?></td>
                                     <td>
-                                        <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>"><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="edit_purpose" data-id="<?php echo $_GET['docuType'] ?>" data-docu="<?php echo $_GET['docuName'] ?>" data-purposeid="<?php echo $row['purposeID'] ?>"><i class="fas fa-edit"></i></a>
                                         <a href="javascript:void(0)" class="delete_purpose" data-id="<?php echo $row['purposeID'] ?>" data-docu="<?php echo $row['purposeID'] ?>"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
@@ -688,12 +688,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
     
 ?>
@@ -708,12 +708,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
 ?>
 
@@ -729,12 +729,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
     
 ?>
@@ -749,12 +749,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
 ?>
 <?php elseif(isset($_GET['deleteRequirement'])):
@@ -768,12 +768,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
 ?>
 
@@ -805,12 +805,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
     
 ?>
@@ -848,12 +848,12 @@ session_start();
 
     if(!mysqli_stmt_execute($stmt)){
         echo("Error description: " . mysqli_error($conn));
-        header("location: ../request.php?error=sqlExecError");
+        header("location: ../services.php?error=sqlExecError");
         exit();
     }
     mysqli_stmt_close($stmt);
 
-    header("location: ../request.php?error=none"); //no errors were made
+    header("location: ../services.php?error=none"); //no errors were made
     exit();
     
 ?>
@@ -1005,7 +1005,7 @@ session_start();
         secondary_modal("<center><b>Add purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?addPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id'));
     })
     $('.edit_purpose').click(function(){
-        secondary_modal("<center><b>Edit purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?editPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id')+"&purposeID="+$(this).attr('data-id'));
+        secondary_modal("<center><b>Edit purpose for " + $(this).attr('data-docu') + "</b></center></center>","includes/document.inc.php?editPurpose&docuName="+$(this).attr('data-docu')+"&docuType="+$(this).attr('data-id')+"&purposeID="+$(this).attr('data-purposeid'));
     })
     $('.delete_purpose').click(function(){
         _conf("Are you sure you want to delete this purpose?","deletePurpose",[$(this).attr('data-id')]);

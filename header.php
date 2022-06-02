@@ -418,6 +418,9 @@
                     Barangay
                 </a>
             </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "services.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "services.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="services.php">Services</a>
+            </li>
             <!-- Nav Item - Request -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>

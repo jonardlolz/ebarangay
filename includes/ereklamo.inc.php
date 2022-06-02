@@ -376,7 +376,18 @@
                     </div>
                     <?php endif; ?>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <hr>
+                    </div>
+                </div>
+                <div class="d-flex flex-row-reverse footer">
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
             </form>
+            <script>
+                $(".container-fluid").parent().siblings(".modal-footer").remove();
+            </script>
         </div>
     
     <?php
@@ -448,6 +459,9 @@
                     </form>
                 </div>
             </div>
+            <script>
+                $(".container-fluid").parent().siblings(".modal-footer").remove();
+            </script>
         </div>
     
     <?php
@@ -508,7 +522,7 @@
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
+            header("location: ../services.php?error=none"); 
             exit();
         }
         else{
@@ -517,7 +531,7 @@
             exit();
         }
 
-        header("location: ../ereklamo.php?error=none"); //no errors were made
+        header("location: ../services.php?error=none"); //no errors were made
         exit();
     }
     else if(isset($_GET['postCatEdit'])){
@@ -529,7 +543,7 @@
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
+            header("location: ../services.php?error=none"); 
             exit();
         }
         else{
@@ -538,7 +552,7 @@
             exit();
         }
 
-        header("location: ../ereklamo.php?error=none"); //no errors were made
+        header("location: ../services.php?error=none"); //no errors were made
         exit();
     }
     else if(isset($_GET['postCatDelete'])){
@@ -550,7 +564,7 @@
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
+            header("location: ../services.php?error=none"); 
             exit();
         }
         else{
@@ -559,7 +573,7 @@
             exit();
         }
 
-        header("location: ../ereklamo.php?error=none"); //no errors were made
+        header("location: ../services.php?error=none"); //no errors were made
         exit();
     }
     else if(isset($_GET['postTypeAdd'])){
@@ -571,7 +585,7 @@
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
+            header("location: ../services.php?error=none"); 
             exit();
         }
         else{
@@ -580,7 +594,7 @@
             exit();
         }
 
-        header("location: ../ereklamo.php?error=none"); //no errors were made
+        header("location: ../services.php?error=none"); //no errors were made
         exit();
     }
     else if(isset($_GET['postTypeEdit'])){
@@ -592,7 +606,7 @@
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
+            header("location: ../services.php?error=none"); 
             exit();
         }
         else{
@@ -601,7 +615,7 @@
             exit();
         }
 
-        header("location: ../ereklamo.php?error=none"); //no errors were made
+        header("location: ../services.php?error=none"); //no errors were made
         exit();
     }
     else if(isset($_GET['reportPost'])){
@@ -839,7 +853,7 @@
 
         if($a1 && $a2){
             mysqli_commit($conn);
-            header("location: ../ereklamo.php?error=none"); 
+            header("location: ../services.php?error=none"); 
             exit();
         }
         else{
@@ -848,7 +862,7 @@
             exit();
         }
 
-        header("location: ../ereklamo.php?error=none"); //no errors were made
+        header("location: ../services.php?error=none"); //no errors were made
         exit();
     }
     else if(isset($_GET['respond'])):
@@ -1148,6 +1162,5 @@
                 }
             })
         }
-
         
     </script>

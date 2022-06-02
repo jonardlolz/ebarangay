@@ -396,6 +396,64 @@
     $('.add_document').click(function(){
         uni_modal("<center><b>New document </b></center></center>","includes/document.inc.php?addDocument&barangay="+$(this).attr('data-id'));
     })
+    $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
+            if(this.scrollHeight <= 117)
+            $(this).height(0).height(this.scrollHeight);
+        })
+
+        $('.set-schedule').click(function(){
+            _conf("Change status for reklamo to be scheduled?","set_schedule",[$(this).attr('data-id'), $(this).attr('data-user')])
+        })
+
+        $('.respond').click(function(){
+            uni_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
+        })
+        $('.confirm-schedule').click(function(){
+            uni_modal("<center><b>Schedule a summon</b></center></center>","includes/schedule.inc.php?scheduleSummon="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'))
+        })
+        $('.add_ereklamoCat').click(function(){
+            uni_modal("<center><b>Add Reklamo Category</b></center></center>","includes/ereklamo.inc.php?ereklamoAddCat&priority="+$(this).attr('data-priority'))
+        })
+        $('.edit_ereklamoCat').click(function(){
+            uni_modal("<center><b>Edit Reklamo Category</b></center></center>","includes/ereklamo.inc.php?ereklamoEditCat&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
+        })
+        $('.delete_ereklamoCat').click(function(){
+            _conf("Are you sure you want to delete this reklamo category?", "delete_cat", [$(this).attr('data-id')])
+        })
+        $('.add_ereklamotype').click(function(){
+            uni_modal("<center><b>Add Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoAddType&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
+        })
+        $('.edit_type').click(function(){
+            uni_modal("<center><b>Edit Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoEditType&typeID="+ $(this).attr('data-id'))
+        })
+        $('.delete_type').click(function(){
+            _conf("Are you sure you want to delete this reklamo type?", "delete_type", [$(this).attr('data-id')])
+        })
+
+        function delete_cat($id){
+            start_load()
+            $.ajax({
+                url:'includes/ereklamo.inc.php?postCatDelete',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+
+        function delete_type($id){
+            start_load()
+            $.ajax({
+                url:'includes/ereklamo.inc.php?postTypeDelete',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+
     function delete_document($id){
         start_load()
         $.ajax({
