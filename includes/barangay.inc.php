@@ -101,27 +101,20 @@
                             <label for="">Position: </label>
                         </div>
                         <div class="col">
-                            <select class="js-select" name="userPosition" id="userPosition" required>
+                            <select class="form-control form-control-sm" name="userPosition" onchange="positionCheck()" id="userPosition" required>
                                 <option value="" selected hidden>Position</option>
-                                <option value="Secretary">Treasurer</option>
-                                <option value="Treasurer">Secretary</option>
+                                <option value="Treasurer">Treasurer</option>
+                                <option value="Secretary">Secretary</option>
                                 <option value="Councilor">Councilor</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="roleField" style="display: none;">
                         <div class="col-sm-4">
                             Role:
                         </div>
                         <div class="col">
-                            <input class="form-control form-control-sm" type="text">
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px; display: none;">
-                        <div class="col">
-                            <div class="alert alert-danger">
-                                Test
-                            </div>
+                            <input class="form-control form-control-sm" type="text" required>
                         </div>
                     </div>
                 </div>
@@ -137,6 +130,15 @@
         </form>
     </div>
    <script>
+       function positionCheck(){
+           var position = document.getElementById("userPosition");
+           if(position.value == 'Councilor'){
+                roleField.style.display = "flex";
+           }
+           else{
+              roleField.style.display = "none"; 
+           }
+       }
        $(".container-fluid").parent().siblings(".modal-footer").remove();
    </script>
 

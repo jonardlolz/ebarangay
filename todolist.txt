@@ -14,10 +14,29 @@ Notif
 Report
 
 changes to be made:
--redesign resident table
--add councilor
--eusa ang ereklamo and request into one (services)
--seperate reports using tab
+-redesign resident table x
+-add councilor          x (features not yet fleshed out)
+-eusa ang ereklamo and request into one (services) x
+-seperate reports using tab     
 -find a new design for choosing reisdents (dont use select)
--change cedula from monthly salary to annual salary
+-change cedula from monthly salary to annual salary x
+-use dropdown on resident page to display results
+-some sort of alert that tells users that voting is open
 
+management  services   payment   reports   
+Account     ereklamo    
+Document    erequest
+Complaint   
+Resident
+
+
+FDD:
+Account       document  complaint   resident    payment     services
+register      create    create      add         cancel      ereklamo
+edit          edit      edit        edit        confirm       Lsend
+add           delete    delete                  pay           Lreceive
+deactivate                                                    Lresolve
+verify                                                      erequest
+                                                              Lsend
+                                                              Lreceive
+                                                              Lapprove

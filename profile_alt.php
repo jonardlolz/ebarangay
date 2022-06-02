@@ -41,9 +41,11 @@
                                 echo "img-admin-profile";
                             }
                         ?>" style="width:150px; height:150px">
-                        <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
-                            <i class="fas fa-camera"></i>
-                        </a>
+                        <?php if(!isset($_GET['viewProfile'])): ?>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
+                                <i class="fas fa-camera"></i>
+                            </a>
+                        <?php endif; ?>
                     </span>
                 </div>
                 <div class="mt-2">
@@ -51,6 +53,7 @@
                     <h6 readonly><?php echo $row["emailAdd"]; ?></h6>
                 </div>
             </div>
+            <?php if(!isset($_GET['viewProfile'])): ?>
             <div class="text-center">
                 <!--Trigger Button Chat-->
                 <?php if($row['VerifyStatus'] == 'Verified'): ?>
@@ -69,6 +72,7 @@
                 <a class="view_report" data-id="<?php echo $_GET['UsersID'] ?>" href="javascript:void(0)"><i class="fas fa-history fa-lg"></i></a>
                 <?php endif; ?>
             </div>
+            <?php endif; ?>
             <div class="text-center">
                 <h6 class="m-2">
                     <?php $detail="";
@@ -181,6 +185,8 @@
 </div>
 
 <script>
+    $(".col").parent().siblings(".modal-footer").remove();
+   
     function openForm() {
         document.getElementById("myForm").style.display = "block";
     }

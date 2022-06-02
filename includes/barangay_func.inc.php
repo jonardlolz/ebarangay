@@ -65,9 +65,12 @@
     elseif(isset($_GET['addOfficer'])){
         extract($_POST);
         mysqli_begin_transaction($conn);
-
-        $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");
-
+        if($userPosition == 'Councilor'){
+            $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");
+        }
+        else{
+            $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");
+        }
         if($a1){
             mysqli_commit($conn);
             $sql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_GET['barangayName']}'");

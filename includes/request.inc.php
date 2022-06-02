@@ -203,7 +203,7 @@ elseif(isset($_GET['additionalInput'])){
     $data = $sql->fetch_assoc();
 
     if($data['documentName'] == 'Cedula'){
-        $result .= "<label>Enter monthly salary: </label><input class='form-control' style='width: 75%' type='text' name='monthlySalary' id='monthlySalary' required>";
+        $result .= "<label>Enter annual salary: </label><input class='form-control' style='width: 75%' type='text' name='monthlySalary' id='monthlySalary' required>";
     }
     else{
         if($data['allowFee'] == 'True'){

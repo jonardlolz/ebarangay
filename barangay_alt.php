@@ -140,8 +140,10 @@
                                     $officials = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users
                                     WHERE (userType='Captain'
                                     OR userType='Secretary'
-                                    OR userType='Treasurer')
-                                    AND userBarangay='{$row['BarangayName']}'"); ?>
+                                    OR userType='Treasurer'
+                                    OR userType='Councilor')
+                                    AND userBarangay='{$row['BarangayName']}'
+                                    ORDER BY FIELD(userType, 'Captain', 'Secretary', 'Treasurer', 'Councilor' )"); ?>
                                 <?php while($i < mysqli_num_rows($officials)): ?>
                                 <div class="row">
                                     <?php while($officalRow = $officials->fetch_assoc()): ?>
@@ -166,6 +168,9 @@
                                                             }
                                                             elseif($officalRow["userType"] == "Treasurer"){
                                                                 echo "img-treas-profile";
+                                                            }
+                                                            elseif($officalRow["userType"] == "Councilor"){
+                                                                echo "img-councilor-profile";
                                                             }
                                                             elseif($officalRow["userType"] == "Admin"){
                                                                 echo "img-admin-profile";
