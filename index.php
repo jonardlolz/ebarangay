@@ -52,6 +52,9 @@
                                                         elseif($_SESSION["userType"] == "Treasurer"){
                                                             echo "img-treas-profile";
                                                         }
+                                                        elseif($_SESSION["userType"] == "Councilor"){
+                                                            echo "img-councilor-profile";
+                                                        }
                                                         elseif($_SESSION["userType"] == "Admin"){
                                                             echo "img-admin-profile";
                                                         }
@@ -105,6 +108,9 @@
                                                         }
                                                         elseif($row["userType"] == "Captain"){
                                                             echo "img-capt-profile";
+                                                        }
+                                                        elseif($_SESSION["userType"] == "Councilor"){
+                                                            echo "img-councilor-profile";
                                                         }
                                                         elseif($row["userType"] == "Secretary"){
                                                             echo "img-sec-profile";
@@ -242,6 +248,9 @@
                                                         }
                                                         elseif($crow["userType"] == "Captain"){
                                                             echo "img-capt-profile";
+                                                        }
+                                                        elseif($_SESSION["userType"] == "Councilor"){
+                                                            echo "img-councilor-profile";
                                                         }
                                                         elseif($crow["userType"] == "Secretary"){
                                                             echo "img-sec-profile";

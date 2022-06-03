@@ -383,6 +383,86 @@
     </script> -->
 </div>
 
+<?php elseif($_SESSION['userType'] == 'Councilor'): ?>
+<div class="card shadow mb-4 m-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+            <h6 class="m-0 font-weight-bold text-dark"><?php echo $_SESSION["userBarangay"] ?> Residents</h6>
+            <a class="fas fa-plus fa-lg mr-2 text-gray-600 residentOptions" href="javascript:void(0)"></a>
+    </div>
+    <div class="card-body" style="font-size: 75%">
+        <div class="table-responsive">
+            <table class="table tableResident table-bordered text-center text-dark display" id=""
+                width="100%" cellspacing="0" cellpadding="0">
+                <thead >
+                    <tr class="bg-gradient-secondary text-white">
+                        <th scope="col">Name</th>
+                        <th scope="col">Purok</th>
+                        <th>House Number</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <!--Row 1-->
+                    <?php 
+                        $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident');");
+                        while($row=$accounts->fetch_assoc()):
+                            if($row["userType"] == "Admin"){
+                                continue;
+                            }
+                    ?>
+                    <tr>
+                        <td>
+                            <img class="img-profile rounded-circle <?php 
+                                if($row["userType"] == "Resident"){
+                                    echo "img-res-profile";
+                                }
+                                elseif($row["userType"] == "Purok Leader"){
+                                    echo "img-purokldr-profile";
+                                }
+                                elseif($row["userType"] == "Captain"){
+                                    echo "img-capt-profile";
+                                }
+                                elseif($row["userType"] == "Secretary"){
+                                    echo "img-sec-profile";
+                                }
+                                elseif($row["userType"] == "Treasurer"){
+                                    echo "img-treas-profile";
+                                }
+                                elseif($row["userType"] == "Councilor"){
+                                    echo "img-councilor-profile";
+                                }
+                                elseif($row["userType"] == "Admin"){
+                                    echo "img-admin-profile";
+                                }
+                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                            </br>
+                            <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
+                        </td>
+                        <td><?php echo $row["userPurok"] ?></td>
+                        <td><?php echo $row["userHouseNum"] ?></td>
+                    </tr>
+                    <?php endwhile; ?>
+                    <!--Row 1-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <script>
+        $(document).ready(function() {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('table.display').DataTable({
+                "scrollY": "400px",
+                "scrollCollapse": true,
+                "paging": false,
+                "ordering": false
+            });
+        });
+    </script> -->
+</div>
+
 <!-- End of Card Body-->
 <?php elseif($_SESSION['userType'] == 'Secretary'): ?>
 <div class="card shadow mb-4 m-4">

@@ -1108,7 +1108,1034 @@
             </div>
         </div> -->
         <!-- End of Card Body-->
-    </div>                   
+    </div>            
+    <?php elseif($_SESSION["userType"] == "Councilor"): ?>
+        <div class="card shadow mb-4 m-4">
+        <div class="card-header py-3 d-flex justify-content-between">
+            <h6 class="m-0 font-weight-bold text-dark">eReklamo</h6>
+        </div>
+        
+        <div class="card-body" style="font-size: 75%">
+            <div class="m-2">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-minorpending-tab" data-toggle="tab" href="#nav-minorpending" role="tab" aria-controls="nav-minorpending" aria-selected="true">Pending</a>
+                        <a class="nav-item nav-link" id="nav-ongoing-tab" data-toggle="tab" href="#nav-ongoing" role="tab" aria-controls="nav-ongoing" aria-selected="false">Ongoing</a>
+                        <a class="nav-item nav-link" id="nav-respondentsent-tab" data-toggle="tab" href="#nav-respondentsent" role="tab" aria-controls="nav-respondentsent" aria-selected="false">On Respondent</a>
+                        <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#nav-resolved" role="tab" aria-controls="nav-resolved" aria-selected="false">Resolved</a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-minorpending" role="tabpanel" aria-labelledby="nav-minorpending-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Reklamo Category</th>
+                                        <th scope="col">Reklamo Type</th>
+                                        <th scope="col">Details</th>
+                                        <th scope="col">Date Submitted</th>
+                                        <th scope="col">Manage</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                        as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                        DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                        as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum
+                                        FROM ereklamo 
+                                        INNER JOIN users 
+                                        ON ereklamo.UsersID=users.UsersID 
+                                        WHERE ereklamo.status='Pending'  
+                                        AND ereklamo.complaintLevel='Minor' 
+                                        AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                        AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["reklamoType"] ?></td>
+                                        <td><?php echo $row["detail"] ?></td>
+                                        <td><?php if($row["comment"] != "" || $row["comment"] != NULL){ echo $row["comment"]; }else{ echo "No comment given"; } ?></td>
+                                        <td><?php $date = date_create($row["createdDate"]); 
+                                            echo date_format($date, "F d, Y"); ?></td>
+                                        <td>
+                                            <a href="includes/ereklamo.inc.php?accept&reklamoid=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success"><i class="fas fa-check"></i> Accept</button></a>
+                                        </td>
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-ongoing" role="tabpanel" aria-labelledby="nav-ongoing-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Reklamo Category</th>
+                                        <th scope="col">Reklamo Type</th>
+                                        <th scope="col">Date Submitted</th>
+                                        <th scope="col">Manage</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                        as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                        DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                        as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, chatroom.chatroomID
+                                        FROM ereklamo 
+                                        INNER JOIN users 
+                                        ON ereklamo.UsersID=users.UsersID 
+                                        LEFT JOIN chatroom
+                                        ON ereklamo.ReklamoID=chatroom.idreference
+                                        AND type='ereklamo'
+                                        WHERE ereklamo.status='Ongoing'  
+                                        AND ereklamo.complaintLevel='Minor' 
+                                        AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                        AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["reklamoType"] ?></td>
+                                        <td><?php echo $row["detail"] ?></td>
+                                        <td><?php $date = date_create($row["createdDate"]); 
+                                            echo date_format($date, "F d, Y"); ?></td>
+                                        <td>
+                                            <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                        </td>
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-respondentsent" role="tabpanel" aria-labelledby="nav-respondentsent-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable3" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Reklamo Category</th>
+                                        <th scope="col">Reklamo Type</th>
+                                        <th scope="col">Manage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                        as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                        DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                        as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, chatroom.chatroomID
+                                        FROM ereklamo 
+                                        INNER JOIN users 
+                                        ON ereklamo.UsersID=users.UsersID 
+                                        LEFT JOIN chatroom
+                                        ON ereklamo.ReklamoID=chatroom.idreference
+                                        AND type='ereklamo'
+                                        WHERE (ereklamo.status='Respondents sent' 
+                                        OR ereklamo.status='Incoming')
+                                        AND ereklamo.complaintLevel='Minor' 
+                                        AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                        AND ereklamo.purok='{$_SESSION['userPurok']}'
+                                        ORDER BY checkedOn DESC");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["reklamoType"] ?></td>
+                                        <td><?php echo $row["detail"] ?></td>
+                                        <td>
+                                            <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                        </td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-resolved" role="tabpanel" aria-labelledby="nav-resolved-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Reklamo Category</th>
+                                        <th scope="col">Reklamo Type</th>
+                                        <th scope="col">Date Submitted</th>
+                                        <th scope="col">Managed By</th>
+                                        <th scope="col">Date Managed</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                        as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Resolved';");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["reklamoType"] ?></td>
+                                        <td><?php echo $row["detail"] ?></td>
+                                        <td><?php echo $row["createdDate"] ?></td>
+                                        <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
+                                        <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
+                                        <!--Right Options-->
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <div class="card-body" style="font-size: 75%">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-major-tab" data-toggle="tab" href="#nav-major" role="tab" aria-controls="nav-major" aria-selected="false">Major</a>
+                    <a class="nav-item nav-link" id="nav-minor-tab" data-toggle="tab" href="#nav-minor" role="tab" aria-controls="nav-minor" aria-selected="true">Minor </a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-major" role="tabpanel" aria-labelledby="nav-major-tab">
+                    <div class="m-4">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-majorpending-tab" data-toggle="tab" href="#nav-majorpending" role="tab" aria-controls="nav-majorpending" aria-selected="true">Pending</a>
+                                <a class="nav-item nav-link" id="nav-majorongoing-tab" data-toggle="tab" href="#nav-majorongoing" role="tab" aria-controls="nav-majorongoing" aria-selected="false">Ongoing</a>
+                                <a class="nav-item nav-link" id="nav-tocapt-tab" data-toggle="tab" href="#nav-tocapt" role="tab" aria-controls="nav-tocapt" aria-selected="false">To Captain</a>
+                                <a class="nav-item nav-link" id="nav-majorresolved-tab" data-toggle="tab" href="#nav-majorresolved" role="tab" aria-controls="nav-majorresolved" aria-selected="false">Resolved</a>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-majorpending" role="tabpanel" aria-labelledby="nav-majorpending-tab">
+                            <div class="container fluid">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Complainant</th>
+                                                <th>Complainee</th>
+                                                <th>Complainee Address</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile, concat(a.userPurok, ', #', a.userHouseNum) as complaineeAddress
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID
+                                                INNER JOIN users a
+                                                ON ereklamo.complainee=a.UsersID
+                                                WHERE ereklamo.complaintLevel='Major' 
+                                                AND ereklamo.status='Pending'
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'
+                                                ORDER BY CreatedOn DESC");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["complaineeType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["complaineeProfile"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["complainee"] ?>
+                                                </td>
+                                                <td><?php echo $row["complaineeAddress"] ?></td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php $date = date_create($row["createdDate"]); 
+                                                    echo date_format($date, "F d, Y"); ?></td>
+                                                <td>
+                                                    <a href="includes/ereklamo.inc.php?accept&reklamoid=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success"><i class="fas fa-check"></i> Accept</button></a>
+                                                </td>
+                                         
+                                            </tr>
+                                            <?php endwhile; ?>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-majorongoing" role="tabpanel" aria-labelledby="nav-majorongoing-tab">
+                            <div class="container fluid">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Complainant</th>
+                                                <th>Complainee</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile, chatroom.chatroomID
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID
+                                                INNER JOIN users a
+                                                ON ereklamo.complainee=a.UsersID
+                                                INNER JOIN chatroom
+                                                ON ereklamo.ReklamoID=chatroom.idreference  
+                                                WHERE ereklamo.complaintLevel='Major' 
+                                                AND ereklamo.status='Ongoing'
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["complaineeType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["complaineeProfile"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["complainee"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php $date = date_create($row["createdDate"]); 
+                                                    echo date_format($date, "F d, Y"); ?></td>
+                                                <td>
+                                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-tocapt" role="tabpanel" aria-labelledby="nav-tocapt-tab">
+                            <div class="container fluid">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable3" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Complainant</th>
+                                                <th>Complainee</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Reklamo Type</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile, chatroom.chatroomID
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID
+                                                INNER JOIN users a
+                                                ON ereklamo.complainee=a.UsersID
+                                                INNER JOIN chatroom
+                                                ON ereklamo.ReklamoID=chatroom.idreference  
+                                                WHERE ereklamo.complaintLevel='Major' 
+                                                AND ereklamo.status='To Captain'
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["complaineeType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["complaineeProfile"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["complainee"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php echo $row["detail"] ?></td>
+                                                <td><?php $date = date_create($row["createdDate"]); 
+                                                    echo date_format($date, "F d, Y"); ?></td>
+                                                <td>
+                                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-majorresolved" role="tabpanel" aria-labelledby="nav-majorresolved-tab">
+                            <div class="container fluid">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable4" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Complainant</th>
+                                                <th>Complainee</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Reklamo Type</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, concat(a.Firstname, ' ', a.Lastname) as complainee, a.userType as complaineeType, a.profile_pic as complaineeProfile, chatroom.chatroomID
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID
+                                                INNER JOIN users a
+                                                ON ereklamo.complainee=a.UsersID
+                                                INNER JOIN chatroom
+                                                ON ereklamo.ReklamoID=chatroom.idreference  
+                                                WHERE ereklamo.complaintLevel='Major' 
+                                                AND ereklamo.status='Resolved'
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["complaineeType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["complaineeType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["complaineeProfile"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["complainee"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php echo $row["detail"] ?></td>
+                                                <td><?php $date = date_create($row["createdDate"]); 
+                                                    echo date_format($date, "F d, Y"); ?></td>
+                                                <td>
+                                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-minor" role="tabpanel" aria-labelledby="nav-minor-tab">
+                    <div class="m-4">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-minorpending-tab" data-toggle="tab" href="#nav-minorpending" role="tab" aria-controls="nav-minorpending" aria-selected="true">Pending</a>
+                                <a class="nav-item nav-link" id="nav-ongoing-tab" data-toggle="tab" href="#nav-ongoing" role="tab" aria-controls="nav-ongoing" aria-selected="false">Ongoing</a>
+                                <a class="nav-item nav-link" id="nav-respondentsent-tab" data-toggle="tab" href="#nav-respondentsent" role="tab" aria-controls="nav-respondentsent" aria-selected="false">On Respondent</a>
+                                <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#nav-resolved" role="tab" aria-controls="nav-resolved" aria-selected="false">Resolved</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-minorpending" role="tabpanel" aria-labelledby="nav-minorpending-tab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Reklamo Type</th>
+                                                <th scope="col">Details</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID 
+                                                WHERE ereklamo.status='Pending'  
+                                                AND ereklamo.complaintLevel='Minor' 
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php echo $row["detail"] ?></td>
+                                                <td><?php if($row["comment"] != "" || $row["comment"] != NULL){ echo $row["comment"]; }else{ echo "No comment given"; } ?></td>
+                                                <td><?php $date = date_create($row["createdDate"]); 
+                                                    echo date_format($date, "F d, Y"); ?></td>
+                                                <td>
+                                                    <a href="includes/ereklamo.inc.php?accept&reklamoid=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success"><i class="fas fa-check"></i> Accept</button></a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-ongoing" role="tabpanel" aria-labelledby="nav-ongoing-tab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Reklamo Type</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, chatroom.chatroomID
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID 
+                                                LEFT JOIN chatroom
+                                                ON ereklamo.ReklamoID=chatroom.idreference
+                                                AND type='ereklamo'
+                                                WHERE ereklamo.status='Ongoing'  
+                                                AND ereklamo.complaintLevel='Minor' 
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php echo $row["detail"] ?></td>
+                                                <td><?php $date = date_create($row["createdDate"]); 
+                                                    echo date_format($date, "F d, Y"); ?></td>
+                                                <td>
+                                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-respondentsent" role="tabpanel" aria-labelledby="nav-respondentsent-tab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable3" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Reklamo Type</th>
+                                                <th scope="col">Manage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
+                                                as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
+                                                DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic, users.userAddress, users.userHouseNum, chatroom.chatroomID
+                                                FROM ereklamo 
+                                                INNER JOIN users 
+                                                ON ereklamo.UsersID=users.UsersID 
+                                                LEFT JOIN chatroom
+                                                ON ereklamo.ReklamoID=chatroom.idreference
+                                                AND type='ereklamo'
+                                                WHERE (ereklamo.status='Respondents sent' 
+                                                OR ereklamo.status='Incoming')
+                                                AND ereklamo.complaintLevel='Minor' 
+                                                AND ereklamo.barangay='{$_SESSION['userBarangay']}' 
+                                                AND ereklamo.purok='{$_SESSION['userPurok']}'
+                                                ORDER BY checkedOn DESC");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php echo $row["detail"] ?></td>
+                                                <td>
+                                                    <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-resolved" role="tabpanel" aria-labelledby="nav-resolved-tab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center text-dark" 
+                                        id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                                        <thead >
+                                            <tr class="bg-gradient-secondary text-white">
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Reklamo Category</th>
+                                                <th scope="col">Reklamo Type</th>
+                                                <th scope="col">Date Submitted</th>
+                                                <th scope="col">Managed By</th>
+                                                <th scope="col">Date Managed</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
+                                                as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Resolved';");
+                                                while($row=$requests->fetch_assoc()):
+                                                    if($row["userType"] == "Admin"){
+                                                        continue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <img class="img-profile rounded-circle <?php 
+                                                        if($row["userType"] == "Resident"){
+                                                            echo "img-res-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Purok Leader"){
+                                                            echo "img-purokldr-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Captain"){
+                                                            echo "img-capt-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Secretary"){
+                                                            echo "img-sec-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Treasurer"){
+                                                            echo "img-treas-profile";
+                                                        }
+                                                        elseif($row["userType"] == "Admin"){
+                                                            echo "img-admin-profile";
+                                                        }
+                                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                    <br>
+                                                    <?php echo $row["name"] ?>
+                                                </td>
+                                                <td><?php echo $row["reklamoType"] ?></td>
+                                                <td><?php echo $row["detail"] ?></td>
+                                                <td><?php echo $row["createdDate"] ?></td>
+                                                <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
+                                                <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
+                                            
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- End of Card Body-->
+    </div>               
     <!--End of Card--> 
     <?php elseif($_SESSION["userType"] == "Secretary"): ?>
         <div class="card shadow mb-4 m-4">

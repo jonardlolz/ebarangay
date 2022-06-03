@@ -37,6 +37,9 @@
                             elseif($row["userType"] == "Treasurer"){
                                 echo "img-treas-profile";
                             }
+                            elseif($row["userType"] == "Councilor"){
+                                echo "img-councilor-profile";
+                            }
                             elseif($row["userType"] == "Admin"){
                                 echo "img-admin-profile";
                             }

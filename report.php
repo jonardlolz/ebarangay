@@ -7,6 +7,22 @@
             </div>
             
             <div class="card-body" style="font-size: 75%">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="reklamo-tab" data-toggle="tab" href="#reklamo" role="tab" aria-controls="reklamo" aria-selected="true">eReklamo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">eRequest</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
+
+                    </div>
+                    <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered text-center text-dark display" 
                         width="100%" cellspacing="0" cellpadding="0">

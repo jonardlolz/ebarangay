@@ -8,7 +8,7 @@
             <h3 class="font-weight-bold text-dark">Request Form</h3> 
             
         </div>
-        <?php if($_SESSION["userType"] === "Resident"): 
+        <?php if($_SESSION["userType"] === "Resident" || $_SESSION["userType"] === "Councilor"): 
             if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): 
         ?>
             <div class='alert alert-danger' role='alert' style="text-align: center">
@@ -1737,7 +1737,6 @@
         $('#dataTable2').DataTable();
     } );
 
-    
     function additionalInput($documentID){
         start_load()
         $.ajax({

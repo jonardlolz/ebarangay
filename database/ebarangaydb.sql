@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2022 at 02:58 PM
+-- Generation Time: Jun 03, 2022 at 12:52 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -288,7 +288,7 @@ CREATE TABLE `documentpurpose` (
 
 INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangay`, `barangayDoc`) VALUES
 (3, 'Claim Ayuda', 'Paknaan', 3),
-(5, 'Notarization ', 'Paknaan', 1),
+(5, 'Notarization', 'Paknaan', 1),
 (6, 'Employment', 'Paknaan', 1),
 (10, 'Proof of Residency', 'Paknaan', 2);
 
@@ -801,8 +801,8 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (305, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:10:58', '2022-05-28 20:10:58'),
 (306, 'A resident has requested a Indigency Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 20:16:25', '2022-05-28 20:16:25'),
 (307, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:43:26', '2022-05-28 20:43:26'),
-(308, 'A new request is ready for payment', 'request', 'Not Read', NULL, 'Treasurer', '2022-05-28 20:50:29', '2022-05-28 20:50:29'),
-(309, 'A new request is ready for payment', 'request', 'Not Read', NULL, 'Treasurer', '2022-05-28 20:52:12', '2022-05-28 20:52:12'),
+(308, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:50:29', '2022-05-28 20:50:29'),
+(309, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:52:12', '2022-05-28 20:52:12'),
 (310, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-06-01 13:22:22', '2022-06-01 13:22:22');
 
 -- --------------------------------------------------------
@@ -1108,7 +1108,12 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (253, 'Request', 'Treasurer Ville,Jackson has cancelled the payment for RequestID#47', 37, '2022-05-28 20:10:01', '2022-05-28 20:10:01', 'Paknaan', 'Kamatis'),
 (254, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 48', 31, '2022-05-28 20:10:51', '2022-05-28 20:10:51', 'Paknaan', 'Kamatis'),
 (255, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 46', 31, '2022-05-28 20:10:54', '2022-05-28 20:10:54', 'Paknaan', 'Kamatis'),
-(256, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 44', 31, '2022-05-28 20:10:58', '2022-05-28 20:10:58', 'Paknaan', 'Kamatis');
+(256, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 44', 31, '2022-05-28 20:10:58', '2022-05-28 20:10:58', 'Paknaan', 'Kamatis'),
+(257, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-06-02 20:16:38', '2022-06-02 20:16:38', 'Paknaan', 'Kamatis'),
+(258, 'eReklamo', 'Captain has entered a new reklamo category type: test', 29, '2022-06-02 20:18:57', '2022-06-02 20:18:57', 'Paknaan', 'Kamatis'),
+(259, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:19:01', '2022-06-02 20:19:01', 'Paknaan', 'Kamatis'),
+(260, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-06-02 20:20:31', '2022-06-02 20:20:31', 'Paknaan', 'Kamatis'),
+(261, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:20:35', '2022-06-02 20:20:35', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1314,10 +1319,17 @@ INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbi
 (30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
 (31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
 (32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
+(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
+(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
 (39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'National Highway ', '231', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False');
+(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
+(54, 'Yasmin', 'Awer', 'Fisher', '2013-01-07', 'Single', 'qoidoajd@gmail.com', 'councilor1', '$2y$10$I.dFzFM6CSA0czScwNa6x.VERcxvs4RUCQ5r0BKtNF4c5Msp0RMYe', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
+(55, 'Isidro', 'Nidhogg', 'Nitzsche', '2016-01-13', 'Single', 'aosdjasfa@gmail.com', 'councilor2', '$2y$10$5CZU58IIllsB5tAntntoGOIXRs0uQI/U373rjOXdcOWtbHvnSfWHe', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
+(56, 'Kian', 'Schwit', 'Von', '2007-01-09', 'Single', 'aosijdo@gmail.com', 'councilor3', '$2y$10$hu5VlmOzwMBXuID0duSB7ONu2x37JQsb8GO11HRsf9jc32WWQ.Ska', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '784', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
+(57, 'Samson', 'Poer', 'Ritchie', '2001-02-06', 'Single', 'anzxmasd@gmail.com', 'councilor4', '$2y$10$Q.AEENJYxJ5F35sB7ILD9O/aWc3EktqVBCH8mgZZBLZ89Fv2PKNXS', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
+(58, 'Ralph', 'Wex', 'Roob', '2003-01-06', 'Single', 'anbckjzxnc@gmail.com', 'councilor5', '$2y$10$lk0mqswvVGePDgVk9Xi9AeNQy4OcsxFDIanWYbcjdsUACsnn8.Jxa', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '156', 'False', 'False', '2000-01-07', NULL, 'What is your first pet\'s name?', 'Test', 'False'),
+(59, 'Hildr', 'Ryjr', 'Adelajda', '2008-06-01', 'Single', 'asmozkm@gmail.com', 'councilor6', '$2y$10$sGuxf7hKot1lg/xxPmiWLezVSP11YKhqWsgIKwfsU6nK629szChCq', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
+(60, 'Maria-Angeen', 'Ester', 'Coreen', '2003-01-21', 'Single', 'xcvlkkj@gmail.com', 'councilor7', '$2y$10$XhpGN5tTf6BO3P3yp4SDW.HupNGLBWnmabg3i/zOJgaRVmhfPT1w6', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '765', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False');
 
 -- --------------------------------------------------------
 
@@ -1569,7 +1581,7 @@ ALTER TABLE `chatroom`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `contacts`
@@ -1581,13 +1593,13 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `documenttype`
 --
 ALTER TABLE `documenttype`
-  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `election`
@@ -1605,7 +1617,7 @@ ALTER TABLE `ereklamo`
 -- AUTO_INCREMENT for table `ereklamocategory`
 --
 ALTER TABLE `ereklamocategory`
-  MODIFY `reklamoCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `reklamoCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `ereklamoreport`
@@ -1617,7 +1629,7 @@ ALTER TABLE `ereklamoreport`
 -- AUTO_INCREMENT for table `ereklamotype`
 --
 ALTER TABLE `ereklamotype`
-  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `members`
@@ -1647,7 +1659,7 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=257;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
 
 --
 -- AUTO_INCREMENT for table `request`
@@ -1659,7 +1671,7 @@ ALTER TABLE `request`
 -- AUTO_INCREMENT for table `requirementlist`
 --
 ALTER TABLE `requirementlist`
-  MODIFY `requirementID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `requirementID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `residentcategory`
@@ -1683,7 +1695,7 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- Constraints for dumped tables

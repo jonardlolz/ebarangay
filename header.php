@@ -153,7 +153,7 @@
     <?php if($_SESSION['userType'] != "Admin"): ?>
     <?php if(isset($_SESSION["UsersID"]) != NULL) : ?>
     <!-- Nav Item - Alerts -->
-    <?php if($_SESSION['userType'] == "Captain" || $_SESSION['userType'] == "Purok Leader" || $_SESSION['userType'] == "Resident" || $_SESSION['barangayPos'] != "None"): ?>
+    <?php if($_SESSION['userType'] == "Captain" || $_SESSION['userType'] == "Purok Leader" || $_SESSION['userType'] == "Resident" || $_SESSION['userType'] == "Councilor" || $_SESSION['barangayPos'] != "None"): ?>
     <li class="nav-item dropdown no-arrow mx-1" id="chatbox" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
         <a class="nav-link dropdown-toggle" href="#" id="chatboxDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -343,6 +343,9 @@
             elseif($_SESSION["userType"] == "Secretary"){
                 echo "img-sec-profile";
             }
+            elseif($_SESSION["userType"] == "Councilor"){
+                echo "img-councilor-profile";
+            }
             elseif($_SESSION["userType"] == "Treasurer"){
                 echo "img-treas-profile";
             }
@@ -401,6 +404,36 @@
                 </a>
             </li>
         <?php elseif($_SESSION["userType"] == "Resident") : ?>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
+            </li>
+
+            <!-- Nav Item - Request -->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
+            </li>
+
+            <!-- Nav Item - eReklamo-->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="ereklamo.php">eReklamo</a>
+            </li>
+            <!-- Nav Item - eReklamo-->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="election.php">Vote</a>
+            </li>
+            <?php if($_SESSION['barangayPos'] != 'None'): ?>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Respondent</a>
+            </li>                     
+            <?php endif; ?>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
         <?php elseif($_SESSION["userType"] == "Captain") : ?>
             <?php $brgySql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_SESSION['userBarangay']}'");
                 $brgyData = $brgySql->fetch_assoc();
@@ -514,7 +547,39 @@
             </li>
 
         <?php elseif($_SESSION["userType"] == "Purok Leader") : ?>
-            <?php elseif($_SESSION["userType"] == "Councilor") : ?>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
+            </li>
+
+            <!-- Nav Item - Request -->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
+            </li>
+
+            <!-- Nav Item - eReklamo-->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="ereklamo.php">eReklamo</a>
+            </li>
+            
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "residents.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "residents.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="residents.php">Residents</a>
+            </li>
+                                    
+            <!-- Nav Item - report-->
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
+            <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
+            </li>
+                                    
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        <?php elseif($_SESSION["userType"] == "Councilor") : ?>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
