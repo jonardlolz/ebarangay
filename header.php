@@ -505,9 +505,9 @@
             </li>
             
             <!-- Nav Item - eReklamo-->
-            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "active"; endif; ?>">
+            <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="ereklamo.php">eReklamo</a>
-            </li>
+            </li> -->
             
             <!-- Nav Item - residents-->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "residents.php"): ?> <?php echo "active"; endif; ?>">
@@ -517,6 +517,9 @@
             <!-- Nav Item - report-->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
+            </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="election.php">Vote</a>
             </li>
             
             <!-- Divider -->
@@ -545,6 +548,10 @@
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
             </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="election.php">Vote</a>
+            </li>
+            
 
         <?php elseif($_SESSION["userType"] == "Purok Leader") : ?>
             <!-- Nav Item - Dashboard -->
@@ -569,6 +576,9 @@
             <!-- Nav Item - report-->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
+            </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="election.php">Vote</a>
             </li>
                                     
 
@@ -602,6 +612,9 @@
             <!-- Nav Item - report-->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
             <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
+            </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "election.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="election.php">Vote</a>
             </li>
                                     
 

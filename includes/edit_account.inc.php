@@ -33,13 +33,29 @@
     }
     elseif(isset($_GET['addAccount'])){
         if(userExists($conn, $username, $emailAdd) !== false){ //checks if user already exists in db
-            header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
-            exit();    //stop the script
+            if($_SESSION['userType'] == 'Admin'){
+                header("location: ../account.php?error=userExists"); //return to signup.php with an error msg
+                exit();    //stop the script
+            }
+            else{
+                header("location: ../residents.php?error=userExists"); //return to signup.php with an error msg
+                exit();    //stop the script
+            }
         }
 
         $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT);
 
         mysqli_begin_transaction($conn);
+
+        if($_SESSION['userType'] != 'Admin'){
+            if($_SESSION['userType'] == 'Captain'){
+                $barangay = $_SESSION['userBarangay'];
+            }
+            elseif($_SESSION['userType'] == 'Purok Leader'){
+                $barangay = $_SESSION['userBarangay'];
+                $userPurok = $_SESSION['userPurok'];
+            }
+        }
         
         $a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
         civilStat, userGender, userBarangay, userPurok, userHouseNum, emailAdd, username, usersPwd, 
