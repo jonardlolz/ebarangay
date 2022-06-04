@@ -313,7 +313,7 @@
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-resident-tab" data-toggle="tab" href="#nav-resident" role="tab" aria-controls="nav-resident" aria-selected="true">Resident</a>
-                <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='{$_SESSION['userPurok']}'"); 
+                <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
                 while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
                     <a class="nav-item nav-link" id="nav-<?php echo $catName ?>-tab" data-toggle="tab" href="#nav-<?php echo $catName ?>" role="tab" aria-controls="nav-<?php echo $catName ?>" aria-selected="true"><?php echo $categoryResult['residentCatName'] ?></a>
