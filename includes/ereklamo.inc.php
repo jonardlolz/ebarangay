@@ -986,69 +986,77 @@
             <?php if($respondResult['status'] == 'Resolved'): ?>
                 <div class="tab-pane fade" id="nav-documentation" role="tabpanel" aria-labelledby="nav-documentation-tab">
                     <?php 
-                    $gal = scandir('../img/ereklamo/reports/'.$_GET['reklamoid']);
-                    unset($gal[0]);
-                    unset($gal[1]);
-                    $count =count($gal);
-                    $i = 0;
-                    ?>
-                    <style>
-                        .slide img,.slide video{
-                            max-width:100%;
-                            max-height:100%;
-                        }
-                        #uni_modal .modal-footer{
-                            display:none
-                        }
-                    </style>
-                    <div class="container-fluid" style="height:75vh">
-                        <div class="row h-100">
-                            <div class="col bg-dark h-100">
-                                <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
-                                    <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
-                                    <?php
-                                        foreach($gal as $k => $v):
-                                            $mime = mime_content_type('../img/ereklamo/reports/'.$_GET['reklamoid'].'/'.$v);
-                                            $i++;
-                                    ?>
-                                    <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
-                                    <?php if(strstr($mime,'image')): ?>
-                                        <img src="./img/ereklamo/reports/<?php echo $_GET['reklamoid'].'/'.$v ?>" class="" alt="Image 1">
-                                    <?php else: ?>
-                                        <video controls class="">
-                                                <source src="./img/ereklamo/reports/<?php echo $_GET['reklamoid'].'/'.$v ?>" type="<?php echo $mime ?>">
-                                        </video>
-                                    <?php endif; ?>
+                    if(file_exists('../img/ereklamo/reports/'.$_GET['reklamoid'])):
+                        $gal = scandir('../img/ereklamo/reports/'.$_GET['reklamoid']);
+                        unset($gal[0]);
+                        unset($gal[1]);
+                        $count =count($gal);
+                        $i = 0;
+                        ?>
+                        <style>
+                            .slide img,.slide video{
+                                max-width:100%;
+                                max-height:100%;
+                            }
+                            #uni_modal .modal-footer{
+                                display:none
+                            }
+                        </style>
+                        <div class="container-fluid" style="height:75vh">
+                            <div class="row h-100">
+                                <div class="col bg-dark h-100">
+                                    <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
+                                        <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
+                                        <?php
+                                            foreach($gal as $k => $v):
+                                                $mime = mime_content_type('../img/ereklamo/reports/'.$_GET['reklamoid'].'/'.$v);
+                                                $i++;
+                                        ?>
+                                        <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
+                                        <?php if(strstr($mime,'image')): ?>
+                                            <img src="./img/ereklamo/reports/<?php echo $_GET['reklamoid'].'/'.$v ?>" class="" alt="Image 1">
+                                        <?php else: ?>
+                                            <video controls class="">
+                                                    <source src="./img/ereklamo/reports/<?php echo $_GET['reklamoid'].'/'.$v ?>" type="<?php echo $mime ?>">
+                                            </video>
+                                        <?php endif; ?>
+                                        </div>
+                                        <?php endforeach; ?>
+                                        <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
                                     </div>
-                                    <?php endforeach; ?>
-                                    <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php else: ?>
+                        <div class="container-fluid">
+                            <div class="alert alert-danger m-2">
+                                <h3>Documentation for this Reklamo does not exist!</h1>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div>
     </div>
     <script>
         $("#respond").parent().siblings(".modal-footer").remove();
-        <?php if($respondResult['status'] == 'Resolved'): ?>
-        $('#next').click(function(){
-            var cslide = $('.slide:visible').attr('data-slide')
-            if(cslide == '<?php echo $i ?>'){
-                return false;
-            }
-            $('.slide:visible').removeClass('d-flex').addClass("d-none")
-            $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
-        })
-        $('#prev').click(function(){
-            var cslide = $('.slide:visible').attr('data-slide')
-            if(cslide == 1){
-                return false;
-            }
-            $('.slide:visible').removeClass('d-flex').addClass("d-none")
-            $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
-        })
+        <?php if($respondResult['status'] == 'Resolved' && file_exists('../img/ereklamo/reports/'.$_GET['reklamoid'])): ?>
+            $('#next').click(function(){
+                var cslide = $('.slide:visible').attr('data-slide')
+                if(cslide == '<?php echo $i ?>'){
+                    return false;
+                }
+                $('.slide:visible').removeClass('d-flex').addClass("d-none")
+                $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
+            })
+            $('#prev').click(function(){
+                var cslide = $('.slide:visible').attr('data-slide')
+                if(cslide == 1){
+                    return false;
+                }
+                $('.slide:visible').removeClass('d-flex').addClass("d-none")
+                $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
+            })
         <?php endif; ?>
         $('.comment-textfield').on('keypress', function (e) {
             if(e.which == 13 && e.shiftKey == false){

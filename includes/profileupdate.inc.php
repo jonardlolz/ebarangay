@@ -162,25 +162,54 @@ if(isset($_GET['viewReklamo'])): ?>
             </div>
             <div class="tab-pane fade" id="minorresolved" role="tabpanel" aria-labelledby="minorresolved-tab">
                 <div class="table-responsive">
-                    <table class="table table-reklamo table-bordered text-center text-dark" 
-                        id="dataTable" width="100%">
+                    <table class="table table-bordered text-center text-dark display" 
+                        width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Reklamo Type</th>
-                                <th scope="col">Detail</th>
-                                <th scope="col">Submitted on</th>
+                                <th scope="col">Report Message</th>
+                                <th>Details</th>
+                                <th scope="col">Responder Name</th>
+                                <th scope="col">Date</th>
                             </tr>
+                            
                         </thead>
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $requests = $conn->query("SELECT * FROM ereklamo INNER JOIN chatroom ON ReklamoID=idreference AND chatroom.type='ereklamo' WHERE UsersID={$_SESSION['UsersID']} AND status='Resolved' AND complaintLevel='Minor'");
-                                while($row=$requests->fetch_assoc()):
+                                $accounts = $conn->query("SELECT ereklamoreport.*, ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, users.profile_pic, users.userType, chatroom.chatroomID FROM ereklamoreport INNER JOIN ereklamo on ereklamo.ReklamoID=ereklamoreport.ReklamoID INNER JOIN users ON users.UsersID=ereklamoreport.respondentID INNER JOIN chatroom ON ereklamo.ReklamoID=chatroom.idreference AND type='ereklamo' WHERE ereklamo.barangay='{$_SESSION['userBarangay']}' AND ereklamoreport.reportStatus='Resolved' AND ereklamo.UsersID={$_SESSION['UsersID']} ORDER BY date DESC");
+                                while($row=$accounts->fetch_assoc()):
                             ?>
                             <tr>
-                                <td><?php echo $row["reklamoType"] ?></td>
-                                <td><?php echo $row["detail"] ?></td>
-                                <td><?php echo date("M d,Y", strtotime($row['CreatedOn'])); ?></td>
+                                <td><?php echo $row["reportMessage"] ?></td>
+                                <td><button class="openChat btn btn-sm btn-primary" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-eye"></i> View</button></td>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php 
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Councilor"){
+                                            echo "img-councilor-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    </br>
+                                    <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['respondentID'] ?>"><?php echo $row["name"] ?></a> 
+                                </td>
+                                <td><?php echo date("M d,Y h:i A",strtotime($row['date'])) ?></td>
                                 
                                 <!--Right Options-->
                             </tr>
@@ -197,14 +226,22 @@ if(isset($_GET['viewReklamo'])): ?>
             $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             } );
-            $('.table-reklamo').DataTable({
+
+            $('table.display').DataTable({
+                "responsive": true,
+                orderCellsTop: true,
+                dom: 'lBfrtip',
                 "scrollY": "400px",
                 "scrollCollapse": true,
-                "paging": false
+                "paging": false,
+                "ordering": false,
+                initComplete: function(){
+                    
+                }
             });
         } );
         $('.openChat').click(function(){
-            secondary_modal("<center><b>Repond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
+            secondary_modal("<center><b>Respond to eReklamo</b></center></center>","includes/ereklamo.inc.php?respond&chatroomID="+$(this).attr('data-chat')+"&reklamoid="+$(this).attr('data-id')+"&usersID="+$(this).attr('data-user'), "modal-lg")
         })
         $('.delete_request').click(function(){
             _conf("Are you sure want to cancel this request?","cancelRequest",[$(this).attr('data-id')])
