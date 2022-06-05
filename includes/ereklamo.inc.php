@@ -621,12 +621,13 @@
     else if(isset($_GET['reportPost'])){
         extract($_POST);
         mysqli_begin_transaction($conn);
-
+        $id = $_GET['ReklamoID'];
         $managedBy = "'".$_SESSION['Firstname']." ".$_SESSION['Lastname']. "'";
 
-        $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus')");
+        
 
         if($_SESSION['barangayPos'] != "None"){
+            $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus')");
             $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A responder has sent a report for ereklamo#$id', 'ereklamo', 'Purok Leader')");
             $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
             status='Incoming' WHERE ReklamoID=$id");
@@ -647,6 +648,7 @@
                 $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Purok Leader has resolved your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
                 $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
                 status='Resolved' WHERE ReklamoID=$id");
+                $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus')");
             }
             elseif($reportStatus == 'Forward to Captain'){
                 $requestSql = $conn->query("SELECT *, ereklamo.UsersID as complaineeID, concat(users.Firstname, ' ', users.Lastname) as name, ereklamocategory.reklamoFee as amount FROM ereklamo INNER JOIN ereklamocategory ON ereklamo.reklamotype=ereklamocategory.reklamoCatName INNER JOIN users ON users.UsersID=ereklamo.UsersID WHERE ReklamoID=$id");
@@ -691,7 +693,20 @@
                 $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', {$requestData['complaineeID']})");
             }
 
-            if($a1 && $a2 && $a3){
+            if($a2 && $a3 && $a1){
+                if(isset($img)){
+                    $id = $id;
+                    mkdir('../img/ereklamo/reports/'.$id);
+                    for($i = 0 ; $i< count($img);$i++){
+                        list($type, $img[$i]) = explode(';', $img[$i]);
+                        list(, $img[$i])      = explode(',', $img[$i]);
+                        $img[$i] = str_replace(' ', '+', $img[$i]);
+                        $img[$i] = base64_decode($img[$i]);
+                        $fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+                        $upload = file_put_contents('../img/ereklamo/reports/'.$id.'/'.$fname,$img[$i]);
+                        $data = " file_path = '".$fname."' ";
+                    }
+                }
                 mysqli_commit($conn);
                 header("location: ../ereklamo.php?error=none"); 
                 exit();
@@ -875,6 +890,9 @@
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-chat-tab" data-toggle="tab" href="#nav-chat" role="tab" aria-controls="nav-chat" aria-selected="true">Chat</a>
                 <a class="nav-item nav-link" id="nav-report-tab" data-toggle="tab" href="#nav-report" role="tab" aria-controls="nav-report" aria-selected="false">Report</a>
+                <?php if($respondResult['status'] == 'Resolved'): ?>
+                <a class="nav-item nav-link" id="nav-documentation-tab" data-toggle="tab" href="#nav-documentation" role="tab" aria-controls="nav-documentation" aria-selected="false">Documentation</a>
+                <?php endif; ?>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -888,7 +906,11 @@
                                 </div>
                                 <div class="type_msg m-2">
                                     <div class="input_msg_write">
-                                        <input type="text" autocomplete="off" class="write_msg" id="message" placeholder="Type a message" style="width: 100%; resize: none; word-wrap: break-word;"></input>
+                                        <?php if($respondResult['status'] != 'Resolved'): ?>
+                                            <input type="text" autocomplete="off" class="write_msg" id="message" placeholder="Type a message" style="width: 100%; resize: none; word-wrap: break-word;"></input>
+                                        <?php else: ?>
+                                            <input type="text" autocomplete="off" class="write_msg" id="message" placeholder="Reklamo has been resolved. You cant chat anymore." style="width: 100%; resize: none; word-wrap: break-word;" readonly></input>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -952,20 +974,102 @@
                         </tbody>
                     </table>
                 </div>
+                <?php if(($_SESSION['userType'] != 'Resident' && $_SESSION['userType'] != 'Captain') && $respondResult['status'] != 'To Captain' && $respondResult['status'] != 'Resolved'):?>
                 <hr>
-                <?php if(($_SESSION['userType'] != 'Resident' && $_SESSION['userType'] != 'Captain') && $respondResult['status'] != 'To Captain'):?>
                 <div class="footer">
                     <div class="d-flex flex-row-reverse">
-                        <button class="btn btn-primary report" data-id="<?php echo $_GET['reklamoid'] ?>" style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Report</button>
+                        <button class="btn btn-primary report" data-id="<?php echo $_GET['reklamoid'] ?>" data-id style="margin: 0.25rem;"><i class="fas fa-user"></i> Send Report</button>
                     </div>
                 </div>
                 <?php endif; ?>
             </div>
+            <?php if($respondResult['status'] == 'Resolved'): ?>
+                <div class="tab-pane fade" id="nav-documentation" role="tabpanel" aria-labelledby="nav-documentation-tab">
+                    <?php 
+                    $gal = scandir('../img/ereklamo/reports/'.$_GET['reklamoid']);
+                    unset($gal[0]);
+                    unset($gal[1]);
+                    $count =count($gal);
+                    $i = 0;
+                    ?>
+                    <style>
+                        .slide img,.slide video{
+                            max-width:100%;
+                            max-height:100%;
+                        }
+                        #uni_modal .modal-footer{
+                            display:none
+                        }
+                    </style>
+                    <div class="container-fluid" style="height:75vh">
+                        <div class="row h-100">
+                            <div class="col bg-dark h-100">
+                                <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
+                                    <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
+                                    <?php
+                                        foreach($gal as $k => $v):
+                                            $mime = mime_content_type('../img/ereklamo/reports/'.$_GET['reklamoid'].'/'.$v);
+                                            $i++;
+                                    ?>
+                                    <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
+                                    <?php if(strstr($mime,'image')): ?>
+                                        <img src="./img/ereklamo/reports/<?php echo $_GET['reklamoid'].'/'.$v ?>" class="" alt="Image 1">
+                                    <?php else: ?>
+                                        <video controls class="">
+                                                <source src="./img/ereklamo/reports/<?php echo $_GET['reklamoid'].'/'.$v ?>" type="<?php echo $mime ?>">
+                                        </video>
+                                    <?php endif; ?>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     <script>
         $("#respond").parent().siblings(".modal-footer").remove();
-        
+        <?php if($respondResult['status'] == 'Resolved'): ?>
+        $('#next').click(function(){
+            var cslide = $('.slide:visible').attr('data-slide')
+            if(cslide == '<?php echo $i ?>'){
+                return false;
+            }
+            $('.slide:visible').removeClass('d-flex').addClass("d-none")
+            $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
+        })
+        $('#prev').click(function(){
+            var cslide = $('.slide:visible').attr('data-slide')
+            if(cslide == 1){
+                return false;
+            }
+            $('.slide:visible').removeClass('d-flex').addClass("d-none")
+            $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
+        })
+        <?php endif; ?>
+        $('.comment-textfield').on('keypress', function (e) {
+            if(e.which == 13 && e.shiftKey == false){
+                var post_id = $(this).attr('data-id')
+                var comment = $(this).val()
+                $(this).val('')
+                $.ajax({
+                    url:'includes/comment.inc.php',
+                    method:'POST',
+                    data:{post_id:post_id,comment:comment},
+                    success:function(){
+                        location.reload();
+                    }
+                })
+                return false;
+                }
+        })
+        $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
+            if(this.scrollHeight <= 117)
+            $(this).height(0).height(this.scrollHeight);
+        })
 
     </script>
 
@@ -993,10 +1097,11 @@
         <?php $dataSql = $conn->query("SELECT * FROM ereklamo WHERE ReklamoID={$_GET['reklamoid']}");
         $dataResult = $dataSql->fetch_assoc();
         ?>    
+        <form action="includes/ereklamo.inc.php?reportPost&ReklamoID=<?php echo $_GET['reklamoid'] ?>" id="reklamoForm" method="POST">
             <div class="row" style="margin-bottom: 10px">
                 <div class="col">Status</div>
                 <div class="col-sm-8">
-                    <select name="status" id="reportStatus">
+                    <select name="reportStatus" id="reportStatus" onchange="checkStatus()">
                         <option value="">Select</option>
                         <option value="Resolved">Resolved</option>
                         <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
@@ -1024,15 +1129,56 @@
                     <textarea name="reportMessage" id="reportMessage" class="form-control" rows="3" style="resize:none;" required></textarea>
                 </div>
             </div>
-            <div class="row" id="alert">
+            <div class="row" id="reportPicture" style="display: none;">
+                <div class="col">
+                    Photo:
+                </div>
+                <div class="col-sm-8">
+                    <input type="file" name="file[]" multiple="multiple" onchange="" id="postF" onchange="displayUpload(this)" class="d-none" accept="image/*" required>
+                    <button id="requirementPic" onclick="$('#postF').trigger('click')" type="button" class="btn btn-success"><i class="fas fa-photo-video"></i> Upload</button>
+                </div>
+            </div>
+            <div class="row">
+                <div id="file-display" class="d-flex flex-row m-2">
+                    <?php 
+                    if(isset($id)):
+                        if(is_dir('../img/'.$id)):
+                        $gal = scandir('../img/'.$PostID);
+                        unset($gal[0]);
+                        unset($gal[1]);
+                        foreach($gal as $k=>$v):
+                            $mime = mime_content_type('../img/'.$PostID.'/'.$v);
+                            $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                            $data = base64_encode($img); 
+                        ?>
+                            <div class="imgF">
+                                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                <input type="hidden" name="img[]" value="<?php echo $data ?>">
+                                <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
+                                <?php if(strstr($mime,'image')): ?>
+                                <img class="imgDropped" style="width: 200px; height: 200px;" src="img/<?php echo $PostID.'/'.$v ?>">
+                                <?php else: ?>
+                                <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="row" id="alert" style="margin-top: 5px;">
                 <div class='col'>
                     <div class='alert alert-danger'>Please fill the required fields</div>
                 </div>
             </div>
+            <div class="imgF" style="display: none " id="img-clone">
+                <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+            </div>
             <hr>
             <div class="d-flex flex-row-reverse">
-                <button class="btn btn-primary confirm" data-id="<?php echo $_GET['reklamoid'] ?>" onclick="checkEmpty($('#reportMessage').val())">Send</button> 
+                <button class="btn btn-primary confirm" type="button" data-id="<?php echo $_GET['reklamoid'] ?>" onclick="checkEmpty($('#reportMessage').val())">Send</button> 
             </div>
+        </form>
         <script>
             document.getElementById("alert").style.display = "none";
             $(".container-fluid").parent().siblings(".modal-footer").remove();
@@ -1043,10 +1189,27 @@
                     document.getElementById("alert").style.display = "block";
                 }
                 else{
-                    $message = "'" + $("#reportMessage").val() + "'";
-                    $reportStatus = "'" + $("#reportStatus").val() + "'";
-                    _conf("Confirm report?","confirmReport", [$message ,$(".confirm").attr('data-id'), $reportStatus])
-                    
+                    if(document.getElementById("reportPicture").style.display == "flex"){
+                        if($("#postF").get(0).files.length === 0){
+                            document.getElementById("alert").style.display = "block";
+                        }
+                        else{
+                            $('#secondary_modal form').submit();
+                        }
+                    }
+                    else{
+                        $('#secondary_modal form').submit();
+                    }
+                }
+            }  
+
+            function checkStatus(){
+                d = document.getElementById('reportStatus').value;
+                if(d == 'Resolved'){
+                    document.getElementById("reportPicture").style.display = "flex";
+                }
+                else{
+                    document.getElementById("reportPicture").style.display = "none";
                 }
             }
 
@@ -1064,6 +1227,59 @@
                         location.reload()
                     }
                 })
+            }
+
+            $('[name="file[]"]').change(function(){
+                displayUpload(this)
+            })
+            function displayUpload(input){
+                if (input.files) {
+                Object.keys(input.files).map(function(k){
+                    var reader = new FileReader();
+                        var t = input.files[k].type;
+                        var _types = ['video/mp4','image/x-png','image/png','image/gif','image/jpeg','image/jpg'];
+                        if(_types.indexOf(t) == -1)
+                            return false;
+                        reader.onload = function (e) {
+                            // $('#cimg').attr('src', e.target.result);
+                        var bin = e.target.result;
+                        var fname = input.files[k].name;
+                        var imgF = document.getElementById('img-clone');
+                            imgF = imgF.cloneNode(true);
+                            imgF.removeAttribute('id')
+                            imgF.removeAttribute('style')
+                            if(t == "video/mp4"){
+                                var img = document.createElement("video");
+                                }else{
+                                var img = document.createElement("img");
+                                }
+                                var fileinput = document.createElement("input");
+                                var fileinputName = document.createElement("input");
+                                fileinput.setAttribute('type','hidden')
+                                fileinputName.setAttribute('type','hidden')
+                                fileinput.setAttribute('name','img[]')
+                                fileinputName.setAttribute('name','imgName[]')
+                                fileinput.value = bin
+                                fileinputName.value = fname
+                                img.classList.add("imgDropped")
+                                img.classList.add("img-fluid")
+                                img.classList.add("rounded")
+                                img.src = bin;
+                                imgF.appendChild(fileinput);
+                                imgF.appendChild(fileinputName);
+                                imgF.appendChild(img);
+                                document.querySelector('#file-display').appendChild(imgF)
+                        }
+                    reader.readAsDataURL(input.files[k]);
+                    })
+                    rem_func()
+                }
+            }
+            function rem_func(_this){
+                _this.closest('.imgF').remove();
+                if($('#drop .imgF').length <= 0){
+                    $('#drop').append('<span id="dname" class="text-center">Drop Files Here <br> or <br> <label for="chooseFile"><strong>Choose File</strong></label></span>')
+                }
             }
         </script>
     </div>
@@ -1118,7 +1334,7 @@
         }
 
         $('.report').click(function(){
-            secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?report&reklamoid="+$(this).attr('data-id'), "modal-md")
+            secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?report&chatroomID=<?php echo $_GET['chatroomID'] ?>&reklamoid="+$(this).attr('data-id'), "modal-md")
         })
         $('.forwardtocapt').click(function(){
             secondary_modal("<center><b>Forward to Captain</b></center></center>","includes/ereklamo.inc.php?sendtocapt&reklamoid="+$(this).attr('data-id')+"&complainantid="+$(this).attr('data-complainant')+"&complaineeid="+$(this).attr('data-complainee'), "modal-md")

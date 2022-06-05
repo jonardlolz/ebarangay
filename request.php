@@ -75,13 +75,13 @@
 
                                                     <?php 
                                                     if(isset($id)):
-                                                    if(is_dir('../img/'.$id)):
-                                                    $gal = scandir('../img/'.$PostID);
+                                                    if(is_dir('../img/ereklamo/'.$id)):
+                                                    $gal = scandir('../img/ereklamo/'.$PostID);
                                                     unset($gal[0]);
                                                     unset($gal[1]);
                                                     foreach($gal as $k=>$v):
-                                                        $mime = mime_content_type('../img/'.$PostID.'/'.$v);
-                                                        $img = file_get_contents('../img/'.$PostID.'/'.$v); 
+                                                        $mime = mime_content_type('../img/ereklamo/'.$PostID.'/'.$v);
+                                                        $img = file_get_contents('../img/ereklamo/'.$PostID.'/'.$v); 
                                                         $data = base64_encode($img); 
                                                     ?>
                                                         <div class="imgF">
@@ -89,9 +89,9 @@
                                                             <input type="hidden" name="img[]" value="<?php echo $data ?>">
                                                             <input type="hidden" name="imgName[]" value="<?php echo $v ?>">
                                                             <?php if(strstr($mime,'image')): ?>
-                                                            <img class="imgDropped" src="img/<?php echo $PostID.'/'.$v ?>">
+                                                            <img class="imgDropped" src="img/ereklamo/<?php echo $PostID.'/'.$v ?>">
                                                             <?php else: ?>
-                                                            <video src="img/<?php echo $row['file_path'] ?>"></video>
+                                                            <video src="img/ereklamo/<?php echo $row['file_path'] ?>"></video>
                                                             <?php endif; ?>
                                                         </div>
                                                     <?php endforeach; ?>
@@ -127,6 +127,7 @@
                                     </div>
                                     <div class="imgF" style="display: none " id="img-clone">
                                         <span class="rem badge badge-primary" onclick="rem_func($(this))" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- End of Nonvoter - Request Form -->
@@ -148,7 +149,6 @@
                                 document.getElementById("requestWarning").style.display = "flex";
                                 return;
                             }
-                            
                         }    
                         $('#requestForm').submit();
                     }
@@ -1750,6 +1750,6 @@
 
     </script>
 
-    <?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?>
 
     

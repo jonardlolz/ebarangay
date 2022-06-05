@@ -98,7 +98,7 @@ if(isset($_GET["addRequest"])){
             }
 
             mysqli_commit($conn);
-            if($_SESSION['userType'] == 'Treasuer'){
+            if($_SESSION['userType'] == 'Treasurer'){
                 header("location: ../payment.php?error=none"); 
                 exit();
             }
@@ -452,118 +452,118 @@ if(isset($_GET['unpaid'])){
     }
 }
 if(isset($_GET['viewRequirement'])): 
-$gal = scandir('../img/erequest/'.$_GET['RequestID']);
-unset($gal[0]);
-unset($gal[1]);
-$count =count($gal);
-$i = 0;?>
-    
-    <style>
-        .slide img,.slide video{
-            max-width:100%;
-            max-height:100%;
-        }
-        #uni_modal .modal-footer{
-            display:none
-        }
-    </style>
-    <script src="./vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
-    <?php 
-    $documentSql=$conn->query("SELECT * FROM request INNER JOIN documenttype ON documenttype.documentName=request.documentType AND documenttype.BarangayName='{$_SESSION['userBarangay']}' WHERE RequestID={$_GET['RequestID']}")->fetch_assoc(); 
-    $userSql=$conn->query("SELECT * FROM users WHERE UsersID={$documentSql['UsersID']}")->fetch_assoc();
-    $requirementsSql=$conn->query("SELECT * FROM requirementlist WHERE DocumentID={$documentSql['DocumentID']}");
-    ?>
-    <div class="container-fluid" style="height:75vh">
-        <div class="row h-100">
-            <div class="col-lg-7 bg-dark h-100">
-                <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
-                    <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
-                    <?php
-                        foreach($gal as $k => $v):
-                            $mime = mime_content_type('../img/erequest/'.$_GET['RequestID'].'/'.$v);
-                            $i++;
-                    ?>
-                    <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
-                    <?php if(strstr($mime,'image')): ?>
-                        <img src="./img/erequest/<?php echo $_GET['RequestID'].'/'.$v ?>" class="" alt="Image 1">
-                    <?php else: ?>
-                        <video controls class="">
-                                <source src="./img/erequest/<?php echo $_GET['RequestID'].'/'.$v ?>" type="<?php echo $mime ?>">
-                        </video>
-                    <?php endif; ?>
-                    </div>
-                    <?php endforeach; ?>
-                    <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="d-flex flex-row">
-                    Requirements for 
-                </div>
-                <div class="d-flex flex-row">
-                    <b><?php echo $documentSql['documentType'] ?></b>
-                </div>
-                <div class="d-flex flex=row">
-                    <ul>
-                        <?php if($documentSql['requireLessorNote'] == 'True'): ?>
-                            <?php if($userSql['isRenting']): ?>
-                                <li>Lessor note</li>
-                            <?php endif; ?>
+    $gal = scandir('../img/erequest/'.$_GET['RequestID']);
+    unset($gal[0]);
+    unset($gal[1]);
+    $count =count($gal);
+    $i = 0;?>
+        
+        <style>
+            .slide img,.slide video{
+                max-width:100%;
+                max-height:100%;
+            }
+            #uni_modal .modal-footer{
+                display:none
+            }
+        </style>
+        <script src="./vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
+        <?php 
+        $documentSql=$conn->query("SELECT * FROM request INNER JOIN documenttype ON documenttype.documentName=request.documentType AND documenttype.BarangayName='{$_SESSION['userBarangay']}' WHERE RequestID={$_GET['RequestID']}")->fetch_assoc(); 
+        $userSql=$conn->query("SELECT * FROM users WHERE UsersID={$documentSql['UsersID']}")->fetch_assoc();
+        $requirementsSql=$conn->query("SELECT * FROM requirementlist WHERE DocumentID={$documentSql['DocumentID']}");
+        ?>
+        <div class="container-fluid" style="height:75vh">
+            <div class="row h-100">
+                <div class="col-lg-7 bg-dark h-100">
+                    <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
+                        <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
+                        <?php
+                            foreach($gal as $k => $v):
+                                $mime = mime_content_type('../img/erequest/'.$_GET['RequestID'].'/'.$v);
+                                $i++;
+                        ?>
+                        <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
+                        <?php if(strstr($mime,'image')): ?>
+                            <img src="./img/erequest/<?php echo $_GET['RequestID'].'/'.$v ?>" class="" alt="Image 1">
+                        <?php else: ?>
+                            <video controls class="">
+                                    <source src="./img/erequest/<?php echo $_GET['RequestID'].'/'.$v ?>" type="<?php echo $mime ?>">
+                            </video>
                         <?php endif; ?>
-                        <?php while($row = $requirementsSql->fetch_assoc()): ?>
-                        <li><?php echo $row['requirementName'] ?></li>
-                        <?php endwhile; ?>
-                    </ul>
+                        </div>
+                        <?php endforeach; ?>
+                        <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="d-flex flex-row">
+                        Requirements for 
+                    </div>
+                    <div class="d-flex flex-row">
+                        <b><?php echo $documentSql['documentType'] ?></b>
+                    </div>
+                    <div class="d-flex flex=row">
+                        <ul>
+                            <?php if($documentSql['requireLessorNote'] == 'True'): ?>
+                                <?php if($userSql['isRenting']): ?>
+                                    <li>Lessor note</li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <?php while($row = $requirementsSql->fetch_assoc()): ?>
+                            <li><?php echo $row['requirementName'] ?></li>
+                            <?php endwhile; ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="footer d-flex flex-row-reverse">
+            <a href="includes/request.inc.php?approveID=<?php echo $_GET["RequestID"] ?>">
+                <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Approve</button>
+            </a>
+            <a href="includes/request.inc.php?disapproveID=<?php echo $_GET["RequestID"] ?>">
+            <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Disapprove</button>
+            </a>
+        </div>
     </div>
-    <div class="footer d-flex flex-row-reverse">
-        <a href="includes/request.inc.php?approveID=<?php echo $_GET["RequestID"] ?>">
-            <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Approve</button>
-        </a>
-        <a href="includes/request.inc.php?disapproveID=<?php echo $_GET["RequestID"] ?>">
-        <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Disapprove</button>
-        </a>
-    </div>
-</div>
-<script>
-    $('#next').click(function(){
-        var cslide = $('.slide:visible').attr('data-slide')
-        if(cslide == '<?php echo $i ?>'){
-            return false;
-        }
-        $('.slide:visible').removeClass('d-flex').addClass("d-none")
-        $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
-    })
-    $('#prev').click(function(){
-        var cslide = $('.slide:visible').attr('data-slide')
-        if(cslide == 1){
-            return false;
-        }
-        $('.slide:visible').removeClass('d-flex').addClass("d-none")
-        $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
-    })
-    $('.comment-textfield').on('keypress', function (e) {
-        if(e.which == 13 && e.shiftKey == false){
-            var post_id = $(this).attr('data-id')
-            var comment = $(this).val()
-            $(this).val('')
-            $.ajax({
-                url:'includes/comment.inc.php',
-                method:'POST',
-                data:{post_id:post_id,comment:comment},
-                success:function(){
-                    location.reload();
-                }
-            })
-            return false;
+    <script>
+        $('#next').click(function(){
+            var cslide = $('.slide:visible').attr('data-slide')
+            if(cslide == '<?php echo $i ?>'){
+                return false;
             }
-    })
-    $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
-        if(this.scrollHeight <= 117)
-        $(this).height(0).height(this.scrollHeight);
-    })
-</script>
+            $('.slide:visible').removeClass('d-flex').addClass("d-none")
+            $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
+        })
+        $('#prev').click(function(){
+            var cslide = $('.slide:visible').attr('data-slide')
+            if(cslide == 1){
+                return false;
+            }
+            $('.slide:visible').removeClass('d-flex').addClass("d-none")
+            $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
+        })
+        $('.comment-textfield').on('keypress', function (e) {
+            if(e.which == 13 && e.shiftKey == false){
+                var post_id = $(this).attr('data-id')
+                var comment = $(this).val()
+                $(this).val('')
+                $.ajax({
+                    url:'includes/comment.inc.php',
+                    method:'POST',
+                    data:{post_id:post_id,comment:comment},
+                    success:function(){
+                        location.reload();
+                    }
+                })
+                return false;
+                }
+        })
+        $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
+            if(this.scrollHeight <= 117)
+            $(this).height(0).height(this.scrollHeight);
+        })
+    </script>
 
 <?php endif; ?>
