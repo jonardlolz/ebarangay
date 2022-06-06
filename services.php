@@ -457,7 +457,7 @@
     function delete_document($id){
         start_load()
         $.ajax({
-            url:'includes/document.inc.php?delete_document',
+            url:'includes/document.inc.php?delete_document=1',
             method:'POST',
             data:{id:$id},
             

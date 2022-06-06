@@ -441,9 +441,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="reklamo-tab" data-toggle="tab" href="#reklamo" role="tab" aria-controls="reklamo" aria-selected="true">eReklamo</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">eRequest</a>
-                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
@@ -458,9 +455,9 @@
                             width="100%" cellspacing="0" cellpadding="0">
                             <thead >
                                 <tr class="bg-gradient-secondary text-white">
-                                    <th scope="col">Report Type</th>
-                                    <th scope="col">Content</th>
-                                    <th scope="col">From</th>
+                                    <th scope="col">Report Message</th>
+                                    <th>Details</th>
+                                    <th scope="col">Responder Name</th>
                                     <th scope="col">Date</th>
                                 </tr>
                                 
@@ -468,95 +465,40 @@
                             <tbody>
                                 <!--Row 1-->
                                 <?php 
-                                    $accounts = $conn->query("SELECT * FROM report WHERE userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
+                                    $accounts = $conn->query("SELECT ereklamoreport.*, ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, users.profile_pic, users.userType, chatroom.chatroomID FROM ereklamoreport INNER JOIN ereklamo on ereklamo.ReklamoID=ereklamoreport.ReklamoID INNER JOIN users ON users.UsersID=ereklamoreport.respondentID INNER JOIN chatroom ON ereklamo.ReklamoID=chatroom.idreference AND type='ereklamo' WHERE ereklamo.barangay='{$_SESSION['userBarangay']}' AND ereklamo.purok='{$_SESSION['userPurok']}' AND ereklamoreport.reportStatus='Resolved' ORDER BY date DESC");
                                     while($row=$accounts->fetch_assoc()):
                                 ?>
                                 <tr>
-                                    <td><?php echo $row["ReportType"] ?></td>
                                     <td><?php echo $row["reportMessage"] ?></td>
-                                    <td><?php echo $row["UsersID"] ?></td>
-                                    <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
-                                    
-                                    <!--Right Options-->
-                                </tr>
-                                <?php endwhile; ?>
-                                <!--Row 1-->
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-                <!-- End of Card Body-->
-            </div>                   
-        </div>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
-            } );
-
-            $('table.display').DataTable({
-                "responsive": true,
-                orderCellsTop: true,
-                dom: 'lBfrtip',
-                "scrollY": "400px",
-                "scrollCollapse": true,
-                "paging": false,
-                "ordering": false,
-                initComplete: function(){
-                    
-                }
-            });
-        });
-    </script>
-    <div class="col d-flex flex-column">
-        <div class="container-fluid">
-            <div class="card shadow mb-4 m-4">
-                <div class="card-header py-3 d-flex justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-dark"><?php echo $_SESSION["userBarangay"] ?> Report</h6>
-                </div>
-                
-                <div class="card-body" style="font-size: 75%">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="reklamo-tab" data-toggle="tab" href="#reklamo" role="tab" aria-controls="reklamo" aria-selected="true">eReklamo</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">eRequest</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
-
-                        </div>
-                        <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
-
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center text-dark display" 
-                            width="100%" cellspacing="0" cellpadding="0">
-                            <thead >
-                                <tr class="bg-gradient-secondary text-white">
-                                    <th scope="col">Report Type</th>
-                                    <th scope="col">Content</th>
-                                    <th scope="col">From</th>
-                                    <th scope="col">Date</th>
-                                </tr>
-                                
-                            </thead>
-                            <tbody>
-                                <!--Row 1-->
-                                <?php 
-                                    $accounts = $conn->query("SELECT * FROM report WHERE userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
-                                    while($row=$accounts->fetch_assoc()):
-                                ?>
-                                <tr>
-                                    <td><?php echo $row["ReportType"] ?></td>
-                                    <td><?php echo $row["reportMessage"] ?></td>
-                                    <td><?php echo $row["UsersID"] ?></td>
-                                    <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
+                                    <td><button class="respond btn btn-sm btn-primary" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-eye"></i> View</button></td>
+                                    <td>
+                                        <img class="img-profile rounded-circle <?php 
+                                            if($row["userType"] == "Resident"){
+                                                echo "img-res-profile";
+                                            }
+                                            elseif($row["userType"] == "Purok Leader"){
+                                                echo "img-purokldr-profile";
+                                            }
+                                            elseif($row["userType"] == "Captain"){
+                                                echo "img-capt-profile";
+                                            }
+                                            elseif($row["userType"] == "Secretary"){
+                                                echo "img-sec-profile";
+                                            }
+                                            elseif($row["userType"] == "Treasurer"){
+                                                echo "img-treas-profile";
+                                            }
+                                            elseif($row["userType"] == "Councilor"){
+                                                echo "img-councilor-profile";
+                                            }
+                                            elseif($row["userType"] == "Admin"){
+                                                echo "img-admin-profile";
+                                            }
+                                        ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                        </br>
+                                        <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['respondentID'] ?>"><?php echo $row["name"] ?></a> 
+                                    </td>
+                                    <td><?php echo date("M d,Y h:i A",strtotime($row['date'])) ?></td>
                                     
                                     <!--Right Options-->
                                 </tr>

@@ -491,6 +491,9 @@
                 </div>
             </form>
         </div>
+        <script>
+            $(".container-fluid").parent().siblings(".modal-footer").remove();
+        </script>
     <?php
     elseif(isset($_GET['ereklamoEditType'])):?>
         <div class="container-fluid">
@@ -505,12 +508,19 @@
                             <label>Type name: </label>
                         </div>
                         <div class="col">
-                            <input value="<?php echo $ereklamo['reklamoTypeName'] ?>" type="text" placeholder="Type Name" name="typeName">
+                            <input value="<?php echo $ereklamo['reklamoTypeName'] ?>" type="text" placeholder="Type Name" name="typeName" required>
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="footer d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                </div>
             </form>
         </div>
+        <script>
+            $(".container-fluid").parent().siblings(".modal-footer").remove();
+        </script>
     <?php
     endif;
     if(isset($_GET['postCatAdd'])){

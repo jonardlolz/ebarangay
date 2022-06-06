@@ -190,6 +190,9 @@
                                                 <div class="text-center">
                                                 <h4 class="card-title"><?php echo $officalRow['name'] ?></h4>
                                                 <p class="card-text"><?php echo $officalRow['userType'] ?></p>
+                                                <?php if($officalRow['userType'] == 'Councilor'): ?>
+                                                <small class="card-text"><?php echo $officalRow['councilorRole'] ?></small>
+                                                <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -265,6 +268,7 @@
                                                     <tr class="bg-gradient-secondary text-white">
                                                         <th>Contact Name</th>
                                                         <th>Contact Number</th>
+                                                        <th>Manage</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -275,6 +279,7 @@
                                                     <tr>
                                                         <td><?php echo $row["contactName"] ?></td>
                                                         <td><?php echo $row["contactNum"] ?></td>
+                                                        <td><button data-id="<?php echo $row['contactID'] ?>" class="btn btn-sm btn-primary"><i class="fas fa-cog"></i> Options</button></td>
                                                     </tr>
                                                     <?php endwhile; ?>
                                                 </tbody>

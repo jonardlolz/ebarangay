@@ -197,7 +197,7 @@
                     <label for="">Contact Name</label>
                 </div>
                 <div class="col">
-                    <input type="text" name="contactName">
+                    <input type="text" name="contactName" required>
                 </div>
             </div>
             <div class="row">
@@ -205,11 +205,48 @@
                     <label for="">Contact Number</label>
                 </div>
                 <div class="col">
-                    <input type="text" name="contactNumber">
+                    <input type="text" name="contactNumber" required>
                 </div>
             </div>
         </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button class="btn btn-sm btn-success">Save</button>
+        </div>
     </form>
+    <script>
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
+    </script>
+
+<?php elseif(isset($_GET["addContact"])): ?>
+    <?php $contactsql = $conn->query("SELECT * FROM contacts WHERE contactID={$_GET['barangayID']}")->fetch_assoc(); ?>
+    <form action="includes/barangay.inc.php?postContactEdit&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <label for="">Contact Name</label>
+                </div>
+                <div class="col">
+                    <input type="text" name="contactName" value="" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="">Contact Number</label>
+                </div>
+                <div class="col">
+                    <input type="text" name="contactNumber" required>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button class="btn btn-sm btn-success">Save</button>
+        </div>
+    </form>
+    <script>
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
+    </script>
 
 <?php 
     elseif(isset($_GET["postContact"])):

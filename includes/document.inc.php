@@ -344,7 +344,7 @@ session_start();
                     Document name:
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentName">
+                    <input class="form-control form-control-sm" type="text" name="documentName" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -352,7 +352,7 @@ session_start();
                     Document description:
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentDesc">
+                    <input class="form-control form-control-sm" type="text" name="documentDesc" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -368,7 +368,7 @@ session_start();
                     Price: 
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
+                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -413,6 +413,9 @@ session_start();
                         <input type="checkbox" name="requireNote" id="requireNote" value="True">
                     </div>
                 </div>
+            </div>
+            <div class="alert alert-danger m-2">
+                <p>Please fill all the required fields.</p>
             </div>
             <!-- <div class="form-group row">
                 <div class="col">
