@@ -18,7 +18,7 @@
                 <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</a>
                 <a class="nav-item nav-link" id="nav-verify-tab" data-toggle="tab" href="#nav-verify" role="tab" aria-controls="nav-verify" aria-selected="true">Verify</a>
                 <a class="nav-item nav-link" id="nav-unverified-tab" data-toggle="tab" href="#nav-unverified" role="tab" aria-controls="nav-unverified" aria-selected="true">Unverified</a>
-                <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='{$_SESSION['userPurok']}'"); 
+                <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
                 while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
                     <a class="nav-item nav-link" id="nav-<?php echo $catName ?>-tab" data-toggle="tab" href="#nav-<?php echo $catName ?>" role="tab" aria-controls="nav-<?php echo $catName ?>" aria-selected="true"><?php echo $categoryResult['residentCatName'] ?></a>
@@ -226,7 +226,7 @@
                     </table>
                 </div>
             </div>
-            <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='{$_SESSION['userPurok']}'"); 
+            <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
             while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
                 <div class="tab-pane fade" id="nav-<?php echo $catName ?>" role="tabpanel" aria-labelledby="nav-<?php echo $catName ?>-tab">
@@ -302,7 +302,21 @@
         </div>
     </div>
     <!-- End of Card Body-->
-</div>  
+</div>
+<script>
+        $(document).ready(function() {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('table').DataTable({
+                "scrollY": "400px",
+                "scrollCollapse": true,
+                "paging": false,
+                "ordering": false
+            });
+        });
+    </script>  
 <?php elseif($_SESSION['userType'] == 'Captain'): ?>
 <div class="card shadow mb-4 m-4">
     <div class="card-header py-3 d-flex justify-content-between">
@@ -379,7 +393,7 @@
                     </table>
                 </div>
             </div>
-            <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='{$_SESSION['userPurok']}'"); 
+            <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
             while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
             <div class="tab-pane fade" id="nav-<?php echo $catName ?>" role="tabpanel" aria-labelledby="nav-<?php echo $catName ?>-tab">
@@ -456,16 +470,16 @@
     </div>
     <script>
         $(document).ready(function() {
-            // $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-            //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
-            // } );
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
 
-            // $('table.display').DataTable({
-            //     "scrollY": "400px",
-            //     "scrollCollapse": true,
-            //     "paging": false,
-            //     "ordering": false
-            // });
+            $('table').DataTable({
+                "scrollY": "400px",
+                "scrollCollapse": true,
+                "paging": false,
+                "ordering": false
+            });
             $('table.display').DataTable();
         });
     </script>

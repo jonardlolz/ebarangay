@@ -40,7 +40,7 @@
                             <option value="None" hidden selected>None</option>
                         <?php endif; ?>
                         <option value="None">None</option>
-                        <?php $purok = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident'");
+                        <?php $purok = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}' AND userPurok='$PurokName'");
                             while($purokRow = $purok->fetch_assoc()): ?>
                             <option value="<?php echo $purokRow["UsersID"] ?>"><?php echo $purokRow["name"]; ?></option>
                         <?php endwhile; ?>

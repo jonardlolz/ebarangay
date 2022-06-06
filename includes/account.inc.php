@@ -230,7 +230,7 @@ if(isset($_GET['edit'])):
                             </div>
                             <div class="col-sm-8">
                                 <select class="select-multiple" name="residentList[]" id="residentList" multiple="multiple" style="width: 100%;">
-                                    <?php $residentSql = $conn->query("SELECT *, users.UsersID as residentID ,concat(users.Firstname, ' ', users.Lastname) as name FROM members RIGHT JOIN users ON users.UsersID = members.UsersID AND residentCatID={$_GET['id']} WHERE membersID IS NULL");
+                                    <?php $residentSql = $conn->query("SELECT *, users.UsersID as residentID ,concat(users.Firstname, ' ', users.Lastname) as name FROM members RIGHT JOIN users ON users.UsersID = members.UsersID AND residentCatID={$_GET['id']} WHERE membersID IS NULL AND userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}'");
                                         while($residentList = $residentSql->fetch_assoc()):
                                             if($residentList["userType"] == "Admin"){
                                                     continue;

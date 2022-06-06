@@ -114,7 +114,7 @@
                             Role:
                         </div>
                         <div class="col">
-                            <input class="form-control form-control-sm" type="text" required>
+                            <input class="form-control form-control-sm" type="text">
                         </div>
                     </div>
                 </div>
