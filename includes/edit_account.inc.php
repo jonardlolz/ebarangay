@@ -60,12 +60,19 @@
         $a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
         civilStat, userGender, userBarangay, userPurok, userHouseNum, emailAdd, username, usersPwd, 
         profile_pic, userType) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Resident')");
-        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Account', 'Captain $name has added a new Resident', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+        
 
-        if($a1 && $a2){
+        if($a1){
             mysqli_commit($conn);
-            header("location: ../residents.php?error=none");
-            exit();
+            $id = mysqli_insert_id($conn);
+
+            $a2 = mysqli_query($conn, "INSERT INTO userreport(UsersID, OfficerID, reportMessage, reportStatus, barangay, purok) VALUES(LAST_INSERT_ID(), {$_SESSION['UsersID']}, 'Captain has added a new Resident', 'Add', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+
+            if($a2){
+                mysqli_commit($conn);
+                header("location: ../residents.php?error=none");
+                exit();
+            }   
         }
         else{
             echo("Error description: ".mysqli_error($conn));

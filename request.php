@@ -1146,61 +1146,23 @@
             <div class="card-body" style="font-size: 75%">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="true">Document</a>
+                        <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#released" role="tab" aria-controls="pending" aria-selected="false">Pending</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
+                        <a class="nav-link active" id="approved-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="paid-tab" data-toggle="tab" href="#released" role="tab" aria-controls="To be paid" aria-selected="false">Paid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane show active" id="document" role="tabpanel" aria-labelledby="document-tab">
-                        <div class="container p-4">
-                            <button class="btn btn-primary add_document" data-id="<?php echo $_SESSION['userBarangay'] ?>"><i class="fas fa-plus"></i> New Document</button>
-                            <?php $i = 0;
-                                $documents = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'"); ?>
-                            <?php while($i < mysqli_num_rows($documents)): ?>
-                            <div class="row" style="margin: 25px">
-                                <?php while($documentRow = $documents->fetch_assoc()): ?>
-                                <div class="col-sm-4">
-                                    <div class="card" style="min-height: 100px;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <?php echo $documentRow['documentName'] ?>
-                                                    </div>
-                                                    <div class="col-sm-3" style="text-align: right;">
-                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
-                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle" 
-                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu shadow"
-                                                            aria-labelledby="userDropdown">
-                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['DocumentID'] ?>" data-docu="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
-                                                            </a>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item delete_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </h5>
-                                            <p class="card-text"><?php if(isset($documentRow['documentdesc'])){echo $documentRow['documentdesc'];} ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
-                            </div>
-                            <?php endwhile; ?>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
+                    <div class="tab-pane fade show active" id="released" role="tabpanel" aria-labelledby="released-tab">
                         <div class="table-responsive">
                             <table class="table table-bordered text-center text-dark" 
                                 id="dataTable4" width="100%" cellspacing="0" cellpadding="0">

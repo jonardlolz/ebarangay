@@ -19,10 +19,10 @@
                             <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="true">Payment</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">Residents</a>
+                            <a class="nav-link" id="residents-tab" data-toggle="tab" href="#residents" role="tab" aria-controls="residents" aria-selected="true">Residents</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">Voting</a>
+                            <a class="nav-link" id="voting-tab" data-toggle="tab" href="#voting" role="tab" aria-controls="voting" aria-selected="true">Voting</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -200,6 +200,106 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                        <div class="tab-pane fade" id="residents" role="tabpanel" aria-labelledby="residents-tab">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center text-dark display" 
+                                    width="100%" cellspacing="0" cellpadding="0">
+                                    <thead >
+                                        <tr class="bg-gradient-secondary text-white">
+                                            <th scope="col">Content</th>
+                                            <th scope="col">Account ID</th>
+                                            <th>Officer ID</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <!--Row 1-->
+                                        <?php 
+                                            $accounts = $conn->query("SELECT userreport.*, 
+                                            concat(resident.Firstname, ' ', resident.Lastname) as residentName, 
+                                            resident.userType as residentUserType, 
+                                            resident.profile_pic as residentprofile, 
+                                            resident.UsersID as residentUsersID, 
+                                            concat(officer.Firstname, ' ', officer.Lastname) as officerName, 
+                                            officer.userType as officerUserType, 
+                                            officer.profile_pic as officerprofile,
+                                            officer.UsersID as officerUsersID
+                                            FROM userreport 
+                                            INNER JOIN users resident ON resident.UsersID=userreport.UsersID 
+                                            INNER JOIN users officer ON officer.UsersID=userreport.OfficerID 
+                                            WHERE barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}' 
+                                            ORDER BY date DESC");
+                                            while($row=$accounts->fetch_assoc()):
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row["reportMessage"] ?></td>
+                                            <td>
+                                                <img class="img-profile rounded-circle <?php 
+                                                    if($row["residentUserType"] == "Resident"){
+                                                        echo "img-res-profile";
+                                                    }
+                                                    elseif($row["residentUserType"] == "Purok Leader"){
+                                                        echo "img-purokldr-profile";
+                                                    }
+                                                    elseif($row["residentUserType"] == "Captain"){
+                                                        echo "img-capt-profile";
+                                                    }
+                                                    elseif($row["residentUserType"] == "Secretary"){
+                                                        echo "img-sec-profile";
+                                                    }
+                                                    elseif($row["residentUserType"] == "Treasurer"){
+                                                        echo "img-treas-profile";
+                                                    }
+                                                    elseif($row["residentUserType"] == "Councilor"){
+                                                        echo "img-councilor-profile";
+                                                    }
+                                                    elseif($row["residentUserType"] == "Admin"){
+                                                        echo "img-admin-profile";
+                                                    }
+                                                ?>" src="img/<?php echo $row["residentprofile"] ?>" width="40" height="40"/>
+                                                </br>
+                                                <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['residentUsersID'] ?>"><?php echo $row["residentName"] ?></a> 
+                                            </td>
+                                            <td>
+                                                <img class="img-profile rounded-circle <?php 
+                                                    if($row["officerUserType"] == "Resident"){
+                                                        echo "img-res-profile";
+                                                    }
+                                                    elseif($row["officerUserType"] == "Purok Leader"){
+                                                        echo "img-purokldr-profile";
+                                                    }
+                                                    elseif($row["officerUserType"] == "Captain"){
+                                                        echo "img-capt-profile";
+                                                    }
+                                                    elseif($row["officerUserType"] == "Secretary"){
+                                                        echo "img-sec-profile";
+                                                    }
+                                                    elseif($row["officerUserType"] == "Treasurer"){
+                                                        echo "img-treas-profile";
+                                                    }
+                                                    elseif($row["officerUserType"] == "Councilor"){
+                                                        echo "img-councilor-profile";
+                                                    }
+                                                    elseif($row["officerUserType"] == "Admin"){
+                                                        echo "img-admin-profile";
+                                                    }
+                                                ?>" src="img/<?php echo $row["officerprofile"] ?>" width="40" height="40"/>
+                                                </br>
+                                                <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['officerUsersID'] ?>"><?php echo $row["officerName"] ?></a> 
+                                            </td>
+                                            <td><?php echo date("M d,Y h:i A",strtotime($row['date'])) ?></td>
+                                            <!--Right Options-->
+                                        </tr>
+                                        <?php endwhile; ?>
+                                        <!--Row 1-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+
                         </div>
                     </div>
                 </div>
