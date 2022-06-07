@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2022 at 12:52 PM
+-- Generation Time: Jun 07, 2022 at 04:58 AM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -49,7 +49,8 @@ INSERT INTO `barangay` (`BarangayID`, `BarangayName`, `City`, `brgyCaptain`, `Pr
 (2, 'Paknaan', 'Mandaue', 29, 'Cebu', '1651569540_279229236_386932233301025_5164515031778545769_n.jpg', '546-9872', 'paknaanBrgy@gmail.com', '09758423457', 'Active'),
 (3, 'Maguikay', 'Mandaue', 50, 'Cebu', '1653653280_Screenshot (6).png', '123-4567', 'asdaga@gmail.com', '09754231657', 'Active'),
 (4, 'Cambaro', 'Mandaue', NULL, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Inactive'),
-(9, 'test', 'Paknaan', 53, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Inactive');
+(9, 'test', 'Paknaan', 53, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Inactive'),
+(10, 'Labogon', 'Mandaue', 62, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Active');
 
 -- --------------------------------------------------------
 
@@ -99,7 +100,14 @@ INSERT INTO `candidates` (`candidateID`, `lastname`, `firstname`, `created_at`, 
 (36, 'Plumber', 'Mr', '2022-05-30 10:01:43', '2022-05-30 10:01:43', '', 'Kamatis', 39, 24, 'Purok Leader'),
 (37, 'Ville', 'Jackson', '2022-06-01 13:04:48', '2022-06-01 13:04:48', 'Test', 'Kamatis', 37, 25, 'Purok Leader'),
 (38, 'Plumber', 'Mr', '2022-06-01 13:04:54', '2022-06-01 13:04:54', 'Test', 'Kamatis', 39, 25, 'Purok Leader'),
-(39, 'Struction', 'Mr', '2022-06-01 13:05:00', '2022-06-01 13:05:00', 'Test', 'Kamatis', 40, 25, 'Purok Leader');
+(39, 'Struction', 'Mr', '2022-06-01 13:05:00', '2022-06-01 13:05:00', 'Test', 'Kamatis', 40, 25, 'Purok Leader'),
+(40, 'Johnson', 'Xavier', '2022-06-06 15:15:40', '2022-06-06 15:15:40', '', 'Kamatis', 28, 26, 'Purok Leader'),
+(41, 'Torts', 'Woshua', '2022-06-06 15:15:47', '2022-06-06 15:15:47', '', 'Kamatis', 34, 26, 'Purok Leader'),
+(42, 'Johnson', 'Xavier', '2022-06-06 15:16:25', '2022-06-06 15:16:25', 'test', 'Kamatis', 28, 27, 'Purok Leader'),
+(43, 'Torts', 'Woshua', '2022-06-06 15:16:36', '2022-06-06 15:16:36', 'test', 'Kamatis', 34, 27, 'Purok Leader'),
+(44, 'Plumber', 'Mr', '2022-06-06 15:16:42', '2022-06-06 15:16:42', 'test', 'Kamatis', 39, 27, 'Purok Leader'),
+(45, 'Struction', 'Mr', '2022-06-06 15:16:51', '2022-06-06 15:16:51', 'test', 'Kamatis', 40, 27, 'Purok Leader'),
+(46, 'Test', 'Test', '2022-06-06 15:16:57', '2022-06-06 15:16:57', 'test', 'Kamatis', 61, 27, 'Purok Leader');
 
 -- --------------------------------------------------------
 
@@ -114,7 +122,7 @@ CREATE TABLE `chat` (
   `message` varchar(255) NOT NULL,
   `mesgdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(20) NOT NULL DEFAULT 'Not Read'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chat`
@@ -189,7 +197,12 @@ INSERT INTO `chat` (`chatID`, `UsersID`, `chatroomID`, `message`, `mesgdate`, `s
 (68, 31, 16, 'asdasd', '2022-05-26 04:54:19', 'Not Read'),
 (69, 28, 19, 'Test', '2022-05-28 03:00:42', 'Not Read'),
 (70, 28, 3, 'asdasd', '2022-05-29 21:20:25', 'Not Read'),
-(71, 28, 4, 'qweqew', '2022-05-29 21:23:24', 'Not Read');
+(71, 28, 4, 'qweqew', '2022-05-29 21:23:24', 'Not Read'),
+(72, 28, 20, 'Test', '2022-06-05 22:23:05', 'Not Read'),
+(73, 31, 5, 'qweqweqwe', '2022-06-06 03:34:49', 'Not Read'),
+(74, 31, 20, 'qwe', '2022-06-06 04:00:19', 'Not Read'),
+(75, 28, 21, 'Silingan saba kaaayo ug baba ', '2022-06-06 14:41:39', 'Not Read'),
+(76, 31, 21, 'jasodjasodjasoij', '2022-06-06 14:41:59', 'Not Read');
 
 -- --------------------------------------------------------
 
@@ -202,7 +215,7 @@ CREATE TABLE `chatroom` (
   `roomName` varchar(50) NOT NULL,
   `type` varchar(50) NOT NULL,
   `idreference` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chatroom`
@@ -225,7 +238,9 @@ INSERT INTO `chatroom` (`chatroomID`, `roomName`, `type`, `idreference`) VALUES
 (16, 'ereklamo#45', 'ereklamo', 45),
 (17, 'ereklamo#46', 'ereklamo', 46),
 (18, 'ereklamo#47', 'ereklamo', 47),
-(19, 'ereklamo#48', 'ereklamo', 48);
+(19, 'ereklamo#48', 'ereklamo', 48),
+(20, 'ereklamo#49', 'ereklamo', 49),
+(21, 'ereklamo#50', 'ereklamo', 50);
 
 -- --------------------------------------------------------
 
@@ -246,7 +261,8 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`CommentsID`, `UsersID`, `PostID`, `comment`, `date_created`) VALUES
-(29, 29, 77, 'qwerqwer', '2022-06-01 05:50:46');
+(29, 29, 77, 'qwerqwer', '2022-06-01 05:50:46'),
+(32, 31, 69, 'QFAFAS', '2022-06-06 15:05:49');
 
 -- --------------------------------------------------------
 
@@ -277,20 +293,20 @@ INSERT INTO `contacts` (`contactID`, `contactName`, `contactNum`, `BarangayID`) 
 
 CREATE TABLE `documentpurpose` (
   `purposeID` int NOT NULL,
-  `purpose` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `barangay` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `barangayDoc` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `purpose` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `barangay` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `barangayDoc` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `documentpurpose`
 --
 
 INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangay`, `barangayDoc`) VALUES
-(3, 'Claim Ayuda', 'Paknaan', 3),
-(5, 'Notarization', 'Paknaan', 1),
-(6, 'Employment', 'Paknaan', 1),
-(10, 'Proof of Residency', 'Paknaan', 2);
+(1, 'Claim Ayuda', 'Paknaan', 3),
+(3, 'Proof of Residency', 'Paknaan', 1),
+(4, 'Proof of Residency', 'Paknaan', 2),
+(5, 'Approval of Lot Title', 'Paknaan', 13);
 
 -- --------------------------------------------------------
 
@@ -349,7 +365,9 @@ INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `create
 (21, 'test', 'Finished', '29', '2022-05-28 22:46:59', '2022-05-28 22:46:59', 'Paknaan', 'Kamatis'),
 (23, 'Test', 'Cancelled', '29', '2022-05-28 23:03:33', '2022-05-28 23:03:33', 'Paknaan', 'Apple'),
 (24, 'TEst', 'Cancelled', '29', '2022-05-29 23:01:51', '2022-05-29 23:01:51', 'Paknaan', 'Kamatis'),
-(25, 'Purok Leader Election', 'Ongoing', '29', '2022-06-01 13:04:33', '2022-06-01 13:04:33', 'Paknaan', 'Kamatis');
+(25, 'Purok Leader Election', 'Cancelled', '29', '2022-06-01 13:04:33', '2022-06-01 13:04:33', 'Paknaan', 'Kamatis'),
+(26, 'ewrwreer', 'Cancelled', '29', '2022-06-06 15:15:13', '2022-06-06 15:15:13', 'Paknaan', 'Kamatis'),
+(27, 'test', 'Finished', '29', '2022-06-06 15:16:16', '2022-06-06 15:16:16', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -387,7 +405,7 @@ INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `Created
 (32, 'Garbages', 'Improper disposal', 'Resolved', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', 'Leader, Purok', '2022-05-16 21:17:44', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (33, 'Complaint to Resident', 'Drugs', 'Send to LUPON', '2022-04-25 15:21:20', '2022-04-25 15:21:20', '', 'Jeremy Elbertson', '2022-05-22 02:22:44', 'Major', 34, '2022-05-18', 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (34, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-14 21:14:56', '2022-05-14 21:14:56', 'Test', 'Leader, Purok', '2022-05-16 17:00:03', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
-(35, 'Garbage', 'Improper disposal', 'Incoming', '2022-05-16 21:14:09', '2022-05-16 21:14:09', 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', 'Woshua Torts', '2022-05-16 22:43:33', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
+(35, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-16 21:14:09', '2022-05-16 21:14:09', 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', 'Purok Leader', '2022-06-05 22:10:03', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (36, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-16 21:52:37', '2022-05-16 21:52:37', 'OASIJDOAJDOASIJDOIJD', 'Purok Leader', '2022-05-21 22:57:02', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (37, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-18 10:54:10', '2022-05-18 10:54:10', 'diaper everywhere', 'Leader, Purok', '2022-05-25 00:42:15', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (38, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-19 15:41:18', '2022-05-19 15:41:18', 'Test', 'Purok Leader', '2022-05-21 22:47:35', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
@@ -398,9 +416,11 @@ INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `Created
 (43, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-21 18:26:28', '2022-05-21 18:26:28', 'test', 'Test', '2022-05-21 22:28:16', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (44, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-21 22:35:21', '2022-05-21 22:35:21', 'Test', 'Purok Leader', '2022-05-21 22:45:53', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (45, 'Complaint to Resident', '', 'To Captain', '2022-05-25 00:27:35', '2022-05-25 00:27:35', 'test', 'Jackson Ville', '2022-05-25 01:44:28', 'Major', 39, NULL, 28, 'Paknaan', 'Kamatis', 0, 150, 'https://getpaid.gcash.com/checkout/f1f89ea1ab1a7a8cbc6b6157300de43b'),
-(46, 'Garbage', 'Improper disposal', 'Ongoing', '2022-05-25 00:43:03', '2022-05-25 00:43:03', 'Test', 'Leader, Purok', '2022-05-25 00:43:18', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
+(46, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-25 00:43:03', '2022-05-25 00:43:03', 'Test', 'Purok Leader', '2022-06-05 22:15:29', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
 (47, 'Complaint to Resident', '', 'To Captain', '2022-05-25 01:40:47', '2022-05-25 01:40:47', 'qwrqwr', 'Jackson Ville', '2022-05-25 01:44:31', 'Major', 1, NULL, 28, 'Paknaan', 'Kamatis', 0, 150, 'https://getpaid.gcash.com/checkout/064bb8101ca1e84c54c6b5ade4aa907b'),
-(48, 'Garbage', 'Improper disposal', 'Ongoing', '2022-05-28 02:57:51', '2022-05-28 02:57:51', 'Test', 'Leader, Purok', '2022-05-28 03:00:42', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL);
+(48, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-28 02:57:51', '2022-05-28 02:57:51', 'Test', 'Purok Leader', '2022-06-05 22:16:13', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
+(49, 'Barangay Infrastructures', 'Broken Roads', 'Resolved', '2022-06-05 22:22:49', '2022-06-05 22:22:49', 'Test', 'Purok Leader', '2022-06-06 04:00:34', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL),
+(50, 'Residents', 'Noise', 'Resolved', '2022-06-06 14:40:39', '2022-06-06 14:40:39', 'Silingan saba kaaayo ug baba ', 'Purok Leader', '2022-06-06 14:44:09', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -438,7 +458,7 @@ CREATE TABLE `ereklamoreport` (
   `reportMessage` varchar(255) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reportStatus` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `ereklamoreport`
@@ -483,7 +503,12 @@ INSERT INTO `ereklamoreport` (`ereportID`, `ReklamoID`, `respondentID`, `reportM
 (69, 31, 29, 'Test', '2022-05-23 04:23:28', 'Forward to LUPON'),
 (70, 45, 31, 'Test', '2022-05-25 00:52:40', ''),
 (71, 47, 31, 'Test', '2022-05-25 01:41:17', 'Forward to Captain'),
-(72, 45, 31, 'qwew qweqweqw qeqwe qe', '2022-05-25 01:43:44', 'Forward to Captain');
+(72, 45, 31, 'qwew qweqweqw qeqwe qe', '2022-05-25 01:43:44', 'Forward to Captain'),
+(73, 35, 31, 't', '2022-06-05 22:10:01', 'Resolved'),
+(74, 46, 31, 'test', '2022-06-05 22:15:28', 'Resolved'),
+(75, 48, 31, 't', '2022-06-05 22:16:13', 'Resolved'),
+(76, 49, 31, 'test', '2022-06-06 04:00:34', 'Resolved'),
+(77, 50, 31, 'Amo gipahilom, amo na gibadlong silangan', '2022-06-06 14:44:09', 'Resolved');
 
 -- --------------------------------------------------------
 
@@ -505,7 +530,8 @@ INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoCatID`) 
 (1, 'Improper disposal', 6),
 (5, 'Broken Roads', 8),
 (13, 'Solicitors', 14),
-(14, 'Illegal Vendors', 14);
+(14, 'Illegal Vendors', 14),
+(16, 'Noise', 14);
 
 -- --------------------------------------------------------
 
@@ -519,6 +545,14 @@ CREATE TABLE `members` (
   `residentCatID` int NOT NULL,
   `createdOn` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `members`
+--
+
+INSERT INTO `members` (`membersID`, `UsersID`, `residentCatID`, `createdOn`) VALUES
+(21, 62, 15, '2022-06-06 16:12:53'),
+(23, 63, 15, '2022-06-06 16:13:03');
 
 -- --------------------------------------------------------
 
@@ -803,7 +837,45 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (307, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:43:26', '2022-05-28 20:43:26'),
 (308, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:50:29', '2022-05-28 20:50:29'),
 (309, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:52:12', '2022-05-28 20:52:12'),
-(310, 'A resident has requested a Cedula', 'request', 'Not Read', NULL, 'Purok Leader', '2022-06-01 13:22:22', '2022-06-01 13:22:22');
+(310, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-06-01 13:22:22', '2022-06-01 13:22:22'),
+(311, 'Purok Leader has resolved your ereklamo#35', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:10:03', '2022-06-05 22:10:03'),
+(312, 'Purok Leader has resolved your ereklamo#46', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:15:29', '2022-06-05 22:15:29'),
+(313, 'Purok Leader has resolved your ereklamo#48', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:16:13', '2022-06-05 22:16:13'),
+(314, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-05 22:22:49', '2022-06-05 22:22:49'),
+(315, 'Your eReklamo#49 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:23:05', '2022-06-05 22:23:05'),
+(316, 'Purok Leader has resolved your ereklamo#49', 'ereklamo', 'Read', 28, 'Resident', '2022-06-06 04:00:34', '2022-06-06 04:00:34'),
+(317, 'A resident has requested a COVID Pass', 'request', 'Read', NULL, 'Purok Leader', '2022-06-06 14:20:03', '2022-06-06 14:20:03'),
+(318, 'The purok leader has disapproved your request for COVID Pass. Reason: The request did not meet the requirements.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:20:30', '2022-06-06 14:20:30'),
+(322, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:21:15', '2022-06-06 14:21:15'),
+(323, 'A new request is ready for payment', 'request', 'Not Read', NULL, 'Treasurer', '2022-06-06 14:21:15', '2022-06-06 14:21:15'),
+(326, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-06 14:31:27', '2022-06-06 14:31:27'),
+(327, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:31:27', '2022-06-06 14:31:27'),
+(328, 'Your Barangay Clearance is has been cancelled for not paying in time.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:31:43', '2022-06-06 14:31:43'),
+(329, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-06 14:31:50', '2022-06-06 14:31:50'),
+(330, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:31:50', '2022-06-06 14:31:50'),
+(331, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-06 14:40:39', '2022-06-06 14:40:39'),
+(332, 'Your eReklamo#50 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-06 14:41:39', '2022-06-06 14:41:39'),
+(333, 'Purok Leader has resolved your ereklamo#50', 'ereklamo', 'Read', 28, 'Resident', '2022-06-06 14:44:09', '2022-06-06 14:44:09'),
+(334, 'Your account verification has been approved!', 'Resident', 'Not Read', 61, NULL, '2022-06-06 15:03:56', '2022-06-06 15:03:56'),
+(335, 'Your account verification has been approved!', 'Resident', 'Not Read', 62, NULL, '2022-06-06 15:57:40', '2022-06-06 15:57:40'),
+(340, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:07:06', '2022-06-07 10:07:06'),
+(343, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:08:24', '2022-06-07 10:08:24'),
+(347, 'sss', 'request', 'Read', 49, 'Purok Leader', '2022-06-07 10:27:28', '2022-06-07 10:27:28'),
+(348, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:27:28', '2022-06-07 10:27:28'),
+(349, '', 'request', 'Read', 31, 'Purok Leader', '2022-06-07 10:28:37', '2022-06-07 10:28:37'),
+(350, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:28:37', '2022-06-07 10:28:37'),
+(351, 'The purok leader has approved your request for Indigency Clearance. Please process the payment.', 'request', 'Read', 31, 'Purok Leader', '2022-06-07 10:29:24', '2022-06-07 10:29:24'),
+(352, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:29:24', '2022-06-07 10:29:24'),
+(353, 'The purok leader has approved your request for Indigency Clearance. It is now ready for release.', 'request', 'Read', 31, 'Purok Leader', '2022-06-07 10:30:50', '2022-06-07 10:30:50'),
+(354, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:30:50', '2022-06-07 10:30:50'),
+(355, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-06-07 10:34:58', '2022-06-07 10:34:58'),
+(356, 'The purok leader has disapproved your request for Barangay Clearance. Reason: The request did not meet the requirements.', 'request', 'Not Read', 28, 'Resident', '2022-06-07 10:35:14', '2022-06-07 10:35:14'),
+(357, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:54:51', '2022-06-07 10:54:51'),
+(358, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Not Read', 31, 'Resident', '2022-06-07 10:54:51', '2022-06-07 10:54:51'),
+(359, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 11:14:49', '2022-06-07 11:14:49'),
+(360, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Not Read', 37, 'Resident', '2022-06-07 11:14:49', '2022-06-07 11:14:49'),
+(361, '', 'request', 'Not Read', 28, 'Resident', '2022-06-07 11:29:42', '2022-06-07 11:29:42'),
+(362, 'Your request for Cedula has been claimed!', 'request', 'Not Read', 28, 'Resident', '2022-06-07 11:29:59', '2022-06-07 11:29:59');
 
 -- --------------------------------------------------------
 
@@ -876,7 +948,9 @@ INSERT INTO `purok` (`PurokID`, `PurokName`, `BarangayName`, `Active`, `purokLea
 (10, 'Papayas', 'Paknaan', 'False', NULL),
 (11, 'Kamanggahan', 'Pajo', 'True', NULL),
 (12, 'Sah', 'Bakilid', 'False', NULL),
-(13, 'Mansanitas', 'Paknaan', 'True', NULL);
+(13, 'Mansanitas', 'Paknaan', 'True', NULL),
+(14, 'Kamanggahan', 'Labogon', 'True', 63),
+(15, 'Santa Cruz', 'Labogon', 'True', NULL);
 
 -- --------------------------------------------------------
 
@@ -1113,7 +1187,19 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (258, 'eReklamo', 'Captain has entered a new reklamo category type: test', 29, '2022-06-02 20:18:57', '2022-06-02 20:18:57', 'Paknaan', 'Kamatis'),
 (259, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:19:01', '2022-06-02 20:19:01', 'Paknaan', 'Kamatis'),
 (260, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-06-02 20:20:31', '2022-06-02 20:20:31', 'Paknaan', 'Kamatis'),
-(261, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:20:35', '2022-06-02 20:20:35', 'Paknaan', 'Kamatis');
+(261, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:20:35', '2022-06-02 20:20:35', 'Paknaan', 'Kamatis'),
+(262, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#49', 31, '2022-06-05 22:23:05', '2022-06-05 22:23:05', 'Paknaan', 'Kamatis'),
+(263, 'Request', 'Purok Leader has disapproved request#54 for not meeting the requirements.', 31, '2022-06-06 14:20:30', '2022-06-06 14:20:30', 'Paknaan', 'Kamatis'),
+(267, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 53', 31, '2022-06-06 14:21:15', '2022-06-06 14:21:15', 'Paknaan', 'Kamatis'),
+(270, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 44', 37, '2022-06-06 14:31:26', '2022-06-06 14:31:26', 'Paknaan', 'Kamatis'),
+(271, 'Request', 'Treasurer Ville,Jackson has cancelled the payment for RequestID#46', 37, '2022-06-06 14:31:43', '2022-06-06 14:31:43', 'Paknaan', 'Kamatis'),
+(272, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 48', 37, '2022-06-06 14:31:50', '2022-06-06 14:31:50', 'Paknaan', 'Kamatis'),
+(275, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-06-06 14:40:12', '2022-06-06 14:40:12', 'Paknaan', 'Kamatis'),
+(276, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#50', 31, '2022-06-06 14:41:39', '2022-06-06 14:41:39', 'Paknaan', 'Kamatis'),
+(277, 'Account', 'Captain  has added a new Resident', 31, '2022-06-06 14:56:26', '2022-06-06 14:56:26', 'Paknaan', 'Kamatis'),
+(278, 'Barangay', 'Admin has created a new Barangay: Labogon', 27, '2022-06-06 15:39:16', '2022-06-06 15:39:16', NULL, NULL),
+(279, 'Barangay', 'Admin has assigned Labogon  Captain as the new Captain for Labogon', 27, '2022-06-06 15:44:45', '2022-06-06 15:44:45', NULL, NULL),
+(280, 'Account', 'Captain  has added a new Resident', 62, '2022-06-06 15:52:21', '2022-06-06 15:52:21', 'Labogon', '');
 
 -- --------------------------------------------------------
 
@@ -1144,10 +1230,10 @@ CREATE TABLE `request` (
 INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `approvedOn`, `approvedBy`, `amount`, `status`, `userBarangay`, `userPurok`, `userType`, `UsersID`, `requesturl`) VALUES
 (21, 'Barangay Clearance', 'Employment', '2022-03-28 15:21:47', '2022-03-28 16:21:58', 'Handson, Roxy', 50, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, ''),
 (22, 'Cedula', 'Employment', '2022-03-28 16:16:12', '2022-03-28 16:27:44', 'Handson, Roxy', 20, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/9647c47bb7a82b4798cc7cafddfc7bd1'),
-(23, 'Cedula', 'Employment', '2022-03-28 16:31:39', '2022-03-28 17:06:50', 'Ville, Jackson', 20, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/53a59cfd1e256b4064170e8c9cf222a0'),
-(24, 'Barangay Clearance', 'Employment', '2022-03-29 07:31:09', '2022-03-29 07:57:02', 'Ville, Jackson', 50, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/a65846399caff7957c8923eaed155192'),
-(25, 'Cedula', 'Employment', '2022-03-29 07:36:50', '2022-03-29 07:55:07', 'Ville, Jackson', 20, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/c1dde9784e9bb636fc718b4d0da11692'),
-(26, 'Cedula', 'Test', '2022-04-02 15:27:45', '2022-05-28 19:25:18', 'Ville, Jackson', 222, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/e8c0afb83105fd0641490493e3d4d10e'),
+(23, 'Cedula', 'Employment', '2022-03-28 16:31:39', '2022-06-07 11:26:27', 'Handson, Roxy', 20, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/53a59cfd1e256b4064170e8c9cf222a0'),
+(24, 'Barangay Clearance', 'Employment', '2022-03-29 07:31:09', '2022-06-07 11:26:30', 'Handson, Roxy', 50, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/a65846399caff7957c8923eaed155192'),
+(25, 'Cedula', 'Employment', '2022-03-29 07:36:50', '2022-06-07 11:29:42', 'Handson, Roxy', 20, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/c1dde9784e9bb636fc718b4d0da11692'),
+(26, 'Cedula', 'Test', '2022-04-02 15:27:45', '2022-06-07 11:29:59', 'Handson, Roxy', 222, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/e8c0afb83105fd0641490493e3d4d10e'),
 (31, 'Cedula', 'Notarization', '2022-05-12 16:23:56', '2022-05-12 16:26:50', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/4be479841eeb3c2fcd99ee361aef98b7'),
 (32, 'Indigency Clearance', 'Ayuda', '2022-05-12 16:34:26', '2022-05-12 17:02:38', 'Handson, Roxy', 0, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'None'),
 (33, 'Barangay Clearance', 'Proof of Residency', '2022-05-12 17:05:19', '2022-05-12 17:14:17', 'Handson, Roxy', 125, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/6d395aefec4a271b6911d50dd8827336'),
@@ -1157,16 +1243,54 @@ INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `a
 (41, 'Cedula', 'Notarization', '2022-05-27 03:01:15', '2022-05-28 20:04:43', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/553c53cbe3db824b0aeb158724e62a31'),
 (42, 'Barangay Clearance', 'Proof of Residency', '2022-05-27 03:02:09', '2022-05-28 20:06:12', 'Ville, Jackson', 125, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/2848babbc1ef60956297ed5f6b2bf769'),
 (43, 'Cedula', 'Notarization', '2022-05-28 03:41:59', '2022-05-28 20:09:44', 'Ville, Jackson', 5, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/10a2a013d186bb1c18961651f831bc5e'),
-(44, 'Cedula', 'Notarization', '2022-05-28 13:22:33', '2022-05-28 20:10:58', 'Leader, Purok', 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/b32ff02643697da7643ac0b79383d57e'),
+(44, 'Cedula', 'Notarization', '2022-05-28 13:22:33', '2022-06-06 14:31:27', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/b32ff02643697da7643ac0b79383d57e'),
 (45, 'Barangay Clearance', 'Proof of Residency', '2022-05-28 13:26:12', '2022-05-28 19:20:29', 'Purok Leader', 125, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None'),
-(46, 'Barangay Clearance', 'Proof of Residency', '2022-05-28 13:26:38', '2022-05-28 20:10:54', 'Leader, Purok', 125, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/b3e0f405a2576e44008f568076837894'),
+(46, 'Barangay Clearance', 'Proof of Residency', '2022-05-28 13:26:38', '2022-06-06 14:31:43', 'Ville, Jackson', 125, 'Cancelled', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/b3e0f405a2576e44008f568076837894'),
 (47, 'Cedula', 'Notarization', '2022-05-28 13:28:50', '2022-05-28 20:10:01', 'Ville, Jackson', 5, 'Cancelled', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/6be03bbaebb52c456a6ee72c3e5e215c'),
-(48, 'Cedula', 'Notarization', '2022-05-28 20:10:26', '2022-05-28 20:10:51', 'Leader, Purok', 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/40a3bce6012cb4eed13de00c4d04c16e'),
-(49, 'Indigency Clearance', 'Ayuda', '2022-05-28 20:16:25', NULL, NULL, 0, 'Pending', 'Paknaan', 'Kamatis', 'Purok Leader', 31, 'None'),
-(50, 'Cedula', 'Notarization', '2022-05-28 20:43:26', NULL, NULL, 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 31, 'None'),
-(51, 'Cedula', 'Notarization', '2022-05-28 20:50:29', NULL, NULL, 5, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 37, 'None'),
+(48, 'Cedula', 'Notarization', '2022-05-28 20:10:26', '2022-06-06 14:31:50', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/40a3bce6012cb4eed13de00c4d04c16e'),
+(49, 'Indigency Clearance', 'Ayuda', '2022-05-28 20:16:25', '2022-06-07 10:30:50', 'Leader, Purok', 0, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 31, 'None'),
+(50, 'Cedula', 'Notarization', '2022-05-28 20:43:26', '2022-06-07 10:54:51', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 31, 'None'),
+(51, 'Cedula', 'Notarization', '2022-05-28 20:50:29', '2022-06-07 11:14:49', 'Ville, Jackson', 5, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 37, 'None'),
 (52, 'Cedula', 'Notarization', '2022-05-28 20:52:12', NULL, NULL, 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 37, 'None'),
-(53, 'Cedula', 'Notarization', '2022-06-01 13:22:22', NULL, NULL, 10, 'Pending', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None');
+(53, 'Cedula', 'Notarization', '2022-06-01 13:22:22', '2022-06-06 14:21:15', 'Leader, Purok', 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/38ad0aee0f5a09c1d4a78c7016425206'),
+(54, 'COVID Pass', 'To go outside', '2022-06-06 14:20:03', '2022-06-06 14:20:30', 'Purok Leader', 0, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None'),
+(55, 'Barangay Clearance', 'Proof of Residency', '2022-06-07 10:34:58', '2022-06-07 10:35:14', 'Purok Leader', 125, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requestreport`
+--
+
+CREATE TABLE `requestreport` (
+  `requestreportID` int NOT NULL,
+  `RequestID` int NOT NULL,
+  `officerID` int NOT NULL,
+  `reportMessage` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `reportStatus` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `amount` int NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `requestreport`
+--
+
+INSERT INTO `requestreport` (`requestreportID`, `RequestID`, `officerID`, `reportMessage`, `reportStatus`, `amount`, `date`) VALUES
+(3, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:07:06'),
+(6, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:08:24'),
+(10, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:27:28'),
+(11, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:28:37'),
+(12, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:29:24'),
+(13, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:30:50'),
+(14, 55, 31, 'Purok Leader has disapproved request#55 for not meeting the requirements.', 'Disapproved', 125, '2022-06-07 10:35:14'),
+(15, 50, 37, 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 50', 'Paid', 10, '2022-06-07 10:54:51'),
+(16, 51, 37, 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 51', 'Paid', 5, '2022-06-07 11:14:49'),
+(23, 23, 30, 'Secretary Handson,Roxy has released the RequestID # 23', 'Released', 20, '2022-06-07 11:25:04'),
+(24, 23, 30, 'Secretary Handson,Roxy has released the RequestID#23', 'Released', 20, '2022-06-07 11:26:27'),
+(25, 24, 30, 'Secretary Handson,Roxy has released the RequestID#24', 'Released', 50, '2022-06-07 11:26:30'),
+(29, 25, 30, 'Secretary Handson,Roxy has released the RequestID#25', 'Released', 20, '2022-06-07 11:29:42'),
+(30, 26, 30, 'Secretary Handson,Roxy has released the RequestID#26', 'Released', 222, '2022-06-07 11:29:59');
 
 -- --------------------------------------------------------
 
@@ -1201,6 +1325,14 @@ CREATE TABLE `residentcategory` (
   `Barangay` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `Purok` varchar(20) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `residentcategory`
+--
+
+INSERT INTO `residentcategory` (`residentCatID`, `residentCatName`, `createdOn`, `Barangay`, `Purok`) VALUES
+(13, 'Test', '2022-06-04 22:53:02', 'Paknaan', 'All'),
+(15, 'No water', '2022-06-06 16:03:03', 'Labogon', 'All');
 
 -- --------------------------------------------------------
 
@@ -1305,31 +1437,35 @@ CREATE TABLE `users` (
   `userSuffix` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `secretQuestion` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `secretAnswer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `IsVoter` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'False'
+  `IsVoter` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'False',
+  `councilorRole` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`, `landlordName`, `landlordContact`, `barangayPos`, `userAddress`, `userHouseNum`, `IsLandlord`, `isRenting`, `startedLiving`, `userSuffix`, `secretQuestion`, `secretAnswer`, `IsVoter`) VALUES
-(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '001', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(28, 'Xavier', 'Noez', 'Johnson', '2000-08-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$DcyVYXqRr6kf.R03tKa/1.0Vykumm2agobub3e217NP6wd/uG6Z7e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', NULL, '002', 'False', 'False', '2000-01-07', '', 'What\'s the name of the school you first went to?', 'qwe', 'False'),
-(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$wgirG5En9HiHhhtVzR50E.xdr2RunZl/L5QHs1AnwDfMu.9L7QT9G', 'Male', 'Captain', '1651569480_41qrwg4zxqv81.png', 'Paknaan', 'Kamatis', '09888888', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '003', 'False', 'False', '2000-01-07', '', NULL, NULL, 'False'),
-(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'National Highway ', '231', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False'),
-(54, 'Yasmin', 'Awer', 'Fisher', '2013-01-07', 'Single', 'qoidoajd@gmail.com', 'councilor1', '$2y$10$I.dFzFM6CSA0czScwNa6x.VERcxvs4RUCQ5r0BKtNF4c5Msp0RMYe', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
-(55, 'Isidro', 'Nidhogg', 'Nitzsche', '2016-01-13', 'Single', 'aosdjasfa@gmail.com', 'councilor2', '$2y$10$5CZU58IIllsB5tAntntoGOIXRs0uQI/U373rjOXdcOWtbHvnSfWHe', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
-(56, 'Kian', 'Schwit', 'Von', '2007-01-09', 'Single', 'aosijdo@gmail.com', 'councilor3', '$2y$10$hu5VlmOzwMBXuID0duSB7ONu2x37JQsb8GO11HRsf9jc32WWQ.Ska', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '784', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
-(57, 'Samson', 'Poer', 'Ritchie', '2001-02-06', 'Single', 'anzxmasd@gmail.com', 'councilor4', '$2y$10$Q.AEENJYxJ5F35sB7ILD9O/aWc3EktqVBCH8mgZZBLZ89Fv2PKNXS', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
-(58, 'Ralph', 'Wex', 'Roob', '2003-01-06', 'Single', 'anbckjzxnc@gmail.com', 'councilor5', '$2y$10$lk0mqswvVGePDgVk9Xi9AeNQy4OcsxFDIanWYbcjdsUACsnn8.Jxa', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '156', 'False', 'False', '2000-01-07', NULL, 'What is your first pet\'s name?', 'Test', 'False'),
-(59, 'Hildr', 'Ryjr', 'Adelajda', '2008-06-01', 'Single', 'asmozkm@gmail.com', 'councilor6', '$2y$10$sGuxf7hKot1lg/xxPmiWLezVSP11YKhqWsgIKwfsU6nK629szChCq', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False'),
-(60, 'Maria-Angeen', 'Ester', 'Coreen', '2003-01-21', 'Single', 'xcvlkkj@gmail.com', 'councilor7', '$2y$10$XhpGN5tTf6BO3P3yp4SDW.HupNGLBWnmabg3i/zOJgaRVmhfPT1w6', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '765', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False');
+INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`, `landlordName`, `landlordContact`, `barangayPos`, `userAddress`, `userHouseNum`, `IsLandlord`, `isRenting`, `startedLiving`, `userSuffix`, `secretQuestion`, `secretAnswer`, `IsVoter`, `councilorRole`) VALUES
+(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '001', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(28, 'Xavier', 'Noez', 'Johnson', '2000-08-01', 'Single', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$DcyVYXqRr6kf.R03tKa/1.0Vykumm2agobub3e217NP6wd/uG6Z7e', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', NULL, '002', 'False', 'True', '2000-01-07', '', 'What\'s the name of the school you first went to?', 'qwe', 'False', NULL),
+(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$wgirG5En9HiHhhtVzR50E.xdr2RunZl/L5QHs1AnwDfMu.9L7QT9G', 'Male', 'Captain', '1651569480_41qrwg4zxqv81.png', 'Paknaan', 'Kamatis', '09888888', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '003', 'False', 'False', '2000-01-07', '', NULL, NULL, 'False', NULL),
+(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'National Highway ', '231', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL),
+(54, 'Yasmin', 'Awer', 'Fisher', '2013-01-07', 'Single', 'qoidoajd@gmail.com', 'councilor1', '$2y$10$I.dFzFM6CSA0czScwNa6x.VERcxvs4RUCQ5r0BKtNF4c5Msp0RMYe', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Infrastructure Development'),
+(55, 'Isidro', 'Nidhogg', 'Nitzsche', '2016-01-13', 'Single', 'aosdjasfa@gmail.com', 'councilor2', '$2y$10$5CZU58IIllsB5tAntntoGOIXRs0uQI/U373rjOXdcOWtbHvnSfWHe', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Women & Family, Health & Social Welfare'),
+(56, 'Kian', 'Schwit', 'Von', '2007-01-09', 'Single', 'aosijdo@gmail.com', 'councilor3', '$2y$10$hu5VlmOzwMBXuID0duSB7ONu2x37JQsb8GO11HRsf9jc32WWQ.Ska', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '784', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Public Accountability and Appropriation'),
+(57, 'Samson', 'Poer', 'Ritchie', '2001-02-06', 'Single', 'anzxmasd@gmail.com', 'councilor4', '$2y$10$Q.AEENJYxJ5F35sB7ILD9O/aWc3EktqVBCH8mgZZBLZ89Fv2PKNXS', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Clean and Green'),
+(58, 'Ralph', 'Wex', 'Roob', '2003-01-06', 'Single', 'anbckjzxnc@gmail.com', 'councilor5', '$2y$10$lk0mqswvVGePDgVk9Xi9AeNQy4OcsxFDIanWYbcjdsUACsnn8.Jxa', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '156', 'False', 'False', '2000-01-07', NULL, 'What is your first pet\'s name?', 'Test', 'False', 'Health and Sanitation'),
+(59, 'Hildr', 'Ryjr', 'Adelajda', '2008-06-01', 'Single', 'asmozkm@gmail.com', 'councilor6', '$2y$10$sGuxf7hKot1lg/xxPmiWLezVSP11YKhqWsgIKwfsU6nK629szChCq', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Education'),
+(60, 'Maria-Angeen', 'Ester', 'Coreen', '2003-01-21', 'Single', 'xcvlkkj@gmail.com', 'councilor7', '$2y$10$XhpGN5tTf6BO3P3yp4SDW.HupNGLBWnmabg3i/zOJgaRVmhfPT1w6', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '765', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Peace and Order'),
+(61, 'Test', 'Test', 'Test', '2022-06-05', 'Single', 'asdsgsdoij@gmail.com', 'testaccount', '$2y$10$FWofcPUwJVs4xUur/PbNLuiwb.k/wdnVQ.eH0ij.j78HTzJziEJsm', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '421', 'False', 'False', '2022-03-02', NULL, NULL, NULL, 'False', NULL),
+(62, 'Labogon ', 'Capt', 'Captain', '2022-06-08', 'Single', 'asdkaosdm@gmail.com', 'captain2', '$2y$10$ZRSweUf2tEvlWiVQth.wAuzLma9nu.TyWywDCsnpGJvtqpyOhXFOW', 'Male', 'Captain', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', '', NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2022-04-04', '', NULL, NULL, 'True', NULL),
+(63, 'Purok', 'Kamanggahan', 'Leader', '2022-06-02', 'Single', 'dsfasasdn@gmail.com', 'purokleader2', '$2y$10$VnOLs5b2k6fZ4JGy26cnJOdNE2IKayS1DsW0jEJvJV8Ev8AS/WBbG', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '2313', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL);
 
 -- --------------------------------------------------------
 
@@ -1352,9 +1488,12 @@ CREATE TABLE `votes` (
 --
 
 INSERT INTO `votes` (`voteID`, `candidateID`, `UsersID`, `created_at`, `updated_at`, `position`, `electionID`) VALUES
-(0, 33, 28, '2022-05-28 22:51:35', '2022-05-28 22:51:35', 'Purok Leader', 21),
-(34, 25, 28, '2022-03-18 01:01:25', '2022-03-18 01:01:25', 'Purok Leader', 11),
-(35, 26, 28, '2022-03-18 02:10:26', '2022-03-18 02:10:26', 'Purok Leader', 13);
+(35, 26, 28, '2022-03-18 02:10:26', '2022-03-18 02:10:26', 'Purok Leader', 13),
+(36, 33, 28, '2022-05-28 22:51:35', '2022-05-28 22:51:35', 'Purok Leader', 21),
+(38, 46, 28, '2022-06-06 15:20:42', '2022-06-06 15:20:42', 'Purok Leader', 27),
+(39, 43, 31, '2022-06-06 15:25:42', '2022-06-06 15:25:42', 'Purok Leader', 27),
+(40, 43, 30, '2022-06-06 15:27:34', '2022-06-06 15:27:34', 'Purok Leader', 27),
+(41, 43, 29, '2022-06-06 15:31:02', '2022-06-06 15:31:02', 'Purok Leader', 27);
 
 --
 -- Indexes for dumped tables
@@ -1501,6 +1640,14 @@ ALTER TABLE `request`
   ADD KEY `UsersID` (`UsersID`);
 
 --
+-- Indexes for table `requestreport`
+--
+ALTER TABLE `requestreport`
+  ADD PRIMARY KEY (`requestreportID`),
+  ADD KEY `RequestID` (`RequestID`),
+  ADD KEY `officerID` (`officerID`);
+
+--
 -- Indexes for table `requirementlist`
 --
 ALTER TABLE `requirementlist`
@@ -1551,7 +1698,7 @@ ALTER TABLE `votes`
 -- AUTO_INCREMENT for table `barangay`
 --
 ALTER TABLE `barangay`
-  MODIFY `BarangayID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `BarangayID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `barangaylupon`
@@ -1563,25 +1710,25 @@ ALTER TABLE `barangaylupon`
 -- AUTO_INCREMENT for table `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `chatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `chatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `chatroom`
 --
 ALTER TABLE `chatroom`
-  MODIFY `chatroomID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `chatroomID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `contacts`
@@ -1593,25 +1740,25 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `documenttype`
 --
 ALTER TABLE `documenttype`
-  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `election`
 --
 ALTER TABLE `election`
-  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `ereklamocategory`
@@ -1623,25 +1770,25 @@ ALTER TABLE `ereklamocategory`
 -- AUTO_INCREMENT for table `ereklamoreport`
 --
 ALTER TABLE `ereklamoreport`
-  MODIFY `ereportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `ereportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `ereklamotype`
 --
 ALTER TABLE `ereklamotype`
-  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `membersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `membersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=363;
 
 --
 -- AUTO_INCREMENT for table `post`
@@ -1653,31 +1800,37 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT for table `purok`
 --
 ALTER TABLE `purok`
-  MODIFY `PurokID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `PurokID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=295;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT for table `requestreport`
+--
+ALTER TABLE `requestreport`
+  MODIFY `requestreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `requirementlist`
 --
 ALTER TABLE `requirementlist`
-  MODIFY `requirementID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `requirementID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `residentcategory`
 --
 ALTER TABLE `residentcategory`
-  MODIFY `residentCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `residentCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `residents`
@@ -1695,7 +1848,13 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+--
+-- AUTO_INCREMENT for table `votes`
+--
+ALTER TABLE `votes`
+  MODIFY `voteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- Constraints for dumped tables
@@ -1718,7 +1877,7 @@ ALTER TABLE `chat`
 -- Constraints for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  ADD CONSTRAINT `documentpurpose_ibfk_1` FOREIGN KEY (`barangayDoc`) REFERENCES `documenttype` (`DocumentID`);
+  ADD CONSTRAINT `documentpurpose_ibfk_1` FOREIGN KEY (`barangayDoc`) REFERENCES `documenttype` (`DocumentID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ereklamoreport`
@@ -1739,6 +1898,13 @@ ALTER TABLE `ereklamotype`
 ALTER TABLE `members`
   ADD CONSTRAINT `members_ibfk_1` FOREIGN KEY (`residentCatID`) REFERENCES `residentcategory` (`residentCatID`) ON DELETE CASCADE,
   ADD CONSTRAINT `members_ibfk_2` FOREIGN KEY (`UsersID`) REFERENCES `users` (`UsersID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `requestreport`
+--
+ALTER TABLE `requestreport`
+  ADD CONSTRAINT `requestreport_ibfk_1` FOREIGN KEY (`RequestID`) REFERENCES `request` (`RequestID`),
+  ADD CONSTRAINT `requestreport_ibfk_2` FOREIGN KEY (`officerID`) REFERENCES `users` (`UsersID`);
 
 --
 -- Constraints for table `requirementlist`

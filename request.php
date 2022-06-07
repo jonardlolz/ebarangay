@@ -777,6 +777,9 @@
                         <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" id="disapproved-tab" data-toggle="tab" href="#disapproved" role="tab" aria-controls="disapproved" aria-selected="false">Disapproved</a>
                     </li>
                     <li class="nav-item">
@@ -859,6 +862,72 @@
                                     </tr>
                                     <?php endwhile; ?>
                                     <!--Row 1-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-dark" 
+                                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                <thead >
+                                    <tr class="bg-gradient-secondary text-white">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Document Type</th>
+                                        <th scope="col">Purpose</th>
+                                        <th scope="col">Date Requested</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Row 1-->
+                                    <?php 
+                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                        DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
+                                        DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
+                                        users.profile_pic 
+                                        FROM request 
+                                        INNER JOIN users 
+                                        ON request.UsersID=users.UsersID 
+                                        WHERE request.status='Approved' 
+                                        AND request.userPurok='{$_SESSION['userPurok']}' 
+                                        AND request.userBarangay='{$_SESSION['userBarangay']}' 
+                                        AND request.userType='{$_SESSION['userType']}'
+                                        ORDER BY requestedOn DESC");
+                                        while($row=$requests->fetch_assoc()):
+                                            if($row["userType"] == "Admin"){
+                                                continue;
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <img class="img-profile rounded-circle <?php 
+                                                if($row["userType"] == "Resident"){
+                                                    echo "img-res-profile";
+                                                }
+                                                elseif($row["userType"] == "Purok Leader"){
+                                                    echo "img-purokldr-profile";
+                                                }
+                                                elseif($row["userType"] == "Captain"){
+                                                    echo "img-capt-profile";
+                                                }
+                                                elseif($row["userType"] == "Secretary"){
+                                                    echo "img-sec-profile";
+                                                }
+                                                elseif($row["userType"] == "Treasurer"){
+                                                    echo "img-treas-profile";
+                                                }
+                                                elseif($row["userType"] == "Admin"){
+                                                    echo "img-admin-profile";
+                                                }
+                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            <br>
+                                            <?php echo $row["name"] ?>
+                                        </td>
+                                        <td><?php echo $row["documentType"] ?></td>
+                                        <td><?php echo $row["purpose"] ?></td>
+                                        <td><?php echo $row["requestedDate"] ?></td>
+                                    </tr>
+                                    <?php endwhile; ?>
                                 </tbody>
                             </table>
                         </div>

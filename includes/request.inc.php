@@ -180,21 +180,22 @@ elseif(isset($_GET["release"])){
 
     mysqli_begin_transaction($conn);
 
-    $reportMessage = "Secretary ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has released the RequestID # ". $id;
+    $reportMessage = "Secretary ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has released the RequestID#$id";
     $requestUrl = $resData["data"]["checkouturl"];
-    $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
-    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='{$status}', request.userType='{$userType}' WHERE RequestID=$id");
-    $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('Your request for {$requestData[documentType]} has been claimed!', 'request', {$requestData['UsersID']}, 'Resident')");
+    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Released', {$requestData['amount']});");
+    $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='$approvedBy', status='$status', request.userType='$userType' WHERE RequestID=$id");
+    $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('Your request for {$requestData['documentType']} has been claimed!', 'request', {$requestData['UsersID']}, 'Resident')");
 
-    if($a1 && $a2 && $a3){
+    if(1){
         mysqli_commit($conn);
         header("location: ../request.php?error=none"); //no errors were made
         exit();
     }
     else{
+        echo("Error description: ".mysqli_error($conn));
         mysqli_rollback($conn);
-        header("location: ../request.php?error=error"); //no errors were made
-        exit();
+        // header("location: ../request.php?error=error"); //no errors were made
+        // exit();
     }
 }
 elseif(isset($_GET['additionalInput'])){
@@ -220,7 +221,7 @@ elseif(isset($_GET["approveID"])){
     $id = $_GET['approveID'];
 
     $requestRes = $conn->query("
-    SELECT request.*, users.Firstname, users.Lastname, users.emailAdd, users.phoneNum
+    SELECT request.*, users.Firstname, users.Lastname, users.emailAdd, users.phoneNum, users.userType
     FROM request 
     INNER JOIN users 
     ON request.UsersID = users.UsersID
@@ -282,7 +283,7 @@ elseif(isset($_GET["approveID"])){
             header('Content-Type: application/json; charset=UTF-8');
             die(json_encode(array('message' => $requestUrl, 'code' => 1337)));
         }
-        $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
+        $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Approved', {$requestData['amount']});");
         $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='{$status}', request.userType='{$userType}', requesturl='{$requestUrl}' WHERE RequestID=$id");
         $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has approved your request for {$requestData['documentType']}. Please process the payment.', 'request', '{$requestData['UsersID']}', 'Resident')");
         $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A new request is ready for payment', 'request', 'Treasurer')");
@@ -306,10 +307,12 @@ elseif(isset($_GET["approveID"])){
         $status = "Paid";
         $paymentStatus = "Paid";
 
+        $approvedBy = $_SESSION['Lastname'].', '.$_SESSION['Firstname'];
+
         $reportMessage = "Purok Leader ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has approved the RequestID # ". $id;
-        $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
-        $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='{$status}', request.userType='{$userType}' WHERE RequestID=$id");
-        $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has approved your request for '{$requestData['documentType']}' and is now ready for release.', 'request', {$requestData['UsersID']},'Resident')");
+        $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Approved', {$requestData['amount']});");
+        $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='$approvedBy', status='{$status}', request.userType='$userType' WHERE RequestID=$id");
+        $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has approved your request for {$requestData['documentType']}. It is now ready for release.', 'request', {$requestData['UsersID']},'{$requestData['userType']}')");
         $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A new request is ready for release!', 'request', 'Secretary')");
 
         
@@ -319,9 +322,10 @@ elseif(isset($_GET["approveID"])){
             exit();
         }
         else{
+            echo("Error description: ".mysqli_error($conn));
             mysqli_rollback($conn);
-            header("location: ../request.php?error=error"); //no errors were made
-            exit();
+            // header("location: ../request.php?error=error"); //no errors were made
+            // exit();
         }
     }
 }
@@ -339,7 +343,7 @@ elseif(isset($_GET["disapproveID"])){
 
     $approvedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
 
-    $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', 'Purok Leader has disapproved request#$id for not meeting the requirements.', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
+    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, 'Purok Leader has disapproved request#$id for not meeting the requirements.', 'Disapproved', {$requestData['amount']});");
     $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='Disapproved', request.userType='Purok Leader' WHERE RequestID=$id");
     $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has disapproved your request for {$requestData['documentType']}. Reason: The request did not meet the requirements.', 'request', '{$requestData['UsersID']}', 'Resident')");
 
@@ -391,7 +395,7 @@ if(isset($_GET['paid'])){
     
     mysqli_begin_transaction($conn);
     $reportMessage = "Treasurer ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has confirmed the payment for RequestID# ". $id;
-    $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
+    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Paid', {$requestData['amount']});");
     $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy=$approvedBy, status='Paid', request.userType='Secretary' WHERE RequestID=$id");
     $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A new request is ready for release!', 'request', 'Secretary')");
     $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('Your {$requestData['documentType']} is now ready for release! Please claim it at the barangay hall.', 'request', '{$requestData['UsersID']}','Resident')");
@@ -435,8 +439,8 @@ if(isset($_GET['unpaid'])){
     $approvedBy = "'".$_SESSION['Lastname']. ', ' . $_SESSION['Firstname']."'";
     
     mysqli_begin_transaction($conn);
-    $reportMessage = "Treasurer ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has cancelled the payment for RequestID#". $id;
-    $a1 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('Request', '{$reportMessage}', '{$_SESSION['UsersID']}', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
+    $reportMessage = "Treasurer ". $_SESSION['Lastname'] . "," . $_SESSION['Firstname'] . " has cancelled the payment for RequestID#$id due to overdue payment.";
+    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Unpaid', {$requestData['amount']});");
     $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy=$approvedBy, status='Cancelled', request.userType='Treasurer' WHERE RequestID=$id");
     $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('Your {$requestData['documentType']} is has been cancelled for not paying in time.', 'request', '{$requestData['UsersID']}', 'Resident')");
 

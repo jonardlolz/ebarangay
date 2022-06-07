@@ -15,6 +15,15 @@
                         <li class="nav-item">
                             <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">eRequest</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="true">Payment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">Residents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">Voting</a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
@@ -84,6 +93,7 @@
                                         <tr class="bg-gradient-secondary text-white">
                                             <th scope="col">Content</th>
                                             <th scope="col">Users</th>
+                                            <th>Status reported</th>
                                             <th scope="col">Date</th>
                                         </tr>
                                         
@@ -91,7 +101,7 @@
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
-                                            $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM report INNER JOIN users ON users.UsersID=report.UsersID WHERE report.userBarangay = '{$_SESSION['userBarangay']}' AND report.userPurok = '{$_SESSION['userPurok']}' AND ReportType='Request' ORDER BY created_on DESC");
+                                            $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM requestreport INNER JOIN users ON users.UsersID=requestreport.officerID INNER JOIN request ON requestreport.RequestID=request.RequestID WHERE reportStatus!='Paid' ORDER BY date DESC");
                                             while($row=$accounts->fetch_assoc()):
                                         ?>
                                         <tr>
@@ -123,8 +133,66 @@
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
                                             </td>
-                                            <td><?php echo date("M d,Y h:i A",strtotime($row['created_on'])) ?></td>
-                                            
+                                            <td><?php echo $row['reportStatus'] ?></td>
+                                            <td><?php echo date("M d,Y h:i A",strtotime($row['date'])) ?></td>
+                                            <!--Right Options-->
+                                        </tr>
+                                        <?php endwhile; ?>
+                                        <!--Row 1-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center text-dark display" 
+                                    width="100%" cellspacing="0" cellpadding="0">
+                                    <thead >
+                                        <tr class="bg-gradient-secondary text-white">
+                                            <th scope="col">Content</th>
+                                            <th scope="col">Users</th>
+                                            <th>Amount Paid</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <!--Row 1-->
+                                        <?php 
+                                            $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM requestreport INNER JOIN users ON users.UsersID=requestreport.officerID INNER JOIN request ON requestreport.RequestID=request.RequestID WHERE reportStatus='Paid' ORDER BY date DESC");
+                                            while($row=$accounts->fetch_assoc()):
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row["reportMessage"] ?></td>
+                                            <td>
+                                                <img class="img-profile rounded-circle <?php 
+                                                    if($row["userType"] == "Resident"){
+                                                        echo "img-res-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Purok Leader"){
+                                                        echo "img-purokldr-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Captain"){
+                                                        echo "img-capt-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Secretary"){
+                                                        echo "img-sec-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Treasurer"){
+                                                        echo "img-treas-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Councilor"){
+                                                        echo "img-councilor-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Admin"){
+                                                        echo "img-admin-profile";
+                                                    }
+                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                </br>
+                                                <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
+                                            </td>
+                                            <td><?php echo $row['amount'] ?></td>
+                                            <td><?php echo date("M d,Y h:i A",strtotime($row['date'])) ?></td>
                                             <!--Right Options-->
                                         </tr>
                                         <?php endwhile; ?>
@@ -145,7 +213,7 @@
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             } );
 
-            $('table.display').DataTable({
+            $('table').DataTable({
                 "responsive": true,
                 orderCellsTop: true,
                 dom: 'lBfrtip',
