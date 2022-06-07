@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="accordion">
-                                            <?php $minorSql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatPriority = 'Minor'");
+                                            <?php $minorSql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority = 'Minor'");
                                             $i = 0;
                                             $allRows = $minorSql->num_rows;
                                             while($minorRow = $minorSql->fetch_assoc()):
