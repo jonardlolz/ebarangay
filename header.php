@@ -403,6 +403,11 @@
                     <span>Barangay</span>
                 </a>
             </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "purok.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="purok.php">
+                    <span>Purok</span>
+                </a>
+            </li>
         <?php elseif($_SESSION["userType"] == "Resident") : ?>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">

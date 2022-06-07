@@ -1,6 +1,7 @@
 <?php
     include_once "dbh.inc.php";
     include_once "functions.inc.php";
+    session_start();
 ?>
 
 <?php
@@ -28,6 +29,7 @@
                         name="PurokName" placeholder="Purok Name" value="<?php echo $PurokName ?>">
                 </div>
             </div>
+            <?php if($_SESSION['userType'] != "Admin"): ?>
             <div class="row">
                 <div class="col-sm-6">
                     <label>Purok Leader: </label>
@@ -47,6 +49,7 @@
                     </select>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="row">
                 <div class="col-sm-6">
                     <label>Active: </label>
@@ -64,27 +67,57 @@
 </div>
 
 <?php elseif(isset($_GET['addPurok'])): ?>
-    <form action="includes/purok_func.inc.php?addPurok&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post"> 
-        <div class="form-group col">
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="">Barangay: </label>
+    <?php if($_SESSION['userType'] != 'Admin'): ?>
+        <form action="includes/purok_func.inc.php?addPurok&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post"> 
+            <div class="form-group col">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="">Barangay: </label>
+                    </div>
+                    <div class="col">
+                        <label for=""><?php echo $_GET['barangayName'] ?></label>
+                    </div>
                 </div>
-                <div class="col">
-                    <label for=""><?php echo $_GET['barangayName'] ?></label>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="">Purok Name: </label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control form-control-sm" id="PurokName"
+                            name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="">Purok Name: </label>
+        </form>
+    <?php else: ?>
+        <form action="includes/purok_func.inc.php?addPurok" class="user" method="post"> 
+            <div class="form-group col">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="">Barangay: </label>
+                    </div>
+                    <div class="col">
+                        <select name="barangayName" id="barangayName">
+                            <option value="">None</option>
+                            <?php $puroksql = $conn->query("SELECT * FROM barangay"); 
+                            while($purokrow = $puroksql->fetch_assoc):?>
+                            <option value="<?php echo $purokrow['BarangayName'] ?>"><?php echo $purokrow['BarangayName'] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="text" class="form-control form-control-sm" id="PurokName"
-                        name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="">Purok Name: </label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control form-control-sm" id="PurokName"
+                            name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    <?php endif; ?>
 
 <?php endif; ?>
 

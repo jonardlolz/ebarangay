@@ -1149,13 +1149,13 @@
                         <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#released" role="tab" aria-controls="pending" aria-selected="false">Pending</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" id="approved-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+                        <a class="nav-link" id="approved-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" id="paid-tab" data-toggle="tab" href="#released" role="tab" aria-controls="To be paid" aria-selected="false">Paid</a>
+                        <a class="nav-link" id="paid-tab" data-toggle="tab" href="#released" role="tab" aria-controls="To be paid" aria-selected="false">Paid</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
+                        <a class="nav-link" id="released-tab" data-toggle="tab" href="#released" role="tab" aria-controls="approved" aria-selected="false">Released</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="false">Request Form</a>

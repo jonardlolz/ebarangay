@@ -16,7 +16,10 @@
         $id = $_GET["id"];
         mysqli_begin_transaction($conn);
 
-        $residentData = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE UsersID=$brgyCaptain")->fetch_assoc();
+        if($brgyCaptain != 'None'){
+            $residentData = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE UsersID=$brgyCaptain")->fetch_assoc();
+        }
+        
         $sql = "UPDATE barangay SET City=?, BarangayName=?, Active=?, brgyCaptain=? WHERE BarangayID=?";
 
         if($row['brgyCaptain'] != "None" && $brgyCaptain != "None"){
@@ -35,6 +38,7 @@
             $brgyID = $sql->fetch_assoc();
             if($_SESSION['userType'] == 'Admin'){
                 header("location: ../barangay.php");
+                exit();
             }
             header("location: ../barangay_alt.php?barangayID={$brgyID['BarangayID']}");
             exit();

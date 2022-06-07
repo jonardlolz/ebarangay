@@ -1,105 +1,48 @@
 <?php include_once "header.php" ?>
 
 <!--Begin Page-->
-<div class="container p-4">
-
-<!--Residents Requests-->
-<div class="card shadow mb-4 m-4">
-    <div class="card-header py-3 d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold text-dark">Purok</h6>
-            <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" href="javascript:void(0)"></a>
-        </button>
-    </div>
-    
-    <div class="card-body" style="font-size: 100%">
-
-        <ul class="nav nav-tabs" id="myTab" role="tablist"> <!--push-->
-            <?php 
-                $sql = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'");
-                $i = 0;
-                while($row = $sql->fetch_assoc()):
-            ?>
-            <li class="nav-item">
-                <a class="nav-link <?php if($i == 0){ echo 'active';} ?>" id="<?php echo $row['PurokName'] ?>-tab" data-toggle="tab" href="#<?php echo $row['PurokName'] ?>" role="tab" aria-controls="<?php echo $row['PurokName'] ?>" aria-selected="true"><?php echo $row['PurokName'] ?></a>
-            </li>
-            <?php $i++; endwhile; ?>
-        </ul>      
-
-        <!--Tab Content-->
-        <div class="tab-content" id="myTabContent">
-            <?php 
-                $sql2 = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'");
-                $i = 0;
-                while($row2 = $sql2->fetch_assoc()):
-            ?>
-            <div class="tab-pane fade <?php if($i == 0){ echo 'show active'; } ?>" id="<?php echo $row2['PurokName'] ?>" role="tabpanel" aria-labelledby="<?php echo $row2['PurokName'] ?>-tab">
-                <?php echo $row2['PurokName'] ?>
-            </div>
-            <?php $i++; endwhile; ?>
+<div class="col d-flex flex-column px-4">
+    <div class="card shadow mb-4 m-4">
+        <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">Purok</h6>
+                <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" href="javascript:void(0)"></a>
+            </button>
         </div>
-        <!-- End of tab content-->
-         
-    
-        <div class="table-responsive">
-            <table class="table table-bordered text-center text-dark" 
-                id="dataTable" width="100%" cellspacing="0" cellpadding="0">
-                <thead>
-                    <tr class="bg-gradient-secondary text-white">
-                        <th scope="col">Barangay</th>
-                        <th scope="col">Purok</th>
-                        <th scope="col">Active</th> 
-                        <th>Purok Leader</th>
-                        <th scope="col">Edit</th>
-                    </tr>
-                    
-                </thead>
-                <tbody>
-                    <!--Row 1-->
-                    <?php 
-                        $purok = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name from purok LEFT JOIN users ON purok.purokLeader = users.UsersID");
-                        while($row=$purok->fetch_assoc()):
-                    ?>
-                    <tr>
-                        <td><?php echo $row["BarangayName"] ?></td>
-                        <td><?php echo $row["PurokName"] ?></td>
-                        <td><?php echo $row["Active"] ?></td>
-                        <td><?php if($row['name'] != NULL){echo $row['name'];}else{ echo "None"; } ?></td>
-                        <td>
-                            <a class="fas fa-edit fa-md mr-2 text-gray-600 edit_purok" data-id="<?php echo $row['PurokID'] ?>" href="javascript:void(0)"></a>
-                        </td>
+        
+        <div class="card-body" style="font-size: 100%">
+            <!-- End of tab content-->
+            <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">Barangay</th>
+                            <th scope="col">Purok</th>
+                            <th scope="col">Manage</th>
+                        </tr>
                         
-                        <!--Right Options-->
-                    </tr>
-                    <?php endwhile; ?>
-                    <!--Row 1-->
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-    <!-- End of Card Body-->
-</div>                   
-<!--End of Card-->  
-<!--Residents Requests-->
-</div>
-</div>
-<!--row-->
-</div>
-<!--Content-wrapper-->
-
-<!--#confirmModal (push)-->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="border-color:#384550 ;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="">Delete Purok?</h5>
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $purok = $conn->query("SELECT * FROM purok");
+                            while($row=$purok->fetch_assoc()):
+                        ?>
+                        <tr>
+                            <td><?php echo $row["BarangayName"] ?></td>
+                            <td><?php echo $row["PurokName"] ?></td>
+                            <td><buton data-brgy="<?php echo $row["BarangayName"] ?>" data-id="<?php echo $row['PurokID'] ?>" class="edit_purok btn btn-sm btn-primary"><i class="fas fa-cog"></i> Manage</buton></td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-body">Select "Delete" below if you are ready to delete the purok selected.</div>
-            <div class="modal-footer">
-                <a class="btn btn-outline-primary" href="">Delete</a>
-                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>               
-            </div>
+
         </div>
+        <!-- End of Card Body-->
     </div>
 </div>
 
@@ -221,10 +164,10 @@ window.start_load = function(){
         $(this).height(0).height(this.scrollHeight);
     })
     $('.add_purok').click(function(){
-        uni_modal("<center><b>Add Purok</b></center></center>","includes/purok.inc.php")
+        uni_modal("<center><b>Add Purok</b></center></center>","includes/purok.inc.php?addPurok")
     })
     $('.edit_purok').click(function(){
-        uni_modal("<center><b>Edit Purok</b></center></center>","includes/purok.inc.php?id="+$(this).attr('data-id'))
+        uni_modal("<center><b>Edit Purok</b></center></center>","includes/purok.inc.php?barangayName="+$(this).attr('data-brgy')+"&id="+$(this).attr('data-id'))
     })
     $('.delete_account').click(function(){
     _conf("Are you sure to delete this account?","delete_barangay",[$(this).attr('data-id')])
