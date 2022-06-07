@@ -207,7 +207,7 @@
                                 <div class="card-header py-3 d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-dark">Puroks in <?php echo $row['BarangayName'] ?></h6>
                                     <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
-                                    <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" data-id="<?php echo $row['BarangayName'] ?>"></a>
+                                    <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" data-brgy="<?php echo $row['BarangayID'] ?>" data-id="<?php echo $row['BarangayName'] ?>"></a>
                                     <?php endif; ?>
                                 </div>
                                 <div class="card-body">
@@ -274,12 +274,12 @@
                                                 <tbody>
                                                     <?php 
                                                         $contacts = $conn->query("SELECT * FROM contacts WHERE BarangayID='{$_GET['barangayID']}'");
-                                                        while($row=$contacts->fetch_assoc()):
+                                                        while($contactrow=$contacts->fetch_assoc()):
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $row["contactName"] ?></td>
                                                         <td><?php echo $row["contactNum"] ?></td>
-                                                        <td><button data-id="<?php echo $row['contactID'] ?>" class="btn btn-sm btn-primary"><i class="fas fa-cog"></i> Options</button></td>
+                                                        <td><button data-brgy="<?php echo $row['BarangayID'] ?>" data-id="<?php echo $contactrow['contactID'] ?>" class="edit_contact btn btn-sm btn-primary"><i class="fas fa-cog"></i> Options</button></td>
                                                     </tr>
                                                     <?php endwhile; ?>
                                                 </tbody>
@@ -461,6 +461,9 @@
     $('.add_contact').click(function(){
         uni_modal("<center><b>Barangay Contacts</b></center></center>","includes/barangay.inc.php?addContact&barangayID="+$(this).attr("data-id"), "modal-md")
     })
+    $('.edit_contact').click(function(){
+        uni_modal("<center><b>Barangay Contacts</b></center></center>","includes/barangay.inc.php?editContact&contactID="+$(this).attr("data-id")+"&barangayID="+$(this).attr("data-brgy"), "modal-md")
+    })
     $('.add_officer').click(function(){
         uni_modal("<center><b>Add Officer</b></center></center>","includes/barangay.inc.php?addOfficer&barangayName="+$(this).attr("data-id"), "modal-md")
     })
@@ -468,7 +471,7 @@
         _conf("Remove officer?","removeOfficer",[$(this).attr('data-id')])
     })
     $('.add_purok').click(function(){
-        uni_modal("<center><b>Add Purok</b></center></center>","includes/purok.inc.php?addPurok&barangayName="+$(this).attr('data-id'))
+        uni_modal("<center><b>Add Purok</b></center></center>","includes/purok.inc.php?addPurok&barangayID="+$(this).attr('data-brgy')+"&barangayName="+$(this).attr('data-id'))
     })
     $('.edit_purok').click(function(){
         uni_modal("<center><b>Edit Purok</b></center></center>","includes/purok.inc.php?id="+$(this).attr('data-id')+"&barangayName="+$(this).attr('data-brgy'))

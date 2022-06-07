@@ -63,66 +63,81 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        </div>
     </form>
 </div>
 
 <?php elseif(isset($_GET['addPurok'])): ?>
-    <?php if($_SESSION['userType'] != 'Admin'): ?>
-        <form action="includes/purok_func.inc.php?addPurok&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post"> 
-            <div class="form-group col">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="">Barangay: </label>
+    <div class="container-fluid">
+        <?php if($_SESSION['userType'] != 'Admin'): ?>
+            <form action="includes/purok_func.inc.php?addPurok&barangayID=<?php echo $_GET['barangayID'] ?>&barangayName=<?php echo $_GET['barangayName'] ?>" class="user" method="post">
+                <div class="form-group col">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="">Barangay: </label>
+                        </div>
+                        <div class="col">
+                            <label for=""><?php echo $_GET['barangayName'] ?></label>
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for=""><?php echo $_GET['barangayName'] ?></label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="">Purok Name: </label>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control form-control-sm" id="PurokName"
-                            name="PurokName" placeholder="Purok Name" style="width: 75%;">
-                    </div>
-                </div>
-            </div>
-        </form>
-    <?php else: ?>
-        <form action="includes/purok_func.inc.php?addPurok" class="user" method="post"> 
-            <div class="form-group col">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="">Barangay: </label>
-                    </div>
-                    <div class="col">
-                        <select name="barangayName" id="barangayName">
-                            <option value="">None</option>
-                            <?php $puroksql = $conn->query("SELECT * FROM barangay"); 
-                            while($purokrow = $puroksql->fetch_assoc):?>
-                            <option value="<?php echo $purokrow['BarangayName'] ?>"><?php echo $purokrow['BarangayName'] ?></option>
-                            <?php endwhile; ?>
-                        </select>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="">Purok Name: </label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" id="PurokName"
+                                name="PurokName" placeholder="Purok Name" style="width: 75%;" required>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="">Purok Name: </label>
+                <hr>
+                <div class="footer d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                </div>
+            </form>
+        <?php else: ?>
+            <form action="includes/purok_func.inc.php?addPurok" autocomplete="off" class="user" method="post">
+                <div class="form-group col">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="">Barangay: </label>
+                        </div>
+                        <div class="col">
+                            <select name="barangayName" id="barangayName">
+                                <option value="">None</option>
+                                <?php $puroksql = $conn->query("SELECT * FROM barangay");
+                                while($purokrow = $puroksql->fetch_assoc()):?>
+                                <option value="<?php echo $purokrow['BarangayName'] ?>"><?php echo $purokrow['BarangayName'] ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col">
-                        <input type="text" class="form-control form-control-sm" id="PurokName"
-                            name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="">Purok Name: </label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" id="PurokName"
+                                name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    <?php endif; ?>
+                <hr>
+                <div class="footer d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                </div>
+            </form>
+        <?php endif; ?>
+    </div>
 
 <?php endif; ?>
 
 <script>
+    $(".container-fluid").parent().siblings(".modal-footer").remove();
     $(document).ready(function() {
-        $('.js-select').select2();
+        $('#barangayName').select2();
     });
 </script>

@@ -633,9 +633,6 @@
         mysqli_begin_transaction($conn);
         $id = $_GET['ReklamoID'];
         $managedBy = "'".$_SESSION['Firstname']." ".$_SESSION['Lastname']. "'";
-
-        
-
         if($_SESSION['barangayPos'] != "None"){
             $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus')");
             $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, position) VALUES('A responder has sent a report for ereklamo#$id', 'ereklamo', 'Purok Leader')");
@@ -658,7 +655,19 @@
                 $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Purok Leader has resolved your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
                 $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
                 status='Resolved' WHERE ReklamoID=$id");
-                $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus')");
+                $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus, barangay, purok) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            }
+            if($reportStatus == 'Respondents sent'){
+                $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Purok Leader has sent responders for your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
+                $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+                status='Respondents sent' WHERE ReklamoID=$id");
+                $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus, barangay, purok) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+            }
+            if($reportStatus == 'Send to Councilor'){
+                $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Purok Leader has sent your ereklamo#$id to the Councilor', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
+                $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+                status='Send to Councilor', councilorID=$councilor WHERE ReklamoID=$id");
+                $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus, barangay, purok) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
             }
             elseif($reportStatus == 'Forward to Captain'){
                 $requestSql = $conn->query("SELECT *, ereklamo.UsersID as complaineeID, concat(users.Firstname, ' ', users.Lastname) as name, ereklamocategory.reklamoFee as amount FROM ereklamo INNER JOIN ereklamocategory ON ereklamo.reklamotype=ereklamocategory.reklamoCatName INNER JOIN users ON users.UsersID=ereklamo.UsersID WHERE ReklamoID=$id");
@@ -701,6 +710,38 @@
                 $a3 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Purok Leader has forwarded reklamo#$id to Captain', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
                 $a4 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your ereklamo#$id has been forwarded to Capt. Please process the payment.', 'ereklamo', {$requestData['complaineeID']})");
                 $a5 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', {$requestData['complaineeID']})");
+            }
+
+            if($a2 && $a3 && $a1){
+                if(isset($img)){
+                    $id = $id;
+                    mkdir('../img/ereklamo/reports/'.$id);
+                    for($i = 0 ; $i< count($img);$i++){
+                        list($type, $img[$i]) = explode(';', $img[$i]);
+                        list(, $img[$i])      = explode(',', $img[$i]);
+                        $img[$i] = str_replace(' ', '+', $img[$i]);
+                        $img[$i] = base64_decode($img[$i]);
+                        $fname = strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+                        $upload = file_put_contents('../img/ereklamo/reports/'.$id.'/'.$fname,$img[$i]);
+                        $data = " file_path = '".$fname."' ";
+                    }
+                }
+                mysqli_commit($conn);
+                header("location: ../ereklamo.php?error=none"); 
+                exit();
+            }
+            else{
+                echo("Error description: " . mysqli_error($conn));
+                mysqli_rollback($conn);
+                exit();
+            }
+        }
+        elseif($_SESSION['userType'] == 'Councilor'){
+            if($reportStatus == 'Resolved'){
+                $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) SELECT 'Councilor {$_SESSION['Firstname']} {$_SESSION['Lastname']} has resolved your ereklamo#$id', 'ereklamo', UsersID, 'Resident' FROM ereklamo WHERE ReklamoID=$id");
+                $a3 = mysqli_query($conn, "UPDATE ereklamo SET checkedOn=CURRENT_TIMESTAMP, checkedBy=$managedBy, 
+                status='Resolved' WHERE ReklamoID=$id");
+                $a1 = mysqli_query($conn, "INSERT INTO ereklamoreport(ReklamoID, respondentID, reportMessage, reportStatus, barangay, purok) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', '$reportStatus', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
             }
 
             if($a2 && $a3 && $a1){
@@ -1124,7 +1165,8 @@
                         <option value="Resolved">Resolved</option>
                         <?php if($_SESSION['userType'] == 'Purok Leader'): ?>
                             <?php if($dataResult['complaintLevel'] == 'Minor'): ?>
-                                
+                                <option value="Respondents sent">Send responder</option>
+                                <option value="Send to Councilor">Send to Councilor</option>
                             <?php elseif($dataResult['complaintLevel'] == 'Major'): ?>
                                 <option value="Forward to Captain">Forward to Captain</option>
                             <?php endif; ?>
@@ -1136,6 +1178,20 @@
                         <?php elseif($_SESSION['barangayPos'] != 'None'): ?>
                             <option value="Unresolved">Unresolved</option>
                         <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="row" id="reportCouncilor" style="margin-bottom: 10px; display: none;">
+                <div class="col">
+                    Councilor:
+                </div>
+                <div class="col-sm-8">
+                    <select name="councilor" id="councilor" style="max-width: 100%;">
+                        <?php $councilorsql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Councilor' AND userBarangay='{$_SESSION['userBarangay']}' AND userPurok='{$_SESSION['userPurok']}'"); 
+                            while($councilorRow = $councilorsql->fetch_assoc()):
+                        ?>
+                        <option value="<?php echo $councilorRow['UsersID'] ?>"><?php echo $councilorRow['councilorRole'] ?></option>
+                        <?php endwhile; ?>
                     </select>
                 </div>
             </div>
@@ -1225,9 +1281,15 @@
                 d = document.getElementById('reportStatus').value;
                 if(d == 'Resolved'){
                     document.getElementById("reportPicture").style.display = "flex";
+                    document.getElementById("reportCouncilor").style.display = "none";
+                }
+                else if(d == 'Send to Councilor'){
+                    document.getElementById("reportCouncilor").style.display = "flex";
+                    document.getElementById("reportPicture").style.display = "none";
                 }
                 else{
                     document.getElementById("reportPicture").style.display = "none";
+                    document.getElementById("reportCouncilor").style.display = "none";
                 }
             }
 
@@ -1352,7 +1414,7 @@
         }
 
         $('.report').click(function(){
-            secondary_modal("<center><b>Report to Purok Leader</b></center></center>","includes/ereklamo.inc.php?report&chatroomID=<?php echo $_GET['chatroomID'] ?>&reklamoid="+$(this).attr('data-id'), "modal-md")
+            secondary_modal("<center><b>Report</b></center></center>","includes/ereklamo.inc.php?report&chatroomID=<?php echo $_GET['chatroomID'] ?>&reklamoid="+$(this).attr('data-id'), "modal-md")
         })
         $('.forwardtocapt').click(function(){
             secondary_modal("<center><b>Forward to Captain</b></center></center>","includes/ereklamo.inc.php?sendtocapt&reklamoid="+$(this).attr('data-id')+"&complainantid="+$(this).attr('data-complainant')+"&complaineeid="+$(this).attr('data-complainee'), "modal-md")

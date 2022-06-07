@@ -13,7 +13,7 @@
                             <a class="nav-link active" id="reklamo-tab" data-toggle="tab" href="#reklamo" role="tab" aria-controls="reklamo" aria-selected="true">eReklamo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">eRequest</a>
+                            <a class="nav-link" id="request-tab" data-toggle="tab" href="#request" role="tab" aria-controls="request" aria-selected="true">Document</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="true">Payment</a>
@@ -101,7 +101,11 @@
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
-                                            $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM requestreport INNER JOIN users ON users.UsersID=requestreport.officerID INNER JOIN request ON requestreport.RequestID=request.RequestID WHERE reportStatus!='Paid' ORDER BY date DESC");
+                                            $accounts = $conn->query("SELECT requestreport.*, concat(users.Firstname, ' ', users.Lastname) as name, users.UsersID, users.userType, users.profile_pic FROM requestreport
+                                            INNER JOIN users ON users.UsersID=requestreport.officerID 
+                                            INNER JOIN request ON requestreport.RequestID=request.RequestID 
+                                            WHERE reportStatus!='Paid' 
+                                            ORDER BY date DESC");
                                             while($row=$accounts->fetch_assoc()):
                                         ?>
                                         <tr>
@@ -298,8 +302,57 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-
+                        <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center text-dark" 
+                                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                    <thead >
+                                        <tr class="bg-gradient-secondary text-white">
+                                            <th scope="col">Election Title</th>
+                                            <th scope="col">Purok</th>
+                                            <th scope="col">Date Created</th>
+                                            <th scope="col">Candidates</th>
+                                            <th scope="col">Manage</th>
+                                        </tr>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <!--Row 1-->
+                                        <?php 
+                                            $election = $conn->query("SELECT election.*, 
+                                            concat(users.Firstname, ' ', users.Lastname) as name,
+                                            users.profile_pic, 
+                                            users.userType FROM election 
+                                            INNER JOIN users ON election.created_by = users.UsersID 
+                                            WHERE electionStatus='Finished'
+                                            AND barangay='{$_SESSION['userBarangay']}'");
+                                            while($row=$election->fetch_assoc()):
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row["electionTitle"] ?></td>
+                                            <td><?php echo $row["purok"] ?></td>
+                                            <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
+                                            <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                                            <td>
+                                                <?php if($row['electionStatus'] == "Paused"): ?>
+                                                    <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
+                                                    <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
+                                                    <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
+                                                <?php elseif($row['electionStatus'] == "Ongoing"): ?>
+                                                    <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
+                                                    <button class="btn btn-danger btn-sm cancel_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-times"></i> Cancel</button>
+                                                <?php elseif($row['electionStatus'] == "Finished"): ?>
+                                                    <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
+                                                <?php endif; ?>
+                                            </td>
+                                            
+                                            <!--Right Options-->
+                                        </tr>
+                                        <?php endwhile; ?>
+                                        <!--Row 1-->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -308,6 +361,9 @@
         </div>
     </div>
     <script>
+        $('.results_election').click(function(){
+            uni_modal("<center><b>Results</b></center></center>","includes/addElection.inc.php?result="+$(this).attr('data-id'))
+        })
         $(document).ready(function() {
             $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();

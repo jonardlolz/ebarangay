@@ -11,7 +11,8 @@ session_start();
                 <select class="form-select form-select-lg" id="resident" name="resident" required>
                     <option value="none" disabled hidden selected>Resident Name</option>
                     <?php $residents = $conn->query("SELECT * FROM users 
-                                                    WHERE users.userType = 'Resident'
+                                                    WHERE users.userType = 'Resident' 
+                                                    AND VerifyStatus='Verified'
                                                     AND userBarangay='Paknaan' 
                                                     AND userPurok='{$_GET['purok']}'");
                         while($brow = $residents->fetch_assoc()): 

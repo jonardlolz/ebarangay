@@ -57,9 +57,23 @@
             }
         }
         
+        if($IsVoter == '0'){
+            $IsVoter = 'False';
+        }
+        elseif($IsVoter == '1'){
+            $IsVoter = 'True';
+            $IsLessee = 'False';
+        }
+        if($IsLessee == '0'){
+            $IsLessee = 'False';
+        }
+        elseif($IsLessee == '1'){
+            $IsLessee = 'True';
+        }
+
         $a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
         civilStat, userGender, userBarangay, userPurok, userHouseNum, emailAdd, username, usersPwd, 
-        profile_pic, userType) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Resident')");
+        profile_pic, userType, VerifyStatus, startedLiving, isRenting, IsVoter) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Resident', 'Verified', '$userDateResides', $IsVoter, $IsLessee)");
         
 
         if($a1){
@@ -110,7 +124,7 @@
         $a1 = mysqli_query($conn, "UPDATE users SET userType='Resident' WHERE UsersID=$existingCapt");
         $a2 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
         civilStat, userGender, userBarangay, userPurok, userAddress, userHouseNum, emailAdd, username, usersPwd, 
-        profile_pic, userType) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userAddress', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Captain')");
+        profile_pic, userType, startedLiving, VerifyStatus, IsVoter) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userAddress', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Captain', '$userDateResides', 'Verified', 'True')");
 
         if($a1 && $a2){
             if(mysqli_commit($conn)){

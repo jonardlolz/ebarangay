@@ -349,14 +349,6 @@ session_start();
             </div>
             <div class="form-group row">
                 <div class="col">
-                    Document description:
-                </div>
-                <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentDesc" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col">
                     Include fee?
                 </div>
                 <div class="col">
@@ -368,7 +360,7 @@ session_start();
                     Price: 
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1" required>
+                    <input class="form-control form-control-sm" type="number" name="documentPrice" id="documentPrice" value="1" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -378,7 +370,7 @@ session_start();
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <input type="radio" id="voterTrue" onchange="checkVoter()" name="requiredVoter" value="True">
+                            <input type="radio" id="voterTrue" onchange="checkVoter()" name="requiredVoter" value="True" checked>
                             <label for="voterTrue">True</label>
                         </div>
                         <div class="col">
@@ -414,60 +406,14 @@ session_start();
                     </div>
                 </div>
             </div>
-            <div class="alert alert-danger m-2">
-                <p>Please fill all the required fields.</p>
-            </div>
-            <!-- <div class="form-group row">
-                <div class="col">
-                    Minimum months residing in Barangay:
-                </div>
-                <div class="col">
-                    <input class="form-control form-control-sm" type="number" name="minimumMos">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col">
-                    Allow lessee?
-                </div>
-                <div class="col">
-                    <input type="checkbox" onchange="showNoteField()" name="allowLessee" id="allowLessee" value="True">
-                </div>
-            </div>
-            <div class="form-group row" id="requireNoteField">
-                <div class="col">
-                    Require note from Lessor?
-                </div>
-                <div class="col">
-                    <input type="checkbox" name="requireNote" id="requireNote" value="True">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col">
-                    Required voter?
-                </div>
-                <div class="col">
-                    <input type="checkbox" name="requiredVoter" id="requiredVoter" value="True">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col">
-                    Include fee?
-                </div>
-                <div class="col">
-                    <input type="checkbox" onchange="showPriceField()" name="documentFee" id="allowFee" value="True" checked>
-                </div>
-            </div>
-            <div class="form-group row" id="priceField">
-                <div class="col">
-                    Price: 
-                </div>
-                <div class="col">
-                    <input class="form-control form-control-sm" type="text" name="documentPrice" id="documentPrice" value="1">
-                </div>
-            </div> -->
+        </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button type="submit" class="btn btn-sm btn-success">Save</button>
         </div>
     </form>
     <script>
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
         function checkVoter(){
             var requiredVoterTrue = document.getElementById("voterTrue");
             var requiredVoterFalse = document.getElementById("voterFalse");

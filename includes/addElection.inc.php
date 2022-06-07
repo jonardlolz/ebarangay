@@ -64,9 +64,6 @@
             GROUP BY candidateID) as results
             WHERE electionID={$_GET['result']}
             GROUP BY position;");
-
-            // $elections = $conn->query("SELECT * FROM candidates");
-            
         ?>
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {

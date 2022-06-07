@@ -91,12 +91,13 @@ if(isset($_GET['edit'])):
                         <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" value="<?php echo $emailAdd ?>"></input>
                     </div>
                 </div>
+                <?php if($_SESSION['userType'] == 'Resident'): ?>
                 <div class="m-2">
                     <strong>Address Information</strong>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy">
+                        <select class="form-control form-control-sm form-select d-inline" name="userBrgy" onChange="changecat(this.value);"  id="userBrgy" readonly>
                             <option value="<?php echo $userBarangay ?>" hidden selected><?php echo $userBarangay ?></option>
                             <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
                             while($brow = $barangay->fetch_assoc()): ?>  
@@ -115,6 +116,7 @@ if(isset($_GET['edit'])):
                         <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" value="<?php echo $userHouseNum ?>" required>
                     </div>
                 </div>
+                <?php endif; ?>
                 <hr>
                 <div class="d-flex flex-row-reverse">
                     <button type="submit" class="btn btn-sm btn-success">Save</button>
@@ -452,7 +454,7 @@ if(isset($_GET['edit'])):
             <?php endif; ?>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="addresident" role="tabpanel" aria-labelledby="addresident-tab">
-                    <form id="form" action="includes/edit_account.inc.php?addAccount" class="user" method="post">
+                    <!-- <form id="form" action="includes/edit_account.inc.php?addAccount" class="user" method="post">
                         <div class="col">
                             <div class="m-4" id="accountDetails">
                                 <div class='form-group row'>
@@ -523,232 +525,131 @@ if(isset($_GET['edit'])):
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col">
-                            <div class="p-5">
-                                <form id="form" action="includes/signup.inc.php" class="user" method="post">
-                                    <div>
-                                        <strong>Personal Information</strong>
-                                        <hr>
+                        <hr>
+                        <div class="footer d-flex flex-row-reverse">
+                            <button type="submit" class="btn btn-success">Add</button>
+                        </div>
+                    </form> -->
+                    <form action="includes/edit_account.inc.php?addAccount" autocomplete="off" class="user" method="post">
+                        <div class="m-2">
+                            <strong>Personal Information</strong>
+                        </div>
+                        <div class="form-group row">   
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="FirstName"
+                                    name="Firstname" placeholder="First Name" required>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="MiddleName"
+                                    name="Middlename" placeholder="Middle Name" required>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="LastName"
+                                    name="Lastname" placeholder="Last Name" required>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="suffixName"
+                                    name="suffixName" list="suffix" placeholder="Suffix">
+                                <datalist id="suffix">
+                                    <option value="Jr"></option>
+                                    <option value="Sr"></option>
+                                    <option value="I"></option>
+                                    <option value="II"></option>
+                                    <option value="III"></option>
+                                    <option value="IV"></option>
+                                    <option value="V"></option>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" placeholder="Birthdate" 
+                                name="userDOB" max="<?php echo date('Y-m-d') ?>" onblur="(this.type='text')" onfocus="(this.type='date')" id="userDOB" required></input>
+                            </div>
+                            <div class="col-sm-6">
+                                <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline" required>
+                                    <option value="" hidden selected>Civil Status</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Widowed">Widowed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row"><!--Civil status-->
+                            <div class="col-sm-6">
+                                <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
+                                    <option value="" hidden selected>Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" placeholder="Date Resided" 
+                                name="userDateResides" max="<?php echo date('Y-m-d') ?>" onblur="(this.type='text')" onfocus="(this.type='date')" id="userDateResides" required></input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                Is Voter?
+                                <input type="checkbox" onchange="checkVoter()" name="IsVoter" id="IsVoter" value="True" checked>
+                            </div>
+                            <div class="col" id="lesseeSection" style="display: none;">
+                                <div class="row">
+                                    <div class="col">
+                                        Lessee?
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userFirstname" placeholder="First name" name="userFirstname" required>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userMiddlename" placeholder="Middle name" name="userMiddlename" required>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userLastname" placeholder="Last name" name="userLastname" required>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                    id="userSuffix" placeholder="Suffix" name="userSuffix" list="suffixList" value="">
-                                            <datalist id="suffixList">
-                                                <option value="Jr"></option>
-                                                <option value="Sr"></option>
-                                                <option value="I"></option>
-                                                <option value="II"></option>
-                                                <option value="III"></option>
-                                                <option value="IV"></option>
-                                                <option value="V"></option>
-                                            </datalist>    
-                                        </div>
+                                    <div class="col">
+                                        <input type="checkbox" name="IsLessee" id="IsLessee" value="True">
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" max="<?php echo date('Y-m-d') ?>" class="form-control form-control-user" placeholder="Birthdate" id="userDOB" name="userDOB" onblur="(this.type='text')" onfocus="(this.type='date')" required>
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="form-select form-select-lg" id="userCivilStat" placeholder="Civil Status" name="userCivilStat" required>
-                                                <option value="none" disabled hidden selected>Civil Status</option>
-                                                <option value="Single">Single</option>
-                                                <option value="Married">Married</option>
-                                                <option value="Divorced">Divorced</option>
-                                                <option value="Widow">Widow</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6">
-                                            <select class="form-select form-select-lg" id="userGender" placeholder="Gender" name="userGender" required>
-                                                <option value="none" disabled hidden selected>Gender</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <strong>Address Information</strong>
-                                        <hr>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6">
-                                            <select name="userBarangay" id="userBarangay" class="form-select form-select-lg" onfocus="changecat(this.value);" onChange="changecat(this.value);">
-                                                <option value="" hidden selected>Barangay</option>
-                                                <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
-                                                while($brow = $barangay->fetch_assoc()): ?>  
-                                                <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                                                <?php endwhile; ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="form-select form-select-lg" id="userPurok" placeholder="Purok" name="userPurok" required>
-                                                <option value="none" disabled selected hidden>Purok</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" class="form-control form-control-user" id="userHouseNum"
-                                                placeholder="House #" name="userHouseNum" required>
-                                        </div>        
-                                    </div>
-                                    <div>
-                                        <strong>Account Information</strong>
-                                        <hr>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" class="form-control form-control-user" id="userName"
-                                                placeholder="Username" name="userName" required>
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="email" class="form-control form-control-user" id="userEmail"
-                                            placeholder="Email Address" name="userEmail" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="userPwd" placeholder="Password" name="userPwd" required>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="userRptPwd" placeholder="Repeat Password" name="userRptPwd" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="form-select form-select-lg" name="secretQuestion" id="privateQuestion">
-                                                <option value="" hidden>Secret Question</option>
-                                                <option>What is your mother's maiden name?</option>
-                                                <option>What is your first pet's name?</option>
-                                                <option>What's the name of your first bestfriend?</option>
-                                                <option>What's the name of the school you first went to?</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <input type="text" name="secretAnswer" class="form-control form-control-user" placeholder="Private answer" required>
-                                        </div>
-                                    </div>
-    
-                                    <?php
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "emptyinput"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Please fill in all the fields!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "invalidUser"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Username is invalid!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "invalidEmail"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Email is invalid!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "invpwd"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Passwords don't match!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "emptyinput"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Input is empty!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "userExists"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                User already exists!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "stmtfailed"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Something went wrong. Try again!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "emptyinput"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Input is empty!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "invbrgy"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Please enter a barangay!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "invpurok"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                Please enter a purok!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "natIDexists"){
-                                                echo "<div class='alert alert-danger' role='alert'>
-                                                National ID is already in use!
-                                                </div>";
-                                            }
-                                        }
-                                        if(isset($_GET["error"])){
-                                            if($_GET["error"] == "none"){
-                                               echo "<div class='alert alert-success' role='alert'>
-                                                You have signed up!
-                                                </div>";
-                                            }
-                                        }
-                                    ?>
-                                    <hr>
-                                    <section>
-                                        <input type="checkbox" required> 
-                                        <i style="color: #c41508;">I hereby declare that the information provided is true and correct. I also understand that any willful
-                                        dishonesty may render for refusal of this registration. I also understand I am entitled to update and correct the above information.</i>
-                                    </section>
-                                    
-                                    <hr>
-                                    <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
-                                        Register Account
-                                    </button>
-                                </form>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="login.php">Already have an account? Login!</a>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
+                        <div class="m-2">
+                            <strong>Contact Information</strong>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-sm-6">
+                                <input type="text" class="form-control form-control-sm" name="phoneNum" id="phoneNum" placeholder="Mobile Number"></input>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <input type="text" class="form-control form-control-sm" name="teleNum" id="teleNum" placeholder="Telephone Number"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-sm-6">
+                                <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" required></input>
+                            </div>
+                        </div>
+                        <div class="m-2">
+                            <strong>Address Information</strong>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok" required>
+                                    <option value="" selected hidden>Purok</option>
+                                    <?php $purokSql = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'"); 
+                                    while($purokRow = $purokSql->fetch_assoc()):
+                                    ?>
+                                    <option value="<?php echo $purokRow['PurokName']?>"><?php echo $purokRow['PurokName']?></option>
+                                    <?php endwhile; ?>
+                                    
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" required>
+                            </div>
+                        </div>
+                        <div class="m-2">
+                            <strong>Account Information</strong>
+                        </div>
+                        <div class="form-group row">
+                            <div class='col'>
+                                <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
+                            </div>
+                            <div class='col'>
+                                <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
+                            </div>
+                        </div>
                         <hr>
                         <div class="footer d-flex flex-row-reverse">
                             <button type="submit" class="btn btn-success">Add</button>
@@ -793,57 +694,97 @@ if(isset($_GET['edit'])):
                     <div class="row" id="barangayDetails">
             
                     </div>
-                    <div class="m-4" id="accountDetails" style="display: none;">
-                        <div class='form-group row'>
-                            <div class='col-sm-4 col-md-4 mb-3 mb-sm-0'>
-                                <input type='text' class='form-control form-control-sm' id='FirstName'
-                                    name='Firstname' placeholder='First Name'>
+                    <div id="accountDetails" style="display: none;">
+                        <div class="m-2">
+                            <strong>Personal Information</strong>
+                        </div>
+                        <div class="form-group row">   
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="FirstName"
+                                    name="Firstname" placeholder="First Name" required>
                             </div>
-                            <div class='col-sm-4 col-md-4'>
-                                <input type='text' class='form-control form-control-sm' id='MiddleName'
-                                    name='Middlename' placeholder='Middle Name'>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="MiddleName"
+                                    name="Middlename" placeholder="Middle Name" required>
                             </div>
-                            <div class='col-sm-4 col-md-4'>
-                                <input type='text' class='form-control form-control-sm' id='LastName'
-                                    name='Lastname' placeholder='Last Name'>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="LastName"
+                                    name="Lastname" placeholder="Last Name" required>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="suffixName"
+                                    name="suffixName" list="suffix" placeholder="Suffix">
+                                <datalist id="suffix">
+                                    <option value="Jr"></option>
+                                    <option value="Sr"></option>
+                                    <option value="I"></option>
+                                    <option value="II"></option>
+                                    <option value="III"></option>
+                                    <option value="IV"></option>
+                                    <option value="V"></option>
+                                </datalist>
                             </div>
                         </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <input type='date' class='form-control form-control-sm' placeholder='Birthdate' name='userDOB' id='userDOB'></input>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" placeholder="Birthdate" 
+                                name="userDOB" max="<?php echo date('Y-m-d') ?>" onblur="(this.type='text')" onfocus="(this.type='date')" id="userDOB" required></input>
                             </div>
-                            <div class='col'>
-                                <select name='userCivilStat' id='userCivilStat' class='form-control form-control-sm form-select d-inline'>
-                                    <option value='none' hidden selected disabled>Civil Status</option>
-                                    <option value='Single'>Single</option>
-                                    <option value='Married'>Married</option>
-                                    <option value='Widowed'>Widowed</option>
+                            <div class="col-sm-6">
+                                <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline" required>
+                                    <option value="" hidden selected>Civil Status</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Widowed">Widowed</option>
                                 </select>
                             </div>
                         </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <select class='form-control form-control-sm form-select d-inline' id='userGender' placeholder='Gender' name='userGender' required>
-                                    <option value='none' disabled hidden selected>Gender</option>
-                                    <option value='Male'>Male</option>
-                                    <option value='Female'>Female</option>
+                        <div class="form-group row"><!--Civil status-->
+                            <div class="col-sm-6">
+                                <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
+                                    <option value="" hidden selected>Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
-                            <div class='col'>
-                                <select class='form-control form-control-sm form-select d-inline' name='userPurok' id='userPurok'>
-                                    <option value='' selected hidden>Purok</option>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" placeholder="Date Resided" 
+                                name="userDateResides" max="<?php echo date('Y-m-d') ?>" onblur="(this.type='text')" onfocus="(this.type='date')" id="userDateResides" required></input>
+                            </div>
+                        </div>
+                        <div class="m-2">
+                            <strong>Contact Information</strong>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-sm-6">
+                                <input type="text" class="form-control form-control-sm" name="phoneNum" id="phoneNum" placeholder="Mobile Number"></input>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <input type="text" class="form-control form-control-sm" name="teleNum" id="teleNum" placeholder="Telephone Number"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-sm-6">
+                                <input type="email" class="form-control form-control-sm" name="emailAdd" id="emailAdd" placeholder="Email Address" required></input>
+                            </div>
+                        </div>
+                        <div class="m-2">
+                            <strong>Address Information</strong>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok" required>
+                                    <option value="" selected hidden>Purok</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class='form-group row'>
-                            <div class='col'>
-                                <input type='text' class='form-control form-control-sm' name='userHouseNum' id='userHouseNum' placeholder='House #' required>
-                            </div>
-                            <div class='col'>
-                                <input type='email' class='form-control form-control-sm' name='emailAdd' id='emailAdd' placeholder='Email Address'></input>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control form-control-sm" name="userHouseNum" id="userHouseNum" placeholder="House #" required>
                             </div>
                         </div>
-                        <div class='form-group row'>
+                        <div class="m-2">
+                            <strong>Account Information</strong>
+                        </div>
+                        <div class="form-group row">
                             <div class='col'>
                                 <input type='text' class='form-control form-control-sm' name='username' id='username' placeholder='Username' required></input>
                             </div>
@@ -862,7 +803,14 @@ if(isset($_GET['edit'])):
 
         <script>
             $(".container-fluid").parent().siblings(".modal-footer").remove();
-
+            function checkVoter(){
+                if($("#IsVoter").prop("checked") == true){
+                    lesseeSection.style.display = "none";
+                }
+                else{
+                    lesseeSection.style.display = "block";
+                }
+            }
         </script>
     </div>
 

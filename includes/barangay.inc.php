@@ -218,16 +218,16 @@
         $(".container-fluid").parent().siblings(".modal-footer").remove();
     </script>
 
-<?php elseif(isset($_GET["addContact"])): ?>
-    <?php $contactsql = $conn->query("SELECT * FROM contacts WHERE contactID={$_GET['barangayID']}")->fetch_assoc(); ?>
-    <form action="includes/barangay.inc.php?postContactEdit&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
+<?php elseif(isset($_GET["editContact"])): ?>
+    <?php $contactsql = $conn->query("SELECT * FROM contacts WHERE contactID={$_GET['contactID']}")->fetch_assoc(); ?>
+    <form action="includes/barangay.inc.php?postContactEdit&contactID=<?php echo $_GET['contactID'] ?>&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
         <div class="col">
             <div class="row">
                 <div class="col">
                     <label for="">Contact Name</label>
                 </div>
                 <div class="col">
-                    <input type="text" name="contactName" value="" required>
+                    <input type="text" name="contactName" value="<?php echo $contactsql['contactName'] ?>" required>
                 </div>
             </div>
             <div class="row">
@@ -235,7 +235,7 @@
                     <label for="">Contact Number</label>
                 </div>
                 <div class="col">
-                    <input type="text" name="contactNumber" required>
+                    <input type="text" name="contactNumber" value="<?php echo $contactsql['contactNum'] ?>" required>
                 </div>
             </div>
         </div>
@@ -254,6 +254,23 @@
         mysqli_begin_transaction($conn);
 
         $a1 = mysqli_query($conn, "INSERT INTO contacts(contactName, contactNum, BarangayID) VALUES('$contactName', '$contactNumber', '{$_GET['barangayID']}')");
+
+        if($a1){
+            mysqli_commit($conn);
+            header("location: ../barangay_alt.php?barangayID={$_GET['barangayID']}"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+    elseif(isset($_GET["postContactEdit"])):
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE contacts SET contactName='$contactName', contactNum='$contactNumber' WHERE contactID={$_GET['contactID']}");
 
         if($a1){
             mysqli_commit($conn);
