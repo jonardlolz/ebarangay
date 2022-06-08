@@ -13,7 +13,7 @@ session_start();
                     <?php $residents = $conn->query("SELECT * FROM users 
                                                     WHERE users.userType = 'Resident' 
                                                     AND VerifyStatus='Verified'
-                                                    AND userBarangay='Paknaan' 
+                                                    AND userBarangay='{$_SESSION['userBarangay']}' 
                                                     AND userPurok='{$_GET['purok']}'");
                         while($brow = $residents->fetch_assoc()): 
                             

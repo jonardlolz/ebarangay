@@ -73,7 +73,7 @@
 
         $a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, dateofbirth, 
         civilStat, userGender, userBarangay, userPurok, userHouseNum, emailAdd, username, usersPwd, 
-        profile_pic, userType, VerifyStatus, startedLiving, isRenting, IsVoter) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Resident', 'Verified', '$userDateResides', $IsVoter, $IsLessee)");
+        profile_pic, userType, VerifyStatus, startedLiving, isRenting, IsVoter) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Resident', 'Verified', '$userDateResides', '$IsVoter', '$IsLessee')");
         
 
         if($a1){
