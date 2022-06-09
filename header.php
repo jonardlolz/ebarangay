@@ -65,7 +65,10 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
-
+    <script src="node_modules/print-js/dist/print.js"></script>
+    <link rel="stylesheet" href="node_modules/print-js/dist/print.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/date-1.1.2/sb-1.3.3/sp-2.0.1/datatables.min.css"/>
+    
     <style>
     @media screen and (max-width: 768px) {
     .sidebar {

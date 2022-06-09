@@ -8,6 +8,20 @@
                 </div>
                 
                 <div class="card-body" style="font-size: 75%">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col">
+                                Minimum date:
+                            </div>
+                            <div class="col">
+                                <input type="text" class="min" id="min" name="min">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Maximum date:</div>
+                            <div class="col"><input type="text" class="max" id="max" name="max"></div>
+                        </div>
+                    </div>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="reklamo-tab" data-toggle="tab" href="#reklamo" role="tab" aria-controls="reklamo" aria-selected="true">eReklamo</a>
@@ -28,16 +42,14 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center text-dark display" 
-                                    width="100%" cellspacing="0" cellpadding="0">
-                                    <thead >
+                                <table class="table table-bordered text-center text-dark display" width="100%" cellspacing="0" cellpadding="0">
+                                    <thead>
                                         <tr class="bg-gradient-secondary text-white">
                                             <th scope="col">Report Message</th>
                                             <th>Details</th>
                                             <th scope="col">Responder Name</th>
                                             <th scope="col">Date</th>
                                         </tr>
-                                        
                                     </thead>
                                     <tbody>
                                         <!--Row 1-->
@@ -47,7 +59,7 @@
                                         ?>
                                         <tr>
                                             <td><?php echo $row["reportMessage"] ?></td>
-                                            <td><button class="respond btn btn-sm btn-primary" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-eye"></i> View</button></td>
+                                            <td><button class="respond btn btn-sm btn-primary" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>">View</button></td>
                                             <td>
                                                 <img class="img-profile rounded-circle <?php 
                                                     if($row["userType"] == "Resident"){
@@ -163,8 +175,10 @@
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
+                                            $totalPayment = 0;
                                             $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM requestreport INNER JOIN users ON users.UsersID=requestreport.officerID INNER JOIN request ON requestreport.RequestID=request.RequestID WHERE reportStatus='Paid' ORDER BY date DESC");
                                             while($row=$accounts->fetch_assoc()):
+                                                $totalPayment += $row['amount'];
                                         ?>
                                         <tr>
                                             <td><?php echo $row["reportMessage"] ?></td>
@@ -200,6 +214,12 @@
                                             <!--Right Options-->
                                         </tr>
                                         <?php endwhile; ?>
+                                        <tr>
+                                            <td>Total Payment: </td>
+                                            <td></td>
+                                            <td><?php echo $totalPayment ?></td>
+                                            <td></td>
+                                        </tr>
                                         <!--Row 1-->
                                     </tbody>
                                 </table>
@@ -304,8 +324,7 @@
                         </div>
                         <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab">
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center text-dark" 
-                                    id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                                <table class="table table-bordered text-center text-dark" width="100%" cellspacing="0" cellpadding="0">
                                     <thead >
                                         <tr class="bg-gradient-secondary text-white">
                                             <th scope="col">Election Title</th>
@@ -356,33 +375,76 @@
                         </div>
                     </div>
                 </div>
-                <!-- End of Card Body-->
             </div>                   
         </div>
     </div>
     <script>
+        // function print(){
+        //     printJS({
+        //         printable: 'printTable', 
+        //         type: 'html', 
+        //         css:['css/sb-admin-2.min.css', 'css/cb2.css', 'vendor/fontawesome-free/css/all.min.css'], 
+        //         targetStyles: ['*']
+        //     })
+        // }
+        $('.print').click(function(){
+            uni_modal("<center><b>Results</b></center></center>", "includes/print.inc.php", "modal-lg")
+        })
         $('.results_election').click(function(){
             uni_modal("<center><b>Results</b></center></center>","includes/addElection.inc.php?result="+$(this).attr('data-id'))
         })
+        
         $(document).ready(function() {
+            var minDate, maxDate;
+ 
+            $.fn.dataTable.ext.search.push(
+                function( settings, data, dataIndex ) {
+                    var min = minDate.val();
+                    var max = maxDate.val();
+                    var date = new Date( data[3] );
+            
+                    if (
+                        ( min === null && max === null ) ||
+                        ( min === null && date <= max ) ||
+                        ( min <= date   && max === null ) ||
+                        ( min <= date   && date <= max )
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            // Create date inputs
+            minDate = new DateTime($('.min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('.max'), {
+                format: 'MMMM Do YYYY'
+            });
+
             $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             } );
 
-            $('table').DataTable({
-                "responsive": true,
-                orderCellsTop: true,
-                dom: 'lBfrtip',
+            var table = $('table.display').DataTable({
                 "scrollY": "400px",
                 "scrollCollapse": true,
                 "paging": false,
                 "ordering": false,
-                initComplete: function(){
-                    
-                }
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf'
+                ],
+                order: []
+            });
+            // Refilter the table
+            $('.min, .max').on('change', function () {
+                table.draw();
             });
         });
     </script>
+    
 <?php elseif($_SESSION['userType'] == 'Purok Leader'): ?>
     <div class="col d-flex flex-column">
         <div class="container-fluid">
@@ -405,7 +467,7 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
-                                    <thead >
+                                    <thead>
                                         <tr class="bg-gradient-secondary text-white">
                                             <th scope="col">Report Message</th>
                                             <th>Details</th>
