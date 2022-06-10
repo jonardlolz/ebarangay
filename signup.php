@@ -4,7 +4,6 @@
 <html lang="en">
 
     <head>
-
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,8 +22,8 @@
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
         <link href="css/sb-admin-2.css" rel="stylesheet">
         <link rel="stylesheet" href="node_modules/Visual-Password-Strength-Indicator-Plugin-For-jQuery-Passtrength-js/src/passtrength.css">
+        <script src="node_modules/form-validation/dist/jquery.validate.min.js"></script>
     </head>
-
     <body>
         <!-- Container -->
         <div class="container">
@@ -42,7 +41,7 @@
                                 <div class="text-center">
                                     <h1 class="mb-4 text-capitalize">Create an Account!</h1>
                                 </div>
-                                <form id="form" action="includes/signup.inc.php" class="user" method="post">
+                                <form id="signup-form" action="includes/signup.inc.php" class="user" method="post">
                                     <div>
                                         <strong>Personal Information</strong>
                                         <hr>
@@ -256,7 +255,7 @@
                                     </section>
                                     
                                     <hr>
-                                    <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
+                                    <button type="button" class="btn btn-primary btn-user btn-block">
                                         Register Account
                                     </button>
                                 </form>
@@ -292,6 +291,8 @@
         passwordToggle:true,
         eyeImg:"img/svg/eye.svg"
     });
+
+    $("#signup-form").validate();
 
     function showLandlord(){
         var chbox = document.getElementById("isRenting");
