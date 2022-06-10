@@ -22,6 +22,7 @@
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
         <link href="css/sb-admin-2.css" rel="stylesheet">
+        <link rel="stylesheet" href="node_modules/Visual-Password-Strength-Indicator-Plugin-For-jQuery-Passtrength-js/src/passtrength.css">
     </head>
 
     <body>
@@ -282,10 +283,15 @@
 
         <!-- Custom scripts for all pages-->
         <script src="js/sb-admin-2.min.js"></script>
-
+        <script src="node_modules/Visual-Password-Strength-Indicator-Plugin-For-jQuery-Passtrength-js/src/jquery.passtrength.js"></script>
     </body>
     
     <script>
+    
+    $("#userPwd").passtrength({
+        passwordToggle:true,
+        eyeImg:"img/svg/eye.svg"
+    });
 
     function showLandlord(){
         var chbox = document.getElementById("isRenting");
