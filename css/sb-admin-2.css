@@ -1828,7 +1828,7 @@ pre code {
 .form-select{
   display: block;
   width: 100%;
-  padding: 1.5rem 1rem;
+  padding: .375rem .75rem;
   -moz-padding-start: calc(0.75rem - 3px);
   font-size: 1rem;
   font-weight: 400;
