@@ -45,137 +45,155 @@
                                     <h1 class="mb-4 text-capitalize">Create an Account!</h1>
                                 </div>
                                 <form id="signupForm" method="post" autocomplete="off" class="form-horizontal" action="includes/signup.inc.php">
-                                    <div>
-                                        <strong>Personal Information</strong>
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <div>
+                                                <strong>Personal Information</strong>
+                                                <hr>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="userFirstname" placeholder="First name" name="userFirstname" required>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="userMiddlename" placeholder="Middle name" name="userMiddlename">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="userLastname" placeholder="Last name" name="userLastname" required>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="userSuffix" placeholder="Suffix" name="userSuffix" list="suffixList" value="">
+                                                    <datalist id="suffixList">
+                                                        <option value="Jr"></option>
+                                                        <option value="Sr"></option>
+                                                        <option value="I"></option>
+                                                        <option value="II"></option>
+                                                        <option value="III"></option>
+                                                        <option value="IV"></option>
+                                                        <option value="V"></option>
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <input type="text" max="<?php echo date('Y-m-d') ?>" class="form-control form-control-user" placeholder="Birthdate" id="userDOB" name="userDOB" onblur="(this.type='text')" onfocus="(this.type='date')" required>
+                                                </div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <select class="custom-select" id="userCivilStat" placeholder="Civil Status" name="userCivilStat" required>
+                                                        <option value="none" disabled hidden selected>Civil Status</option>
+                                                        <option value="Single">Single</option>
+                                                        <option value="Married">Married</option>
+                                                        <option value="Divorced">Divorced</option>
+                                                        <option value="Widow">Widow</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <select class="custom-select" id="userGender" placeholder="Gender" name="userGender" required>
+                                                        <option value="" hidden selected>Gender</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 align-self-center">
+                                                    <label for="">Voter</label>
+                                                </div>
+                                                <div class="col-sm-2 align-self-center">
+                                                    <input type="radio" name="isVoter" id="isVoter" value="True">
+                                                    <label for="">Yes</label>
+                                                </div>
+                                                <div class="col-sm-2 align-self-center">
+                                                    <input type="radio" name="isVoter" id="isVoter" value="False">
+                                                    <label for="">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <div>
+                                            <strong>Address Information</strong>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <select name="userBarangay" id="userBarangay" class="custom-select" onfocus="changecat(this.value);" onChange="changecat(this.value);" required>
+                                                    <option value="" hidden selected>Barangay</option>
+                                                    <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
+                                                    while($brow = $barangay->fetch_assoc()): ?>
+                                                    <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
+                                                    <?php endwhile; ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <select class="custom-select" id="userPurok" placeholder="Purok" name="userPurok" required>
+                                                    <option value="none" disabled selected hidden>Purok</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <input type="text" class="form-control form-control-user" id="userHouseNum"
+                                                    placeholder="House #" name="userHouseNum" required>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <div>
+                                            <strong>Account Information</strong>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <input type="text" class="form-control form-control-user" id="userName"
+                                                    placeholder="Username" name="userName">
+                                            </div>
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <input type="email" class="form-control form-control-user" id="userEmail"
+                                                placeholder="Email Address" name="userEmail">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <input type="password" class="form-control form-control-user"
+                                                    id="userPwd" placeholder="Password" name="userPwd">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="password" class="form-control form-control-user"
+                                                    id="userRptPwd" placeholder="Repeat Password" name="userRptPwd">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <select class="custom-select" name="secretQuestion" id="privateQuestion" required>
+                                                    <option value="" hidden>Secret Question</option>
+                                                    <option>What is your mother's maiden name?</option>
+                                                    <option>What is your first pet's name?</option>
+                                                    <option>What's the name of your first bestfriend?</option>
+                                                    <option>What's the name of the school you first went to?</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" name="secretAnswer" class="form-control form-control-user" placeholder="Private answer" required>
+                                            </div>
+                                        </div>
                                         <hr>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userFirstname" placeholder="First name" name="userFirstname" required>
+                                        <div class="form-group row pr-5 pl-5">
+                                            <input class="form-check-input" type="checkbox" id="agree" name="agree">
+                                            <label class="form-check-label">I hereby declare that the information provided is true and correct. I also understand that any willful
+                                            dishonesty may render for refusal of this registration. I also understand I am entitled to update and correct the above information.</label>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userMiddlename" placeholder="Middle name" name="userMiddlename">
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userLastname" placeholder="Last name" name="userLastname" required>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="userSuffix" placeholder="Suffix" name="userSuffix" list="suffixList" value="">
-                                            <datalist id="suffixList">
-                                                <option value="Jr"></option>
-                                                <option value="Sr"></option>
-                                                <option value="I"></option>
-                                                <option value="II"></option>
-                                                <option value="III"></option>
-                                                <option value="IV"></option>
-                                                <option value="V"></option>
-                                            </datalist>    
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" max="<?php echo date('Y-m-d') ?>" class="form-control form-control-user" placeholder="Birthdate" id="userDOB" name="userDOB" onblur="(this.type='text')" onfocus="(this.type='date')" required>
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="custom-select" id="userCivilStat" placeholder="Civil Status" name="userCivilStat" required>
-                                                <option value="none" disabled hidden selected>Civil Status</option>
-                                                <option value="Single">Single</option>
-                                                <option value="Married">Married</option>
-                                                <option value="Divorced">Divorced</option>
-                                                <option value="Widow">Widow</option>
-                                            </select>
-                                        </div>  
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6">
-                                            <select class="custom-select" id="userGender" placeholder="Gender" name="userGender" required>
-                                                <option value="" hidden selected>Gender</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <strong>Address Information</strong>
                                         <hr>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6">
-                                            <select name="userBarangay" id="userBarangay" class="custom-select" onfocus="changecat(this.value);" onChange="changecat(this.value);" required>
-                                                <option value="" hidden selected>Barangay</option>
-                                                <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
-                                                while($brow = $barangay->fetch_assoc()): ?>  
-                                                <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                                                <?php endwhile; ?>
-                                            </select>
+                                        <div class="form-group row">
+                                            <div class="col">
+                                                <button type="submit" class="btn btn-primary btn-user btn-block" name="submit">Sign up</button>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="custom-select" id="userPurok" placeholder="Purok" name="userPurok" required>
-                                                <option value="none" disabled selected hidden>Purok</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" class="form-control form-control-user" id="userHouseNum"
-                                                placeholder="House #" name="userHouseNum" required>
-                                        </div>        
-                                    </div>
-                                    <div>
-                                        <strong>Account Information</strong>
-                                        <hr>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" class="form-control form-control-user" id="userName"
-                                                placeholder="Username" name="userName">
-                                        </div>
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="email" class="form-control form-control-user" id="userEmail"
-                                            placeholder="Email Address" name="userEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="userPwd" placeholder="Password" name="userPwd">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="userRptPwd" placeholder="Repeat Password" name="userRptPwd">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="custom-select" name="secretQuestion" id="privateQuestion" required>
-                                                <option value="" hidden>Secret Question</option>
-                                                <option>What is your mother's maiden name?</option>
-                                                <option>What is your first pet's name?</option>
-                                                <option>What's the name of your first bestfriend?</option>
-                                                <option>What's the name of the school you first went to?</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <input type="text" name="secretAnswer" class="form-control form-control-user" placeholder="Private answer" required>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="form-group row pr-5 pl-5">
-                                        <input class="form-check-input" type="checkbox" id="agree" name="agree">
-                                        <label class="form-check-label">I hereby declare that the information provided is true and correct. I also understand that any willful
-                                        dishonesty may render for refusal of this registration. I also understand I am entitled to update and correct the above information.</label>
-                                    </div>
-                                    <hr>
-
-                                    <div class="form-group row">
-                                        <div class="col">
-                                            <button type="submit" class="btn btn-primary btn-user btn-block" name="submit">Sign up</button>
-                                        </div>
-                                    </div>
+                                    </fieldset>
                                 </form>
                                 <script>
                                     
@@ -214,7 +232,16 @@
                     },
                     userName: {
                         required: true,
-                        minlength: 5
+                        minlength: 5,
+                        remote: {
+                            url: "includes/validation.inc.php?userExist",
+                            type: "post",
+                            data:{
+                                username: function(){
+                                    return $( "#userName" ).val();
+                                }
+                            }
+                        }
                     },
                     userPwd: {
                         required: true,
@@ -227,7 +254,16 @@
                     },
                     userEmail: {
                         required: true,
-                        email: true
+                        email: true,
+                        remote: {
+                            url: "includes/validation.inc.php?emailExist",
+                            type: "post",
+                            data:{
+                                userEmail: function(){
+                                    return $( "#userEmail" ).val();
+                                }
+                            }
+                        }
                     },
                     agree: "required"
                 },
@@ -237,7 +273,8 @@
                     },
                     userName: {
                         required: "Please enter a username",
-                        minlength: "Your username must consist of at least 5 characters"
+                        minlength: "Your username must consist of at least 5 characters",
+                        remote: "Username is already in use"
                     },
                     userPwd: {
                         required: "Please provide a password",
@@ -247,7 +284,10 @@
                         required: "Please repeat the password",
                         equalTo: "Please enter the same password as above"
                     },
-                    email: "Please enter a valid email address",
+                    userEmail: {
+                        email: "Please enter a valid email address",
+                        remote: "Email is already in use"
+                    },
                     agree: "Please accept our policy"
                 },
                 errorElement: "em",
@@ -300,7 +340,7 @@
                     return false;
                 }
                 return true;
-            });
+            }); 
 
         } );
         
