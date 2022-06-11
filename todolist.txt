@@ -1,42 +1,9 @@
-Use-cases:
-
-Request
-ereklamos (types)
-Reklamo
-Account
-Payment
-Profile
-Election
-Voting
-eBulletin
-Message
-Notif 
-Report
-
-changes to be made:
--redesign resident table x
--add councilor          x (features not yet fleshed out)
--eusa ang ereklamo and request into one (services) x
--seperate reports using tab     
--find a new design for choosing reisdents (dont use select)
--change cedula from monthly salary to annual salary x
--use dropdown on resident page to display results
--some sort of alert that tells users that voting is open
-
-management  services   payment   reports   
-Account     ereklamo    
-Document    erequest
-Complaint   
-Resident
-
-
-FDD:
-Account       document  complaint   resident    payment     services    reports   notification
-register      create    create      add         cancel      ereklamo    view      view
-edit          edit      edit        edit        confirm       Lsend               receive
-add           delete    delete                  pay           Lreceive
-deactivate                                                    Lresolve
-verify                                                      erequest
-                                                              Lsend
-                                                              Lreceive
-                                                              Lapprove
+Password requirements on signup -- DONE
+signup form input verification -- DONE
+signup form middle name '-' -- DONE
+upload picture for signup -- DONE
+pl verify signup -- NOT DONE
+unverified users cannot log in -- NOT DONE
+request docu disapprove textbox report -- NOT DONE
+voting results fix -- NOT DONE
+show time for payments for treasurer to cancel -- NOT DONE

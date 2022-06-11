@@ -21,7 +21,7 @@
             <div class="text-center text-dark">
                 <div class="user-avatar w-100 d-flex justify-content-center">
                     <span class="position-relative">
-                        <img src="img/<?php echo $row["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid img-thumbnail rounded-circle <?php 
+                        <img src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid img-thumbnail rounded-circle <?php 
                             if($row["userType"] == "Resident"){
                                 echo "img-res-profile";
                             }

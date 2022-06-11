@@ -116,7 +116,6 @@
                                     
                                 </thead>
                                 <tbody>
-                                    <!--Row 1-->
                                     <?php 
                                         $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                         as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
@@ -167,10 +166,8 @@
                                         <td>
                                             <a href="includes/ereklamo.inc.php?accept&reklamoid=<?php echo $row['ReklamoID'] ?>&usersID=<?php echo $row['UsersID'] ?>"><button type="button" class="btn btn-success"><i class="fas fa-check"></i> Accept</button></a>
                                         </td>
-                                        <!--Right Options-->
                                     </tr>
                                     <?php endwhile; ?>
-                                    <!--Row 1-->
                                 </tbody>
                             </table>
                         </div>
@@ -190,7 +187,6 @@
                                     
                                 </thead>
                                 <tbody>
-                                    <!--Row 1-->
                                     <?php 
                                         $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                         as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
@@ -243,10 +239,8 @@
                                         <td>
                                             <a class="respond" href="javascript:void(0)" data-id="<?php echo $row['ReklamoID'] ?>" data-user="<?php echo $row['UsersID'] ?>" data-chat="<?php echo $row['chatroomID'] ?>"><i class="fas fa-envelope fa-2x"></i></a>
                                         </td>
-                                        <!--Right Options-->
                                     </tr>
                                     <?php endwhile; ?>
-                                    <!--Row 1-->
                                 </tbody>
                             </table>
                         </div>
@@ -264,7 +258,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!--Row 1-->
                                     <?php 
                                         $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                         as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
@@ -319,7 +312,6 @@
                                         </td>
                                     </tr>
                                     <?php endwhile; ?>
-                                    <!--Row 1-->
                                 </tbody>
                             </table>
                         </div>
@@ -337,7 +329,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!--Row 1-->
                                     <?php 
                                         $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname)
                                         as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, 
@@ -392,7 +383,6 @@
                                         </td>
                                     </tr>
                                     <?php endwhile; ?>
-                                    <!--Row 1-->
                                 </tbody>
                             </table>
                         </div>
@@ -413,7 +403,6 @@
                                     
                                 </thead>
                                 <tbody>
-                                    <!--Row 1-->
                                     <?php 
                                         $requests = $conn->query("SELECT ereklamo.*, concat(users.Firstname, ' ', users.Lastname) as name, DATE_FORMAT(createdOn, '%m/%d/%Y %h:%i %p') as createdDate, DATE_FORMAT(checkedOn, '%m/%d/%Y %h:%i %p') 
                                         as checkedDate, users.userType, users.profile_pic FROM ereklamo INNER JOIN users ON ereklamo.UsersID=users.UsersID WHERE ereklamo.status='Resolved';");
@@ -452,10 +441,8 @@
                                         <td><?php echo $row["createdDate"] ?></td>
                                         <td><?php if($row["checkedBy"] != NULL){echo $row["checkedBy"];} else{echo "None";} ?></td>
                                         <td><?php if($row["checkedDate"] != NULL){echo $row["checkedDate"];} else{echo "None";} ?></td>
-                                        <!--Right Options-->
                                     </tr>
                                     <?php endwhile; ?>
-                                    <!--Row 1-->
                                 </tbody>
                             </table>
                         </div>

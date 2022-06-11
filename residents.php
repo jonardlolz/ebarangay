@@ -33,12 +33,7 @@
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
                                 <th scope="col">Name</th>
-                                <th scope="col">Birthdate</th>
-                                <th scope="col">Civil Status</th>
-                                <th scope="col">User Type</th>
-                                <th scope="col">Purok</th>
-                                <th scope="col">Barangay</th>
-                                <th scope="col">Email Address</th>
+                                <th>Date Registered</th>
                                 <th scope="col">Manage</th>
                             </tr>
                             
@@ -73,20 +68,15 @@
                                         elseif($row["userType"] == "Admin"){
                                             echo "img-admin-profile";
                                         }
-                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                     </br>
                                     <?php echo $row["name"] ?>
                                 </td>
-                                <td><?php echo $row["dateofbirth"] ?></td>
-                                <td><?php echo $row["civilStat"] ?></td>
-                                <td><?php echo $row["userType"] ?></td>
-                                <td><?php echo $row["userPurok"] ?></td>
-                                <td><?php echo $row["userBarangay"] ?></td>
-                                <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                                <!-- <td><?php echo $row["phoneNum"] ?></td> -->
+                                <td><?php echo date_format(date_create($row['created_on']), "Y/m/d H:i:s") ?></td>
                                 <td>
-                                    <button class="btn btn-success btn-sm btn-flat verify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-check"></i> Verify</button>
-                                    <button class="btn btn-danger btn-sm btn-flat unverify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-times"></i> Unverify</button>
+                                    <button class="btn btn-primary btn-sm btn-flat viewUser" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-eye"> View</i></button>
+                                    <!-- <button class="btn btn-success btn-sm btn-flat verify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-check"></i> Verify</button>
+                                    <button class="btn btn-danger btn-sm btn-flat unverify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-times"></i> Unverify</button> -->
                                 </td>
                                 
                                 <!--Right Options-->
@@ -936,6 +926,9 @@
         })
         $('.changePosition').click(function(){
             uni_modal("<center><b>Change Position</b></center></center>","includes/account.inc.php?changePosition="+$(this).attr('data-id'))
+        })
+        $('.viewUser').click(function(){
+            uni_modal("<center><b>Verify User</b></center></center>","includes/verify.inc.php?viewUser&UsersID="+$(this).attr('data-id'), "modal-lg")
         })
         $('.verify_user').click(function(){
             continue_modal("<center><b>Verify residents</b></center></center>","includes/verify.inc.php?viewVerify="+$(this).attr('data-id'))

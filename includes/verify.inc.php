@@ -9,13 +9,15 @@
 
         $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified' WHERE UsersID='{$_GET['verify']}'");
         $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['verify']}');");
+        $a3 = mysqli_query($conn, "INSERT INTO userreport(UsersID, OfficerID, reportMessage, reportStatus, barangay, purok) VALUES({$_GET['verify']}, {$_SESSION['UsersID']}, 'Purok Leader has verified this account.', 'Verify', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
-        if($a1 && $a2){
+        if($a1 && $a2 && $a3){
             mysqli_commit($conn);
         }
         else{
+            echo("Error description: " . mysqli_error($conn));
             mysqli_rollback($conn);
-    
+            exit();
         }
     }
     elseif(isset($_GET['unverify'])){
@@ -49,8 +51,297 @@
     header("location: ../index.php?error=none"); //no errors were made
     exit();*/
     ?>
+<?php if(isset($_GET['viewUser'])): ?>
+    <?php 
+        $profile = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname, ' ', COALESCE(users.userSuffix,'')) as name FROM users WHERE UsersID='{$_GET['UsersID']}'");
+        $row=$profile->fetch_assoc();
+    ?>
 
-<?php if(isset($_GET['viewVerify'])): ?>
+    <div class="container-fluid">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-user-tab" data-toggle="tab" href="#nav-user" role="tab" aria-controls="nav-user" aria-selected="true">User</a>
+                <a class="nav-item nav-link" id="nav-requirements-tab" data-toggle="tab" href="#nav-requirements" role="tab" aria-controls="nav-requirements" aria-selected="true">Submitted Requirements</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab">
+                <link rel="stylesheet" href="css/cb2.css">
+                <div class="col d-flex flex-column px-4">
+                    <div class="card rounded shadow" style="background-color: #dcdce4;">
+                        <!--Card-header-->
+                        <div class="card-header">
+                            <div class="text-center text-dark">
+                                <div class="user-avatar w-100 d-flex justify-content-center">
+                                    <span class="position-relative">
+                                        <img src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"]; ?>" alt="Maxwell Admin" class="img-fluid img-thumbnail rounded-circle <?php 
+                                            if($row["userType"] == "Resident"){
+                                                echo "img-res-profile";
+                                            }
+                                            elseif($row["userType"] == "Purok Leader"){
+                                                echo "img-purokldr-profile";
+                                            }
+                                            elseif($row["userType"] == "Captain"){
+                                                echo "img-capt-profile";
+                                            }
+                                            elseif($row["userType"] == "Secretary"){
+                                                echo "img-sec-profile";
+                                            }
+                                            elseif($row["userType"] == "Treasurer"){
+                                                echo "img-treas-profile";
+                                            }
+                                            elseif($row["userType"] == "Councilor"){
+                                                echo "img-councilor-profile";
+                                            }
+                                            elseif($row["userType"] == "Admin"){
+                                                echo "img-admin-profile";
+                                            }
+                                        ?>" style="width:150px; height:150px">
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <h5 class="font-weight-bold"><?php echo $row['name'] ?></h5>
+                                    <h6 readonly><?php echo $row["emailAdd"]; ?></h6>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h6 class="m-2">
+                                    <?php $detail="";
+                                    if($row['IsVoter'] == "True"){
+                                        $detail .= "Voter";
+                                    }
+                                    if($row['IsVoter'] == "False"){
+                                        $detail .= "Non-Voter";
+                                    }
+                                    if($row['isRenting'] == "True"){
+                                        $detail .= ", Renter";
+                                    }
+                                    if($row['IsLandlord'] == "True"){
+                                        $detail .= ", Landlord";
+                                    }
+                                    if($row['IsLandlord'] == "False" && $row['isRenting'] == "False"){
+                                        $detail .= ", Resident";
+                                    }
+                                
+                                    echo $detail;
+                                    ?>
+                                </h6>
+                            </div>
+                        </div>
+                        <!--End of Card-Header-->
+                        <!--Card-Body-->
+                        <div class="card-body text-dark">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="p-2">
+                                        <div>
+                                            <strong>Personal Information</strong><hr>
+                                        </div>
+                                        <label class="labels">Name</label>
+                                        <input type="text" class="form-control w-75" placeholder="Fname Mname Lname" value="<?php echo "{$row['Firstname']} {$row['Middlename']} {$row['Lastname']} {$row['userSuffix']}"?>" readonly>
+                                        <label class="labels">Gender</label>
+                                        <input type="text" class="form-control w-75" placeholder="Gender" value="<?php echo $row["userGender"] ?>" readonly>
+                                        <label class="labels">Birthdate</label>
+                                        <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["dateofbirth"] ?>" readonly>
+                                        <label class="labels">Civil Status</label>
+                                        <input type="text" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["civilStat"] ?>" readonly>
+                                        <label class="labels">Date Resides</label>
+                                        <input type="date" class="form-control w-75" placeholder="Birthdate" value="<?php echo $row["startedLiving"] ?>" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="p-2">
+                                        <div>
+                                            <strong>Address Information</strong><hr>
+                                        </div>
+                                        <div class="row-md-4 row-sm-4">
+                                            <label class="labels">House Number</label>
+                                            <input type="text" class="form-control w-75" value="<?php echo $row["userHouseNum"] ?>" readonly>
+                                            <label class="labels">Purok</label>
+                                            <input type="text" class="form-control w-75" placeholder="Purok" value="<?php echo $row["userPurok"] ?>" readonly>
+                                            <label class="labels">Barangay</label>
+                                            <input type="text" class="form-control w-75" placeholder="Barangay" value="<?php echo $row["userBarangay"] ?>" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="p-2">
+                                        <div>
+                                            <strong>Contact Information</strong><hr>
+                                        </div>
+                                        <label class="labels">Phone Number</label>
+                                        <input type="text" class="form-control w-75" value="<?php if($row['phoneNum'] == NULL){ echo "None"; }else{ echo $row["phoneNum"]; }?>" readonly>
+                                        <label class="labels">Telephone Number</label>
+                                        <input type="text" class="form-control w-75" value="<?php if($row['teleNum'] == NULL){ echo "None"; }else{ echo $row["teleNum"]; }?>" readonly>
+                                        <label class="labels">Email Address</label>
+                                        <input type="email" class="form-control w-75" placeholder="@email" value="<?php echo $row["emailAdd"] ?>" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End of Card-Body-->
+                    </div>
+                    <div class="modal fade" id="ppModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <form action="includes/upload.inc.php" method="POST" enctype="multipart/form-data">
+                            <div class="modal-dialog modal-fullscreen-sm-down border border-0" role="document" style="border-color:#384550 ;">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Manage Profile Picture</h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="customFile" name="pp" accept="image/*" onchange="displayImgProfile(this,$(this))">
+                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group d-flex justify-content-center rounded-circle">
+                                            <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="" id="profile" class="img-fluid img-thumbnail rounded-circle" style="max-width: calc(50%)">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-dark" name="submit" type="submit">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-requirements" role="tabpanel" aria-labelledby="nav-requirements-tab">
+                <?php 
+                if(file_exists('../img/users/'.$_GET['UsersID'].'/verification')):
+                $gal = scandir('../img/users/'.$_GET['UsersID'].'/verification');
+                unset($gal[0]);
+                unset($gal[1]);
+                $count =count($gal);
+                $i = 0;
+                ?>
+                    <style>
+                        .slide img,.slide video{
+                            max-width:100%;
+                            max-height:100%;
+                        }
+                    </style>
+                    <div class="container-fluid" style="height:75vh">
+                        <div class="row h-100">
+                            <div class="col-lg-7 bg-dark h-100">
+                                <div class="d-flex h-100 w-100 position-relative justify-content-between align-items-center">
+                                    <a href="javascript:void(0)" id="prev" class="position-absolute d-flex justify-content-center align-items-center" style="left:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-left"></div></h4></a>
+                                    <?php
+                                        foreach($gal as $k => $v):
+                                            $mime = mime_content_type('../img/users/'.$_GET['UsersID'].'/verification/'.$v);
+                                            $i++;
+                                    ?>
+                                    <div class="slide w-100 h-100 <?php echo ($i == 1) ? "d-flex" : 'd-none' ?> align-items-center justify-content-center" data-slide="<?php echo $i ?>">
+                                    <?php if(strstr($mime,'image')): ?>
+                                        <img src="./img/users/<?php echo $_GET['UsersID'].'/verification/'.$v ?>" class="" alt="Image 1">
+                                    <?php else: ?>
+                                        <video controls class="">
+                                                <source src="./img/users/<?php echo $_GET['UsersID'].'/verification/'.$v ?>" type="<?php echo $mime ?>">
+                                        </video>
+                                    <?php endif; ?>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <a href="javascript:void(0)" id="next" class="position-absolute d-flex justify-content-center align-items-center" style="right:0;width:calc(15%);z-index:1"><h4><div class="fa fa-angle-right"></div></h4></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="d-flex flex-row">
+                                    Requirements needed: 
+                                </div>
+                                <div class="d-flex flex-row">
+                                    <ul>
+                                        <li>Valid ID</li>
+                                        <li>Lessor's Note</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="container-fluid">
+                        <div class="alert alert-danger m-2">
+                            <h3>User has not submitted requirements!</h1>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button class="btn btn-flat btn-success verify_user" data-id="<?php echo $_GET['UsersID'] ?>"><i class="fas fa-check"></i> Verify</button>
+            <button class="btn btn-flat btn-danger unverify_report"><i class="fas fa-times"></i> Unverify</button>
+        </div>
+    </div>
+    <script>
+        $('.verify_user').click(function(){
+            _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
+        })
+        $('.unverify_report').click(function(){
+            secondary_modal("<center><b>Report</b></center></center>","includes/verify.inc.php?unverifyReport&UsersID="+$(this).attr('data-id'), "modal-md")
+        })
+        $(".container-fluid").parent().siblings(".modal-footer").remove();
+        <?php if(file_exists('../img/users/'.$_GET['UsersID'].'/verification')): ?>
+        $('#next').click(function(){
+            var cslide = $('.slide:visible').attr('data-slide')
+            if(cslide == '<?php echo $i ?>'){
+                return false;
+            }
+            $('.slide:visible').removeClass('d-flex').addClass("d-none")
+            $('.slide[data-slide="'+(parseInt(cslide) + 1)+'"]').removeClass('d-none').addClass('d-flex')
+        })
+        $('#prev').click(function(){
+            var cslide = $('.slide:visible').attr('data-slide')
+            if(cslide == 1){
+                return false;
+            }
+            $('.slide:visible').removeClass('d-flex').addClass("d-none")
+            $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
+        })
+        function verify_user($id){
+            start_load()
+            $.ajax({
+                url:'includes/verify.inc.php?verify=' + $id,
+                method:'GET',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+        <?php endif; ?>
+    </script>
+
+<?php elseif(isset($_GET['unverifyReport'])): ?>
+
+<div class="container-fluid">
+    <form action="">
+        <div class="row">
+            <div class="col">
+                <p>Report Message: </p>
+            </div>
+            <div class="col-sm-8">
+                <textarea name="reportMessage" id="reportMessage" class="form-control" rows="3" style="resize:none;" required></textarea>
+            </div>
+        </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button class="btn btn-primary">Send Report</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(".container-fluid").parent().siblings(".modal-footer").remove();
+</script>
+
+<?php elseif(isset($_GET['viewVerify'])): ?>
     <style>
         #continue_modal .modal-footer{
             display: none;
@@ -454,6 +745,17 @@
             </div>
         </div>   
     </div>
+    <script>
+        ShowHideDiv();
+        function ShowHideDiv(){
+            var renter = document.getElementById("renter");
+            var landlord = document.getElementById("landlord");
+            var resident = document.getElementById("resident");
+            document.getElementById("renterStat").style.display = renter.checked ? "block" : "none";
+            document.getElementById("landlordStat").style.display = landlord.checked ? "block" : "none";
+            document.getElementById("residentStat").style.display = resident.checked ? "block" : "none";
+        }
+    </script>
     
 <?php endif; ?>
 
@@ -488,13 +790,33 @@ if(isset($_GET['postVerify'])){
 ?>
 
 <script>
-ShowHideDiv();
-function ShowHideDiv(){
-    var renter = document.getElementById("renter");
-    var landlord = document.getElementById("landlord");
-    var resident = document.getElementById("resident");
-    document.getElementById("renterStat").style.display = renter.checked ? "block" : "none";
-    document.getElementById("landlordStat").style.display = landlord.checked ? "block" : "none";
-    document.getElementById("residentStat").style.display = resident.checked ? "block" : "none";
-}
+    window.secondary_modal = function($title = '' , $url='',$size=""){
+        start_load()
+        $.ajax({
+            url:$url,
+            error:err=>{
+                console.log()
+                alert("An error occured")
+            },
+            success:function(resp){
+                if(resp){
+                    $('#secondary_modal .modal-title').html($title)
+                    $('#secondary_modal .modal-body').html(resp)
+                    if($size != ''){
+                        $('#secondary_modal .modal-dialog').addClass($size)
+                    }else{
+                        $('#secondary_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                    }
+                    $('#secondary_modal').modal({
+                    show:true,
+                    backdrop:'static',
+                    keyboard:false,
+                    focus:true
+                    })
+                    end_load()
+                }
+            }
+        })
+    }
 </script>
+
