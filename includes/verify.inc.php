@@ -4,15 +4,17 @@
     extract($_POST);
 
     if(isset($_GET['verify'])){
-
+        extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified' WHERE UsersID='{$_GET['verify']}'");
-        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', '{$_GET['verify']}');");
-        $a3 = mysqli_query($conn, "INSERT INTO userreport(UsersID, OfficerID, reportMessage, reportStatus, barangay, purok) VALUES({$_GET['verify']}, {$_SESSION['UsersID']}, 'Purok Leader has verified this account.', 'Verify', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
+        $a1 = mysqli_query($conn, "UPDATE users SET VerifyStatus='Verified', updated_on=CURRENT_TIMESTAMP WHERE UsersID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID) VALUES('Your account verification has been approved!', 'Resident', $id);");
+        $a3 = mysqli_query($conn, "INSERT INTO userreport(UsersID, OfficerID, reportMessage, reportStatus, barangay, purok) VALUES($id, {$_SESSION['UsersID']}, 'Purok Leader has verified this account.', 'Verify', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
         if($a1 && $a2 && $a3){
             mysqli_commit($conn);
+            header("location: ../residents.php?error=success");
+            exit();
         }
         else{
             echo("Error description: " . mysqli_error($conn));
@@ -264,6 +266,18 @@
         $('.verify_user').click(function(){
             _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
         })
+        
+        function verify_user($id){
+            start_load()
+            $.ajax({
+                url:'includes/verify.inc.php?verify',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
         $('.unverify_report').click(function(){
             secondary_modal("<center><b>Report</b></center></center>","includes/verify.inc.php?unverifyReport&UsersID="+$(this).attr('data-id'), "modal-md")
         })
@@ -285,17 +299,6 @@
             $('.slide:visible').removeClass('d-flex').addClass("d-none")
             $('.slide[data-slide="'+(parseInt(cslide) - 1)+'"]').removeClass('d-none').addClass('d-flex')
         })
-        function verify_user($id){
-            start_load()
-            $.ajax({
-                url:'includes/verify.inc.php?verify=' + $id,
-                method:'GET',
-                data:{id:$id},
-                success:function(){
-                    location.reload()
-                }
-            })
-        }
         <?php endif; ?>
     </script>
 

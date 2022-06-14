@@ -111,7 +111,7 @@
                                 <?php while($reklamoRow = $reklamo->fetch_assoc()): ?>
                                 <div class="col-sm-4">
                                     <?php if($reklamoRow['status'] == 'Active'): ?>
-                                    <div class="card" style="min-height: 100px; border-color: green">
+                                    <div class="card" style="min-height: 250px; border-color: green">
                                         <div class="card-body">
                                             <h5 class="card-title">
                                                 <div class="row">
@@ -126,11 +126,75 @@
                                                         </a>
                                                         <div class="dropdown-menu shadow"
                                                             aria-labelledby="userDropdown">
-                                                            <a class="dropdown-item document_edit" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" data-docu="<?php echo $reklamoRow['reklamoCatName'] ?>" href="javascript:void(0)">
+                                                            <a class="dropdown-item edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" data-name="<?php echo $reklamoRow['reklamoCatName'] ?>">
                                                                 <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
                                                             </a>
                                                             <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item delete_document" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" href="javascript:void(0)">
+                                                            <a class="dropdown-item delete_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" data-name="<?php echo $reklamoRow['reklamoCatName'] ?>">
+                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Hide
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                            <hr>
+                                            <p class="card-text">
+                                                <?php $ereklamoType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$reklamoRow['reklamoCatID']}"); 
+                                                while($ereklamoTypeRow = $ereklamoType->fetch_assoc()):
+                                                ?>
+                                                <div class="row" style="<?php if($ereklamoTypeRow['status'] == "Active"){ echo "color: green;";}else{ echo "color: red;"; } ?>">
+                                                    <div class="col">
+                                                        <?php echo $ereklamoTypeRow['reklamoTypeName']; ?>
+                                                    </div>
+                                                    <div class="col" style="text-align: right;">
+                                                        <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                            <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle"
+                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-cog fw" aria-hidden="true"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu shadow"
+                                                                aria-labelledby="userDropdown">
+                                                                <a class="dropdown-item edit_type" href="javascript:void(0)" data-id="<?php echo $ereklamoTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $ereklamoTypeRow['reklamoTypeName'] ?>"><i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                                </a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <?php if($ereklamoTypeRow['status'] == 'Active'): ?>
+                                                                    <a class="dropdown-item delete_type" href="javascript:void(0)" data-id="<?php echo $ereklamoTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $ereklamoTypeRow['reklamoTypeName'] ?>">
+                                                                        <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Hide
+                                                                    </a>
+                                                                <?php elseif($ereklamoTypeRow['status'] == 'Inactive'): ?>
+                                                                    <a class="dropdown-item restore_type" href="javascript:void(0)" data-id="<?php echo $ereklamoTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $ereklamoTypeRow['reklamoTypeName'] ?>">
+                                                                    <i class="fas fa-chevron-up fa-sm fa-fw mr-2 text-gray-600"></i> Active
+                                                                    </a>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php endwhile; ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <?php else: ?>
+                                    <div class="card" style="min-height: 100px; border-color: red">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <?php echo $reklamoRow['reklamoCatName'] ?>
+                                                    </div>
+                                                    <div class="col-sm-3" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" data-name="<?php echo $reklamoRow['reklamoCatName'] ?>">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item restore_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" data-name="<?php echo $reklamoRow['reklamoCatName'] ?>">
                                                                 <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Hide
                                                             </a>
                                                         </div>
@@ -150,161 +214,23 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <?php else: ?>
-                                    <div class="card" style="min-height: 100px; border-color: red">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <?php echo $documentRow['documentName'] ?>
-                                                    </div>
-                                                    <div class="col-sm-3" style="text-align: right;">
-                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
-                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle"
-                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu shadow"
-                                                            aria-labelledby="userDropdown">
-                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['DocumentID'] ?>" data-docu="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
-                                                            </a>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item active_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-chevron-up fa-sm fa-fw mr-2 text-gray-600"></i> Activate
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </h5>
-                                            <p class="card-text"><?php if(isset($documentRow['documentdesc'])){echo $documentRow['documentdesc'];} ?></p>
-                                        </div>
-                                    </div>
                                     <?php endif; ?>
                                 </div>
                                 <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
                             </div>
                             <?php endwhile; ?>
-                            <?php if(isset($_GET['error']) == 'duplicate'): ?> 
-                            <div class="alert alert-danger">
-                                <h3>That document already exists!</h3>
-                            </div>
+                           <?php if(isset($_GET['error'])): ?> 
+                                <?php if($_GET['error'] == 'reklamocatduplicate'): ?>
+                                    <div class="alert alert-danger">
+                                        <h3>That reklamo category already exists!</h3>
+                                    </div>
+                                <?php elseif($_GET['error'] == 'reklamotypeduplicate'): ?>
+                                    <div class="alert alert-danger">
+                                        <h3>That reklamo type already exists!</h3>
+                                    </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
-                        <!-- <div class="col m-4">
-                                <div class="card" style="min-height: 200px">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col">
-                                                <strong>
-                                                    Major
-                                                </strong>
-                                            </div>
-                                            <div class="col-sm-2" style="text-align: right;">
-                                                <a class="add_ereklamoCat" data-priority="Major" href="javascript:void(0)"><i class="fas fa-plus"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="accordion">
-                                            <?php $majorSql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatPriority = 'Major'");
-                                            $i = 0;
-                                            $allRows = $majorSql->num_rows;
-                                            while($majorRow = $majorSql->fetch_assoc()):
-                                            ?>
-                                            <div class="row">
-                                                <div class="col" data-toggle="collapse" data-target="#collapse<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>" aria-expanded="true" aria-controls="collapse<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>">
-                                                    <?php echo $majorRow['reklamoCatName'] ?>
-                                                </div>
-                                                <div class="col-sm-3" style="text-align: right;">
-                                                    <a class="edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $majorRow['reklamoCatID'] ?>" data-name="<?php echo $majorRow['reklamoCatName'] ?>"><i class="fas fa-edit"></i></a>
-                                                    <a class="delete_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $majorRow['reklamoCatID'] ?>" data-name="<?php echo $majorRow['reklamoCatName'] ?>"><i class="fas fa-trash"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="card-body">
-                                                    <div id="collapse<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>" class="collapse-show" aria-labelledby="heading<?php echo str_replace(' ', '', $majorRow['reklamoCatName']) ?>" data-parent="#accordion">
-                                                        <div class="col">
-                                                            <?php $minorType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$majorRow['reklamoCatID']}");
-                                                            while($minorTypeRow = $minorType->fetch_assoc()): 
-                                                            ?>
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <?php echo $minorTypeRow['reklamoTypeName'] ?>
-                                                                </div>
-                                                                <div class="col-sm-2" style="text-align right;">
-                                                                    <a class="edit_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-edit"></i></a>
-                                                                    <a class="delete_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-trash"></i></a>
-                                                                </div>
-                                                                <hr>    
-                                                            </div>
-                                                            <?php endwhile; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php endwhile; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <div class="col m-4">
-                                <div class="col-sm-6 card" style="min-height: 200px">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col">
-                                                <strong>
-                                                    eReklamo
-                                                </strong>
-                                            </div>
-                                            <div class="col-sm-2" style="text-align: right;">
-                                                <a class="add_ereklamoCat" data-priority="Minor" href="javascript:void(0)"><i class="fas fa-plus"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="accordion">
-                                            <?php $minorSql = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority = 'Minor'");
-                                            $i = 0;
-                                            $allRows = $minorSql->num_rows;
-                                            while($minorRow = $minorSql->fetch_assoc()):
-                                            ?>
-                                            <div class="row">
-                                                <div class="col" data-toggle="collapse" data-target="#collapse<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>" aria-expanded="true" aria-controls="collapse<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>">
-                                                    <?php echo $minorRow['reklamoCatName'] ?>
-                                                </div>
-                                                <div class="col-sm-3" style="text-align: right;">
-                                                    <a class="edit_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $minorRow['reklamoCatID'] ?>" data-name="<?php echo $minorRow['reklamoCatName'] ?>"><i class="fas fa-edit"></i></a>
-                                                    <a class="delete_ereklamoCat" href="javascript:void(0)" data-id="<?php echo $minorRow['reklamoCatID'] ?>" data-name="<?php echo $minorRow['reklamoCatName'] ?>"><i class="fas fa-trash"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="card-body">
-                                                    <div id="collapse<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>" class="collapse-show" aria-labelledby="heading<?php echo str_replace(' ', '', $minorRow['reklamoCatName']) ?>" data-parent="#accordion">
-                                                        <div class="col">
-                                                            <?php $minorType = $conn->query("SELECT * FROM ereklamotype WHERE reklamoCatID={$minorRow['reklamoCatID']}");
-                                                            while($minorTypeRow = $minorType->fetch_assoc()): 
-                                                            ?>
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <?php echo $minorTypeRow['reklamoTypeName'] ?>
-                                                                </div>
-                                                                <div class="col-sm-2" style="text-align right;">
-                                                                    <a class="edit_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-edit"></i></a>
-                                                                    <a class="delete_type" href="javascript:void(0)" data-id="<?php echo $minorTypeRow['reklamoTypeID'] ?>" data-name="<?php echo $minorTypeRow['reklamoTypeName'] ?>"><i class="fas fa-trash"></i></a>
-                                                                </div>
-                                                                <hr>    
-                                                            </div>
-                                                            <?php endwhile; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php endwhile; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                     </div>
                 </div>
             </div>
@@ -547,7 +473,10 @@
             uni_modal("<center><b>Edit Reklamo Category</b></center></center>","includes/ereklamo.inc.php?ereklamoEditCat&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
         })
         $('.delete_ereklamoCat').click(function(){
-            _conf("Are you sure you want to delete this reklamo category?", "delete_cat", [$(this).attr('data-id')])
+            _conf("Are you sure you want to hide this reklamo category?", "delete_cat", [$(this).attr('data-id')])
+        })
+        $('.restore_ereklamoCat').click(function(){
+            _conf("Are you sure you want to activate this reklamo category?", "restore_cat", [$(this).attr('data-id')])
         })
         $('.add_ereklamotype').click(function(){
             uni_modal("<center><b>Add Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoAddType&catID="+ $(this).attr('data-id')+"&catName="+$(this).attr('data-name'))
@@ -556,7 +485,10 @@
             uni_modal("<center><b>Edit Reklamo Type</b></center></center>","includes/ereklamo.inc.php?ereklamoEditType&typeID="+ $(this).attr('data-id'))
         })
         $('.delete_type').click(function(){
-            _conf("Are you sure you want to delete this reklamo type?", "delete_type", [$(this).attr('data-id')])
+            _conf("Are you sure you want to hide this reklamo type?", "delete_type", [$(this).attr('data-id')])
+        })
+        $('.restore_type').click(function(){
+            _conf("Are you sure you want to activate this reklamo type?", "restore_type", [$(this).attr('data-id')])
         })
 
         function delete_cat($id){
@@ -571,10 +503,33 @@
             })
         }
 
+         function restore_cat($id){
+            start_load()
+            $.ajax({
+                url:'includes/ereklamo.inc.php?postCatRestore',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+
         function delete_type($id){
             start_load()
             $.ajax({
                 url:'includes/ereklamo.inc.php?postTypeDelete',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+        function restore_type($id){
+            start_load()
+            $.ajax({
+                url:'includes/ereklamo.inc.php?postTypeRestore',
                 method:'POST',
                 data:{id:$id},
                 success:function(){

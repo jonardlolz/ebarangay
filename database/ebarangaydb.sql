@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2022 at 02:37 PM
+-- Generation Time: Jun 14, 2022 at 05:16 PM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -497,7 +497,7 @@ CREATE TABLE `ereklamocategory` (
 --
 
 INSERT INTO `ereklamocategory` (`reklamoCatID`, `reklamoCatName`, `reklamoCatBrgy`, `reklamoCatPriority`, `reklamoFee`, `status`) VALUES
-(6, 'Garbage', 'Paknaan', 'Minor', 0, 'Active'),
+(6, 'Garbages', 'Paknaan', 'Minor', 0, 'Active'),
 (8, 'Barangay Infrastructures', 'Paknaan', 'Minor', 0, 'Active'),
 (14, 'Residents', 'Paknaan', 'Minor', 0, 'Active'),
 (17, 'Test', 'Paknaan', 'undefined', 0, 'Active');
@@ -587,20 +587,21 @@ INSERT INTO `ereklamoreport` (`ereportID`, `ReklamoID`, `respondentID`, `reportM
 CREATE TABLE `ereklamotype` (
   `reklamoTypeID` int NOT NULL,
   `reklamoTypeName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reklamoCatID` int NOT NULL
+  `reklamoCatID` int NOT NULL,
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ereklamotype`
 --
 
-INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoCatID`) VALUES
-(1, 'Improper disposal', 6),
-(5, 'Broken Roads', 8),
-(13, 'Solicitors', 14),
-(14, 'Illegal Vendors', 14),
-(16, 'Noise', 14),
-(17, 'Curfew', 14);
+INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoCatID`, `status`) VALUES
+(1, 'Improper disposal', 6, 'Active'),
+(5, 'Broken Roads', 8, 'Active'),
+(13, 'Solicitors', 14, 'Inactive'),
+(14, 'Illegal Vendors', 14, 'Active'),
+(16, 'Noise', 14, 'Active'),
+(17, 'Curfew', 14, 'Active');
 
 -- --------------------------------------------------------
 
@@ -621,12 +622,7 @@ CREATE TABLE `members` (
 
 INSERT INTO `members` (`membersID`, `UsersID`, `residentCatID`, `createdOn`) VALUES
 (21, 62, 15, '2022-06-06 16:12:53'),
-(23, 63, 15, '2022-06-06 16:13:03'),
-(24, 28, 16, '2022-06-08 00:55:18'),
-(25, 29, 16, '2022-06-08 00:55:18'),
-(26, 34, 16, '2022-06-08 15:23:26'),
-(27, 37, 16, '2022-06-08 15:23:26'),
-(28, 39, 16, '2022-06-08 15:23:27');
+(23, 63, 15, '2022-06-06 16:13:03');
 
 -- --------------------------------------------------------
 
@@ -994,7 +990,19 @@ INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `Use
 (407, 'The purok leader has disapproved your request for Barangay Clearance. Reason: ', 'request', 'Not Read', 28, 'Resident', '2022-06-14 20:47:06', '2022-06-14 20:47:06'),
 (408, 'The purok leader has approved your request for Indigency Clearance. It is now ready for release.', 'request', 'Read', 31, 'Purok Leader', '2022-06-14 20:48:19', '2022-06-14 20:48:19'),
 (409, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-14 20:48:19', '2022-06-14 20:48:19'),
-(410, 'The purok leader has disapproved your request for Barangay Clearance. Reason: Test', 'request', 'Not Read', 28, 'Resident', '2022-06-14 20:50:07', '2022-06-14 20:50:07');
+(410, 'The purok leader has disapproved your request for Barangay Clearance. Reason: Test', 'request', 'Not Read', 28, 'Resident', '2022-06-14 20:50:07', '2022-06-14 20:50:07'),
+(411, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-15 00:05:32', '2022-06-15 00:05:32'),
+(412, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-15 00:05:38', '2022-06-15 00:05:38'),
+(413, 'Your account verification has been approved!', 'Resident', 'Not Read', 69, NULL, '2022-06-15 00:11:00', '2022-06-15 00:11:00'),
+(414, 'Your account verification has been approved!', 'Resident', 'Not Read', 69, NULL, '2022-06-15 00:12:04', '2022-06-15 00:12:04'),
+(415, 'Your account verification has been approved!', 'Resident', 'Not Read', 69, NULL, '2022-06-15 00:12:37', '2022-06-15 00:12:37'),
+(416, 'Your account verification has been approved!', 'Resident', 'Not Read', 59, NULL, '2022-06-15 00:20:59', '2022-06-15 00:20:59');
+INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `UsersID`, `position`, `created_at`, `updated_at`) VALUES
+(417, 'Your account verification has been approved!', 'Resident', 'Not Read', 59, NULL, '2022-06-15 00:21:00', '2022-06-15 00:21:00'),
+(418, 'Your account verification has been approved!', 'Resident', 'Not Read', 59, NULL, '2022-06-15 00:21:02', '2022-06-15 00:21:02'),
+(419, 'Your account verification has been approved!', 'Resident', 'Not Read', 60, NULL, '2022-06-15 00:21:07', '2022-06-15 00:21:07'),
+(420, 'Your account verification has been approved!', 'Resident', 'Not Read', 64, NULL, '2022-06-15 00:21:32', '2022-06-15 00:21:32'),
+(421, 'Your account verification has been approved!', 'Resident', 'Not Read', 65, NULL, '2022-06-15 00:21:36', '2022-06-15 00:21:36');
 
 -- --------------------------------------------------------
 
@@ -1072,7 +1080,6 @@ INSERT INTO `purok` (`PurokID`, `PurokName`, `BarangayName`, `Active`, `purokLea
 (15, 'Santa Cruz', 'Labogon', 'True', 75),
 (16, 'Kagapi', 'Paknaan', 'False', NULL),
 (17, 'Gabi', 'Paknaan', 'True', NULL),
-(18, 'Gabi', 'Paknaan', 'True', NULL),
 (19, 'Talong', 'Paknaan', 'True', NULL),
 (20, 'Sayote', 'Paknaan', 'True', NULL),
 (24, 'Test', 'Labogon', 'True', NULL),
@@ -1346,7 +1353,16 @@ INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `cre
 (309, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#54', 31, '2022-06-08 14:36:13', '2022-06-08 14:36:13', 'Paknaan', 'Kamatis'),
 (310, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-06-08 14:42:24', '2022-06-08 14:42:24', 'Paknaan', 'Kamatis'),
 (311, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#55', 31, '2022-06-09 21:59:16', '2022-06-09 21:59:16', 'Paknaan', 'Kamatis'),
-(312, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-06-14 22:30:24', '2022-06-14 22:30:24', 'Paknaan', 'Kamatis');
+(312, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-06-14 22:30:24', '2022-06-14 22:30:24', 'Paknaan', 'Kamatis'),
+(313, 'eReklamo', 'Captain has modified reklamo category #6', 29, '2022-06-14 23:04:14', '2022-06-14 23:04:14', 'Paknaan', 'Kamatis'),
+(314, 'eReklamo', 'Captain has hidden the reklamo type #', 29, '2022-06-14 23:11:25', '2022-06-14 23:11:25', 'Paknaan', 'Kamatis'),
+(315, 'eReklamo', 'Captain has hidden the reklamo type #', 29, '2022-06-14 23:11:44', '2022-06-14 23:11:44', 'Paknaan', 'Kamatis'),
+(316, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbages', 29, '2022-06-14 23:29:46', '2022-06-14 23:29:46', 'Paknaan', 'Kamatis'),
+(317, 'eReklamo', 'Captain has modified the reklamo type #18', 29, '2022-06-14 23:31:54', '2022-06-14 23:31:54', 'Paknaan', 'Kamatis'),
+(318, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-14 23:38:10', '2022-06-14 23:38:10', 'Paknaan', 'Kamatis'),
+(319, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-14 23:38:14', '2022-06-14 23:38:14', 'Paknaan', 'Kamatis'),
+(320, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbages', 29, '2022-06-14 23:42:58', '2022-06-14 23:42:58', 'Paknaan', 'Kamatis'),
+(321, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-14 23:45:24', '2022-06-14 23:45:24', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1489,9 +1505,8 @@ CREATE TABLE `residentcategory` (
 --
 
 INSERT INTO `residentcategory` (`residentCatID`, `residentCatName`, `createdOn`, `Barangay`, `Purok`) VALUES
-(13, 'Test', '2022-06-04 22:53:02', 'Paknaan', 'All'),
 (15, 'No water', '2022-06-06 16:03:03', 'Labogon', 'All'),
-(16, 'Unemployed', '2022-06-08 00:53:38', 'Paknaan', 'All');
+(17, '', '2022-06-15 00:52:18', 'Paknaan', 'All');
 
 -- --------------------------------------------------------
 
@@ -1593,7 +1608,19 @@ INSERT INTO `userreport` (`userreportID`, `UsersID`, `OfficerID`, `reportMessage
 (10, 57, 31, 'Test', 'Unverify', '2022-06-12 23:34:49', 'Paknaan', 'Kamatis'),
 (11, 57, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-14 13:17:59', 'Paknaan', 'Kamatis'),
 (12, 28, 31, 'Your account lacks the necessary requirement, please resubmit your profile picture and valid ID ', 'Unverify', '2022-06-14 15:46:03', 'Paknaan', 'Kamatis'),
-(13, 28, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-14 15:49:02', 'Paknaan', 'Kamatis');
+(13, 28, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-14 15:49:02', 'Paknaan', 'Kamatis'),
+(14, 32, 29, 'Test', 'Unverify', '2022-06-15 00:05:32', 'Paknaan', 'Kamatis'),
+(15, 58, 29, 'Test', 'Unverify', '2022-06-15 00:05:38', 'Paknaan', 'Kamatis'),
+(16, 69, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:11:02', 'Paknaan', 'Kamatis'),
+(17, 69, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:12:04', 'Paknaan', 'Kamatis'),
+(18, 69, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:12:38', 'Paknaan', 'Kamatis'),
+(19, 59, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:20:59', 'Paknaan', 'Kamatis'),
+(20, 59, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:01', 'Paknaan', 'Kamatis'),
+(21, 59, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:02', 'Paknaan', 'Kamatis'),
+(22, 60, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:07', 'Paknaan', 'Kamatis'),
+(23, 64, 29, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:32', 'Paknaan', 'Kamatis'),
+(24, 65, 29, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:36', 'Paknaan', 'Kamatis'),
+(25, 88, 29, 'Captain has added a new Resident', 'Add', '2022-06-15 01:05:12', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1648,7 +1675,7 @@ INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbi
 (29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$wgirG5En9HiHhhtVzR50E.xdr2RunZl/L5QHs1AnwDfMu.9L7QT9G', 'Male', 'Captain', '1655057880_1633943100_gru.png', 'Paknaan', 'Kamatis', '0923659874', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, NULL, 'False', 'False', '2000-01-07', '', NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', '1655057940_1634632620_Capture.JPG', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Unverified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', '1655058900_1647869940_RobloxScreenShot20220318_181434207.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'National Highway ', '231', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
@@ -1657,14 +1684,14 @@ INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbi
 (55, 'Isidro', 'Nidhogg', 'Nitzsche', '2016-01-13', 'Single', 'aosdjasfa@gmail.com', 'councilor2', '$2y$10$5CZU58IIllsB5tAntntoGOIXRs0uQI/U373rjOXdcOWtbHvnSfWHe', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Women & Family, Health & Social Welfare', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (56, 'Kian', 'Schwit', 'Von', '2007-01-09', 'Single', 'aosijdo@gmail.com', 'councilor3', '$2y$10$hu5VlmOzwMBXuID0duSB7ONu2x37JQsb8GO11HRsf9jc32WWQ.Ska', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '784', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Public Accountability and Appropriation', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (57, 'Samson', 'Poer', 'Ritchie', '2001-02-06', 'Male', 'anzxmasd@gmail.com', 'councilor4', '$2y$10$Q.AEENJYxJ5F35sB7ILD9O/aWc3EktqVBCH8mgZZBLZ89Fv2PKNXS', 'Male', 'Councilor', '1655183400_285571718_751194962552495_5114760615446740962_n.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', '', 'What is your mother\'s maiden name?', 'Test', 'False', 'Clean and Green', '2022-06-12 04:31:46', '2022-06-12 04:31:46'),
-(58, 'Ralph', 'Wex', 'Roob', '2003-01-06', 'Single', 'anbckjzxnc@gmail.com', 'councilor5', '$2y$10$lk0mqswvVGePDgVk9Xi9AeNQy4OcsxFDIanWYbcjdsUACsnn8.Jxa', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '156', 'False', 'False', '2000-01-07', NULL, 'What is your first pet\'s name?', 'Test', 'False', 'Health and Sanitation', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(59, 'Hildr', 'Ryjr', 'Adelajda', '2008-06-01', 'Single', 'asmozkm@gmail.com', 'councilor6', '$2y$10$sGuxf7hKot1lg/xxPmiWLezVSP11YKhqWsgIKwfsU6nK629szChCq', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Education', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(60, 'Maria-Angeen', 'Ester', 'Coreen', '2003-01-21', 'Single', 'xcvlkkj@gmail.com', 'councilor7', '$2y$10$XhpGN5tTf6BO3P3yp4SDW.HupNGLBWnmabg3i/zOJgaRVmhfPT1w6', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '765', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Peace and Order', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(58, 'Ralph', 'Wex', 'Roob', '2003-01-06', 'Single', 'anbckjzxnc@gmail.com', 'councilor5', '$2y$10$lk0mqswvVGePDgVk9Xi9AeNQy4OcsxFDIanWYbcjdsUACsnn8.Jxa', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Unverified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '156', 'False', 'False', '2000-01-07', NULL, 'What is your first pet\'s name?', 'Test', 'False', 'Health and Sanitation', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(59, 'Hildr', 'Ryjr', 'Adelajda', '2008-06-01', 'Single', 'asmozkm@gmail.com', 'councilor6', '$2y$10$sGuxf7hKot1lg/xxPmiWLezVSP11YKhqWsgIKwfsU6nK629szChCq', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Education', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(60, 'Maria-Angeen', 'Ester', 'Coreen', '2003-01-21', 'Single', 'xcvlkkj@gmail.com', 'councilor7', '$2y$10$XhpGN5tTf6BO3P3yp4SDW.HupNGLBWnmabg3i/zOJgaRVmhfPT1w6', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '765', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Peace and Order', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (61, 'Test', 'Test', 'Test', '2022-06-05', 'Single', 'asdsgsdoij@gmail.com', 'testaccount', '$2y$10$FWofcPUwJVs4xUur/PbNLuiwb.k/wdnVQ.eH0ij.j78HTzJziEJsm', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '421', 'False', 'False', '2022-03-02', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (62, 'Labogon ', 'Capt', 'Captain', '2022-06-08', 'Single', 'asdkaosdm@gmail.com', 'captain2', '$2y$10$ZRSweUf2tEvlWiVQth.wAuzLma9nu.TyWywDCsnpGJvtqpyOhXFOW', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', '', NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2022-04-04', '', NULL, NULL, 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (63, 'Purok', 'Kamanggahan', 'Leader', '2022-06-02', 'Single', 'dsfasasdn@gmail.com', 'purokleader2', '$2y$10$VnOLs5b2k6fZ4JGy26cnJOdNE2IKayS1DsW0jEJvJV8Ev8AS/WBbG', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '2313', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(64, 'asojoasjd', 'oadjaosdj', 'asjdoajd', '2022-03-09', 'Single', 'asfasodajdo@gmail.com', 'testaccount2', '$2y$10$uvj2ZzdR45tpp1nqRsE/Ze6eMe59wKNw.oFZtSsn84XA/4DMFNPdy', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(65, 'asdad', 'asdas', 'dasdasda', '2021-09-08', 'Single', 'asdoasjdoi@gmail.com', 'testaccount3', '$2y$10$8YPaafpEXpXu6ASLK.pcbOOxeaXd.bE9hRAZwyLg4cEteWDNze9RK', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '754', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(64, 'asojoasjd', 'oadjaosdj', 'asjdoajd', '2022-03-09', 'Single', 'asfasodajdo@gmail.com', 'testaccount2', '$2y$10$uvj2ZzdR45tpp1nqRsE/Ze6eMe59wKNw.oFZtSsn84XA/4DMFNPdy', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(65, 'asdad', 'asdas', 'dasdasda', '2021-09-08', 'Single', 'asdoasjdoi@gmail.com', 'testaccount3', '$2y$10$8YPaafpEXpXu6ASLK.pcbOOxeaXd.bE9hRAZwyLg4cEteWDNze9RK', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '754', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (66, 'qwe', 'qweqwe', 'qweqwe', '2021-06-08', 'Single', 'aasdnkjna@gmail.com', 'testaccount4', '$2y$10$fUiz2kDYB3/xy/kMp1Ea2.h8lV3Xk8OCuVEYSU2261AcjbEKnguzW', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '5153', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (68, 'Zeke', 'R. ', 'Yeager', '2006-01-03', 'Single', 'asgsdsdf@gmail.com', 'captainLabogon', '$2y$10$OYixsGaROy2k1.aUpmxUJOEFwHXUqiS2uLH8kCgxgVxT0BGbSinG6', 'Male', 'Captain', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', '', '231', 'False', 'False', '2000-06-23', NULL, NULL, NULL, 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (69, 'Armin', 'R. ', 'Yzrett', '2013-02-07', 'Single', 'asdasdoasjdo@gmail.com', 'armin1', '$2y$10$LmOqlX4Xo5jH/XaevRK6PukN/CuB9UwnKriWHrao4pwO0ggusJ3H6', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '2165', 'False', 'False', '2021-10-06', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
@@ -1677,7 +1704,8 @@ INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbi
 (84, 'oasjoasdj', 'ojasojasodi', 'ojaosjdasoi', '2022-06-07', 'Single', 'aosdjaosdjo@gmail.com', 'asjdoajsdo', '$2y$10$rXVRR1J6PK7zJjp1UbZSP.zQxWT3POWsPyj2f5i9Ck3IYehXHfz3O', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'Yes', '2022-06-07', '', 'What is your mother\'s maiden name?', 'Test', 'Yes', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (85, 'aosjdoasjdjao', 'oasjdoasdj', 'ojasodjasd', '2022-03-17', 'Single', 'oasjdoasjdO@gmail.com', 'aosjdoasdj', '$2y$10$1jJvW62VYrywf0.L8K1ixO5CUDkOC8l3pbq3KtVwMpk9HGSjeLKUS', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '232', 'False', 'Yes', '2022-05-30', '', 'What is your mother\'s maiden name?', 'Test', 'Yes', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
 (86, 'asdiasdj', 'jasoidjasodj', 'oiajsdoiajsd', '2022-06-05', 'Single', 'asjdoajsdojas@gmail.com', 'oiasjdoasjdo', '$2y$10$FP8omNt9vJilU3imcBYhn.8jly83DxwyBO5svhJ/a8kuWbNLmYwhu', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'Yes', '2022-06-05', 'oijasodja', 'What is your mother\'s maiden name?', 'Test', 'Yes', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(87, 'oasjdaoij', 'iojasojasd', 'oasjdaos', '2022-03-16', 'Single', 'asodjaosdj@gmail.com', 'oasjoasjd', '$2y$10$F.DwHnkK0mocS0iiPjPQ2uMa3B/8SSgnFwFa6/UGCfLJ3cjk4I0uS', 'Male', 'Resident', '1654979100_1633942800_Untitled.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'True', '2022-05-29', '', 'What is your mother\'s maiden name?', 'Test', 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34');
+(87, 'oasjdaoij', 'iojasojasd', 'oasjdaos', '2022-03-16', 'Single', 'asodjaosdj@gmail.com', 'oasjoasjd', '$2y$10$F.DwHnkK0mocS0iiPjPQ2uMa3B/8SSgnFwFa6/UGCfLJ3cjk4I0uS', 'Male', 'Resident', '1654979100_1633942800_Untitled.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'True', '2022-05-29', '', 'What is your mother\'s maiden name?', 'Test', 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(88, 'test', 'test', 'etst', '2022-06-06', 'Single', 'asjdoasjdo@gmail.com', 'testaccount9', '$2y$10$HoezUSo.CEw.O3hshkJKnu5eRvH8QtYqX5uGWy/KwFOPmVL4CrOii', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '5468', 'False', 'True', '2022-05-30', NULL, NULL, NULL, 'True', NULL, '2022-06-15 01:05:12', '2022-06-15 01:05:12');
 
 -- --------------------------------------------------------
 
@@ -1997,7 +2025,7 @@ ALTER TABLE `ereklamoreport`
 -- AUTO_INCREMENT for table `ereklamotype`
 --
 ALTER TABLE `ereklamotype`
-  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `members`
@@ -2009,7 +2037,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=411;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=422;
 
 --
 -- AUTO_INCREMENT for table `post`
@@ -2027,7 +2055,7 @@ ALTER TABLE `purok`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=313;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
 
 --
 -- AUTO_INCREMENT for table `request`
@@ -2051,7 +2079,7 @@ ALTER TABLE `requirementlist`
 -- AUTO_INCREMENT for table `residentcategory`
 --
 ALTER TABLE `residentcategory`
-  MODIFY `residentCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `residentCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `residents`
@@ -2069,13 +2097,13 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT for table `userreport`
 --
 ALTER TABLE `userreport`
-  MODIFY `userreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `userreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `votes`

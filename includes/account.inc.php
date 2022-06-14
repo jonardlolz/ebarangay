@@ -440,6 +440,8 @@ if(isset($_GET['edit'])):
     
 
 <?php elseif(isset($_GET['add'])): ?> 
+    <script type="text/javascript" src="node_modules/form-validation/lib/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="node_modules/form-validation/dist/jquery.validate.js"></script>
     <div class="container-fluid">
         <?php if($_SESSION['userType'] != "Admin"): ?>
             <?php if($_SESSION['userType'] == "Captain"): ?>
@@ -530,7 +532,7 @@ if(isset($_GET['edit'])):
                             <button type="submit" class="btn btn-success">Add</button>
                         </div>
                     </form> -->
-                    <form action="includes/edit_account.inc.php?addAccount" autocomplete="off" class="user" method="post">
+                    <form action="includes/edit_account.inc.php?addAccount" id='addAccount' autocomplete="off" class="user" method="post">
                         <div class="m-2">
                             <strong>Personal Information</strong>
                         </div>
@@ -567,7 +569,7 @@ if(isset($_GET['edit'])):
                                 name="userDOB" max="<?php echo date('Y-m-d') ?>" onblur="(this.type='text')" onfocus="(this.type='date')" id="userDOB" required></input>
                             </div>
                             <div class="col-sm-6">
-                                <select name="userCivilStat" id="userCivilStat" class="form-control form-control-sm form-select d-inline" required>
+                                <select name="userCivilStat" id="userCivilStat" class="custom-select" required>
                                     <option value="" hidden selected>Civil Status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
@@ -577,7 +579,7 @@ if(isset($_GET['edit'])):
                         </div>
                         <div class="form-group row"><!--Civil status-->
                             <div class="col-sm-6">
-                                <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
+                                <select class="custom-select" id="userGender" placeholder="Gender" name="userGender" required>
                                     <option value="" hidden selected>Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -590,16 +592,20 @@ if(isset($_GET['edit'])):
                         </div>
                         <div class="form-group row">
                             <div class="col">
-                                Is Voter?
-                                <input type="checkbox" onchange="checkVoter()" name="IsVoter" id="IsVoter" value="True" checked>
+                                <select class="custom-select" name="IsVoter" id="IsVoter" required>
+                                    <option value="" selected hidden>Is resident a voter?</option>
+                                    <option value="True">Yes</option>
+                                    <option value="False">No</option>
+                                </select>
                             </div>
-                            <div class="col" id="lesseeSection" style="display: none;">
+                            <div class="col" id="lesseeSection">
                                 <div class="row">
                                     <div class="col">
-                                        Lessee?
-                                    </div>
-                                    <div class="col">
-                                        <input type="checkbox" name="IsLessee" id="IsLessee" value="True">
+                                        <select class="custom-select" name="IsLessee" id="IsLessee" required>
+                                            <option value="" selected hidden>Is resident a lessee?</option>
+                                            <option value="True">Yes</option>
+                                            <option value="False">No</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -811,6 +817,36 @@ if(isset($_GET['edit'])):
                     lesseeSection.style.display = "block";
                 }
             }
+
+            $( "#addAccount" ).validate({
+                rules:{
+                    Middlename:{
+                        required: true
+                    }
+                },
+                messages:{
+                    Middlename:{
+                        required: "Please enter '-' if no middle name"
+                    }
+                },
+                errorElement: "em",
+                errorPlacement: function ( error, element ) {
+                    // Add the `invalid-feedback` class to the error element
+                    error.addClass( "invalid-feedback" );
+
+                    if ( element.prop( "type" ) === "checkbox" ) {
+                        error.insertAfter( element.next( "label" ) );
+                    } else {
+                        error.insertAfter( element );
+                    }
+                },
+                highlight: function ( element, errorClass, validClass ) {
+                    $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+                }
+            });
         </script>
     </div>
 

@@ -83,7 +83,7 @@
                                                     elseif($row["userType"] == "Admin"){
                                                         echo "img-admin-profile";
                                                     }
-                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['respondentID'] ?>"><?php echo $row["name"] ?></a> 
                                             </td>
@@ -145,7 +145,7 @@
                                                     elseif($row["userType"] == "Admin"){
                                                         echo "img-admin-profile";
                                                     }
-                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>"  width="40" height="40"/>
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
                                             </td>
@@ -205,7 +205,7 @@
                                                     elseif($row["userType"] == "Admin"){
                                                         echo "img-admin-profile";
                                                     }
-                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>"  width="40" height="40"/>
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
                                             </td>
@@ -214,12 +214,12 @@
                                             <!--Right Options-->
                                         </tr>
                                         <?php endwhile; ?>
-                                        <tr>
+                                        <tfoot>
                                             <td>Total Payment: </td>
                                             <td></td>
                                             <td><?php echo $totalPayment ?></td>
                                             <td></td>
-                                        </tr>
+                                        </tfoot>
                                         <!--Row 1-->
                                     </tbody>
                                 </table>
@@ -231,6 +231,7 @@
                                     width="100%" cellspacing="0" cellpadding="0">
                                     <thead >
                                         <tr class="bg-gradient-secondary text-white">
+                                            <th>Resident Status</th>
                                             <th scope="col">Content</th>
                                             <th scope="col">Account ID</th>
                                             <th>Officer ID</th>
@@ -258,6 +259,7 @@
                                             while($row=$accounts->fetch_assoc()):
                                         ?>
                                         <tr>
+                                            <td><?php echo $row["reportStatus"] ?></td>
                                             <td><?php echo $row["reportMessage"] ?></td>
                                             <td>
                                                 <img class="img-profile rounded-circle <?php 
@@ -282,7 +284,7 @@
                                                     elseif($row["residentUserType"] == "Admin"){
                                                         echo "img-admin-profile";
                                                     }
-                                                ?>" src="img/<?php echo $row["residentprofile"] ?>" width="40" height="40"/>
+                                                ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>"  width="40" height="40"/>
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['residentUsersID'] ?>"><?php echo $row["residentName"] ?></a> 
                                             </td>
@@ -309,7 +311,7 @@
                                                     elseif($row["officerUserType"] == "Admin"){
                                                         echo "img-admin-profile";
                                                     }
-                                                ?>" src="img/<?php echo $row["officerprofile"] ?>" width="40" height="40"/>
+                                                ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>"  width="40" height="40"/>
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['officerUsersID'] ?>"><?php echo $row["officerName"] ?></a> 
                                             </td>

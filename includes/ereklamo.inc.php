@@ -524,9 +524,16 @@
     <?php
     endif;
     if(isset($_GET['postCatAdd'])){
+        $duplicateCheck = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatName='$catName' AND reklamoCatBrgy='{$_SESSION['userBarangay']}'");
+        $row_cnt = $duplicateCheck->num_rows;
+        if($row_cnt > 0){
+            header("location: ../services.php?error=reklamocatduplicate"); 
+            exit();
+        }
+        
         extract($_POST);
         mysqli_begin_transaction($conn);
-
+        
         $a1 = mysqli_query($conn, "INSERT INTO ereklamocategory(reklamoCatName, reklamoCatBrgy, reklamoCatPriority, reklamoFee) VALUES('$catName', '{$_SESSION['userBarangay']}', '{$_GET['priority']}', '$reklamoFee')");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has entered a new reklamo category type: $catName', {$_SESSION['UsersID']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
@@ -569,8 +576,29 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "DELETE FROM ereklamocategory WHERE reklamoCatID=$id");
-        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has deleted the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+        $a1 = mysqli_query($conn, "UPDATE ereklamocategory SET status='Inactive' WHERE reklamoCatID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has hidden the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../services.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../services.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET['postCatRestore'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamocategory SET status='Active' WHERE reklamoCatID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has hidden the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
             mysqli_commit($conn);
@@ -587,6 +615,13 @@
         exit();
     }
     else if(isset($_GET['postTypeAdd'])){
+        $duplicateCheck = $conn->query("SELECT * FROM ereklamotype WHERE reklamoTypeName='$typeName' AND reklamoCatID={$_GET['catID']}");
+        $row_cnt = $duplicateCheck->num_rows;
+        if($row_cnt > 0){
+            header("location: ../services.php?error=reklamotypeduplicate"); 
+            exit();
+        }
+
         extract($_POST);
         mysqli_begin_transaction($conn);
 
@@ -914,7 +949,28 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
 
-        $a1 = mysqli_query($conn, "DELETE FROM ereklamoType WHERE reklamoTypeID=$id");
+        $a1 = mysqli_query($conn, "UPDATE ereklamotype SET status='Inactive' WHERE reklamoTypeID=$id");
+        $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has deleted the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
+
+        if($a1 && $a2){
+            mysqli_commit($conn);
+            header("location: ../services.php?error=none"); 
+            exit();
+        }
+        else{
+            echo("Error description: " . mysqli_error($conn));
+            mysqli_rollback($conn);
+            exit();
+        }
+
+        header("location: ../services.php?error=none"); //no errors were made
+        exit();
+    }
+    else if(isset($_GET['postTypeRestore'])){
+        extract($_POST);
+        mysqli_begin_transaction($conn);
+
+        $a1 = mysqli_query($conn, "UPDATE ereklamotype SET status='Active' WHERE reklamoTypeID=$id");
         $a2 = mysqli_query($conn, "INSERT INTO report(ReportType, reportMessage, UsersID, userBarangay, userPurok) VALUES('eReklamo', 'Captain has deleted the reklamo type #{$_GET['typeID']}', {$_SESSION['UsersID']} ,'{$_SESSION['userBarangay']}' ,'{$_SESSION['userPurok']}')");
 
         if($a1 && $a2){
