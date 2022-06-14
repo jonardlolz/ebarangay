@@ -165,7 +165,7 @@
     <?php if($_SESSION['userType'] != "Admin"): ?>
     <?php if(isset($_SESSION["UsersID"]) != NULL) : ?>
     <!-- Nav Item - Alerts -->
-    <?php if($_SESSION['userType'] == "Captain" || $_SESSION['userType'] == "Purok Leader" || $_SESSION['userType'] == "Resident" || $_SESSION['userType'] == "Councilor" || $_SESSION['barangayPos'] != "None"): ?>
+    <?php if($_SESSION['userType'] == "Purok Leader" || $_SESSION['userType'] == "Resident" || $_SESSION['userType'] == "Councilor" || $_SESSION['barangayPos'] != "None"): ?>
     <li class="nav-item dropdown no-arrow mx-1" id="chatbox" onclick="notificationRead()" data-id="<?php echo $_SESSION["UsersID"] ?>">
         <a class="nav-link dropdown-toggle" href="#" id="chatboxDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -476,9 +476,9 @@
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
             </li>
             <!-- Nav Item - eReklamo-->
-            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "active"; endif; ?>">
+            <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "ereklamo.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="ereklamo.php">eReklamo</a>
-            </li>
+            </li> -->
             <!-- Nav Item - residents-->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "residents.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "residents.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="residents.php">Residents</a>

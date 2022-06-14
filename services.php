@@ -48,7 +48,7 @@
                                                             </a>
                                                             <div class="dropdown-divider"></div>
                                                             <a class="dropdown-item delete_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
-                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete
+                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Hide
                                                             </a>
                                                         </div>
                                                     </div>
@@ -92,14 +92,106 @@
                                 <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
                             </div>
                             <?php endwhile; ?>
-                            <div class="alert alert-danger">
-                                <h3>That document already exists!</h3>
-                            </div>
+                            <?php if(isset($_GET['error'])): ?> 
+                                <?php if($_GET['error'] == 'documentduplicate'): ?>
+                                    <div class="alert alert-danger">
+                                        <h3>That document already exists!</h3>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
-                        <div class="row">
-                            <!-- <div class="col m-4">
+                        <div class="container p-4">
+                            <button class="btn btn-primary add_ereklamoCat" data-id="<?php echo $_SESSION['userBarangay'] ?>"><i class="fas fa-plus"></i> New Reklamo Category</button>
+                            <?php $i = 0;
+                            $reklamo = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}'"); ?>
+                            <?php while($i < mysqli_num_rows($reklamo)): ?>
+                            <div class="row" style="margin: 25px">
+                                <?php while($reklamoRow = $reklamo->fetch_assoc()): ?>
+                                <div class="col-sm-4">
+                                    <?php if($reklamoRow['status'] == 'Active'): ?>
+                                    <div class="card" style="min-height: 100px; border-color: green">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <?php echo $reklamoRow['reklamoCatName'] ?>
+                                                    </div>
+                                                    <div class="col-sm-3" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item document_edit" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" data-docu="<?php echo $reklamoRow['reklamoCatName'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item delete_document" data-id="<?php echo $reklamoRow['reklamoCatID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Hide
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                            <hr>
+                                            <p class="card-text">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        Test
+                                                    </div>
+                                                    <div class="col">
+                                                        <i class="fas fa-cog"></i>
+                                                    </div>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <?php else: ?>
+                                    <div class="card" style="min-height: 100px; border-color: red">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <?php echo $documentRow['documentName'] ?>
+                                                    </div>
+                                                    <div class="col-sm-3" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['DocumentID'] ?>" data-docu="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item active_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-chevron-up fa-sm fa-fw mr-2 text-gray-600"></i> Activate
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                            <p class="card-text"><?php if(isset($documentRow['documentdesc'])){echo $documentRow['documentdesc'];} ?></p>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                                <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
+                            </div>
+                            <?php endwhile; ?>
+                            <?php if(isset($_GET['error']) == 'duplicate'): ?> 
+                            <div class="alert alert-danger">
+                                <h3>That document already exists!</h3>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <!-- <div class="col m-4">
                                 <div class="card" style="min-height: 200px">
                                     <div class="card-header">
                                         <div class="row">
@@ -213,7 +305,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>

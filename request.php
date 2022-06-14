@@ -1185,7 +1185,7 @@
                                         <label>Choose document:</label>
                                         <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
                                             <option value="" hidden selected>Select</option>
-                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                            <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}' AND status='Active'");
                                             while($documents = $requestSql->fetch_assoc()): ?>
                                             <?php 
                                                 if($diff <= $documents['minimumMos']){
