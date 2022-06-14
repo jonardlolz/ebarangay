@@ -57,6 +57,28 @@ if(isset($_GET["continueRequest"])){ ?>
             <?php endif; ?>
         </div>
     </form>
+    
+<?php } if(isset($_GET['disapproveReport'])){ ?>
+
+<div class="container-fluid">
+    <form action="includes/request.inc.php?disapproveID=<?php echo $_GET['RequestID'] ?>" method="POST">
+        <div class="row">
+            <div class="col">
+                <p>Report Message: </p>
+            </div>
+            <div class="col-sm-8">
+                <textarea name="reportMessage" id="reportMessage" class="form-control" rows="3" style="resize:none;" required></textarea>
+            </div>
+        </div>
+        <hr>
+        <div class="footer d-flex flex-row-reverse">
+            <button class="btn btn-primary">Send Report</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(".container-fluid").parent().siblings(".modal-footer").remove();
+</script>
 <?php } 
 if(isset($_GET["addRequest"])){
     extract($_POST);
@@ -330,6 +352,7 @@ elseif(isset($_GET["approveID"])){
     }
 }
 elseif(isset($_GET["disapproveID"])){
+    extract($_POST);
     $id = $_GET['disapproveID'];
 
     $requestRes = $conn->query("
@@ -343,9 +366,9 @@ elseif(isset($_GET["disapproveID"])){
 
     $approvedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
 
-    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, 'Purok Leader has disapproved request#$id for not meeting the requirements.', 'Disapproved', {$requestData['amount']});");
+    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Disapproved', {$requestData['amount']});");
     $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='Disapproved', request.userType='Purok Leader' WHERE RequestID=$id");
-    $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has disapproved your request for {$requestData['documentType']}. Reason: The request did not meet the requirements.', 'request', '{$requestData['UsersID']}', 'Resident')");
+    $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has disapproved your request for {$requestData['documentType']}. Reason: $reportMessage', 'request', '{$requestData['UsersID']}', 'Resident')");
 
     
     if($a1 && $a2 && $a3){
@@ -455,6 +478,7 @@ if(isset($_GET['unpaid'])){
         exit();
     }
 }
+
 if(isset($_GET['viewRequirement'])): 
     $gal = scandir('../img/erequest/'.$_GET['RequestID']);
     unset($gal[0]);
@@ -523,15 +547,40 @@ if(isset($_GET['viewRequirement'])):
             </div>
         </div>
         <div class="footer d-flex flex-row-reverse">
-            <a href="includes/request.inc.php?approveID=<?php echo $_GET["RequestID"] ?>">
-                <button class="btn btn-sm btn-success"><i class="fas fa-check"></i> Approve</button>
-            </a>
-            <a href="includes/request.inc.php?disapproveID=<?php echo $_GET["RequestID"] ?>">
-            <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Disapprove</button>
-            </a>
+            <button class="btn btn-sm btn-success approve_document" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
+            <button class="btn btn-sm btn-danger report_disapprove" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-times"></i> Disapprove</button>
         </div>
     </div>
     <script>
+        window.secondary_modal = function($title = '' , $url='',$size=""){
+            start_load()
+            $.ajax({
+                url:$url,
+                error:err=>{
+                    console.log()
+                    alert("An error occured")
+                },
+                success:function(resp){
+                    if(resp){
+                        $('#secondary_modal .modal-title').html($title)
+                        $('#secondary_modal .modal-body').html(resp)
+                        if($size != ''){
+                            $('#secondary_modal .modal-dialog').addClass($size)
+                        }else{
+                            $('#secondary_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                        }
+                        $('#secondary_modal').modal({
+                        show:true,
+                        backdrop:'static',
+                        keyboard:false,
+                        focus:true
+                        })
+                        end_load()
+                    }
+                }
+            })
+        }
+
         $('#next').click(function(){
             var cslide = $('.slide:visible').attr('data-slide')
             if(cslide == '<?php echo $i ?>'){
@@ -568,6 +617,38 @@ if(isset($_GET['viewRequirement'])):
             if(this.scrollHeight <= 117)
             $(this).height(0).height(this.scrollHeight);
         })
+
+        $('.approve_document').click(function(){
+            _conf("Are you sure you want to approve this document?", "approve_document", [$(this).attr('data-id')])
+        })
+
+        function approve_document($id){
+            start_load()
+            $.ajax({
+                url:'includes/request.inc.php?approveID',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+
+        $('.report_disapprove').click(function(){
+            secondary_modal("Requirements given","includes/request.inc.php?disapproveReport&RequestID="+$(this).attr('data-id'), "modal-md");
+        })
+
+        function report_disapprove($id){
+            start_load()
+            $.ajax({
+                url:'includes/request.inc.php?disapproveID',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
     </script>
 
 <?php endif; ?>

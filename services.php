@@ -27,7 +27,8 @@
                             <div class="row" style="margin: 25px">
                                 <?php while($documentRow = $documents->fetch_assoc()): ?>
                                 <div class="col-sm-4">
-                                    <div class="card" style="min-height: 100px;">
+                                    <?php if($documentRow['status'] == 'Active'): ?>
+                                    <div class="card" style="min-height: 100px; border-color: green">
                                         <div class="card-body">
                                             <h5 class="card-title">
                                                 <div class="row">
@@ -56,10 +57,44 @@
                                             <p class="card-text"><?php if(isset($documentRow['documentdesc'])){echo $documentRow['documentdesc'];} ?></p>
                                         </div>
                                     </div>
+                                    <?php else: ?>
+                                    <div class="card" style="min-height: 100px; border-color: red">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <?php echo $documentRow['documentName'] ?>
+                                                    </div>
+                                                    <div class="col-sm-3" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <a type="button" class="btn-sm dropdown-toggle btn m-0 btn-circle"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item document_edit" data-id="<?php echo $documentRow['DocumentID'] ?>" data-docu="<?php echo $documentRow['documentName'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Options
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item active_document" data-id="<?php echo $documentRow['DocumentID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-chevron-up fa-sm fa-fw mr-2 text-gray-600"></i> Activate
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                            <p class="card-text"><?php if(isset($documentRow['documentdesc'])){echo $documentRow['documentdesc'];} ?></p>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
                                 </div>
                                 <?php $i++; if($i % 3 == 0){ break; } endwhile; ?>
                             </div>
                             <?php endwhile; ?>
+                            <div class="alert alert-danger">
+                                <h3>That document already exists!</h3>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="released" role="tabpanel" aria-labelledby="released-tab">
@@ -379,7 +414,10 @@
         print_modal("<center><b>Print</b></center></center>","brgy_clearance.php?requestID="+$(this).attr('data-id'));
     })
     $('.delete_document').click(function(){
-        _conf("Are you sure you want to delete this document?","delete_document",[$(this).attr('data-id')])
+        _conf("Are you sure you want to hide this document?","delete_document",[$(this).attr('data-id')])
+    })
+    $('.active_document').click(function(){
+        _conf("Are you sure you want to activate this document?","active_document",[$(this).attr('data-id')])
     })
     $('.paid_request').click(function(){
         _conf("Confirm the request is paid?","paid_request",[$(this).attr('data-id')])
@@ -460,7 +498,17 @@
             url:'includes/document.inc.php?delete_document=1',
             method:'POST',
             data:{id:$id},
-            
+            success:function(){
+                location.reload()
+            }
+        })
+    }
+    function active_document($id){
+        start_load()
+        $.ajax({
+            url:'includes/document.inc.php?active_document=1',
+            method:'POST',
+            data:{id:$id},
             success:function(){
                 location.reload()
             }

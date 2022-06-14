@@ -1,465 +1,625 @@
-<?php include_once "includes/dbh.inc.php"; ?>
+<?php include 'includes/dbh.inc.php' ?>
+<?php include 'header.php' ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<div class="col d-flex flex-column">
 
-    <head>
+<?php if($_SESSION["userType"] == "Resident" || $_SESSION["userType"] == "Purok Leader" || $_SESSION["userType"] == "Secretary" || $_SESSION["userType"] == "Treasurer"): ?>
+    <?php 
+        $notif = $conn->query("SELECT * FROM votes INNER JOIN election ON election.electionID = votes.electionID WHERE UsersID={$_SESSION['UsersID']} AND electionStatus='Ongoing'");
+        $row_cnt = mysqli_num_rows($notif);
+        if($row_cnt <= 0):
+    ?>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
 
-        <title>EBARANGAY - Register Account</title>
-        
-        
-        <!-- Custom styles for this template-->
-        <link rel="stylesheet" href="css/multistepform.css">
-        <link href="css/sb-admin-2.css" rel="stylesheet">
-        <link rel="shortcut icon" href="img/favicon/favicon.ico">
-        <link rel="icon" type="image/gif" href="img/favicon/favicon-32x32.png">
-
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
-        <script type="text/javascript" src="node_modules/form-validation/lib/jquery-3.1.1.js"></script>
-        <script type="text/javascript" src="node_modules/form-validation/dist/jquery.validate.js"></script>
-        <script src="node_modules/Visual-Password-Strength-Indicator-Plugin-For-jQuery-Passtrength-js/src/jquery.passtrength.js"></script>
-        <link rel="stylesheet" href="node_modules/Visual-Password-Strength-Indicator-Plugin-For-jQuery-Passtrength-js/src/passtrength.css">
-        
-        
-    </head>
-    <body>
-        <!-- Container -->
-        <div class="container">
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-5 d-none d-lg-block">
-                            <div class="p-5 d-flex justify-content-center align-items-center">
-                                <img src="img/eb-logo.png" alt="EBARANGAY LOGO">
-                            </div>
-                        </div>
-                        <div class="col-lg-7 text-dark">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="mb-4 text-capitalize">Create an Account!</h1>
-                                </div>
-                                <form id="msform" method="post" autocomplete="off" class="form-horizontal" action="includes/signup.inc.php">
-                                    <ul id="progressbar">
-                                        <li class="active" id="account"><strong>Account</strong></li>
-                                        <li id="personal"><strong>Personal</strong></li>
-                                        <li id="payment"><strong>Image</strong></li>
-                                        <li id="confirm"><strong>Finish</strong></li>
-                                    </ul>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <br>
-                                    <fieldset>
-                                        <div class="form-card">
-                                            <div>
-                                                <strong>Personal Information</strong>
-                                                <hr>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-3">
-                                                    <input type="text" class="form-control form-control-user"
-                                                        id="userFirstname" placeholder="First name" name="userFirstname" required>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <input type="text" class="form-control form-control-user"
-                                                        id="userMiddlename" placeholder="Middle name" name="userMiddlename">
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <input type="text" class="form-control form-control-user"
-                                                        id="userLastname" placeholder="Last name" name="userLastname" required>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <input type="text" class="form-control form-control-user"
-                                                        id="userSuffix" placeholder="Suffix" name="userSuffix" list="suffixList" value="">
-                                                    <datalist id="suffixList">
-                                                        <option value="Jr"></option>
-                                                        <option value="Sr"></option>
-                                                        <option value="I"></option>
-                                                        <option value="II"></option>
-                                                        <option value="III"></option>
-                                                        <option value="IV"></option>
-                                                        <option value="V"></option>
-                                                    </datalist>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="text" max="<?php echo date('Y-m-d') ?>" class="form-control form-control-user" placeholder="Birthdate" id="userDOB" name="userDOB" onblur="(this.type='text')" onfocus="(this.type='date')" required>
-                                                </div>
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <select class="custom-select" id="userCivilStat" placeholder="Civil Status" name="userCivilStat" required>
-                                                        <option value="none" disabled hidden selected>Civil Status</option>
-                                                        <option value="Single">Single</option>
-                                                        <option value="Married">Married</option>
-                                                        <option value="Divorced">Divorced</option>
-                                                        <option value="Widow">Widow</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6">
-                                                    <select class="custom-select" id="userGender" placeholder="Gender" name="userGender" required>
-                                                        <option value="" hidden selected>Gender</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-2 align-self-center">
-                                                    <label for="">Voter</label>
-                                                </div>
-                                                <div class="col-sm-2 align-self-center">
-                                                    <input type="radio" name="isVoter" id="isVoter" value="True">
-                                                    <label for="">Yes</label>
-                                                </div>
-                                                <div class="col-sm-2 align-self-center">
-                                                    <input type="radio" name="isVoter" id="isVoter" value="False">
-                                                    <label for="">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input type="button" name="next" class="next action-button" value="Next"/>
-                                    </fieldset>
-                                    <fieldset>
-                                        <div class="form-card">
-                                            <div>
-                                                <strong>Address Information</strong>
-                                                <hr>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6">
-                                                    <select name="userBarangay" id="userBarangay" class="custom-select" onfocus="changecat(this.value);" onChange="changecat(this.value);" required>
-                                                        <option value="" hidden selected>Barangay</option>
-                                                        <?php $barangay = $conn->query("SELECT * FROM barangay WHERE Status='Active'");
-                                                        while($brow = $barangay->fetch_assoc()): ?>
-                                                        <option value="<?php echo $brow['BarangayName'] ?>"><?php echo $brow['BarangayName'] ?></option>
-                                                        <?php endwhile; ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <select class="custom-select" id="userPurok" placeholder="Purok" name="userPurok" required>
-                                                        <option value="none" disabled selected hidden>Purok</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="text" class="form-control form-control-user" id="userHouseNum"
-                                                        placeholder="House #" name="userHouseNum" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input type="button" name="next" class="next action-button" value="Next"/>
-                                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                                    </fieldset>
-                                    <fieldset>
-                                        <div>
-                                            <strong>Account Information</strong>
-                                            <hr>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="text" class="form-control form-control-user" id="userName"
-                                                    placeholder="Username" name="userName">
-                                            </div>
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="email" class="form-control form-control-user" id="userEmail"
-                                                placeholder="Email Address" name="userEmail">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="password" class="form-control form-control-user"
-                                                    id="userPwd" placeholder="Password" name="userPwd">
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <input type="password" class="form-control form-control-user"
-                                                    id="userRptPwd" placeholder="Repeat Password" name="userRptPwd">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <select class="custom-select" name="secretQuestion" id="privateQuestion" required>
-                                                    <option value="" hidden>Secret Question</option>
-                                                    <option>What is your mother's maiden name?</option>
-                                                    <option>What is your first pet's name?</option>
-                                                    <option>What's the name of your first bestfriend?</option>
-                                                    <option>What's the name of the school you first went to?</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <input type="text" name="secretAnswer" class="form-control form-control-user" placeholder="Private answer" required>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="form-group row pr-5 pl-5">
-                                            <input class="form-check-input" type="checkbox" id="agree" name="agree">
-                                            <label class="form-check-label">I hereby declare that the information provided is true and correct. I also understand that any willful
-                                            dishonesty may render for refusal of this registration. I also understand I am entitled to update and correct the above information.</label>
-                                        </div>
-                                        <hr>
-                                        <div class="form-group row">
-                                            <div class="col">
-                                                <button type="submit" class="btn btn-primary btn-user btn-block" name="submit">Sign up</button>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="login.php">Already have an account? Login!</a>
-                                </div>
-                            </div>
-                        </div>
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Election</h1>
+        </div>
+        <?php if($_SESSION['VerifyStatus'] == "Pending" || $_SESSION['VerifyStatus'] == "Unverified"): ?>
+            <div class='alert alert-danger' role='alert' style="text-align: center">
+                You're still unverified!
+            </div>
+        <?php else: ?>
+        <?php 
+            $posts = $conn->query("SELECT * FROM election WHERE electionStatus='Ongoing' AND barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}'");
+            $row_cnt = mysqli_num_rows($posts);
+            if($row_cnt > 0):
+                while($row=$posts->fetch_assoc()):
+        ?>
+        <form action="includes/vote.inc.php?electionID=<?php echo $row['electionID'] ?>" class="user" method="post">
+            <div class="card shadow mb-3">
+                <div class="card-header m-0 p-1">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800"><?php echo $row["electionTitle"]; ?></h1>
                     </div>
-                    <!-- End Nested Row within Card Body -->
+                </div>
+                <div class="card-body">
+                    <?php 
+                        $i = 0;
+                        $posi = array("Purok Leader");
+                        while($i < count($posi)):
+                    ?>
+                    <div class="row">
+                        <?php 
+                        $cands = $conn->query("SELECT candidates.*, users.profile_pic FROM candidates 
+                        INNER JOIN users ON users.UsersID=candidates.UsersID 
+                        INNER JOIN election ON election.electionID = candidates.electionID
+                        WHERE position='{$posi[$i]}' AND election.electionStatus='Ongoing' AND election.barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}'");
+                        while($crow=$cands->fetch_assoc()):
+                            $crow["position"] = str_replace(" ", "", $crow["position"]);
+                        ?>
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <input type="radio" class="flat-red" name="<?php echo $crow["position"] ?>" value="<?php echo $crow["candidateID"] ?>" style="position: absolute;">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
+                                                <b><?php echo $crow["lastname"]. ", " . $crow["firstname"] ?></b></div>
+                                            <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
+                                                Running for:  <b><?php echo $crow["position"] ?></b></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <img src="img/<?php echo $crow["profile_pic"] ?>" alt="EBARANGAY LOGO" width="70rem" height="80rem">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endwhile; ?>
+                    </div>
+                    <?php $i++; endwhile; ?>
+                </div>
+                <div class="card-footer d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-primary" name="submit" id='submit'>Save</button>
                 </div>
             </div>
-            
-        </div>
-        <!-- End of Container -->
-
-        
-    </body>
-    
-    <script type="text/javascript">
-
-        $.validator.setDefaults( {
-            submitHandler: function () {
-                $("form#msform").submit()
-            }
-        } );
-
-        $( document ).ready( function () {
-            var current_fs, next_fs, previous_fs; //fieldsets
-            var opacity;
-            var current = 1;
-            var steps = $("fieldset").length;
-
-            setProgressBar(current);
-
-            $(".next").click(function(){
-                
-                current_fs = $(this).parent();
-                next_fs = $(this).parent().next();
-                
-                //Add Class Active
-                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-                
-                //show the next fieldset
-                next_fs.show(); 
-                //hide the current fieldset with style
-                current_fs.animate({opacity: 0}, {
-                    step: function(now) {
-                        // for making fielset appear animation
-                        opacity = 1 - now;
-
-                        current_fs.css({
-                            'display': 'none',
-                            'position': 'relative'
-                        });
-                        next_fs.css({'opacity': opacity});
-                    }, 
-                    duration: 500
-                });
-                setProgressBar(++current);
-            });
-
-            $(".previous").click(function(){
-                
-                current_fs = $(this).parent();
-                previous_fs = $(this).parent().prev();
-                
-                //Remove class active
-                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-                
-                //show the previous fieldset
-                previous_fs.show();
-
-                //hide the current fieldset with style
-                current_fs.animate({opacity: 0}, {
-                    step: function(now) {
-                        // for making fielset appear animation
-                        opacity = 1 - now;
-
-                        current_fs.css({
-                            'display': 'none',
-                            'position': 'relative'
-                        });
-                        previous_fs.css({'opacity': opacity});
-                    }, 
-                    duration: 500
-                });
-                setProgressBar(--current);
-            });
-
-            function setProgressBar(curStep){
-                var percent = parseFloat(100 / steps) * curStep;
-                percent = percent.toFixed();
-                $(".progress-bar")
-                .css("width",percent+"%")   
-            }
-
-            $(".submit").click(function(){
-                return false;
-            })
-
-            //Validation section
-            $( "#msform" ).validate( {
-                rules: {
-                    userHouseNum: {
-                        required: true,
-                        numbersonly: true
-                    },
-                    userName: {
-                        required: true,
-                        minlength: 5,
-                        remote: {
-                            url: "includes/validation.inc.php?userExist",
-                            type: "post",
-                            data:{
-                                username: function(){
-                                    return $( "#userName" ).val();
-                                }
-                            }
-                        }
-                    },
-                    userPwd: {
-                        required: true,
-                        strong_password: true,
-                        minlength: 8
-                    },
-                    userRptPwd: {
-                        required: true,
-                        equalTo: "#userPwd"
-                    },
-                    userEmail: {
-                        required: true,
-                        email: true,
-                        remote: {
-                            url: "includes/validation.inc.php?emailExist",
-                            type: "post",
-                            data:{
-                                userEmail: function(){
-                                    return $( "#userEmail" ).val();
-                                }
-                            }
-                        }
-                    },
-                    agree: "required"
-                },
-                messages: {
-                    userHouseNum: {
-                        numbersonly: "Please enter numbers only"
-                    },
-                    userName: {
-                        required: "Please enter a username",
-                        minlength: "Your username must consist of at least 5 characters",
-                        remote: "Username is already in use"
-                    },
-                    userPwd: {
-                        required: "Please provide a password",
-                        minlength: "Your password must be at least 5 characters long"
-                    },
-                    userRptPwd: {
-                        required: "Please repeat the password",
-                        equalTo: "Please enter the same password as above"
-                    },
-                    userEmail: {
-                        email: "Please enter a valid email address",
-                        remote: "Email is already in use"
-                    },
-                    agree: "Please accept our policy"
-                },
-                errorElement: "em",
-                errorPlacement: function ( error, element ) {
-                    // Add the `invalid-feedback` class to the error element
-                    error.addClass( "invalid-feedback" );
-
-                    if ( element.prop( "type" ) === "checkbox" ) {
-                        error.insertAfter( element.next( "label" ) );
-                    } else {
-                        error.insertAfter( element );
-                    }
-                },
-                highlight: function ( element, errorClass, validClass ) {
-                    $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-                }
-            } );
-
-            $.validator.addMethod("strong_password", function (value, element) {
-                let password = value;
-                if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?])(.{8,20}$)/.test(password))) {
-                    return false;
-                }
-                return true;
-                }, function (value, element) {
-                    let password = $(element).val();
-                    if (!(/^(.{8,20}$)/.test(password))) {
-                        return 'Password must be between 8 to 20 characters long.';
-                    }
-                    else if (!(/^(?=.*[A-Z])/.test(password))) {
-                        return 'Password must contain at least one uppercase.';
-                    }
-                    else if (!(/^(?=.*[a-z])/.test(password))) {
-                        return 'Password must contain at least one lowercase.';
-                    }
-                    else if (!(/^(?=.*[0-9])/.test(password))) {
-                        return 'Password must contain at least one digit.';
-                    }
-                    else if (!(/^(?=.*[!@#$%^&?])/.test(password))) {
-                        return "Password must contain special characters from @#$%&.";
-                    }
-                    return false;
-            });
-            $.validator.addMethod("numbersonly", function (value, element) {
-                let password = value;
-                if (!(/^[0-9]+$/i.test(password))) {
-                    return false;
-                }
-                return true;
-            }); 
-        } );
-        
-        $("#userPwd").passtrength({
-            passwordToggle:true,
-            eyeImg:"img/svg/eye.svg"
-        });
-
-        var mealsByCategory = {
-            <?php 
-                $puroks = array();
-                $barangay = $conn->query("SELECT * FROM barangay");
-                while($brow = $barangay->fetch_assoc()):
-            ?>
-            <?php 
-            echo json_encode($brow["BarangayName"]) ?> : <?php $purok = $conn->query("SELECT * FROM purok WHERE BarangayName='{$brow['BarangayName']}' AND Active='True'"); 
-            while($prow = $purok->fetch_assoc()):
-            $puroks[] = $prow["PurokName"]?>
-            <?php endwhile; echo json_encode($puroks). ","; $puroks = array();?>
             <?php endwhile; ?>
-        }
+        </form>
 
-        function changecat(value) {
-            if (value.length == 0) document.getElementById("userPurok").innerHTML = "<option></option>";
-            else {
-                var catOptions = "";
-                for (categoryId in mealsByCategory[value]) {
-                    catOptions += "<option>" + mealsByCategory[value][categoryId] + "</option>";
-                }
-                document.getElementById("userPurok").innerHTML = catOptions;
-            }
+        <?php else: ?>
+
+            <div class='alert alert-warning' role='alert' style="text-align: center">
+                No election is currently running!
+            </div>
+
+        <?php endif; ?>
+        <?php endif; ?>
+    </div>
+
+
+
+    <?php else: ?>
+
+    <div class="row">
+        <div class="col">
+            <div class="container-fluid">  
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Election</h1>
+                </div>
+
+                <div class='alert alert-success' role='alert'>
+                Your vote has already been submitted! Thanks for voting!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php endif; ?>
+
+
+<?php elseif($_SESSION["userType"] == "Captain"): ?>
+
+<div class="col d-flex flex-column">
+    <div class="card shadow mb-4 m-4">
+        <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-dark">Elections</h6>
+                <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_election" href="javascript:void(0)"></a>
+        </div>
+        
+        <div class="card-body" style="font-size: 75%">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="false">Pending</a>
+                    <a class="nav-item nav-link" id="nav-ongoing-tab" data-toggle="tab" href="#nav-ongoing" role="tab" aria-controls="nav-ongoing" aria-selected="false">Ongoing</a>
+                    <a class="nav-item nav-link" id="nav-finished-tab" data-toggle="tab" href="#nav-finished" role="tab" aria-controls="nav-finished" aria-selected="false">Finished</a>
+                    <a class="nav-item nav-link" id="nav-cancelled-tab" data-toggle="tab" href="#nav-cancelled" role="tab" aria-controls="nav-cancelled" aria-selected="false">Cancelled</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" 
+                            id="dataTable" width="100%" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th scope="col">Election Title</th>
+                                    <th scope="col">Purok</th>
+                                    <th scope="col">Date Created</th>
+                                    <th scope="col">Candidates</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                <!--Row 1-->
+                                <?php 
+                                    $election = $conn->query("SELECT election.*, 
+                                    concat(users.Firstname, ' ', users.Lastname) as name,
+                                    users.profile_pic, 
+                                    users.userType FROM election 
+                                    INNER JOIN users ON election.created_by = users.UsersID 
+                                    WHERE barangay='{$_SESSION['userBarangay']}' AND electionStatus='Paused'");
+                                    while($row=$election->fetch_assoc()):
+                                ?>
+                                <tr>
+                                    <td><?php echo $row["electionTitle"] ?></td>
+                                    <td><?php echo $row["purok"] ?></td>
+                                    <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
+                                    <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                                    <td>
+                                        <?php echo $row["electionStatus"] ?>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
+                                        <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
+                                        <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
+                                    </td>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-ongoing" role="tabpanel" aria-labelledby="nav-ongoing-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark" width="100%" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th scope="col">Election Title</th>
+                                    <th scope="col">Purok</th>
+                                    <th scope="col">Date Created</th>
+                                    <th scope="col">Candidates</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--Row 1-->
+                                <?php 
+                                    $election = $conn->query("SELECT election.*, 
+                                    concat(users.Firstname, ' ', users.Lastname) as name,
+                                    users.profile_pic, 
+                                    users.userType FROM election 
+                                    INNER JOIN users ON election.created_by = users.UsersID 
+                                    WHERE barangay='{$_SESSION['userBarangay']}' AND electionStatus='Ongoing'");
+                                    while($row=$election->fetch_assoc()):
+                                ?>
+                                <tr>
+                                    <td><?php echo $row["electionTitle"] ?></td>
+                                    <td><?php echo $row["purok"] ?></td>
+                                    <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
+                                    <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                                    <td>
+                                        <?php echo $row["electionStatus"] ?>
+                                    </td>
+                                    <td>
+                                        <?php if($row['electionStatus'] == "Paused"): ?>
+                                            <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
+                                            <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
+                                            <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
+                                        <?php elseif($row['electionStatus'] == "Ongoing"): ?>
+                                            <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
+                                            <button class="btn btn-danger btn-sm cancel_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-times"></i> Cancel</button>
+                                        <?php elseif($row['electionStatus'] == "Finished"): ?>
+                                            <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-finished" role="tabpanel" aria-labelledby="nav-finished-tab">
+                
+                </div>
+                <div class="tab-pane fade" id="nav-cancelled" role="tabpanel" aria-labelledby="nav-cancelled-tab">
+                
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<?php endif; ?>
+
+<div class="modal fade" id="manageCandidate" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="">
+    <div class="modal-dialog modal-lg" role="document" style="border-color:#384550 ;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Manage Candidates for </h5> 
+                <?php 
+                    $cands = $conn->query("SELECT * FROM election");
+                    $crow=$cands->fetch_assoc();
+                        
+                ?>
+                <button class="btn btn-primary btn-sm btn-flat add_candidate ml-3" href="javascript:void(0)" disabled><i class="fas fa-plus"></i> Add candidate</a>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                <table class="table table-bordered text-center text-dark" 
+                    id="dataTable2" width="100%" cellspacing="0" cellpadding="0">
+                    <thead >
+                        <tr class="bg-gradient-secondary text-white">
+                            <th scope="col">UsersID</th>
+                            <th scope="col">Election Term</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Platform</th>
+                            <th scope="col">Edit</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        <!--Row 1-->
+                        <?php 
+                            $candidates = $conn->query("SELECT candidates.*, concat(users.Firstname, ' ', users.Lastname) 
+                            as name, users.profile_pic, users.userType, election.electionTitle 
+                            FROM candidates 
+                            INNER JOIN users 
+                            on users.UsersID = candidates.UsersID 
+                            INNER JOIN election 
+                            ON election.electionID = candidates.electionID");
+                            while($row=$candidates->fetch_assoc()):
+                                if($row["userType"] == "Admin"){
+                                    continue;
+                                }
+                        ?>
+                        <tr>
+                            <td><?php echo $row["UsersID"] ?></td>
+                            <td><?php echo $row["electionTitle"] ?></td>
+                            <td>
+                                <img class="img-profile rounded-circle <?php 
+                                    if($row["userType"] == "Resident"){
+                                        echo "img-res-profile";
+                                    }
+                                    elseif($row["userType"] == "Purok Leader"){
+                                        echo "img-purokldr-profile";
+                                    }
+                                    elseif($row["userType"] == "Captain"){
+                                        echo "img-capt-profile";
+                                    }
+                                    elseif($row["userType"] == "Secretary"){
+                                        echo "img-sec-profile";
+                                    }
+                                    elseif($row["userType"] == "Treasurer"){
+                                        echo "img-treas-profile";
+                                    }
+                                    elseif($row["userType"] == "Admin"){
+                                        echo "img-admin-profile";
+                                    }
+                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                
+                                <?php echo $row["name"] ?>
+                            </td>
+                            <td><?php echo $row["position"] ?></td>
+                            <td><?php echo $row["platform"] ?></td>
+                            <td>
+                                <button class="btn btn-success btn-sm edit_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-edit"></i>Edit</button>
+                                <button class="btn btn-danger btn-sm delete_candidate btn-flat" data-id="<?php echo $row['candidateID'] ?>"><i class="fas fa-trash"></i>Delete</button>
+                            </td>
+                            
+                            <!--Right Options-->
+                        </tr>
+                        <?php endwhile; ?>
+                        <!--Row 1-->
+                    </tbody>
+                </table> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Close</button> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function() {
+        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+        } );
+
+        $('table').DataTable({
+            "scrollY": "400px",
+            "scrollCollapse": true,
+            "paging": false,
+            "ordering": false
+        });
+    });
+
+    $(document).on("click", ".manage_candidates", function () {
+        var electionID = $(this).attr('data-electionid');
+        var purok = $(this).attr('data-id');
+        $(".modal-dialog .add_candidate").attr( 'data-electionid', electionID );
+        $(".modal-dialog .add_candidate").attr( 'data-id', purok );
+        document.getElementById('exampleModalLabel').innerHTML = "Manage candidates for Purok " + purok;
+        
+    });
+
+
+    window.start_load = function(){
+	    $('body').prepend('<div id="preloader2"></div>')
+	  }
+	  window.end_load = function(){
+	    $('#preloader2').fadeOut('fast', function() {
+	        $(this).remove();
+	      })
+	  }
+	 window.viewer_modal = function($src = ''){
+	    start_load()
+	    var t = $src.split('.')
+	    t = t[1]
+	    if(t =='mp4'){
+	      var view = $("<video src='"+$src+"' controls autoplay></video>")
+	    }else{
+	      var view = $("<img src='"+$src+"' />")
+	    }
+	    $('#viewer_modal .modal-content video,#viewer_modal .modal-content img').remove()
+	    $('#viewer_modal .modal-content').append(view)
+	    $('#viewer_modal').modal({
+	            show:true,
+	            backdrop:'static',
+	            keyboard:false,
+	            focus:true
+	          })
+	          end_load()  
+
+	}
+	  window.uni_modal = function($title = '' , $url='',$size=""){
+	      start_load()
+	      $.ajax({
+	          url:$url,
+	          error:err=>{
+	              console.log()
+	              alert("An error occured")
+	          },
+	          success:function(resp){
+	              if(resp){
+	                  $('#uni_modal .modal-title').html($title)
+	                  $('#uni_modal .modal-body').html(resp)
+	                  if($size != ''){
+	                      $('#uni_modal .modal-dialog').addClass($size)
+	                  }else{
+	                      $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+	                  }
+	                  $('#uni_modal').modal({
+	                    show:true,
+	                    backdrop:'static',
+	                    keyboard:false,
+	                    focus:true
+	                  })
+	                  end_load()
+	              }
+	          }
+	      })
+	  }
+      window.view_modal = function($title = '' , $url='',$size=""){
+	      start_load()
+	      $.ajax({
+	          url:$url,
+	          error:err=>{
+	              console.log(err)
+	              alert("An error occured")
+	          },
+	          success:function(resp){
+	              if(resp){
+	                  $('#view_modal .modal-title').html($title)
+	                  $('#view_modal .modal-body').html(resp)
+	                  if($size != ''){
+	                      $('#view_modal .modal-dialog').addClass($size)
+	                  }else{
+	                      $('#view_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-xl")
+	                  }
+	                  $('#view_modal').modal({
+	                    show:true,
+	                    backdrop:'static',
+	                    keyboard:false,
+	                    focus:true
+	                  })
+	                  end_load()
+	              }
+	          }
+	      })
+	  }
+        window._conf = function($msg='',$func='',$params = []){
+            $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
+            $('#confirm_modal .modal-body').html($msg)
+            $('#confirm_modal').modal('show')
         }
+	   window.alert_toast= function($msg = 'TEST',$bg = 'success' ,$pos=''){
+	   	 var Toast = Swal.mixin({
+	      toast: true,
+	      position: $pos || 'top-end',
+	      showConfirmButton: false,
+	      timer: 5000
+	    });
+	      Toast.fire({
+	        icon: $bg,
+	        title: $msg
+	      })
+	    }
+
+        $('.comment-textfield').on('keypress', function (e) {
+            if(e.which == 13 && e.shiftKey == false){
+                var post_id = $(this).attr('data-id')
+                var comment = $(this).val()
+                $(this).val('')
+                $.ajax({
+                    url:'includes/comment.inc.php',
+                    method:'POST',
+                    data:{post_id:post_id,comment:comment},
+                    success:function(){
+                        location.reload();
+                    }
+                })
+                return false;
+                }
+        })
+        $('.comment-textfield').on('change keyup keydown paste cut', function (e) {
+            if(this.scrollHeight <= 117)
+            $(this).height(0).height(this.scrollHeight);
+        })
+        $('.view_candidate').click(function(){
+            view_modal("<center><b>Manage Candidates for " + $(this).attr('data-id') + "</b></center></center>","includes/view_candidate.inc.php?electionID="+ $(this).attr('data-electionid') + "&purok="+$(this).attr('data-id'))
+        })
+        $('.edit_candidate').click(function(){
+            uni_modal("<center><b>Edit Candidate</b></center></center>","includes/addCandidate.inc.php?id="+$(this).attr('data-id'))
+        })
+        $('.add_election').click(function(){
+            uni_modal("<center><b>Add Election</b></center></center>","includes/addElection.inc.php?add")
+        })
+        $('.edit_election').click(function(){
+            uni_modal("<center><b>Add Election</b></center></center>","includes/addElection.inc.php?edit="+$(this).attr('data-id'))
+        })
+        $('.results_election').click(function(){
+            uni_modal("<center><b>Results</b></center></center>","includes/addElection.inc.php?result="+$(this).attr('data-id'))
+        })
+        $('.delete_candidate').click(function(){
+        _conf("Are you sure to delete this candidate?","deleteCandidate",[$(this).attr('data-id')])
+        })
+        $('.delete_election').click(function(){
+        _conf("Are you sure to delete this election? <br> All candidates and votes that has been submitted to this election will be removed.","deleteElection",[$(this).attr('data-id')])
+        })
+        $('.start_election').click(function(){
+        _conf("Once election starts, you cannot change the listed candidates anymore. <br> Do you want to continue? ","startElection",[$(this).attr('data-id')])
+        })
+        $('.finish_election').click(function(){
+        _conf("Finishing election cannot be undone. <br> Do you want to continue? ","finishElection",[$(this).attr('data-id')])
+        })
+        $('.cancel_election').click(function(){
+        _conf("Cancelling election will result to no winners. <br> Do you want to continue? ","cancelElection",[$(this).attr('data-id')])
+        })
+        function startElection($id){
+                start_load()
+                $.ajax({
+                    url:'includes/finishElection.inc.php?start',
+                    method:'POST',
+                    data:{id:$id},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
+        function finishElection($id){
+                start_load()
+                $.ajax({
+                    url:'includes/finishElection.inc.php?finish',
+                    method:'POST',
+                    data:{id:$id},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
+        function cancelElection($id){
+            start_load()
+            $.ajax({
+                url:'includes/finishElection.inc.php?cancel',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+        function deleteCandidate($id){
+                start_load()
+                $.ajax({
+                    url:'includes/deleteCandidate.inc.php',
+                    method:'POST',
+                    data:{id:$id},
+                    success:function(){
+                        location.reload()
+                    }
+                })
+            }
+        function deleteElection($id){
+            start_load()
+            $.ajax({
+                url:'includes/deleteElection.inc.php',
+                method:'POST',
+                data:{id:$id},
+                success:function(){
+                    location.reload()
+                }
+            })
+        }
+        $('#upload_post').click(function(){
+            uni_modal("<center><b>Create Post</b></center></center>","includes/create_post.inc.php?upload=1")
+        })
+        $('.content-field').each(function(){
+            var dom = $(this)[0]
+            var divHeight = dom.offsetHeight
+            if(divHeight > 117){
+                $(this).addClass('truncate-5')
+                $(this).parent().children('.show-content').removeClass('d-none')
+            }
+        })
+        $('.show-content').click(function(){
+            var txt = $(this).text()
+            if(txt == "Show More"){
+                $(this).parent().children('.content-field').removeClass('truncate-5')
+                $(this).text("Show Less")
+            }else{
+                $(this).parent().children('.content-field').addClass('truncate-5')
+                $(this).text("Show More")
+            }
+        })
+        $('.lightbox-items').click(function(e){
+            e.preventDefault()
+            uni_modal("","view_attach.php?id="+$(this).attr('data-id'),"large")
+        })
+        $('.view_more').click(function(e){
+            e.preventDefault()
+            uni_modal("","view_attach.php?id="+$(this).attr('data-id'),"large")
+        })
+        $('.like').click(function(){
+            var _this = $(this)
+            $.ajax({
+                url:'ajax.php?action=like',
+                method:'POST',
+                data:{post_id:$(this).attr('data-id')},
+                success:function(resp){
+                    if(resp == 1){
+                        _this.addClass('text-primary')
+                        var lc = _this.siblings('.counts').find('.like-count').text();
+                                lc = lc.replace(/,/g,'');
+                                lc = parseInt(lc) + 1
+                        _this.siblings('.counts').find('.like-count').text(lc)
+                    }else if(resp==0){
+                        _this.removeClass('text-primary')
+                        var lc = _this.siblings('.counts').find('.like-count').text();
+                                lc = lc.replace(/,/g,'');
+                                lc = parseInt(lc) - 1
+                        _this.siblings('.counts').find('.like-count').text(lc)
+                    }
+                }
+            })
+        })
+
+        $(document).ready(function() {
+            $('#dataTable2').DataTable();
+        } );
     </script>
 
-</html>
+
+<?php include 'footer.php' ?>

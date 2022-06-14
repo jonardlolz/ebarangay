@@ -9,7 +9,7 @@ session_start();
         <div class="form-group">
             <div class="col-sm-7">
                 <select class="form-select form-select-lg" id="resident" name="resident" required>
-                    <option value="none" disabled hidden selected>Resident Name</option>
+                    <option value="" hidden selected>Resident Name</option>
                     <?php $residents = $conn->query("SELECT * FROM users 
                                                     WHERE users.userType = 'Resident' 
                                                     AND VerifyStatus='Verified'
@@ -55,7 +55,9 @@ session_start();
     </form>
     <script>
         $(document).ready(function() {
-            $('#resident').select2();
+            $('#resident').select2({
+                dropdownParent: $('#uni_modal')
+            });
         });
     </script>
 </div>

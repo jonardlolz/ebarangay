@@ -606,7 +606,28 @@ session_start();
 
 <?php elseif(isset($_GET['delete_document'])):
     extract($_POST);
-    $sql = "DELETE FROM documenttype WHERE DocumentID=$id";
+    $sql = "UPDATE documenttype SET status='Inactive' WHERE DocumentID=$id";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        echo("Error description: " . mysqli_error($conn));
+        exit();
+    }
+
+    if(!mysqli_stmt_execute($stmt)){
+        echo("Error description: " . mysqli_error($conn));
+        header("location: ../request.php?error=sqlExecError");
+        exit();
+    }
+    mysqli_stmt_close($stmt);
+
+    header("location: ../request.php?error=none"); //no errors were made
+    exit();
+
+?>
+
+<?php elseif(isset($_GET['active_document'])):
+    extract($_POST);
+    $sql = "UPDATE documenttype SET status='Active' WHERE DocumentID=$id";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         echo("Error description: " . mysqli_error($conn));
@@ -728,6 +749,13 @@ session_start();
 
 <?php elseif(isset($_GET['postdocumentAdd'])): 
     extract($_POST);
+
+    $checkduplicate = $conn->query("SELECT * FROM documenttype WHERE documentName='$documentName' AND barangayName='{$_GET['barangay']}'");
+    $row_cnt = $checkduplicate->num_rows;
+    if($row_cnt > 0){
+        header("location: ../services.php?error=duplicate");
+        exit();
+    }
     
     if($documentFee == ''){
         $documentFee = 'False';

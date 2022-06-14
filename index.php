@@ -1,4 +1,5 @@
-<?php include_once 'header.php'; ?>
+<?php include_once 'header.php'; 
+?>
 
 <style>
        
@@ -36,7 +37,7 @@
                                     <div class="container-fluid">
                                         <div class="d-flex w-100">
                                             <div class="rounded-circle mr-1" style="width: 25px;height: 25px;top:-5px;left: -40px">
-                                                <img src="img/<?php echo $_SESSION['profile_pic'] ?>" class="image-fluid image-thumbnail rounded-circle <?php 
+                                                <img src="img/users/<?php echo $_SESSION['UsersID'] ?>/profile_pic/<?php echo $_SESSION['profile_pic'] ?>" class="image-fluid image-thumbnail rounded-circle <?php 
                                                         if($_SESSION["userType"] == "Resident"){
                                                             echo "img-res-profile";
                                                         }
@@ -99,7 +100,7 @@
                                 <div class="card-header m-0 p-1">
                                 <div class="row">
                                     <div class="col-auto">
-                                            <img src="img/<?php echo $row["profile_pic"] ?>" class="img-res-profile rounded-circle <?php 
+                                            <img src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" class="img-res-profile rounded-circle <?php 
                                                         if($row["userType"] == "Resident"){
                                                             echo "img-res-profile";
                                                         }
@@ -261,7 +262,7 @@
                                                         elseif($crow["userType"] == "Admin"){
                                                             echo "img-admin-profile";
                                                         }
-                                                    ?>" width="30" height="30" src="img/<?php echo $crow['profile_pic'] ?>"
+                                                    ?>" width="30" height="30" src="img/users/<?php echo $crow['UsersID'] ?>/profile_pic/<?php echo $crow['profile_pic'] ?>"
                                                 alt="User Image">
                                             </div>
                                             
@@ -279,25 +280,28 @@
                                                 <small><span class="text-mute timestamp" style="margin-left: auto;"><?php echo date("M d,Y h:i A",strtotime($crow['date_created'])) ?></span></small>
                                             </div>
                                             <?php if($_SESSION['UsersID'] == $crow['UsersID']): ?>
-                                            <div class="dropdown no-arrow" style="margin-left: auto;">
-                                                <button type="button" class="dropdown-toggle btn m-0 btn-circle" 
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                                                </button>
-                                                <div class="dropdown-menu shadow"
-                                                    aria-labelledby="userDropdown">
-                                                    <a class="dropdown-item edit_comment" data-id="<?php echo $crow['CommentsID'] ?>" href="javascript:void(0)">
-                                                        <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
-                                                    </a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item delete_comment" data-id="<?php echo $crow['CommentsID'] ?>" href="javascript:void(0)">
-                                                        <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
-                                                    </a>
+                                            <div class="col" style="text-align: right;">
+                                                <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                    <button type="button" class="dropdown-toggle btn m-0 btn-circle"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu shadow"
+                                                        aria-labelledby="userDropdown">
+                                                        <a class="dropdown-item edit_comment" data-id="<?php echo $crow['CommentsID'] ?>" href="javascript:void(0)">
+                                                            <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
+                                                        </a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item delete_comment" data-id="<?php echo $crow['CommentsID'] ?>" href="javascript:void(0)">
+                                                            <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
+                                    <hr>
                                     <?php endwhile; ?>
                                 </div>
                             </div>

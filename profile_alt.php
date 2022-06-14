@@ -174,7 +174,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group d-flex justify-content-center rounded-circle">
-                            <img src="img/<?php echo $_SESSION["profile_pic"]; ?>" alt="" id="profile" class="img-fluid img-thumbnail rounded-circle" style="max-width: calc(50%)">
+                            <img src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $_SESSION["profile_pic"]; ?>" alt="" id="profile" class="img-fluid img-thumbnail rounded-circle" style="max-width: calc(50%)">
                         </div>
                     </div>
                     <div class="modal-footer">

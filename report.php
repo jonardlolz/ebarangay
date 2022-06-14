@@ -324,7 +324,8 @@
                         </div>
                         <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab">
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center text-dark" width="100%" cellspacing="0" cellpadding="0">
+                                <table class="table table-bordered text-center text-dark display" 
+                                width="100%" cellspacing="0" cellpadding="0">
                                     <thead >
                                         <tr class="bg-gradient-secondary text-white">
                                             <th scope="col">Election Title</th>
@@ -353,16 +354,13 @@
                                             <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
                                             <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
                                             <td>
-                                                <?php if($row['electionStatus'] == "Paused"): ?>
-                                                    <button class="btn btn-success btn-sm start_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>>Start</button>
-                                                    <button class="btn btn-primary btn-sm edit_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-edit"></i> Edit</button>
-                                                    <button class="btn btn-warning btn-sm delete_election btn-flat" data-id="<?php echo $row['electionID'] ?>" <?php if($row['electionStatus'] == "Finished"){ echo 'disabled'; }?>><i class="fas fa-trash"></i> Delete</button>
-                                                <?php elseif($row['electionStatus'] == "Ongoing"): ?>
-                                                    <button class="btn btn-success btn-sm finish_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Finish</button>
-                                                    <button class="btn btn-danger btn-sm cancel_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-times"></i> Cancel</button>
-                                                <?php elseif($row['electionStatus'] == "Finished"): ?>
-                                                    <button class="btn btn-success btn-sm results_election btn-flat" data-id="<?php echo $row['electionID'] ?>"><i class="fas fa-check"></i> Results</button>
-                                                <?php endif; ?>
+                                                <ul>
+                                                <?php $electionResult = $conn->query("SELECT concat(candidates.firstname, ' ', candidates.lastname) as name, votes.candidateID, count(votes.candidateID) as numberofVotes FROM votes INNER JOIN candidates ON candidates.candidateID=votes.candidateID WHERE votes.electionID={$row['electionID']} GROUP BY votes.candidateID;"); 
+                                                while($resultrow = $electionResult->fetch_assoc()):
+                                                ?> 
+                                                    <li><?php echo $resultrow['name'] ?> - <?php echo $resultrow['numberofVotes'] ?></li>
+                                                <?php endwhile; ?>
+                                                </ul>
                                             </td>
                                             
                                             <!--Right Options-->
@@ -508,7 +506,7 @@
                                                     elseif($row["userType"] == "Admin"){
                                                         echo "img-admin-profile";
                                                     }
-                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                ?>" src="img/users/<?php echo $row['respondentID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                                 </br>
                                                 <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['respondentID'] ?>"><?php echo $row["name"] ?></a> 
                                             </td>
@@ -523,7 +521,66 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
-
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center text-dark display" 
+                                    width="100%" cellspacing="0" cellpadding="0">
+                                    <thead >
+                                        <tr class="bg-gradient-secondary text-white">
+                                            <th scope="col">Content</th>
+                                            <th scope="col">Users</th>
+                                            <th>Status reported</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <!--Row 1-->
+                                        <?php 
+                                            $accounts = $conn->query("SELECT requestreport.*, concat(users.Firstname, ' ', users.Lastname) as name, users.UsersID, users.userType, users.profile_pic FROM requestreport
+                                            INNER JOIN users ON users.UsersID=requestreport.officerID 
+                                            INNER JOIN request ON requestreport.RequestID=request.RequestID 
+                                            WHERE reportStatus!='Paid' 
+                                            ORDER BY date DESC");
+                                            while($row=$accounts->fetch_assoc()):
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row["reportMessage"] ?></td>
+                                            <td>
+                                                <img class="img-profile rounded-circle <?php 
+                                                    if($row["userType"] == "Resident"){
+                                                        echo "img-res-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Purok Leader"){
+                                                        echo "img-purokldr-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Captain"){
+                                                        echo "img-capt-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Secretary"){
+                                                        echo "img-sec-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Treasurer"){
+                                                        echo "img-treas-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Councilor"){
+                                                        echo "img-councilor-profile";
+                                                    }
+                                                    elseif($row["userType"] == "Admin"){
+                                                        echo "img-admin-profile";
+                                                    }
+                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                                </br>
+                                                <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
+                                            </td>
+                                            <td><?php echo $row['reportStatus'] ?></td>
+                                            <td><?php echo date("M d,Y h:i A",strtotime($row['date'])) ?></td>
+                                            <!--Right Options-->
+                                        </tr>
+                                        <?php endwhile; ?>
+                                        <!--Row 1-->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     

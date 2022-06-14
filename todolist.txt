@@ -1,8 +1,9 @@
+Reports print -- DONE
 Password requirements on signup -- DONE
 signup form input verification -- DONE
 signup form middle name '-' -- DONE
 upload picture for signup -- DONE
-pl verify signup -- NOT DONE
+pl verify signup -- DONE
 unverified users cannot log in -- NOT DONE
 request docu disapprove textbox report -- NOT DONE
 voting results fix -- NOT DONE

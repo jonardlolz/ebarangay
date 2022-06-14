@@ -3105,15 +3105,12 @@
             // $("#inputArea").show();   
         }
     }
-     $(document).ready(function() {
+    $(document).ready(function() {
         $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
             $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
         } );
 
         $('table').DataTable({
-            "responsive": true,
-            orderCellsTop: true,
-            dom: 'lBfrtip',
             "scrollY": "400px",
             "scrollCollapse": true,
             "paging": false,

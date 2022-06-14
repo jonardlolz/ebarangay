@@ -43,7 +43,8 @@
                     on users.UsersID = candidates.UsersID 
                     INNER JOIN election 
                     ON election.electionID = candidates.electionID
-                    WHERE candidates.electionID = {$_GET['electionID']}");
+                    WHERE candidates.electionID = {$_GET['electionID']}
+                    AND candidates.status='Accepted'");
                     $arrayCandidate = array();
                     while($row=$candidates->fetch_assoc()):
                         if($row["userType"] == "Admin"){

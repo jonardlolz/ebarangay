@@ -450,11 +450,28 @@
                         </div>
                     </div>
                 </div>
-                
-            </div>
-            <!-- End of Card Body-->              
+            </div>        
         </div>
-    <!-- End of Begin Page Content -->
+        <script>
+            $(document).ready(function() {
+                $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+                } );
+
+                $('table').DataTable({
+                    "responsive": true,
+                    orderCellsTop: true,
+                    dom: 'lBfrtip',
+                    "scrollY": "400px",
+                    "scrollCollapse": true,
+                    "paging": false,
+                    "ordering": false,
+                    initComplete: function(){
+                        
+                    }
+                });
+            });
+        </script>
     <?php elseif($_SESSION["userType"] == "Secretary"): ?>
         <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
@@ -841,7 +858,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -919,7 +936,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -985,7 +1002,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -1137,6 +1154,22 @@
                 </div>        
             </div>
         </div>
+        <script>
+            $(document).ready(function() {
+                $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+                } );
+
+                var table = $('table').DataTable({
+                    "scrollY": "400px",
+                    "scrollCollapse": true,
+                    "paging": false,
+                    "ordering": false,
+                    initComplete: function(){
+                    }
+                });
+            });
+        </script>
     <?php elseif($_SESSION["userType"] == "Captain"): ?>
         <div class="card shadow mb-4 m-4">
             <div class="card-header py-3 d-flex justify-content-between">
@@ -1666,13 +1699,6 @@
             }
         }
     }
-    $(document).ready(function() {
-        $('#dataTable').DataTable();
-    } );
-    
-    $(document).ready(function() {
-        $('#dataTable2').DataTable();
-    } );
 
     function additionalInput($documentID){
         start_load()

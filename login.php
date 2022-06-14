@@ -66,23 +66,29 @@ session_destroy();
                                             </div>
                                             <?php
                                             if(isset($_GET["error"])){
-                                                if($_GET["error"] == "none"){
-                                                echo "<div class='alert alert-success' role='alert'>
-                                                    You have signed up!
-                                                    </div>";
-                                                }
-                                            }
-                                            if(isset($_GET["error"])){
                                                 if($_GET["error"] == "wrongpassword"){
                                                 echo "<div class='alert alert-danger' role='alert'>
                                                     Wrong password!
                                                     </div>";
                                                 }
-                                            }
-                                            if(isset($_GET["error"])){
+                                                if($_GET["error"] == "none"){
+                                                echo "<div class='alert alert-success' role='alert'>
+                                                    You have signed up!
+                                                    </div>";
+                                                }
                                                 if($_GET["error"] == "wronglogin"){
                                                 echo "<div class='alert alert-danger' role='alert'>
                                                     Username does not exist!
+                                                    </div>";
+                                                }
+                                                if($_GET["error"] == "reverified"){
+                                                echo "<div class='alert alert-warning' role='alert'>
+                                                    Your verification ticket will be reviewed, please wait.
+                                                    </div>";
+                                                }
+                                                if($_GET["error"] == "pending"){
+                                                echo "<div class='alert alert-danger' role='alert'>
+                                                    Your account has not been verified yet!
                                                     </div>";
                                                 }
                                             }

@@ -3,52 +3,97 @@
 include 'dbh.inc.php';
 extract($_POST);
     
+if(isset($_GET['register'])){
+    $hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT); //hashes password to deter hackers
 
-$hashedpwd = password_hash($userPwd, PASSWORD_DEFAULT); //hashes password to deter hackers
+    mysqli_begin_transaction($conn);
 
-mysqli_begin_transaction($conn);
+    $secretQuestion = addslashes($secretQuestion);
 
-$secretQuestion = addslashes($secretQuestion);
+    $a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, userSuffix, dateofbirth, civilStat, userGender, IsVoter, profile_pic, userBarangay, userPurok, userHouseNum, isRenting, startedLiving, username, usersPwd, emailAdd, userType, secretQuestion, secretAnswer) VALUES('$userFirstname', '$userMiddlename', '$userLastname', '$userSuffix', '$userDOB', '$userCivilStat', '$userGender', '$isvoter', 'profile_picture.jpg', '$userBarangay', '$userPurok', '$userHouseNum', '$islessee', '$userDateReside', '$userName', '$hashedpwd', '$userEmail', 'Resident', '$secretQuestion', '$secretAnswer');");
 
-$a1 = mysqli_query($conn, "INSERT INTO users(Firstname, Middlename, Lastname, userSuffix, dateofbirth, civilStat, userGender, IsVoter, profile_pic, userBarangay, userPurok, userHouseNum, isRenting, startedLiving, username, usersPwd, emailAdd, userType, secretQuestion, secretAnswer) VALUES('$userFirstname', '$userMiddlename', '$userLastname', '$userSuffix', '$userDOB', '$userCivilStat', '$userGender', '$isvoter', 'profile_picture.jpg', '$userBarangay', '$userPurok', '$userHouseNum', '$islessee', '$userDateReside', '$userName', '$hashedpwd', '$userEmail', 'Resident', '$secretQuestion', '$secretAnswer');");
-
-if($a1){
-    $id = mysqli_insert_id($conn);
-    if(isset($_FILES['userPicture']) && $_FILES['userPicture']['tmp_name'] != ''){
-        mkdir('../img/users/'.$id);
-        mkdir('../img/users/'.$id.'/profile_pic');
-        mkdir('../img/users/'.$id.'/verification');
-        $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userPicture']['name']; //creates a unique filename to avoid duplications/conflicts with filename
-        $move = move_uploaded_file($_FILES['userPicture']['tmp_name'],'../img/users/'.$id.'/profile_pic/'. $fnamep); //uploads file to the directory
-        $a2 = mysqli_query($conn, "UPDATE users SET profile_pic='$fnamep' WHERE UsersID=$id");
+    if($a1){
+        $id = mysqli_insert_id($conn);
+        if(isset($_FILES['userPicture']) && $_FILES['userPicture']['tmp_name'] != ''){
+            mkdir('../img/users/'.$id);
+            mkdir('../img/users/'.$id.'/profile_pic');
+            mkdir('../img/users/'.$id.'/verification');
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userPicture']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['userPicture']['tmp_name'],'../img/users/'.$id.'/profile_pic/'. $fnamep); //uploads file to the directory
+            $a2 = mysqli_query($conn, "UPDATE users SET profile_pic='$fnamep' WHERE UsersID=$id");
+        }
+        if(isset($_FILES['uservalidid']) && $_FILES['uservalidid']['tmp_name'] != ''){
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservalidid']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['uservalidid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
+        }
+        if(isset($_FILES['userlessornote']) && $_FILES['userlessornote']['tmp_name'] != ''){
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userlessornote']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['userlessornote']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
+        }
+        if(isset($_FILES['uservoterid']) && $_FILES['uservoterid']['tmp_name'] != ''){
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservoterid']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['uservoterid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
+        }
+        if($a2){
+            mysqli_commit($conn);
+            header("location: ../login.php?error=none"); 
+            exit();
+        }
+        
     }
-    if(isset($_FILES['uservalidid']) && $_FILES['uservalidid']['tmp_name'] != ''){
-        $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservalidid']['name']; //creates a unique filename to avoid duplications/conflicts with filename
-        $move = move_uploaded_file($_FILES['uservalidid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
-    }
-    if(isset($_FILES['userlessornote']) && $_FILES['userlessornote']['tmp_name'] != ''){
-        $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userlessornote']['name']; //creates a unique filename to avoid duplications/conflicts with filename
-        $move = move_uploaded_file($_FILES['userlessornote']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
-    }
-    if(isset($_FILES['uservoterid']) && $_FILES['uservoterid']['tmp_name'] != ''){
-        $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservoterid']['name']; //creates a unique filename to avoid duplications/conflicts with filename
-        $move = move_uploaded_file($_FILES['uservoterid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
-    }
-    if($a2){
-        mysqli_commit($conn);
-        header("location: ../login.php?error=none"); 
+    else{
+        echo("Error description: " . mysqli_error($conn));
+        mysqli_rollback($conn);
         exit();
+        // header("location: ../login.php?error=error"); 
+        // exit();
     }
-    
 }
-else{
-    echo("Error description: " . mysqli_error($conn));
-    mysqli_rollback($conn);
-    exit();
-    // header("location: ../login.php?error=error"); 
-    // exit();
-}
+elseif(isset($_GET['update'])){
 
+    mysqli_begin_transaction($conn);
+
+    $a1 = mysqli_query($conn, "UPDATE users SET Firstname='$userFirstname', Middlename='$userMiddlename', Lastname='$userLastname', userSuffix='$userSuffix', dateofbirth='$userDOB', civilStat='$userCivilStat', userGender='$userGender', IsVoter='$isvoter', userBarangay='$userBarangay', userPurok='$userPurok', userHouseNum='$userHouseNum', isRenting='$islessee', startedLiving='$userDateReside', VerifyStatus='Reverify', updated_on=CURRENT_TIMESTAMP WHERE UsersID={$_GET['UsersID']}");
+
+    if($a1){
+        $id = $_GET['UsersID'];
+        if(isset($_FILES['userPicture']) && $_FILES['userPicture']['tmp_name'] != ''){
+            if(file_exists('../img/users/'.$id)){
+                rmdir('../img/users/'.$id);
+            }
+            mkdir('../img/users/'.$id);
+            mkdir('../img/users/'.$id.'/profile_pic');
+            mkdir('../img/users/'.$id.'/verification');
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userPicture']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['userPicture']['tmp_name'],'../img/users/'.$id.'/profile_pic/'. $fnamep); //uploads file to the directory
+            $a2 = mysqli_query($conn, "UPDATE users SET profile_pic='$fnamep' WHERE UsersID=$id");
+        }
+        if(isset($_FILES['uservalidid']) && $_FILES['uservalidid']['tmp_name'] != ''){
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservalidid']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['uservalidid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
+        }
+        if(isset($_FILES['userlessornote']) && $_FILES['userlessornote']['tmp_name'] != ''){
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userlessornote']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['userlessornote']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
+        }
+        if(isset($_FILES['uservoterid']) && $_FILES['uservoterid']['tmp_name'] != ''){
+            $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservoterid']['name']; //creates a unique filename to avoid duplications/conflicts with filename
+            $move = move_uploaded_file($_FILES['uservoterid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); //uploads file to the directory
+        }
+        if($a2){
+            mysqli_commit($conn);
+            header("location: ../login.php?error=reverified"); 
+            exit();
+        }
+    }
+    else{
+        echo("Error description: " . mysqli_error($conn));
+        mysqli_rollback($conn);
+        exit();
+        // header("location: ../login.php?error=error"); 
+        // exit();
+    }
+}
 // //inputs from signup.php
 // $Firstname = $_POST["userFirstname"];
 // $Middlename = $_POST["userMiddlename"];

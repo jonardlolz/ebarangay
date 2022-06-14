@@ -41,7 +41,7 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
+                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' OR VerifyStatus = 'Reverify' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}' ORDER BY updated_on DESC, FIELD(VerifyStatus, 'Reverify', 'Pending')");
                                 while($row=$accounts->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -72,9 +72,9 @@
                                     </br>
                                     <?php echo $row["name"] ?>
                                 </td>
-                                <td><?php echo date_format(date_create($row['created_on']), "Y/m/d H:i:s") ?></td>
+                                <td><?php echo date_format(date_create($row['updated_on']), "Y/m/d H:i:s") ?></td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm btn-flat viewUser" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-eye"> View</i></button>
+                                    <button class="btn btn-primary btn-sm btn-flat viewUser" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-eye"></i> View</button>
                                     <!-- <button class="btn btn-success btn-sm btn-flat verify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-check"></i> Verify</button>
                                     <button class="btn btn-danger btn-sm btn-flat unverify_user" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-times"></i> Unverify</button> -->
                                 </td>
@@ -460,13 +460,12 @@
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             } );
 
-            $('table').DataTable({
+            $('table.display').DataTable({
                 "scrollY": "400px",
                 "scrollCollapse": true,
                 "paging": false,
                 "ordering": false
             });
-            $('table.display').DataTable();
         });
     </script>
 </div>
@@ -930,15 +929,6 @@
         $('.viewUser').click(function(){
             uni_modal("<center><b>Verify User</b></center></center>","includes/verify.inc.php?viewUser&UsersID="+$(this).attr('data-id'), "modal-lg")
         })
-        $('.verify_user').click(function(){
-            continue_modal("<center><b>Verify residents</b></center></center>","includes/verify.inc.php?viewVerify="+$(this).attr('data-id'))
-        })
-        // $('.verify_user').click(function(){
-        //     _conf("Are you sure you want to verify this user?","verify_user",[$(this).attr('data-id')])
-        // })
-        $('.unverify_user').click(function(){
-            _conf("Are you sure you want to unverify this user?","unverify_user",[$(this).attr('data-id')])
-        })
         $('.removeleader').click(function(){
         _conf("Are you sure to remove this Purok Leader?","removeLeader",[$(this).attr('data-id')])
         })
@@ -947,28 +937,6 @@
             $.ajax({
                 url:'includes/edit_account.inc.php?removeLeader',
                 method:'POST',
-                data:{id:$id},
-                success:function(){
-                    location.reload()
-                }
-            })
-        }
-        function verify_user($id){
-            start_load()
-            $.ajax({
-                url:'includes/verify.inc.php?verify=' + $id,
-                method:'GET',
-                data:{id:$id},
-                success:function(){
-                    location.reload()
-                }
-            })
-        }
-        function unverify_user($id){
-            start_load()
-            $.ajax({
-                url:'includes/verify.inc.php?unverify=' + $id,
-                method:'GET',
                 data:{id:$id},
                 success:function(){
                     location.reload()

@@ -48,7 +48,7 @@
                                 <div class="text-center">
                                     <h1 class="mb-4 text-capitalize">Create an Account!</h1>
                                 </div>
-                                <form id="msform" method="post" autocomplete="off" class="form-horizontal" action="includes/signup.inc.php" enctype="multipart/form-data">
+                                <form id="msform" method="post" autocomplete="off" class="form-horizontal" action="includes/signup.inc.php?register" enctype="multipart/form-data">
                                     <ul id="progressbar">
                                         <li class="active" id="personal"><strong>Personal</strong></li>
                                         <li id="address"><strong>Address</strong></li>
