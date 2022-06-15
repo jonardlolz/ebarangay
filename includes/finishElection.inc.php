@@ -21,9 +21,11 @@ if(isset($_GET['finish'])){
 
         $a1 = mysqli_query($conn, "UPDATE users SET userType='Resident' WHERE userBarangay='{$row['barangay']}' AND userPurok='{$row['purok']}' AND userType='Purok Leader';");
         $a2 = mysqli_query($conn, "UPDATE users SET userType='{$frow["position"]}' WHERE UsersID = '{$frow["UsersID"]}';");
-        $a3 = mysqli_query($conn, "UPDATE election SET electionStatus='Finished' WHERE electionID = $id;");
+        $a3 = mysqli_query($conn, "UPDATE purok SET purokLeader={$frow["UsersID"]} WHERE PurokName='{$row['purok']}' AND BarangayName='{$row['barangay']}'");
+        $a4 = mysqli_query($conn, "UPDATE election SET electionStatus='Finished' WHERE electionID = $id;");
+        
 
-        if($a1 && $a2 && $a3){
+        if($a1 && $a2 && $a3 && $a4){
             mysqli_commit($conn);
             header("location: ../election.php?error=none");
         }

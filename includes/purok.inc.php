@@ -17,7 +17,7 @@
         <div class="form-group col">
             <div class="row">
                 <div class="col">
-                    <input type="hidden" name="BarangayName" value="<?php echo $_GET['barangayName'] ?>">
+                    <input type="hidden" name="BarangayName" style="width: 50%;" value="<?php echo $_GET['barangayName'] ?>">
                 </div>
             </div>
             <div class="row">
@@ -39,10 +39,9 @@
                         <?php if($purokLeader != NULL): ?>
                             <option value="<?php echo $purokLeader ?>" hidden selected><?php echo $name ?></option>
                         <?php else:?>
-                            <option value="None" hidden selected>None</option>
+                            <option value="" hidden selected>None</option>
                         <?php endif; ?>
-                        <option value="None">None</option>
-                        <?php $purok = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}' AND userPurok='$PurokName'");
+                        <?php $purok = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}' AND userPurok='$PurokName' AND VerifyStatus='Verified'");
                             while($purokRow = $purok->fetch_assoc()): ?>
                             <option value="<?php echo $purokRow["UsersID"] ?>"><?php echo $purokRow["name"]; ?></option>
                         <?php endwhile; ?>
@@ -106,7 +105,7 @@
                             <label for="">Barangay: </label>
                         </div>
                         <div class="col">
-                            <select name="barangayName" id="barangayName">
+                            <select name="barangayName" id="barangayName" style="width: 50%;" required>
                                 <option value="">None</option>
                                 <?php $puroksql = $conn->query("SELECT * FROM barangay");
                                 while($purokrow = $puroksql->fetch_assoc()):?>
@@ -121,7 +120,7 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control form-control-sm" id="PurokName"
-                                name="PurokName" placeholder="Purok Name" style="width: 75%;">
+                                name="PurokName" placeholder="Purok Name" style="width: 75%;" required>
                         </div>
                     </div>
                 </div>
@@ -138,6 +137,9 @@
 <script>
     $(".container-fluid").parent().siblings(".modal-footer").remove();
     $(document).ready(function() {
-        $('#barangayName').select2();
+        $('#barangayName').select2({
+        dropdownParent: $('#uni_modal'),
+        width: 'resolve'
+    });
     });
 </script>

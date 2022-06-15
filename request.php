@@ -28,7 +28,7 @@
                                                 <label>Choose document:</label>
                                                 <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
                                                     <option value="" hidden selected>Select</option>
-                                                    <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                    <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}' AND status='Active'");
                                                     while($documents = $requestSql->fetch_assoc()): ?>
                                                     <?php 
                                                         if($diff <= $documents['minimumMos']){
@@ -40,7 +40,7 @@
                                                             }
                                                         }
                                                         if($documents['VoterRequired'] == "True"){
-                                                            if($userSql['IsVoter'] != "True"){
+                                                            if($userSql['IsVoter'] == "False"){
                                                                 continue;
                                                             }
                                                         }
@@ -873,7 +873,6 @@
                                                 <button class="btn btn-success approve" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
                                                 </a>
                                             <?php endif; ?>
-                                            
                                         </td>
                                         <!--Right Options-->
                                     </tr>
@@ -958,17 +957,21 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Document Type</th>
                                         <th scope="col">Purpose</th>
+                                        <th>Reason</th>
                                         <th scope="col">Date Requested</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!--Row 1-->
                                     <?php 
-                                        $requests = $conn->query("SELECT request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
+                                        $requests = $conn->query("SELECT requestreport.reportMessage, request.*, concat(users.Firstname, ' ', users.Lastname) as name, 
                                         DATE_FORMAT(requestedOn, '%m/%d/%Y %h:%i %p') as requestedDate, 
                                         DATE_FORMAT(approvedOn, '%m/%d/%Y %h:%i %p') as approvedDate, users.userType, 
                                         users.profile_pic 
                                         FROM request 
+                                        INNER JOIN requestreport
+                                        ON requestreport.RequestID=request.RequestID
+                                        AND requestreport.reportStatus='Disapproved'
                                         INNER JOIN users 
                                         ON request.UsersID=users.UsersID 
                                         WHERE request.status='Disapproved' 
@@ -1008,6 +1011,7 @@
                                         </td>
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row["purpose"] ?></td>
+                                        <td><?php echo $row["reportMessage"] ?></td>
                                         <td><?php echo $row["requestedDate"] ?></td>
                                     </tr>
                                     <?php endwhile; ?>
@@ -1027,7 +1031,7 @@
                                                     <label>Choose document:</label>
                                                     <select name="document" id="document" class="form-control w-75 form-control-md form-select" onChange="changecat(this.value);" required>
                                                         <option value="" hidden selected>Select</option>
-                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}'");
+                                                        <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}' AND status='Active'");
                                                         while($documents = $requestSql->fetch_assoc()): ?>
                                                         <?php 
                                                             if($diff <= $documents['minimumMos']){
@@ -1039,7 +1043,7 @@
                                                                 }
                                                             }
                                                             if($documents['VoterRequired'] == "True"){
-                                                                if($userSql['IsVoter'] != "True"){
+                                                                if($userSql['IsVoter'] == "False"){
                                                                     continue;
                                                                 }
                                                             }

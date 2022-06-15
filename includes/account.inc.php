@@ -442,6 +442,7 @@ if(isset($_GET['edit'])):
 <?php elseif(isset($_GET['add'])): ?> 
     <script type="text/javascript" src="node_modules/form-validation/lib/jquery-3.1.1.js"></script>
     <script type="text/javascript" src="node_modules/form-validation/dist/jquery.validate.js"></script>
+    
     <div class="container-fluid">
         <?php if($_SESSION['userType'] != "Admin"): ?>
             <?php if($_SESSION['userType'] == "Captain"): ?>
@@ -532,7 +533,7 @@ if(isset($_GET['edit'])):
                             <button type="submit" class="btn btn-success">Add</button>
                         </div>
                     </form> -->
-                    <form action="includes/edit_account.inc.php?addAccount" id='addAccount' autocomplete="off" class="user" method="post">
+                    <form action="includes/edit_account.inc.php?addAccount" id='addAccount' autocomplete="off" class="user" method="post" enctype="multipart/form-data">
                         <div class="m-2">
                             <strong>Personal Information</strong>
                         </div>
@@ -592,7 +593,7 @@ if(isset($_GET['edit'])):
                         </div>
                         <div class="form-group row">
                             <div class="col">
-                                <select class="custom-select" name="IsVoter" id="IsVoter" required>
+                                <select class="custom-select" name="IsVoter" id="IsVoter" onchange='voterchange(this.value)' required>
                                     <option value="" selected hidden>Is resident a voter?</option>
                                     <option value="True">Yes</option>
                                     <option value="False">No</option>
@@ -601,7 +602,7 @@ if(isset($_GET['edit'])):
                             <div class="col" id="lesseeSection">
                                 <div class="row">
                                     <div class="col">
-                                        <select class="custom-select" name="IsLessee" id="IsLessee" required>
+                                        <select class="custom-select" name="IsLessee" id="IsLessee" onchange='lesseechange(this.value)' required>
                                             <option value="" selected hidden>Is resident a lessee?</option>
                                             <option value="True">Yes</option>
                                             <option value="False">No</option>
@@ -630,7 +631,7 @@ if(isset($_GET['edit'])):
                             <strong>Address Information</strong>
                         </div>
                         <div class="form-group row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" <?php if($_SESSION['userType'] == 'Purok Leader'): ?> style="display: none;" <?php endif; ?>>
                                 <select class="form-control form-control-sm form-select d-inline" name="userPurok" id="userPurok" required>
                                     <option value="" selected hidden>Purok</option>
                                     <?php $purokSql = $conn->query("SELECT * FROM purok WHERE BarangayName='{$_SESSION['userBarangay']}'"); 
@@ -654,6 +655,42 @@ if(isset($_GET['edit'])):
                             </div>
                             <div class='col'>
                                 <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="profile_pic">Profile Picture: </label>
+                            <div class="custom-file">
+                                <input type="file" class="form-control" id="userPicture" name="userPicture" accept="image/*" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="customFile">Attach your Valid ID</label>
+                            </div>
+                            <div class="row">
+                                <div class="custom-file">
+                                    <input type="file" class="form-control" id="uservalidid" name="uservalidid" accept="image/*" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="voterssection" style="display: none;">
+                            <div class="row">
+                                <label for="customFile">Attach your voter's ID</label>
+                            </div>
+                            <div class="row">
+                                <div class="custom-file">
+                                    <input type="file" class="form-control" id="votersid" name="uservoterid" accept="image/*" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="lesseesection" style="display: none;">
+                            <div class="row">
+                                <label for="customFile">Attach your Lessor's note</label>
+                            </div>
+                            <div class="row">
+                                <div class="custom-file">
+                                    <input type="file" class="form-control" id="lessornote" name="userlessornote" accept="image/*" required>
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -681,7 +718,7 @@ if(isset($_GET['edit'])):
                 </div>
             </div>
         <?php else: ?>
-            <form id="form" action="includes/edit_account.inc.php?addCapt" class="user" method="post">
+            <form id="form" action="includes/edit_account.inc.php?addCapt" autocomplete="off" class="user" method="post" enctype="multipart/form-data">
                 <div class="col">
                     <div class="row">
                         <div class="col">
@@ -745,7 +782,7 @@ if(isset($_GET['edit'])):
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row"><!--Civil status-->
+                        <div class="form-group row">
                             <div class="col-sm-6">
                                 <select class="form-control form-control-sm form-select d-inline" id="userGender" placeholder="Gender" name="userGender" required>
                                     <option value="" hidden selected>Gender</option>
@@ -798,6 +835,12 @@ if(isset($_GET['edit'])):
                                 <input type='password' class='form-control form-control-sm' name='userPwd' id='userPwd' placeholder='Password' required>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="profile_pic">Profile Picture: </label>
+                            <div class="custom-file">
+                                <input type="file" class="form-control" id="userPicture" name="userPicture" accept="image/*" required>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -809,16 +852,25 @@ if(isset($_GET['edit'])):
 
         <script>
             $(".container-fluid").parent().siblings(".modal-footer").remove();
-            function checkVoter(){
-                if($("#IsVoter").prop("checked") == true){
-                    lesseeSection.style.display = "none";
+            function voterchange(value){
+                if(value == 'True'){
+                    $("#voterssection").css('display', 'block');
                 }
                 else{
-                    lesseeSection.style.display = "block";
+                    $("#voterssection").css('display', 'none');
                 }
             }
 
-            $( "#addAccount" ).validate({
+            function lesseechange(value){
+                if(value == 'True'){
+                    $("#lesseesection").css('display', 'block');
+                }
+                else{
+                    $("#lesseesection").css('display', 'none');
+                }
+            }
+
+            $( "form" ).validate({
                 rules:{
                     Middlename:{
                         required: true

@@ -29,13 +29,12 @@
                         <label>Barangay Captain: </label>
                     </div>
                     <div class="col">
-                        <select name="brgyCaptain" id="brgyCaptain" class="form-control form-control-sm form-select d-inline">
+                        <select name="brgyCaptain" id="brgyCaptain" class="form-control form-control-sm form-select d-inline" style="width: 100%;">
                             <?php if($brgyCaptain != NULL): ?>
                                 <option value="<?php echo $brgyCaptain ?>" hidden selected><?php echo $name ?></option>
                             <?php else:?>
                                 <option value="None" hidden selected>None</option>
                             <?php endif; ?>
-                            <option value="None">None</option>
                             <?php $brgy = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users INNER JOIN barangay ON barangay.BarangayName=users.userBarangay WHERE userType='Resident' AND barangay.BarangayID={$_GET['id']}");
                                 while($brgyRow = $brgy->fetch_assoc()): ?>
                                 <option value="<?php echo $brgyRow["UsersID"] ?>"><?php echo $brgyRow["name"]; ?></option>
@@ -61,7 +60,10 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('#brgyCaptain').select2();
+        $('#brgyCaptain').select2({
+            dropdownParent: $('#uni_modal'),
+            width: 'resolve'
+        });
     });
 </script>
 
@@ -88,7 +90,7 @@
                         <div class="col">
                             <select class="js-select" name="residents" id="residents" style="width: 75%;" required>
                                 <option value="" hidden disabled selected>Name</option>
-                                <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}'");
+                                <?php $residentSql = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE userType='Resident' AND userBarangay='{$_GET['barangayName']}' AND VerifyStatus='Verified'");
                                 while($residents = $residentSql->fetch_assoc()):
                                 ?>
                                 <option value="<?php echo $residents['UsersID'] ?>"><?php echo $residents['name'] ?></option>
@@ -114,7 +116,7 @@
                             Role:
                         </div>
                         <div class="col">
-                            <input class="form-control form-control-sm" type="text">
+                            <input class="form-control form-control-sm" name="userRole" type="text">
                         </div>
                     </div>
                 </div>
@@ -190,60 +192,64 @@
 </script>
 
 <?php elseif(isset($_GET["addContact"])): ?>
-    <form action="includes/barangay.inc.php?postContact&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
-        <div class="col">
-            <div class="row">
-                <div class="col">
-                    <label for="">Contact Name</label>
+    <div class="container-fluid">
+        <form action="includes/barangay.inc.php?postContact&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <label for="">Contact Name</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="contactName" required>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="text" name="contactName" required>
+                <div class="row">
+                    <div class="col">
+                        <label for="">Contact Number</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="contactNumber" required>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <label for="">Contact Number</label>
-                </div>
-                <div class="col">
-                    <input type="text" name="contactNumber" required>
-                </div>
+            <hr>
+            <div class="footer d-flex flex-row-reverse">
+                <button class="btn btn-sm btn-success">Save</button>
             </div>
-        </div>
-        <hr>
-        <div class="footer d-flex flex-row-reverse">
-            <button class="btn btn-sm btn-success">Save</button>
-        </div>
-    </form>
+        </form>
+    </div>
     <script>
         $(".container-fluid").parent().siblings(".modal-footer").remove();
     </script>
 
 <?php elseif(isset($_GET["editContact"])): ?>
     <?php $contactsql = $conn->query("SELECT * FROM contacts WHERE contactID={$_GET['contactID']}")->fetch_assoc(); ?>
-    <form action="includes/barangay.inc.php?postContactEdit&contactID=<?php echo $_GET['contactID'] ?>&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
-        <div class="col">
-            <div class="row">
-                <div class="col">
-                    <label for="">Contact Name</label>
+    <div class="container-fluid">
+        <form autocomplete="off" action="includes/barangay.inc.php?postContactEdit&contactID=<?php echo $_GET['contactID'] ?>&barangayID=<?php echo $_GET['barangayID'] ?>" method="post">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <label for="">Contact Name</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="contactName" value="<?php echo $contactsql['contactName'] ?>" required>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="text" name="contactName" value="<?php echo $contactsql['contactName'] ?>" required>
+                <div class="row">
+                    <div class="col">
+                        <label for="">Contact Number</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="contactNumber" value="<?php echo $contactsql['contactNum'] ?>" required>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <label for="">Contact Number</label>
-                </div>
-                <div class="col">
-                    <input type="text" name="contactNumber" value="<?php echo $contactsql['contactNum'] ?>" required>
-                </div>
+            <hr>
+            <div class="footer d-flex flex-row-reverse">
+                <button class="btn btn-sm btn-success">Save</button>
             </div>
-        </div>
-        <hr>
-        <div class="footer d-flex flex-row-reverse">
-            <button class="btn btn-sm btn-success">Save</button>
-        </div>
-    </form>
+        </form>
+    </div>
     <script>
         $(".container-fluid").parent().siblings(".modal-footer").remove();
     </script>
@@ -322,6 +328,8 @@
 
 <script>
     $(document).ready(function() {
-        $('.js-select').select2();
+        $('.js-select').select2({
+            dropdownParent: $('#uni_modal')
+        });
     });
 </script>

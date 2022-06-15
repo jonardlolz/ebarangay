@@ -60,29 +60,55 @@
     }
 
     elseif(isset($_GET['addPurok'])){
-        $sql = "INSERT INTO purok(PurokName, BarangayName) VALUES(?, ?)";
-
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../purok.php?error=stmtfailedcreatepost");
-            exit();
+        $PurokName = $_POST['PurokName'];
+        mysqli_begin_transaction($conn);
+        if($_SESSION['userType'] == 'Admin'){
+            $duplicateCheck = $conn->query("SELECT * FROM purok WHERE PurokName='$PurokName' AND BarangayName='{$_POST['barangayName']}'");
         }
+        else{
+            $duplicateCheck = $conn->query("SELECT * FROM purok WHERE PurokName='$PurokName' AND BarangayName='{$_SESSION['userBarangay']}'");
+        }
+        
+        $row_cnt = $duplicateCheck->num_rows;
+        if($row_cnt > 0){
+            if($_SESSION['userType'] == 'Admin'){
+                 header("location: ../purok.php?"."error=purokduplicate");
+                exit();
+            }
+            else{
+                header("location: ../barangay_alt.php?barangayID=" . $_GET['barangayID']."&error=purokduplicate");
+                exit();
+            }
+        }
+
+
+        
         if(isset($_GET['barangayName'])){
             $BarangayName = $_GET['barangayName'];
         }
         else{
-            extract($_POST);
-            $BarangayName = $barangayName;
+            $BarangayName = $_POST['barangayName'];
         }
         
-        mysqli_stmt_bind_param($stmt, "ss", $PurokName, $BarangayName); 
-        if(!mysqli_stmt_execute($stmt)){
-            echo("Error description: " . mysqli_error($conn));
+        $a1 = mysqli_query($conn, "INSERT INTO purok(PurokName, BarangayName) VALUES('$PurokName', '$BarangayName')");
+
+        if($a1){
+            mysqli_commit($conn);
+            if($_SESSION['userType'] != 'Admin'){
+                header("location: ../barangay_alt.php?barangayID=" . $_GET['barangayID']);
+                exit();
+            }
+            else{
+                header("location: ../purok.php");
+                exit();
+            }
+        }
+        else{
+            echo("Error description: ".mysqli_error($conn));
+            mysqli_rollback($conn);
             exit();
         }
-        mysqli_stmt_close($stmt);
         
-        header("location: ../barangay_alt.php?barangayID=" . $_GET['barangayID']);
-        exit();
+        
     }
 ?>

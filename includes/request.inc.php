@@ -366,7 +366,7 @@ elseif(isset($_GET["disapproveID"])){
 
     $approvedBy = $_SESSION['Firstname'].' '.$_SESSION['Lastname'];
 
-    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Disapproved', {$requestData['amount']});");
+    $a1 = mysqli_query($conn, "INSERT INTO requestreport(RequestID, officerID, reportMessage, reportStatus, amount, barangay, purok) VALUES($id, {$_SESSION['UsersID']}, '$reportMessage', 'Disapproved', {$requestData['amount']}, '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}');");
     $a2 = mysqli_query($conn, "UPDATE request SET approvedOn=CURRENT_TIMESTAMP, approvedBy='{$approvedBy}', status='Disapproved', request.userType='Purok Leader' WHERE RequestID=$id");
     $a3 = mysqli_query($conn, "INSERT INTO notifications(message, type, UsersID, position) VALUES('The purok leader has disapproved your request for {$requestData['documentType']}. Reason: $reportMessage', 'request', '{$requestData['UsersID']}', 'Resident')");
 
@@ -546,10 +546,12 @@ if(isset($_GET['viewRequirement'])):
                 </div>
             </div>
         </div>
+        <?php if($documentSql['status'] == "Pending"): ?>
         <div class="footer d-flex flex-row-reverse">
             <button class="btn btn-sm btn-success approve_document" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
             <button class="btn btn-sm btn-danger report_disapprove" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-times"></i> Disapprove</button>
         </div>
+        <?php endif; ?>
     </div>
     <script>
         window.secondary_modal = function($title = '' , $url='',$size=""){

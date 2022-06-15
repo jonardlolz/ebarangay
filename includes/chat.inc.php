@@ -31,7 +31,7 @@ if(isset($_GET['showchat'])){
         <div class='incoming_msg'>
             <div class='incoming_msg_img_name'>
                 <div class='incoming_msg_img'> 
-                    <img class='img-profile rounded-circle ". $usertype ."' src='./img/". $chatrow['profile_pic'] . "' alt=". $chatrow['name'] . "> 
+                    <img class='img-profile rounded-circle ". $usertype ."' src='./img/users/". $chatrow['UsersID'] ."/profile_pic/". $chatrow['profile_pic'] . "' alt=". $chatrow['name'] . "> 
                 </div>
                 <div class='incoming_msg_name'> 
                     <p>" . $chatrow['name'] . "</p>

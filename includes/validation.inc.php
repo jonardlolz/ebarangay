@@ -36,5 +36,13 @@ if(isset($_GET['loginuserExist'])){
         echo 'false';
     }
 }
+if(isset($_GET['purokExist'])){
+    extract($_POST);
+    $sql = $conn->query("SELECT * FROM users WHERE username='$username'");
+    $row_cnt = $sql->num_rows;
+    if($row_cnt == 0){
+        echo 'false';
+    }
+}
 
 ?>

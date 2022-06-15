@@ -33,7 +33,7 @@
                                 <div class="user-avatar w-100 d-flex justify-content-center">
                                     <span class="position-relative">
                                         <img src="img/<?php echo $row["barangay_pic"]; ?>" class="img-fluid img-thumbnail rounded-circle" style="width:150px; height:150px">
-                                        <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                                        <?php if($_SESSION["userType"] == "Captain" && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#ppModal" class="text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:75%;left:75%;width:30px;height: 30px">
                                             <i class="fas fa-camera"></i>
                                         </a>
@@ -46,7 +46,7 @@
                             </div>
                         </h6>
                     </div>
-                    <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                    <?php if($_SESSION["userType"] == "Captain" && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
                         <a href="javascript:void(0)" class="edit_brgy text-dark position-absolute rounded-circle img-thumbnail d-flex justify-content-center align-items-center" style="top:93%;left:85%;width:30px;height: 30px" data-id="<?php echo $row['BarangayID'] ?>">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -175,7 +175,7 @@
                                                             elseif($officalRow["userType"] == "Admin"){
                                                                 echo "img-admin-profile";
                                                             }
-                                                        ?>" src="img/<?php echo $officalRow['profile_pic'] ?>" style="width:100px; height:100px">
+                                                        ?>" src="img/users/<?php echo $officalRow['UsersID'] ?>/profile_pic/<?php echo $officalRow['profile_pic'] ?>" style="width:100px; height:100px">
                                                         </span>
                                                     </div>
                                                 </div>
@@ -203,10 +203,16 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="purok" role="tabpanel" aria-labelledby="purok-tab">
+                            <?php if(isset($_GET['error'])): 
+                                    if($_GET['error'] == 'purokduplicate'): ?>
+                            <div class="alert alert-danger m-2">
+                                <h4>The purok already exists in the barangay</h4>
+                            </div>
+                            <?php endif; endif; ?>
                             <div class="card m-2">
                                 <div class="card-header py-3 d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-dark">Puroks in <?php echo $row['BarangayName'] ?></h6>
-                                    <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                                    <?php if($_SESSION["userType"] == "Captain" && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
                                     <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_purok" data-brgy="<?php echo $row['BarangayID'] ?>" data-id="<?php echo $row['BarangayName'] ?>"></a>
                                     <?php endif; ?>
                                 </div>
@@ -256,7 +262,7 @@
                                 <div class="card m-2">
                                     <div class="card-header py-3 d-flex justify-content-between">
                                         <h6 class="m-0 font-weight-bold text-dark">Contacts in <?php echo $row['BarangayName'] ?></h6>
-                                        <?php if($_SESSION["userType"] == "Captain" || $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                                        <?php if($_SESSION["userType"] == "Captain" && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
                                         <a class="fas fa-plus fa-lg mr-2 text-gray-600 add_contact" data-id="<?php echo $row['BarangayID'] ?>"></a>
                                         <?php endif; ?>
                                     </div>
@@ -268,7 +274,9 @@
                                                     <tr class="bg-gradient-secondary text-white">
                                                         <th>Contact Name</th>
                                                         <th>Contact Number</th>
+                                                        <?php if($_SESSION["userType"] == "Captain" && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
                                                         <th>Manage</th>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -277,9 +285,11 @@
                                                         while($contactrow=$contacts->fetch_assoc()):
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $row["contactName"] ?></td>
-                                                        <td><?php echo $row["contactNum"] ?></td>
-                                                        <td><button data-brgy="<?php echo $row['BarangayID'] ?>" data-id="<?php echo $contactrow['contactID'] ?>" class="edit_contact btn btn-sm btn-primary"><i class="fas fa-cog"></i> Options</button></td>
+                                                        <td><?php echo $contactrow["contactName"] ?></td>
+                                                        <td><?php echo $contactrow["contactNum"] ?></td>
+                                                        <?php if($_SESSION["userType"] == "Captain" && $_SESSION['userBarangay'] == $row['BarangayName']): ?>
+                                                        <td><button data-brgy="<?php echo $contactrow['BarangayID'] ?>" data-id="<?php echo $contactrow['contactID'] ?>" class="edit_contact btn btn-sm btn-primary"><i class="fas fa-cog"></i> Options</button></td>
+                                                        <?php endif; ?>
                                                     </tr>
                                                     <?php endwhile; ?>
                                                 </tbody>

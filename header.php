@@ -71,12 +71,14 @@
     <link href="css/chat-css.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
     <script src="node_modules/print-js/dist/print.js"></script>
     <link rel="stylesheet" href="node_modules/print-js/dist/print.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/date-1.1.2/r-2.3.0/sb-1.3.3/sp-2.0.1/datatables.min.css"/>
+    
     
     
     <style>
@@ -401,6 +403,9 @@
 <div class="row">
     
     <?php if(isset($_SESSION["UsersID"]) && !empty($_SESSION["UsersID"])) : ?>
+    <?php $brgySql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_SESSION['userBarangay']}'");
+        $brgyData = $brgySql->fetch_assoc();
+    ?>
     <!--Sidebar-->
     <div id="sidebar-area" style="width: 18%;">
     <ul class="navbar-nav sidebar sidebar-dark accordion px-2" id="accordionSidebar" style="background: rgb(70, 87, 101);">
@@ -426,7 +431,11 @@
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
             </li>
-
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="barangay_alt.php?barangayID=<?php echo $brgyData['BarangayID'] ?>" aria-expanded="true">
+                    Barangay
+                </a>
+            </li>
             <!-- Nav Item - Request -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
@@ -453,9 +462,6 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         <?php elseif($_SESSION["userType"] == "Captain") : ?>
-            <?php $brgySql = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_SESSION['userBarangay']}'");
-                $brgyData = $brgySql->fetch_assoc();
-            ?>
             <!-- Nav Item - Dashboard -->
             <!-- <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "dashboard.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="dashboard.php">Dashboard</a>
@@ -517,6 +523,11 @@
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
             </li>
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="barangay_alt.php?barangayID=<?php echo $brgyData['BarangayID'] ?>" aria-expanded="true">
+                    Barangay
+                </a>
+            </li>
             <!-- Nav Item - Request -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
@@ -576,7 +587,11 @@
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
             </li>
-
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="barangay_alt.php?barangayID=<?php echo $brgyData['BarangayID'] ?>" aria-expanded="true">
+                    Barangay
+                </a>
+            </li>
             <!-- Nav Item - Request -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>
@@ -612,7 +627,11 @@
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "active"; endif; ?> ">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "index.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="index.php">eBulletin</a>
             </li>
-
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "barangay_alt.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="barangay_alt.php?barangayID=<?php echo $brgyData['BarangayID'] ?>" aria-expanded="true">
+                    Barangay
+                </a>
+            </li>
             <!-- Nav Item - Request -->
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "request.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="request.php">Request</a>

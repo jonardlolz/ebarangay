@@ -77,16 +77,37 @@
         
 
         if($a1){
-            mysqli_commit($conn);
             $id = mysqli_insert_id($conn);
+            if(mysqli_commit($conn)){
+                if(isset($_FILES['userPicture']) && $_FILES['userPicture']['tmp_name'] != ''){
+                    mkdir('../img/users/'.$id);
+                    mkdir('../img/users/'.$id.'/profile_pic');
+                    mkdir('../img/users/'.$id.'/verification');
+                    $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userPicture']['name']; 
+                    $move = move_uploaded_file($_FILES['userPicture']['tmp_name'],'../img/users/'.$id.'/profile_pic/'. $fnamep); 
+                    $a2 = mysqli_query($conn, "UPDATE users SET profile_pic='$fnamep' WHERE UsersID=$id");
+                }
+                if(isset($_FILES['uservalidid']) && $_FILES['uservalidid']['tmp_name'] != ''){
+                    $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservalidid']['name']; 
+                    $move = move_uploaded_file($_FILES['uservalidid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); 
+                }
+                if(isset($_FILES['userlessornote']) && $_FILES['userlessornote']['tmp_name'] != ''){
+                    $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userlessornote']['name'];
+                    $move = move_uploaded_file($_FILES['userlessornote']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep); 
+                }
+                if(isset($_FILES['uservoterid']) && $_FILES['uservoterid']['tmp_name'] != ''){
+                    $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['uservoterid']['name']; 
+                    $move = move_uploaded_file($_FILES['uservoterid']['tmp_name'],'../img/users/'.$id.'/verification/'. $fnamep);
+                }
+            
+                $a2 = mysqli_query($conn, "INSERT INTO userreport(UsersID, OfficerID, reportMessage, reportStatus, barangay, purok) VALUES(LAST_INSERT_ID(), {$_SESSION['UsersID']}, 'Captain has added a new Resident', 'Add', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
 
-            $a2 = mysqli_query($conn, "INSERT INTO userreport(UsersID, OfficerID, reportMessage, reportStatus, barangay, purok) VALUES(LAST_INSERT_ID(), {$_SESSION['UsersID']}, 'Captain has added a new Resident', 'Add', '{$_SESSION['userBarangay']}', '{$_SESSION['userPurok']}')");
-
-            if($a2){
-                mysqli_commit($conn);
-                header("location: ../residents.php?error=none");
-                exit();
-            }   
+                if($a2){
+                    mysqli_commit($conn);
+                    header("location: ../residents.php?error=none");
+                    exit();
+                }   
+            }
         }
         else{
             echo("Error description: ".mysqli_error($conn));
@@ -127,13 +148,22 @@
         profile_pic, userType, startedLiving, VerifyStatus, IsVoter) VALUES('$Firstname', '$Middlename', '$Lastname', '$userDOB', '$userCivilStat', '$userGender', '$barangay', '$userPurok', '$userAddress', '$userHouseNum', '$emailAdd', '$username', '$hashedpwd', 'profile_picture.jpg', 'Captain', '$userDateResides', 'Verified', 'True')");
 
         if($a1 && $a2){
+            $id = mysqli_insert_id($conn);
             if(mysqli_commit($conn)){
+                if(isset($_FILES['userPicture']) && $_FILES['userPicture']['tmp_name'] != ''){
+                    mkdir('../img/users/'.$id);
+                    mkdir('../img/users/'.$id.'/profile_pic');
+                    mkdir('../img/users/'.$id.'/verification');
+                    $fnamep = strtotime(date('y-m-d H:i')).'_'.$_FILES['userPicture']['name']; 
+                    $move = move_uploaded_file($_FILES['userPicture']['tmp_name'],'../img/users/'.$id.'/profile_pic/'. $fnamep); 
+                    $a2 = mysqli_query($conn, "UPDATE users SET profile_pic='$fnamep' WHERE UsersID=$id");
+                }
                 $getCaptSql = $conn->query("SELECT * FROM users WHERE userType='Captain' ORDER BY UsersID DESC LIMIT 1;");
                 $getCapt = $getCaptSql->fetch_assoc();
                 $a3 = mysqli_query($conn, "UPDATE barangay SET brgyCaptain='{$getCapt['UsersID']}' WHERE BarangayName='{$getCapt['userBarangay']}'");
 
                 mysqli_commit($conn);
-                header("location: ../account.php?error=none");
+                header("location: ../account.php?error=nonenone");
                 exit();
             }
             else{

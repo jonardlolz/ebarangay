@@ -2,6 +2,12 @@
 
 <!--Begin Page-->
 <div class="col d-flex flex-column px-4">
+    <?php if(isset($_GET['error'])): 
+            if($_GET['error'] == 'purokduplicate'): ?>
+    <div class="alert alert-danger m-3">
+        <h4>Purok already exists in that barangay</h4>
+    </div>
+    <?php endif; endif; ?>
     <div class="card shadow mb-4 m-4">
         <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-dark">Purok</h6>

@@ -70,7 +70,7 @@
         extract($_POST);
         mysqli_begin_transaction($conn);
         if($userPosition == 'Councilor'){
-            $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");
+            $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition', councilorRole='$userRole' WHERE UsersID='$residents'");
         }
         else{
             $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");

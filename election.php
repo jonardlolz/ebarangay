@@ -3,7 +3,7 @@
 
 <div class="col d-flex flex-column">
 
-<?php if($_SESSION["userType"] == "Resident" || $_SESSION["userType"] == "Purok Leader" || $_SESSION["userType"] == "Secretary" || $_SESSION["userType"] == "Treasurer"): ?>
+<?php if($_SESSION["userType"] == "Resident" || $_SESSION["userType"] == "Purok Leader" || $_SESSION["userType"] == "Secretary" || $_SESSION["userType"] == "Treasurer" || $_SESSION['userType'] == "Councilor"): ?>
     <div class="container-fluid">
         <div class="card shadow mb-3">
             <div class="card-header m-0 p-1">
@@ -20,8 +20,8 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active p-2" id="nav-voting" role="tabpanel" aria-labelledby="nav-voting-tab">
-                        <?php $notif = $conn->query("SELECT * FROM election WHERE barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}' AND electionStatus='Ongoing'");
-                        $row_cnt = $notif->num_rows;
+                        <?php $notif2 = $conn->query("SELECT * FROM election WHERE barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}' AND electionStatus='Ongoing'");
+                        $row_cnt = $notif2->num_rows;
                         if($row_cnt > 0): ?>
                             <?php 
                             $notif = $conn->query("SELECT * FROM votes INNER JOIN election ON election.electionID = votes.electionID WHERE UsersID={$_SESSION['UsersID']} AND electionStatus='Ongoing'");
@@ -29,6 +29,8 @@
                             if($row_cnt <= 0):
                             ?>
                             <section id='currentElection'>
+                                <?php $electID = $notif2->fetch_assoc(); ?>
+                                <form action="includes/vote.inc.php?electionID=<?php echo $electID['electionID'] ?>" class="user" method="post">
                                 <?php
                                     $i = 0;
                                     $posi = array("Purok Leader");
@@ -39,31 +41,37 @@
                                     $cands = $conn->query("SELECT candidates.*, users.profile_pic FROM candidates
                                     INNER JOIN users ON users.UsersID=candidates.UsersID
                                     INNER JOIN election ON election.electionID = candidates.electionID
-                                    WHERE position='{$posi[$i]}' AND election.electionStatus='Ongoing' AND election.barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}'");
+                                    WHERE position='{$posi[$i]}' AND election.electionStatus='Ongoing' AND election.barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}' AND candidates.status='Accepted'");
                                     while($crow=$cands->fetch_assoc()):
                                         $crow["position"] = str_replace(" ", "", $crow["position"]);
                                     ?>
-                                    <div class="col-xl-4 col-md-6 mb-4">
-                                        <div class="card border-left-primary shadow h-100 py-2">
-                                            <div class="card-body">
-                                                <input type="radio" class="flat-red" name="<?php echo $crow["position"] ?>" value="<?php echo $crow["candidateID"] ?>" style="position: absolute;">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
-                                                            <b><?php echo $crow["lastname"]. ", " . $crow["firstname"] ?></b></div>
-                                                        <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
-                                                            Running for:  <b><?php echo $crow["position"] ?></b></div>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <img src="img/<?php echo $crow["profile_pic"] ?>" alt="EBARANGAY LOGO" width="70rem" height="80rem">
+                                    
+                                        <div class="col-xl-4 col-md-6 mb-4">
+                                            <div class="card border-left-primary shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <input type="radio" class="flat-red" name="<?php echo $crow["position"] ?>" value="<?php echo $crow["candidateID"] ?>" style="position: absolute;">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
+                                                                <b><?php echo $crow["lastname"]. ", " . $crow["firstname"] ?></b></div>
+                                                            <div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">
+                                                                Running for:  <b><?php echo $crow["position"] ?></b></div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <img src="img/users/<?php echo $crow["UsersID"] ?>/profile_pic/<?php echo $crow["profile_pic"] ?>" alt="EBARANGAY LOGO" width="70rem" height="80rem">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        
                                     <?php endwhile; ?>
                                 </div>
                                 <?php $i++; endwhile; ?>
+                                <div class="d-flex flex-row-reverse">
+                                    <button type="submit" name="submit" id="submit" class="btn btn-primary">Submit vote</button>
+                                </div>
+                                </form>
                             </section>
                             <?php else: ?>
                             <section id='alreadyvoted'>
@@ -81,7 +89,7 @@
                         <?php endif; ?>
                     </div>
                     <div class="tab-pane fade" id="nav-nomination" role="tabpanel" aria-labelledby="nav-nomination-tab">
-                        <?php $sql = $conn->query("SELECT * FROM candidates INNER JOIN election ON candidates.electionID=election.electionID WHERE electionStatus='Paused' AND barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}' AND UsersID={$_SESSION['UsersID']} AND status='Pending' OR status='Accepted' OR status='Declined' ORDER BY election.created_at DESC LIMIT 1");  
+                        <?php $sql = $conn->query("SELECT * FROM candidates INNER JOIN election ON candidates.electionID=election.electionID WHERE electionStatus='Paused' AND barangay='{$_SESSION['userBarangay']}' AND election.purok='{$_SESSION['userPurok']}' AND UsersID={$_SESSION['UsersID']} AND (status='Pending' OR status='Accepted' OR status='Declined') ORDER BY election.created_at DESC LIMIT 1");  
                         $count = $sql->num_rows;
                         if($count > 0): ?>
                             <?php $nominated = $sql->fetch_assoc(); 

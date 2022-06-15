@@ -28,10 +28,10 @@
                                 id="dataTable" width="100%" cellspacing="0" cellpadding="0">
                                 <thead >
                                     <tr class="bg-gradient-secondary text-white">
-                                        <th>Request ID</th>
                                         <th>Requester</th>
                                         <th>Document Type</th>
                                         <th>Amount</th>
+                                        <th>Payment Requested</th>
                                         <th>Manage</th>
                                     </tr>
                                 </thead>
@@ -55,7 +55,6 @@
                                             }
                                     ?>
                                     <tr>
-                                        <td><?php echo $row["RequestID"] ?></td>
                                         <td>
                                             <img class="img-profile rounded-circle <?php 
                                                 if($row["userType"] == "Resident"){
@@ -76,12 +75,13 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"]; ?>
                                         </td>
                                         <td><?php echo $row["documentType"] ?></td>
                                         <td><?php echo $row['amount'] ?></td>
+                                        <td><?php echo date_format(date_create($row['approvedOn']),"Y/m/d")?></td>
                                         <td>
                                             <button class="btn btn-success paid_request" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-check"></i> Paid</button>
                                             <button class="btn btn-danger unpaid_request" data-id="<?php echo $row['RequestID'] ?>"><i class="fas fa-times"></i> Unpaid</button>

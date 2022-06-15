@@ -31,7 +31,7 @@
                         name="reklamotype" id="reklamoCat" onChange="changecat(this.value);" required>
                             <option selected value="" hidden>Select</option>
                             <?php 
-                            $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND reklamoCatPriority='Minor'"); 
+                            $ereklamoCat = $conn->query("SELECT * FROM ereklamocategory WHERE reklamoCatBrgy='{$_SESSION['userBarangay']}' AND status='Active'"); 
                             while($categoryRow = $ereklamoCat->fetch_assoc()):
                             ?>
                             <option data-priority="<?php echo $categoryRow['reklamoCatPriority'] ?>" value="<?php echo $categoryRow['reklamoCatName'] ?>"><?php echo $categoryRow['reklamoCatName'] ?></option>
@@ -154,7 +154,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row["UsersID"] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -228,7 +228,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -301,7 +301,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row["UsersID"] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -372,7 +372,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>
@@ -432,7 +432,7 @@
                                                 elseif($row["userType"] == "Admin"){
                                                     echo "img-admin-profile";
                                                 }
-                                            ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                            ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                             <br>
                                             <?php echo $row["name"] ?>
                                         </td>

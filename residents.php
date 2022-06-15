@@ -17,7 +17,7 @@
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</a>
-                <a class="nav-item nav-link" id="nav-verify-tab" data-toggle="tab" href="#nav-verify" role="tab" aria-controls="nav-verify" aria-selected="true">Verified</a>
+                <a class="nav-item nav-link" id="nav-resident-tab" data-toggle="tab" href="#nav-resident" role="tab" aria-controls="nav-resident" aria-selected="true">Residents</a>
                 <a class="nav-item nav-link" id="nav-unverified-tab" data-toggle="tab" href="#nav-unverified" role="tab" aria-controls="nav-unverified" aria-selected="true">Unverified</a>
                 <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
                 while($categoryResult = $categorySql->fetch_assoc()):
@@ -42,7 +42,7 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' OR VerifyStatus = 'Reverify' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}' ORDER BY updated_on DESC, FIELD(VerifyStatus, 'Reverify', 'Pending')");
+                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' OR VerifyStatus = 'Reverify' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY updated_on DESC, FIELD(VerifyStatus, 'Reverify', 'Pending')");
                                 while($row=$accounts->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -85,30 +85,28 @@
                             <?php endwhile; ?>
                             <!--Row 1-->
                         </tbody>
+                        <tfoot></tfoot>
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-verify" role="tabpanel" aria-labelledby="nav-verify-tab">
+            <div class="tab-pane fade" id="nav-resident" role="tabpanel" aria-labelledby="nav-resident-tab">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark display" 
+                    <table class="table tableResident table-bordered text-center text-dark display" id=""
                         width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
                                 <th scope="col">Name</th>
-                                <th scope="col">Birthdate</th>
-                                <th scope="col">Civil Status</th>
-                                <th scope="col">User Type</th>
                                 <th scope="col">Purok</th>
-                                <th scope="col">Barangay</th>
-                                <th scope="col">Email Address</th>
+                                <th>House Number</th>
                             </tr>
                             
                         </thead>
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
+                                $accounts = $conn->query("SELECT *, (SELECT count(*) FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = 'Paknaan' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident')) as totalCount, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = 'Paknaan' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident');");
                                 while($row=$accounts->fetch_assoc()):
+                                    $totalCount = $row['totalCount'];
                                     if($row["userType"] == "Admin"){
                                         continue;
                                     }
@@ -131,50 +129,48 @@
                                         elseif($row["userType"] == "Treasurer"){
                                             echo "img-treas-profile";
                                         }
+                                        elseif($row["userType"] == "Councilor"){
+                                            echo "img-councilor-profile";
+                                        }
                                         elseif($row["userType"] == "Admin"){
                                             echo "img-admin-profile";
                                         }
-                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                     </br>
-                                    <?php echo $row["name"] ?>
+                                    <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
                                 </td>
-                                <td><?php echo $row["dateofbirth"] ?></td>
-                                <td><?php echo $row["civilStat"] ?></td>
-                                <td><?php echo $row["userType"] ?></td>
                                 <td><?php echo $row["userPurok"] ?></td>
-                                <td><?php echo $row["userBarangay"] ?></td>
-                                <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                                <!--Right Options-->
+                                <td><?php echo $row["userHouseNum"] ?></td>
                             </tr>
                             <?php endwhile; ?>
                             <!--Row 1-->
                         </tbody>
                         <tfoot>
-
+                            <tr>
+                                <td>Total number of Residents:</td>
+                                <td colspan="2"><b><?php echo $totalCount ?></b></td>
+                            </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-unverified" role="tabpanel" aria-labelledby="nav-unverified-tab">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark display" 
+                    <table class="table tableResident table-bordered text-center text-dark display" id=""
                         width="100%" cellspacing="0" cellpadding="0">
                         <thead >
                             <tr class="bg-gradient-secondary text-white">
                                 <th scope="col">Name</th>
-                                <th scope="col">Birthdate</th>
-                                <th scope="col">Civil Status</th>
-                                <th scope="col">User Type</th>
+                                <th>Reason for Unverification</th>
                                 <th scope="col">Purok</th>
-                                <th scope="col">Barangay</th>
-                                <th scope="col">Email Address</th>
+                                <th>House Number</th>
                             </tr>
                             
                         </thead>
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Unverified' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
+                                $accounts = $conn->query("SELECT userreport.reportMessage, users.*, concat(Firstname, ' ', Lastname) as name FROM users INNER JOIN userreport ON users.UsersID=userreport.UsersID WHERE VerifyStatus = 'Unverified' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident')");
                                 while($row=$accounts->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -198,25 +194,28 @@
                                         elseif($row["userType"] == "Treasurer"){
                                             echo "img-treas-profile";
                                         }
+                                        elseif($row["userType"] == "Councilor"){
+                                            echo "img-councilor-profile";
+                                        }
                                         elseif($row["userType"] == "Admin"){
                                             echo "img-admin-profile";
                                         }
-                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                     </br>
-                                    <?php echo $row["name"] ?>
+                                    <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
                                 </td>
-                                <td><?php echo $row["dateofbirth"] ?></td>
-                                <td><?php echo $row["civilStat"] ?></td>
-                                <td><?php echo $row["userType"] ?></td>
+                                <td><?php echo $row['reportMessage']?></td>
                                 <td><?php echo $row["userPurok"] ?></td>
-                                <td><?php echo $row["userBarangay"] ?></td>
-                                <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                                
-                                <!--Right Options-->
+                                <td><?php echo $row["userHouseNum"] ?></td>
                             </tr>
                             <?php endwhile; ?>
                             <!--Row 1-->
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -321,9 +320,8 @@
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</a>
-                <a class="nav-item nav-link" id="nav-verify-tab" data-toggle="tab" href="#nav-verify" role="tab" aria-controls="nav-verify" aria-selected="true">Verify</a>
-                <a class="nav-item nav-link" id="nav-unverified-tab" data-toggle="tab" href="#nav-unverified" role="tab" aria-controls="nav-unverified" aria-selected="true">Unverified</a>
                 <a class="nav-item nav-link" id="nav-resident-tab" data-toggle="tab" href="#nav-resident" role="tab" aria-controls="nav-resident" aria-selected="true">Resident</a>
+                <a class="nav-item nav-link" id="nav-unverified-tab" data-toggle="tab" href="#nav-unverified" role="tab" aria-controls="nav-unverified" aria-selected="true">Unverified</a>
                 <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
                 while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
@@ -394,138 +392,6 @@
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-verify" role="tabpanel" aria-labelledby="nav-verify-tab">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark display" 
-                        width="100%" cellspacing="0" cellpadding="0">
-                        <thead >
-                            <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Name</th>
-                                <th scope="col">Birthdate</th>
-                                <th scope="col">Civil Status</th>
-                                <th scope="col">User Type</th>
-                                <th scope="col">Purok</th>
-                                <th scope="col">Barangay</th>
-                                <th scope="col">Email Address</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <!--Row 1-->
-                            <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
-                                while($row=$accounts->fetch_assoc()):
-                                    if($row["userType"] == "Admin"){
-                                        continue;
-                                    }
-                            ?>
-                            <tr>
-                                <td>
-                                    <img class="img-profile rounded-circle <?php 
-                                        if($row["userType"] == "Resident"){
-                                            echo "img-res-profile";
-                                        }
-                                        if($row["userType"] == "Councilor"){
-                                            echo "img-councilor-profile";
-                                        }
-                                        elseif($row["userType"] == "Purok Leader"){
-                                            echo "img-purokldr-profile";
-                                        }
-                                        elseif($row["userType"] == "Captain"){
-                                            echo "img-capt-profile";
-                                        }
-                                        elseif($row["userType"] == "Secretary"){
-                                            echo "img-sec-profile";
-                                        }
-                                        elseif($row["userType"] == "Treasurer"){
-                                            echo "img-treas-profile";
-                                        }
-                                        elseif($row["userType"] == "Admin"){
-                                            echo "img-admin-profile";
-                                        }
-                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                    </br>
-                                    <?php echo $row["name"] ?>
-                                </td>
-                                <td><?php echo $row["dateofbirth"] ?></td>
-                                <td><?php echo $row["civilStat"] ?></td>
-                                <td><?php echo $row["userType"] ?></td>
-                                <td><?php echo $row["userPurok"] ?></td>
-                                <td><?php echo $row["userBarangay"] ?></td>
-                                <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                                <!--Right Options-->
-                            </tr>
-                            <?php endwhile; ?>
-                            <!--Row 1-->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="nav-unverified" role="tabpanel" aria-labelledby="nav-unverified-tab">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center text-dark display" 
-                        width="100%" cellspacing="0" cellpadding="0">
-                        <thead >
-                            <tr class="bg-gradient-secondary text-white">
-                                <th scope="col">Name</th>
-                                <th scope="col">Birthdate</th>
-                                <th scope="col">Civil Status</th>
-                                <th scope="col">User Type</th>
-                                <th scope="col">Purok</th>
-                                <th scope="col">Barangay</th>
-                                <th scope="col">Email Address</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <!--Row 1-->
-                            <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Unverified' AND userBarangay = '{$_SESSION['userBarangay']}' AND userPurok = '{$_SESSION['userPurok']}'");
-                                while($row=$accounts->fetch_assoc()):
-                                    if($row["userType"] == "Admin"){
-                                        continue;
-                                    }
-                            ?>
-                            <tr>
-                                <td>
-                                    <img class="img-profile rounded-circle <?php 
-                                        if($row["userType"] == "Resident"){
-                                            echo "img-res-profile";
-                                        }
-                                        elseif($row["userType"] == "Purok Leader"){
-                                            echo "img-purokldr-profile";
-                                        }
-                                        elseif($row["userType"] == "Captain"){
-                                            echo "img-capt-profile";
-                                        }
-                                        elseif($row["userType"] == "Secretary"){
-                                            echo "img-sec-profile";
-                                        }
-                                        elseif($row["userType"] == "Treasurer"){
-                                            echo "img-treas-profile";
-                                        }
-                                        elseif($row["userType"] == "Admin"){
-                                            echo "img-admin-profile";
-                                        }
-                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                    </br>
-                                    <?php echo $row["name"] ?>
-                                </td>
-                                <td><?php echo $row["dateofbirth"] ?></td>
-                                <td><?php echo $row["civilStat"] ?></td>
-                                <td><?php echo $row["userType"] ?></td>
-                                <td><?php echo $row["userPurok"] ?></td>
-                                <td><?php echo $row["userBarangay"] ?></td>
-                                <td><name@email class="com"><?php echo $row["emailAdd"] ?></name@email></td>
-                                
-                                <!--Right Options-->
-                            </tr>
-                            <?php endwhile; ?>
-                            <!--Row 1-->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
             <div class="tab-pane fade" id="nav-resident" role="tabpanel" aria-labelledby="nav-resident-tab">
                 <div class="table-responsive">
                     <table class="table tableResident table-bordered text-center text-dark display" id=""
@@ -541,8 +407,10 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
+                                $count = 0;
                                 $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Verified' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident');");
                                 while($row=$accounts->fetch_assoc()):
+                                    $count++;
                                     if($row["userType"] == "Admin"){
                                         continue;
                                     }
@@ -579,6 +447,11 @@
                                 <td><?php echo $row["userHouseNum"] ?></td>
                             </tr>
                             <?php endwhile; ?>
+                            <tr>
+                                <td>Total Residents: </td>
+                                <td><?php echo $count ?></td>
+                                <td></td>
+                            </tr>
                             <!--Row 1-->
                         </tbody>
                         <tfoot>
@@ -589,6 +462,72 @@
                     </table>
                 </div>
             </div>
+            <div class="tab-pane fade" id="nav-unverified" role="tabpanel" aria-labelledby="nav-unverified-tab">
+                <div class="table-responsive">
+                    <table class="table tableResident table-bordered text-center text-dark display" id=""
+                        width="100%" cellspacing="0" cellpadding="0">
+                        <thead >
+                            <tr class="bg-gradient-secondary text-white">
+                                <th scope="col">Name</th>
+                                <th scope="col">Purok</th>
+                                <th>House Number</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <!--Row 1-->
+                            <?php 
+                                $count = 0;
+                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Unverified' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY FIELD(userType, 'Captain', 'Purok Leader', 'Secretary', 'Treasurer', 'Resident');");
+                                while($row=$accounts->fetch_assoc()):
+                                    $count++;
+                                    if($row["userType"] == "Admin"){
+                                        continue;
+                                    }
+                            ?>
+                            <tr>
+                                <td>
+                                    <img class="img-profile rounded-circle <?php 
+                                        if($row["userType"] == "Resident"){
+                                            echo "img-res-profile";
+                                        }
+                                        elseif($row["userType"] == "Purok Leader"){
+                                            echo "img-purokldr-profile";
+                                        }
+                                        elseif($row["userType"] == "Captain"){
+                                            echo "img-capt-profile";
+                                        }
+                                        elseif($row["userType"] == "Secretary"){
+                                            echo "img-sec-profile";
+                                        }
+                                        elseif($row["userType"] == "Treasurer"){
+                                            echo "img-treas-profile";
+                                        }
+                                        elseif($row["userType"] == "Councilor"){
+                                            echo "img-councilor-profile";
+                                        }
+                                        elseif($row["userType"] == "Admin"){
+                                            echo "img-admin-profile";
+                                        }
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    </br>
+                                    <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
+                                </td>
+                                <td><?php echo $row["userPurok"] ?></td>
+                                <td><?php echo $row["userHouseNum"] ?></td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <tr>
+                                <td>Total Residents: </td>
+                                <td><?php echo $count ?></td>
+                                <td></td>
+                            </tr>
+                            <!--Row 1-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
             <?php $categorySql = $conn->query("SELECT * FROM residentcategory WHERE Barangay='{$_SESSION['userBarangay']}' AND Purok='All'"); 
             while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
@@ -652,6 +591,7 @@
                                 <!--Right Options-->
                             </tr>
                             <?php endwhile; ?>
+                            
                             <!--Row 1-->
                         </tbody>
                     </table>
@@ -670,7 +610,11 @@
                 "scrollY": "400px",
                 "scrollCollapse": true,
                 "paging": false,
-                "ordering": false
+                "ordering": false,
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf'
+                ]
             });
         });
     </script>
@@ -761,6 +705,7 @@
     <div class="card shadow mb-4 m-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <h6 class="m-0 font-weight-bold text-dark"><?php echo $_SESSION["userBarangay"] ?> Residents</h6>
+        <a class="fas fa-plus fa-lg mr-2 text-gray-600 residentOptions" href="javascript:void(0)"></a>
     </div>
     <div class="card-body" style="font-size: 75%">
         <nav>
@@ -819,7 +764,7 @@
                                         elseif($row["userType"] == "Admin"){
                                             echo "img-admin-profile";
                                         }
-                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                     </br>
                                     <a href="javascript:void(0)" class="view_profile" data-id="<?php echo $row['UsersID'] ?>"><?php echo $row["name"] ?></a> 
                                 </td>

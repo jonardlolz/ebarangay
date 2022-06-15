@@ -74,7 +74,7 @@
                             elseif($row["userType"] == "Admin"){
                                 echo "img-admin-profile";
                             }
-                        ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                        ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                         
                         <?php echo $row["name"] ?>
                     </td>
