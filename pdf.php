@@ -85,7 +85,7 @@ if($_GET['reportType'] == 'ereklamoReport'):
                         ORDER BY date DESC");
 
 elseif($_GET['reportType'] == 'userReport'):
-    $pdf->SetWidths(array(30,30,30,30,30,30));
+    $pdf->SetWidths(array(38,38,38,38,38,38));
     $pdf->SetAligns(array('C','C','C','C','C','C'));
     $pdf->AddCol('residentName', 30, 'Resident', 'C');
     $pdf->AddCol('officerName', 30, 'Officer', 'C');
