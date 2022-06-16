@@ -1,0 +1,31 @@
+- strong password	- DONE
+- registration: 
+	: upload profile	- DONE 
+	: upload requirements	- DONE
+	: inpout verification	- DONE
+
+- signup verification: 
+	: verify		- DONE
+	: unverify > report 	- DONE
+
+- document verification: 
+	: approve		-DONE
+	: disapprove > report
+
+- add account: 
+	: middle name (-)	- DONE
+
+- report: 
+	: choose month 		- DONE
+	: print			- DONE
+
+- captain: 
+	: graph result of candidates for election 			- DONE
+	: soft del; avoid duplication of document 
+	
+- purok leader:
+	: update status of resident 	- DONE
+	: accept/decline nomination	- DONE
+
+- manuscript: scope and limit ch1
+

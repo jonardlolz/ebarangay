@@ -1,62 +1,176 @@
 <?php
 
-// Include autoloader 
-require_once 'vendor\dompdf\autoload.inc.php'; 
-session_start(); 
+
+require("node_modules/FPDF/fpdfsqltable.php");
+
+session_start();
 
 
-    // Reference the Dompdf namespace 
-    use Dompdf\Dompdf; 
-    
-    // Instantiate and use the dompdf class 
-    $dompdf = new Dompdf();
-    
-    // Load HTML content 
-    $dompdf->loadHtml("<html>
-    <head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+class PDF extends PDF_MySQL_Table{
 
-    </head>
-    <body>
 
-    <div style='position:absolute;left:240.53px;top:34.80px' class='cls_002'><span class='cls_002'>Republic of the Philippines</span></div>
-    <div style='position:absolute;left:245.21px;top:48.84px' class='cls_003'><span class='cls_003'>BARANGAY {$_SESSION['userBarangay']}</span></div>
-    <div style='position:absolute;left:278.57px;top:62.40px' class='cls_002'><span class='cls_002'>Davao City</span></div>
-    <div style='position:absolute;left:174.74px;top:103.94px' class='cls_005'><span class='cls_005'>B A R A N G AY   C L E A R A N C E</span></div>
-    <div style='position:absolute;left:90.02px;top:147.74px' class='cls_006'><span class='cls_006'>TO WHOM IT MAY CONCERN:</span></div>
-    <div style='position:absolute;left:126.02px;top:175.34px' class='cls_004'><span class='cls_004'>This is to certify that </span><span class='cls_009'>complete name</span><span class='cls_004'> with residence and postal address at</span></div>
-    <div style='position:absolute;left:90.02px;top:189.02px' class='cls_010'><span class='cls_010'>&lt;Street Address></span><span class='cls_011'>,</span><span class='cls_004'> Barangay Mintal, Davao City has no derogatory record filed in</span></div>
-    <div style='position:absolute;left:90.02px;top:202.94px' class='cls_004'><span class='cls_004'>our Barangay Office.</span></div>
-    <div style='position:absolute;left:126.02px;top:230.54px' class='cls_004'><span class='cls_004'>The above-named individual who is a bonafide resident of this barangay is</span></div>
-    <div style='position:absolute;left:90.02px;top:244.37px' class='cls_004'><span class='cls_004'>a person of good moral character, peace-loving and civic minded citizen.</span></div>
-    <div style='position:absolute;left:126.02px;top:271.97px' class='cls_004'><span class='cls_004'>This  certification/clearance  is  hereby  issued  in  connection  with  the</span></div>
-    <div style='position:absolute;left:90.02px;top:285.65px' class='cls_004'><span class='cls_004'>subject’s application for </span><span class='cls_008'>&lt;state reason for application></span><span class='cls_004'> and for whatever legal</span></div>
-    <div style='position:absolute;left:90.02px;top:299.57px' class='cls_004'><span class='cls_004'>purpose it may serve him/her best, and is valid for six (6) from the date issued.</span></div>
-    <div style='position:absolute;left:126.02px;top:327.17px' class='cls_006'><span class='cls_006'>NOT VALID WITHOUT OFFICIAL SEAL.</span></div>
-    <div style='position:absolute;left:126.02px;top:354.77px' class='cls_004'><span class='cls_004'>Given this Monday, May 20, 2013.</span></div>
-    <div style='position:absolute;left:126.02px;top:354.77px' class='cls_004'><span class='cls_004'>Given this Monday, May 20, 2013.</span></div>
-    <div style='position:absolute;left:400.07px;top:400.99px' class='cls_006'><span class='cls_006'><img src='C:/xampp/htdocs/ebarangaytest/signature.png' alt='signature' style='width: 25%;'></span></div>
 
-    <div style='position:absolute;left:342.07px;top:409.99px' class='cls_006'><span class='cls_006'>RAMON M. BARGAMENTO II</span></div>
-    <div style='position:absolute;left:384.79px;top:423.79px' class='cls_004'><span class='cls_004'>Punong Barangay</span></div>
-    <div style='position:absolute;left:90.02px;top:451.39px' class='cls_004'><span class='cls_004'>Specimen Signature of Applicant:</span></div>
-    <div style='position:absolute;left:130.02px;top:465.99px' class='cls_004'><span class='cls_004'><img src='signature.png' alt='signature' style='width: 25%;'></span></div>
-    <div style='position:absolute;left:130.02px;top:478.99px' class='cls_004'><span class='cls_004'> Resident Resident</span></div>
-    <div style='position:absolute;left:90.02px;top:478.99px' class='cls_004'><span class='cls_004'>___________________________</span></div>
-    <div style='position:absolute;left:90.02px;top:534.19px' class='cls_004'><span class='cls_004'>CTC No. _______</span></div>
-    <div style='position:absolute;left:90.02px;top:547.99px' class='cls_004'><span class='cls_004'>Issued at ________</span></div>
-    <div style='position:absolute;left:90.02px;top:561.79px' class='cls_004'><span class='cls_004'>Issued on _______</span></div>
-    </div>
+    function Header(){
+        include 'includes/dbh.inc.php';
+        $brgyInfo = $conn->query("SELECT * FROM barangay WHERE BarangayName='{$_SESSION['userBarangay']}'")->fetch_assoc();
+        $this->Image('img/'.$brgyInfo['barangay_pic'],10,6,25);
+        $this->Image('img/eb-logo.png',170,6,25);
+        $this->SetFont('Arial', 'B', 16);
+        $this->Cell(80);
+        $this->Cell(30,10,'Barangay '.$_SESSION['userBarangay'],0,0,'C');
+        $this->Ln(20);
+        $this->SetFont('Arial', '', 12);
+        if($_GET['reportType'] == 'ereklamoReport'){
+            $this->Cell(30,10,'Type of Report: Reklamo Report',0,0);
+        }
+        elseif($_GET['reportType'] == 'requestReport'){
+            $this->Cell(30,10,'Type of Report: Request Report',0,0);
+        }
+        elseif($_GET['reportType'] == 'paymentReport'){
+            $this->Cell(30,10,'Type of Report: Payment Report',0,0);
+        }
+        elseif($_GET['reportType'] == 'userReport'){
+            $this->Cell(30,10,'Type of Report: User Report',0,0);
+        }
+        elseif($_GET['reportType'] == 'electionReport'){
+            $this->Cell(30,10,'Type of Report: Election Report',0,0);
+        }
+        $this->Cell(120);
+        $this->Cell(30,10,'Date:'.date("Y-m-d"),0,0);
+        $this->Ln(20);
+    }
 
-    </body>
-    </html>
-    "); 
-    
-    // (Optional) Setup the paper size and orientation 
-    $dompdf->setPaper('A4', 'portrait'); 
-    
-    // Render the HTML as PDF 
-    $dompdf->render(); 
-    
-    // Output the generated PDF to Browser 
-    $dompdf->stream();
+    function Footer(){
+        $this->Ln(10);
+        $this->SetFont('Arial', '', 12);
+        $this->Cell(160);
+        $this->Cell(30,10,'Prepared by: '.$_SESSION['Firstname']. ' '.$_SESSION['Lastname'],0,0,'R');
+        $this->Ln(5);
+        $this->SetFont('Arial', '', 12);
+        $this->Cell(160);
+        $this->Cell(30,10,''.$_SESSION['userType'].'',0,0,'R');
+        $this->SetY(-15);
+        $this->SetFont('Arial', '', 11);
+        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+    }
+}
+include 'includes/dbh.inc.php';
 
+$pdf = new PDF();
+$pdf->AliasNbPages();   
+$pdf->AddPage();
+
+
+if($_GET['reportType'] == 'ereklamoReport'):
+    $pdf->SetWidths(array(30,30,30,30,30,30));
+    $pdf->SetAligns(array('C','C','C','C','C','C'));
+    $pdf->AddCol('complaineeName', 30, 'Complainee', 'C');
+    $pdf->AddCol('respondername', 30, 'Responder', 'C');
+    $pdf->AddCol('complaintName', 30, 'Complaint', 'C');
+    $pdf->AddCol('detail', 40, 'Detail', 'C');
+    $pdf->AddCol('dateComplained', 40, 'Date Complained', 'C');
+    $pdf->AddCol('dateResolved', 40, 'Date Resolved', 'C');
+    $pdf->Table($conn,"SELECT concat(complainee.Firstname, ' ', complainee.Lastname) as complaineeName,
+                        concat(responder.Firstname, ' ', responder.Lastname) as respondername,
+                        ereklamo.reklamoType as complaintName,
+                        ereklamo.detail as detail,
+                        DATE_FORMAT(ereklamo.CreatedOn, '%M %d, %Y') as dateComplained,
+                        DATE_FORMAT(ereklamoreport.date, '%M %d, %Y') as dateResolved
+                        FROM ereklamoreport 
+                        INNER JOIN ereklamo on ereklamo.ReklamoID=ereklamoreport.ReklamoID 
+                        INNER JOIN users responder ON responder.UsersID=ereklamoreport.respondentID 
+                        INNER JOIN users complainee ON complainee.UsersID=ereklamo.complainee 
+                        INNER JOIN chatroom ON ereklamo.ReklamoID=chatroom.idreference AND type='ereklamo' 
+                        WHERE ereklamo.barangay='Paknaan' AND ereklamoreport.reportStatus='Resolved' 
+                        ORDER BY date DESC");
+
+elseif($_GET['reportType'] == 'userReport'):
+    $pdf->SetWidths(array(30,30,30,30,30,30));
+    $pdf->SetAligns(array('C','C','C','C','C','C'));
+    $pdf->AddCol('residentName', 30, 'Resident', 'C');
+    $pdf->AddCol('officerName', 30, 'Officer', 'C');
+    $pdf->AddCol('reportStatus', 30, 'Status', 'C');
+    $pdf->AddCol('reportMessage', 30, 'Message', 'C');
+    $pdf->AddCol('dateReported', 30, 'Date Reported', 'C');
+
+    $pdf->Table($conn,"SELECT concat(resident.Firstname, ' ', resident.Lastname) as residentName,
+                    concat(officer.Firstname, ' ', officer.Lastname) as officerName,
+                    reportStatus,
+                    reportMessage,
+                    DATE_FORMAT(date, '%M %d, %Y') as dateReported
+                    FROM userreport 
+                    INNER JOIN users resident ON resident.UsersID=userreport.UsersID 
+                    INNER JOIN users officer ON officer.UsersID=userreport.OfficerID 
+                    WHERE barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}' 
+                    ORDER BY date DESC");
+
+elseif($_GET['reportType'] == 'requestReport'):
+    $pdf->SetWidths(array(20,23,30,24,30,24,20,20));
+    $pdf->SetAligns(array('C','C','C','C','C','C','C','C'));
+    $pdf->AddCol('officername', 30, 'Officer', 'C');
+    $pdf->AddCol('requestername', 30, 'Requester', 'C');
+    $pdf->AddCol('documentType', 30, 'Document Type', 'C');
+    $pdf->AddCol('purpose', 30, 'purpose', 'C');
+    $pdf->AddCol('reportMessage', 30, 'Report Message', 'C');
+    $pdf->AddCol('reportStatus', 30, 'Report Status', 'C');
+    $pdf->AddCol('dateRequested', 30, 'Date Request', 'C');
+    $pdf->AddCol('dateReported', 30, 'Date Report', 'C');
+
+    $pdf->Table($conn,"SELECT concat(officer.Firstname, ' ', officer.Lastname) as officername,
+                        concat(user.Firstname, ' ', user.Lastname) as requestername, 
+                        documentType,
+                        purpose,
+                        reportMessage,
+                        reportStatus,
+                        DATE_FORMAT(request.requestedOn, '%M %d, %Y') as dateRequested,
+                        DATE_FORMAT(requestreport.date, '%M %d, %Y') as dateReported
+                        FROM requestreport
+                        INNER JOIN request ON requestreport.RequestID=request.RequestID 
+                        INNER JOIN users officer ON officer.UsersID=requestreport.officerID 
+                        INNER JOIN users user ON user.UsersID=request.UsersID WHERE reportStatus!='Paid'
+                        ORDER BY date DESC");
+
+elseif($_GET['reportType'] == 'paymentReport'):
+    $pdf->SetWidths(array(30,30,30,30,30,20,20));
+    $pdf->SetAligns(array('C','C','C','C','C','C','C','C'));
+    $pdf->AddCol('officername', 30, 'Officer', 'C');
+    $pdf->AddCol('requestername', 30, 'Requester', 'C');
+    $pdf->AddCol('documentType', 30, 'Document Type', 'C');
+    $pdf->AddCol('purpose', 30, 'Purpose', 'C');
+    $pdf->AddCol('amount', 30, 'Amount', 'C');
+    $pdf->AddCol('dateRequested', 30, 'Date Request', 'C');
+    $pdf->AddCol('dateReported', 30, 'Date Report', 'C');
+
+    $pdf->Table($conn,"SELECT concat(officer.Firstname, ' ', officer.Lastname) as officername,
+                        concat(user.Firstname, ' ', user.Lastname) as requestername, 
+                        documentType,
+                        purpose,
+                        request.amount,
+                        DATE_FORMAT(request.requestedOn, '%M %d, %Y') as dateRequested,
+                        DATE_FORMAT(requestreport.date, '%M %d, %Y') as dateReported
+                        FROM requestreport
+                        INNER JOIN request ON requestreport.RequestID=request.RequestID 
+                        INNER JOIN users officer ON officer.UsersID=requestreport.officerID 
+                        INNER JOIN users user ON user.UsersID=request.UsersID WHERE reportStatus!='Paid'
+                        ORDER BY date DESC");
+
+elseif($_GET['reportType'] == 'electionReport'):
+    $pdf->SetWidths(array(45,45,45,45));
+    $pdf->SetAligns(array('C','C','C','C'));
+    $pdf->AddCol('electionTitle', 30, 'Election Title', 'C');
+    $pdf->AddCol('purok', 30, 'Purok', 'C');
+    $pdf->AddCol('created_at', 30, 'Date started', 'C');
+    $pdf->AddCol('winnerName', 30, 'Elected candidate', 'C');
+
+    $pdf->Table($conn,"SELECT election.purok, election.electionTitle, DATE_FORMAT(election.created_at, '%M %d, %Y') as created_at, election.electionStatus, results.electionID, results.UsersID, concat(users.Firstname, ' ', users.Lastname) as winnerName, candidateID, MAX(voteResults), position 
+    FROM (SELECT candidates.UsersID, votes.candidateID, COUNT(votes.candidateID) as voteResults, votes.position, votes.electionID
+    FROM votes INNER JOIN candidates ON candidates.candidateID = votes.candidateID
+    GROUP BY candidateID) as results
+    INNER JOIN election ON results.electionID=election.electionID
+    INNER JOIN users ON results.UsersID=users.UsersID
+    WHERE electionStatus='Finished'
+    GROUP BY position;");
+endif;
+$pdf->Output();
+
+?>

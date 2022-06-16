@@ -345,7 +345,7 @@
                         <tbody>
                             <!--Row 1-->
                             <?php 
-                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE VerifyStatus = 'Pending' OR VerifyStatus = 'Reverify' AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY updated_on DESC, FIELD(VerifyStatus, 'Reverify', 'Pending')");
+                                $accounts = $conn->query("SELECT *, concat(Firstname, ' ', Lastname) as name FROM users WHERE (VerifyStatus = 'Pending' OR VerifyStatus = 'Reverify') AND userBarangay = '{$_SESSION['userBarangay']}' ORDER BY updated_on DESC, FIELD(VerifyStatus, 'Reverify', 'Pending')");
                                 while($row=$accounts->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;

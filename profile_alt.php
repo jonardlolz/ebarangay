@@ -91,8 +91,27 @@
                     if($row['IsLandlord'] == "True"){
                         $detail .= ", Landlord";
                     }
-                    if($row['IsLandlord'] == "False" && $row['isRenting'] == "False"){
-                        $detail .= ", Resident";
+                    if($row['userType'] == "Resident"){
+                        if($row['IsLandlord'] == "False" && $row['isRenting'] == "False"){
+                            $detail .= ", Resident";
+                        }
+                    }
+                    elseif($row["userType"] != "Resident"){
+                        if($row['userType'] == "Captain"){
+                            $detail .= ", Captain";
+                        }
+                        if($row['userType'] == "Purok Leader"){
+                            $detail .= ", Purok Leader";
+                        }
+                        if($row['userType'] == "Councilor"){
+                            $detail .= ", Councilor";
+                        }
+                        if($row['userType'] == "Treasurer"){
+                            $detail .= ", Treasurer";
+                        }
+                        if($row['userType'] == "Secretary"){
+                            $detail .= ", Secretary";
+                        }
                     }
                 
                     echo $detail;

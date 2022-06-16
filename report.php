@@ -42,6 +42,11 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
+                            <a target="_blank" href="pdf.php?reportType=ereklamoReport">
+                                <div class="d-flex flex-row-reverse">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
+                                </div>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" width="100%" cellspacing="0" cellpadding="0">
                                     <thead>
@@ -138,6 +143,11 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
+                            <a target="_blank" href="pdf.php?reportType=requestReport">
+                                <div class="d-flex flex-row-reverse">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
+                                </div>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
@@ -147,7 +157,6 @@
                                             <th>Officer Name</th>
                                             <th>Document Name</th>
                                             <th>Purpose</th>
-                                            <th>Fee</th>
                                             <th>Status Report</th>
                                             <th>Report Message</th>
                                             <th>Requirements Submitted</th>
@@ -227,7 +236,6 @@
                                             </td>
                                             <td><?php echo $row['documentType'] ?></td>
                                             <td><?php echo $row['purpose'] ?></td>
-                                            <td><?php echo $row['amount'] ?></td>
                                             <td><?php echo $row['reportStatus'] ?></td>
                                             <td><?php echo $row['reportMessage'] ?></td>
                                             <td><?php if(is_dir("img/erequest/".$row['RequestID'])): ?>
@@ -246,6 +254,11 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                            <a target="_blank" href="pdf.php?reportType=paymentReport">
+                                <div class="d-flex flex-row-reverse">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
+                                </div>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
@@ -359,6 +372,11 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="residents" role="tabpanel" aria-labelledby="residents-tab">
+                            <a target="_blank" href="pdf.php?reportType=userReport">
+                                <div class="d-flex flex-row-reverse">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
+                                </div>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
@@ -458,6 +476,11 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab">
+                            <a target="_blank" href="pdf.php?reportType=electionReport">
+                                <div class="d-flex flex-row-reverse">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
+                                </div>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                 width="100%" cellspacing="0" cellpadding="0">
@@ -466,37 +489,33 @@
                                             <th scope="col">Election Title</th>
                                             <th scope="col">Purok</th>
                                             <th scope="col">Date Created</th>
+                                            <th scope="col">Winner</th>
                                             <th scope="col">Candidates</th>
-                                            <th scope="col">Manage</th>
                                         </tr>
                                         
                                     </thead>
                                     <tbody>
                                         <!--Row 1-->
                                         <?php 
-                                            $election = $conn->query("SELECT election.*, 
-                                            concat(users.Firstname, ' ', users.Lastname) as name,
-                                            users.profile_pic, 
-                                            users.userType FROM election 
-                                            INNER JOIN users ON election.created_by = users.UsersID 
+                                            $election = $conn->query("SELECT election.purok, election.electionTitle, election.created_at, election.electionStatus, results.electionID, results.UsersID, concat(users.Firstname, ' ', users.Lastname) as winnerName, candidateID, MAX(voteResults), position 
+                                            FROM (SELECT candidates.UsersID, votes.candidateID, COUNT(votes.candidateID) as voteResults, votes.position, votes.electionID
+                                            FROM votes INNER JOIN candidates ON candidates.candidateID = votes.candidateID
+                                            GROUP BY candidateID) as results
+                                            INNER JOIN election ON results.electionID=election.electionID
+                                            INNER JOIN users ON results.UsersID=users.UsersID
                                             WHERE electionStatus='Finished'
-                                            AND barangay='{$_SESSION['userBarangay']}'");
+                                            GROUP BY position;");
                                             while($row=$election->fetch_assoc()):
                                         ?>
                                         <tr>
                                             <td><?php echo $row["electionTitle"] ?></td>
                                             <td><?php echo $row["purok"] ?></td>
                                             <td><?php echo date("M d,Y", strtotime($row['created_at'])); ?></td>
-                                            <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
                                             <td>
-                                                <ul>
-                                                <?php $electionResult = $conn->query("SELECT concat(candidates.firstname, ' ', candidates.lastname) as name, votes.candidateID, count(votes.candidateID) as numberofVotes FROM votes INNER JOIN candidates ON candidates.candidateID=votes.candidateID WHERE votes.electionID={$row['electionID']} GROUP BY votes.candidateID;"); 
-                                                while($resultrow = $electionResult->fetch_assoc()):
-                                                ?> 
-                                                    <li><?php echo $resultrow['name'] ?> - <?php echo $resultrow['numberofVotes'] ?></li>
-                                                <?php endwhile; ?>
-                                                </ul>
+                                                <b><?php echo $row['winnerName'] ?></b>
                                             </td>
+                                            <td><button class="btn btn-primary btn-sm view_candidate btn-flat" data-electionid="<?php echo $row["electionID"] ?>" data-id="<?php echo $row['purok'] ?>"><i class="fas fa-user"></i> Candidates</button></td>
+                                            
                                             
                                             <!--Right Options-->
                                         </tr>
@@ -568,10 +587,6 @@
                 "scrollCollapse": true,
                 "paging": false,
                 "ordering": false,
-                dom: 'Bfrtip',
-                buttons: [
-                    'pdf'
-                ],
                 order: [],
                 footerCallback: function (row, data, start, end, display) {
                     var api = this.api();

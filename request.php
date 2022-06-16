@@ -31,19 +31,6 @@
                                                     <?php $requestSql = $conn->query("SELECT * FROM documenttype WHERE barangayName='{$_SESSION['userBarangay']}' AND status='Active'");
                                                     while($documents = $requestSql->fetch_assoc()): ?>
                                                     <?php 
-                                                        if($diff <= $documents['minimumMos']){
-                                                            continue;
-                                                        }
-                                                        if($documents['allowLessee'] == "False"){
-                                                            if($userSql['isRenting'] == "True"){
-                                                                continue;
-                                                            }
-                                                        }
-                                                        if($documents['VoterRequired'] == "True"){
-                                                            if($userSql['IsVoter'] == "False"){
-                                                                continue;
-                                                            }
-                                                        }
                                                     ?>
                                                     <option data-user="<?php echo $userData['isRenting'] ?>" data-id="<?php echo $documents['requireLessorNote'] ?>" value="<?php echo $documents['DocumentID'] ?>"><?php echo $documents['documentName'] ?></option>
                                                     <?php endwhile; ?>
