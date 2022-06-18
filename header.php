@@ -451,7 +451,7 @@
             </li>
             <?php if($_SESSION['barangayPos'] != 'None'): ?>
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
-                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Respondent</a>
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Responder</a>
             </li>                     
             <?php endif; ?>
             <!-- Divider -->

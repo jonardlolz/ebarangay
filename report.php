@@ -1123,8 +1123,6 @@
 
             $('table.display').DataTable({
                 "responsive": true,
-                orderCellsTop: true,
-                dom: 'lBfrtip',
                 "scrollY": "400px",
                 "scrollCollapse": true,
                 "paging": false,

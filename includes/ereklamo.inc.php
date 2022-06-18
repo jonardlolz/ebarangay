@@ -1081,7 +1081,7 @@
                         </tbody>
                     </table>
                 </div>
-                <?php if(($_SESSION['userType'] != 'Resident' && $_SESSION['userType'] != 'Captain') && $respondResult['status'] != 'To Captain' && $respondResult['status'] != 'Resolved'):?>
+                <?php if((($_SESSION['userType'] != 'Resident' || $_SESSION['barangayPos'] != 'None') && $_SESSION['userType'] != 'Captain') && $respondResult['status'] != 'To Captain' && $respondResult['status'] != 'Resolved'):?>
                 <hr>
                 <div class="footer">
                     <div class="d-flex flex-row-reverse">

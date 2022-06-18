@@ -72,6 +72,9 @@
         if($userPosition == 'Councilor'){
             $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition', councilorRole='$userRole' WHERE UsersID='$residents'");
         }
+        elseif($userPosition == 'Responder'){
+             $a1 = mysqli_query($conn, "UPDATE users SET barangayPos='$userPosition' WHERE UsersID='$residents'");
+        }
         else{
             $a1 = mysqli_query($conn, "UPDATE users SET userType='$userPosition' WHERE UsersID='$residents'");
         }

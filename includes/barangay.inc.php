@@ -108,6 +108,7 @@
                                 <option value="Treasurer">Treasurer</option>
                                 <option value="Secretary">Secretary</option>
                                 <option value="Councilor">Councilor</option>
+                                <option value="Responder">Responder</option>
                             </select>
                         </div>
                     </div>
