@@ -497,7 +497,7 @@ if(isset($_GET['viewRequirement'])):
         </style>
         <script src="./vendor/ekko-lightbox/ekko-lightbox.min.js"></script>
         <?php 
-        $documentSql=$conn->query("SELECT * FROM request INNER JOIN documenttype ON documenttype.documentName=request.documentType AND documenttype.BarangayName='{$_SESSION['userBarangay']}' WHERE RequestID={$_GET['RequestID']}")->fetch_assoc(); 
+        $documentSql=$conn->query("SELECT *, request.status FROM request INNER JOIN documenttype ON documenttype.documentName=request.documentType AND documenttype.BarangayName='{$_SESSION['userBarangay']}' WHERE RequestID={$_GET['RequestID']}")->fetch_assoc(); 
         $userSql=$conn->query("SELECT * FROM users WHERE UsersID={$documentSql['UsersID']}")->fetch_assoc();
         $requirementsSql=$conn->query("SELECT * FROM requirementlist WHERE DocumentID={$documentSql['DocumentID']}");
         ?>
@@ -547,6 +547,7 @@ if(isset($_GET['viewRequirement'])):
             </div>
         </div>
         <?php if($documentSql['status'] == 'Pending' && $_SESSION['userType'] == 'Purok Leader'): ?>
+        <hr>
         <div class="footer d-flex flex-row-reverse">
             <button class="btn btn-sm btn-success approve_document" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
             <button class="btn btn-sm btn-danger report_disapprove" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-times"></i> Disapprove</button>
