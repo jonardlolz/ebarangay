@@ -546,10 +546,12 @@ if(isset($_GET['viewRequirement'])):
                 </div>
             </div>
         </div>
+        <?php if($documentSql['status'] == 'Pending' && $_SESSION['userType'] == 'Purok Leader'): ?>
         <div class="footer d-flex flex-row-reverse">
             <button class="btn btn-sm btn-success approve_document" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-check"></i> Approve</button>
             <button class="btn btn-sm btn-danger report_disapprove" data-id="<?php echo $_GET['RequestID'] ?>"><i class="fas fa-times"></i> Disapprove</button>
         </div>
+        <?php endif; ?>
     </div>
     <script>
         window.secondary_modal = function($title = '' , $url='',$size=""){
