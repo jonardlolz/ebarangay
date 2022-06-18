@@ -240,7 +240,7 @@ elseif(isset($_GET['additionalInput'])){
     echo $result;
 }
 elseif(isset($_GET["approveID"])){
-    $id = $_GET['approveID'];
+    $id = $_POST['id'];
 
     $requestRes = $conn->query("
     SELECT request.*, users.Firstname, users.Lastname, users.emailAdd, users.phoneNum, users.userType

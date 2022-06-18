@@ -132,20 +132,22 @@
                                         <!--Right Options-->
                                         <?php if(!empty($_SESSION['UsersID'])) : ?>
                                             <?php if($_SESSION['UsersID'] == $row['UsersID']): ?>
-                                                <div class="dropdown no-arrow" style="margin-left: auto;">
-                                                    <button type="button" class="dropdown-toggle btn m-0 btn-circle" 
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu shadow"
-                                                        aria-labelledby="userDropdown">
-                                                        <a class="dropdown-item edit_post" data-id="<?php echo $row['PostID'] ?>" href="javascript:void(0)">
-                                                            <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
-                                                        </a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item delete_post" data-id="<?php echo $row['PostID'] ?>" href="javascript:void(0)">
-                                                            <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete 
-                                                        </a>
+                                                <div class="col" style="text-align: right;">
+                                                    <div class="dropdown no-arrow" style="margin-left: auto;">
+                                                        <button type="button" class="dropdown-toggle btn m-0 btn-circle"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fw" aria-hidden="true"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu shadow"
+                                                            aria-labelledby="userDropdown">
+                                                            <a class="dropdown-item edit_post" data-id="<?php echo $row['PostID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-600"></i> Edit
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item delete_post" data-id="<?php echo $row['PostID'] ?>" href="javascript:void(0)">
+                                                                <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i> Delete
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             <?php endif; ?>
