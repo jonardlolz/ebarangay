@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2022 at 05:16 PM
+-- Generation Time: Jun 18, 2022 at 04:18 AM
 -- Server version: 8.0.28
 -- PHP Version: 8.0.9
 
@@ -45,13 +45,8 @@ CREATE TABLE `barangay` (
 --
 
 INSERT INTO `barangay` (`BarangayID`, `BarangayName`, `City`, `brgyCaptain`, `Province`, `barangay_pic`, `brgyTelephone`, `brgyEmail`, `brgyCell`, `Status`) VALUES
-(1, 'Bakilid', 'Mandaue', 0, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Active'),
-(2, 'Paknaan', 'Mandaue', 29, 'Cebu', '1651569540_279229236_386932233301025_5164515031778545769_n.jpg', '546-9872', 'paknaanBrgy@gmail.com', '09758423457', 'Active'),
-(3, 'Maguikay', 'Mandaue', NULL, 'Cebu', '1653653280_Screenshot (6).png', '123-4567', 'asdaga@gmail.com', '09754231657', 'Active'),
-(4, 'Cambaro', 'Mandaue', NULL, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Inactive'),
-(9, 'test', 'Mandaue', NULL, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Inactive'),
-(10, 'Labogon', 'Mandaue', 68, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Active'),
-(11, 'TestTest', 'Mandaue', NULL, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Active');
+(13, 'Paknaan', 'Mandaue', 93, 'Cebu', '1655365140_Barangay.png', NULL, NULL, NULL, 'Active'),
+(14, 'Bakilid', 'Mandaue', 109, 'Cebu', 'brgy_default.png', NULL, NULL, NULL, 'Active');
 
 -- --------------------------------------------------------
 
@@ -90,35 +85,11 @@ CREATE TABLE `candidates` (
 --
 
 INSERT INTO `candidates` (`candidateID`, `lastname`, `firstname`, `created_at`, `updated_at`, `platform`, `purok`, `UsersID`, `electionID`, `position`, `status`) VALUES
-(25, 'Johnson', 'Xavier', '2022-03-18 00:05:43', '2022-03-18 00:05:43', 'Test', 'Kamatis', 28, 11, 'Purok Leader', 'Accepted'),
-(26, 'Johnson', 'Xavier', '2022-03-18 01:51:17', '2022-03-18 01:51:17', 'Test', 'Kamatis', 28, 13, 'Purok Leader', 'Accepted'),
-(27, 'Plumber', 'Mr', '2022-03-18 01:51:25', '2022-03-18 01:51:25', 'Test', 'Kamatis', 39, 13, 'Purok Leader', 'Accepted'),
-(28, 'Torts', 'Woshua', '2022-03-18 01:51:34', '2022-03-18 01:51:34', 'Test', 'Kamatis', 34, 13, 'Purok Leader', 'Accepted'),
-(29, 'Struction', 'Mr', '2022-03-18 01:51:41', '2022-03-18 01:51:41', 'Test', 'Kamatis', 40, 13, 'Purok Leader', 'Accepted'),
-(31, 'Torts', 'Woshua', '2022-05-28 22:45:29', '2022-05-28 22:45:29', 'Test', 'Kamatis', 34, 20, 'Purok Leader', 'Accepted'),
-(32, 'Johnson', 'Xavier', '2022-05-28 22:45:36', '2022-05-28 22:45:36', 'Test', 'Kamatis', 28, 20, 'Purok Leader', 'Accepted'),
-(33, 'Johnson', 'Xavier', '2022-05-28 22:47:08', '2022-05-28 22:47:08', 'Test', 'Kamatis', 28, 21, 'Purok Leader', 'Accepted'),
-(35, 'Torts', 'Woshua', '2022-05-28 22:49:03', '2022-05-28 22:49:03', '', 'Kamatis', 34, 21, 'Purok Leader', 'Accepted'),
-(36, 'Plumber', 'Mr', '2022-05-30 10:01:43', '2022-05-30 10:01:43', '', 'Kamatis', 39, 24, 'Purok Leader', 'Accepted'),
-(37, 'Ville', 'Jackson', '2022-06-01 13:04:48', '2022-06-01 13:04:48', 'Test', 'Kamatis', 37, 25, 'Purok Leader', 'Accepted'),
-(38, 'Plumber', 'Mr', '2022-06-01 13:04:54', '2022-06-01 13:04:54', 'Test', 'Kamatis', 39, 25, 'Purok Leader', 'Accepted'),
-(39, 'Struction', 'Mr', '2022-06-01 13:05:00', '2022-06-01 13:05:00', 'Test', 'Kamatis', 40, 25, 'Purok Leader', 'Accepted'),
-(40, 'Johnson', 'Xavier', '2022-06-06 15:15:40', '2022-06-06 15:15:40', '', 'Kamatis', 28, 26, 'Purok Leader', 'Accepted'),
-(41, 'Torts', 'Woshua', '2022-06-06 15:15:47', '2022-06-06 15:15:47', '', 'Kamatis', 34, 26, 'Purok Leader', 'Accepted'),
-(42, 'Johnson', 'Xavier', '2022-06-06 15:16:25', '2022-06-06 15:16:25', 'test', 'Kamatis', 28, 27, 'Purok Leader', 'Accepted'),
-(43, 'Torts', 'Woshua', '2022-06-06 15:16:36', '2022-06-06 15:16:36', 'test', 'Kamatis', 34, 27, 'Purok Leader', 'Accepted'),
-(44, 'Plumber', 'Mr', '2022-06-06 15:16:42', '2022-06-06 15:16:42', 'test', 'Kamatis', 39, 27, 'Purok Leader', 'Accepted'),
-(45, 'Struction', 'Mr', '2022-06-06 15:16:51', '2022-06-06 15:16:51', 'test', 'Kamatis', 40, 27, 'Purok Leader', 'Accepted'),
-(46, 'Test', 'Test', '2022-06-06 15:16:57', '2022-06-06 15:16:57', 'test', 'Kamatis', 61, 27, 'Purok Leader', 'Accepted'),
-(47, 'Pepito', 'Rosvie', '2022-06-08 14:49:28', '2022-06-08 14:49:28', 'Test', 'Kamatis', 70, 28, 'Purok Leader', 'Accepted'),
-(48, 'Johnson', 'Xavier', '2022-06-08 14:49:40', '2022-06-08 14:49:40', 'Test', 'Kamatis', 28, 28, 'Purok Leader', 'Accepted'),
-(49, 'Plumber', 'Mr', '2022-06-08 14:49:47', '2022-06-08 14:49:47', 'Test', 'Kamatis', 39, 28, 'Purok Leader', 'Accepted'),
-(50, 'Cadavero', 'Sajid', '2022-06-08 15:11:15', '2022-06-08 15:11:15', '', 'Santa Cruz', 71, 29, 'Purok Leader', 'Accepted'),
-(51, 'Luna', 'Roxy', '2022-06-08 15:11:22', '2022-06-08 15:11:22', '', 'Santa Cruz', 72, 29, 'Purok Leader', 'Accepted'),
-(52, 'Scissorhands', 'Johnny', '2022-06-08 15:11:27', '2022-06-08 15:11:27', '', 'Santa Cruz', 73, 29, 'Purok Leader', 'Accepted'),
-(53, 'Luna', 'Michael', '2022-06-08 15:11:33', '2022-06-08 15:11:33', '', 'Santa Cruz', 74, 29, 'Purok Leader', 'Accepted'),
-(54, 'Pepito', 'Rosvie', '2022-06-14 17:18:01', '2022-06-14 17:18:01', 'Test', 'Kamatis', 70, 30, 'Purok Leader', 'Accepted'),
-(55, 'Johnson', 'Xavier', '2022-06-14 17:24:43', '2022-06-14 17:24:43', 'Test', 'Kamatis', 28, 30, 'Purok Leader', 'Accepted');
+(1, 'Wows', 'Yolo', '2022-06-16 02:47:33', '2022-06-16 02:47:33', 'test1', 'Kamatis', 110, 31, 'Purok Leader', 'Accepted'),
+(2, 'Resident', 'Resident', '2022-06-16 02:47:47', '2022-06-16 02:47:47', '', 'Kamatis', 94, 31, 'Purok Leader', 'Pending'),
+(3, 'Savior', 'Sakura', '2022-06-16 02:50:13', '2022-06-16 02:50:13', '', 'Kamatis', 111, 31, 'Purok Leader', 'Accepted'),
+(4, 'Rex', 'Samurai', '2022-06-16 02:50:28', '2022-06-16 02:50:28', '', 'Kamatis', 112, 31, 'Purok Leader', 'Declined'),
+(5, 'Resident', 'Resident', '2022-06-16 09:40:04', '2022-06-16 09:40:04', 'Test', 'Kamatis', 94, 32, 'Purok Leader', 'Accepted');
 
 -- --------------------------------------------------------
 
@@ -140,105 +111,8 @@ CREATE TABLE `chat` (
 --
 
 INSERT INTO `chat` (`chatID`, `UsersID`, `chatroomID`, `message`, `mesgdate`, `status`) VALUES
-(3, 28, 3, 'Test', '2022-05-15 17:43:46', 'Not Read'),
-(4, 31, 3, 'Hello!', '2022-05-15 18:06:56', 'Not Read'),
-(5, 31, 3, 'Test123', '2022-05-15 19:56:36', 'Not Read'),
-(6, 31, 3, 'Test123', '2022-05-15 19:57:07', 'Not Read'),
-(7, 31, 3, 'Test123', '2022-05-15 19:57:43', 'Not Read'),
-(8, 31, 3, '', '2022-05-15 19:58:07', 'Not Read'),
-(9, 31, 3, '', '2022-05-15 19:58:35', 'Not Read'),
-(10, 31, 3, '', '2022-05-15 19:59:13', 'Not Read'),
-(11, 31, 3, '', '2022-05-15 19:59:39', 'Not Read'),
-(12, 31, 3, 'qweqwe', '2022-05-16 14:45:25', 'Not Read'),
-(13, 31, 3, 'asdasd', '2022-05-16 14:45:27', 'Not Read'),
-(14, 31, 3, 'dasdasd', '2022-05-16 14:45:43', 'Not Read'),
-(15, 31, 3, 'aasv', '2022-05-16 14:45:44', 'Not Read'),
-(16, 31, 4, 'asdasd', '2022-05-16 14:49:52', 'Not Read'),
-(17, 31, 4, 'hello!', '2022-05-16 14:49:54', 'Not Read'),
-(18, 31, 3, 'asdasd', '2022-05-16 16:31:41', 'Not Read'),
-(19, 31, 3, 'fasf', '2022-05-16 16:31:42', 'Not Read'),
-(20, 31, 4, 'adadasd', '2022-05-16 17:18:46', 'Not Read'),
-(21, 34, 4, 'dasdasd', '2022-05-16 17:27:18', 'Not Read'),
-(22, 34, 4, 'asfasf', '2022-05-16 17:27:19', 'Not Read'),
-(23, 28, 5, 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', '2022-05-16 21:14:43', 'Not Read'),
-(24, 31, 5, 'chuchuchuchu', '2022-05-16 21:16:06', 'Not Read'),
-(25, 31, 5, 'chuchu! ', '2022-05-16 21:16:08', 'Not Read'),
-(26, 28, 6, 'OASIJDOAJDOASIJDOIJD', '2022-05-16 21:53:12', 'Not Read'),
-(27, 34, 5, 'Hello!', '2022-05-16 21:56:28', 'Not Read'),
-(28, 34, 5, 'asdasdjoj', '2022-05-16 21:59:52', 'Not Read'),
-(29, 34, 5, 'asdadjahdiahdiuahdiuhdiauhdiuhdaidhiadhaisdhaisdhaihaidhiudhaidhaisdhaisduhaidshaisdhaisduhasiudh', '2022-05-16 22:00:31', 'Not Read'),
-(30, 34, 5, 'aasdok asodkaspdo  pasdkpasokd  apsodkapkd adpoakpkaspdok asdokapksd', '2022-05-16 22:02:55', 'Not Read'),
-(31, 34, 5, 'aspokasd okasdpokas poaksdp aoskdpaskdpa oksdpak pasodksapokd apo skdpaoskd poaksdpoak posk dpask poksapdok pasokdpok', '2022-05-16 22:03:06', 'Not Read'),
-(32, 34, 5, 'hello maam ato na natawag basurero ara para malimpyo inyo area maam', '2022-05-16 22:08:00', 'Not Read'),
-(33, 28, 7, '', '2022-05-17 13:57:12', 'Not Read'),
-(34, 31, 7, 'asdasd', '2022-05-17 14:05:18', 'Not Read'),
-(35, 34, 7, 'asdjoasjdoiaj', '2022-05-17 15:09:29', 'Not Read'),
-(36, 31, 7, 'Hello ', '2022-05-17 16:17:34', 'Not Read'),
-(37, 28, 8, 'Test', '2022-05-17 17:43:47', 'Not Read'),
-(38, 29, 7, 'Hello!', '2022-05-17 19:21:22', 'Not Read'),
-(39, 28, 9, 'diaper everywhere', '2022-05-18 10:56:43', 'Not Read'),
-(40, 31, 9, 'hello, we heard your tantrums and we are ready to take action  of your ereklamo. Thank you .', '2022-05-18 11:07:01', 'Not Read'),
-(41, 34, 9, 'your service is being taken care.', '2022-05-18 11:16:42', 'Not Read'),
-(42, 34, 9, '*reklamo', '2022-05-18 11:16:58', 'Not Read'),
-(43, 34, 9, 'service done!', '2022-05-18 11:17:05', 'Not Read'),
-(44, 31, 9, 'bvm', '2022-05-18 11:21:10', 'Not Read'),
-(45, 28, 6, 'qweqwe', '2022-05-19 16:57:09', 'Not Read'),
-(46, 28, 6, 'asdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssasdasdasdasdasdalsdjaodjaodjoasjfoasjaosijfaifs', '2022-05-19 17:02:23', 'Not Read'),
-(47, 28, 6, 'aspdkapsdkasdkpsdasdad', '2022-05-19 17:02:32', 'Not Read'),
-(48, 28, 6, '\n', '2022-05-19 17:02:34', 'Not Read'),
-(49, 28, 6, 'asdad', '2022-05-19 17:02:39', 'Not Read'),
-(50, 28, 6, 'asdas ashd aksjdh aksjdh aksjdh kaj shdkasj hdasjd haskjd haskd jhas dkjahsd kajhsd kajshd', '2022-05-19 17:06:52', 'Not Read'),
-(51, 28, 6, '\n', '2022-05-19 17:43:14', 'Not Read'),
-(52, 28, 6, '\n', '2022-05-19 17:43:17', 'Not Read'),
-(53, 28, 6, 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', '2022-05-19 21:06:12', 'Not Read'),
-(54, 28, 10, 'Test', '2022-05-19 23:22:09', 'Not Read'),
-(55, 28, 11, 'Patakag labay sa iyang basura, gibadlong na nako kapila pero balikon gihapon niya. Ang labayan pa pud kay ari jd dapit sa among yuta nya kung badlongon siya pay mag suko! Palihug ko badlong nya purok leader!', '2022-05-19 23:33:57', 'Not Read'),
-(56, 31, 10, 'asdasadasd', '2022-05-20 00:38:57', 'Not Read'),
-(57, 31, 8, 'asdasdasdasdwqeqweqweqwewqwwwwwwwwwwwwwwwwwwwwwwwwwwww', '2022-05-20 01:17:20', 'Not Read'),
-(58, 31, 8, ' ', '2022-05-20 01:17:32', 'Not Read'),
-(59, 28, 12, 'Test', '2022-05-20 01:26:27', 'Not Read'),
-(60, 34, 12, 'asdasd', '2022-05-20 02:45:46', 'Not Read'),
-(61, 28, 13, 'test', '2022-05-21 21:22:01', 'Not Read'),
-(62, 28, 14, 'Test', '2022-05-21 22:35:37', 'Not Read'),
-(63, 28, 15, 'Test', '2022-05-22 20:05:52', 'Not Read'),
-(64, 28, 16, 'test', '2022-05-25 00:41:26', 'Not Read'),
-(65, 28, 17, 'Test', '2022-05-25 00:43:18', 'Not Read'),
-(66, 28, 18, 'qwrqwr', '2022-05-25 01:41:05', 'Not Read'),
-(67, 31, 16, 'qweqwe', '2022-05-26 04:54:17', 'Not Read'),
-(68, 31, 16, 'asdasd', '2022-05-26 04:54:19', 'Not Read'),
-(69, 28, 19, 'Test', '2022-05-28 03:00:42', 'Not Read'),
-(70, 28, 3, 'asdasd', '2022-05-29 21:20:25', 'Not Read'),
-(71, 28, 4, 'qweqew', '2022-05-29 21:23:24', 'Not Read'),
-(72, 28, 20, 'Test', '2022-06-05 22:23:05', 'Not Read'),
-(73, 31, 5, 'qweqweqwe', '2022-06-06 03:34:49', 'Not Read'),
-(74, 31, 20, 'qwe', '2022-06-06 04:00:19', 'Not Read'),
-(75, 28, 21, 'Silingan saba kaaayo ug baba ', '2022-06-06 14:41:39', 'Not Read'),
-(76, 31, 21, 'jasodjasodjasoij', '2022-06-06 14:41:59', 'Not Read'),
-(77, 28, 22, 'Tambak na kaayo ang basura since odette', '2022-06-07 14:54:26', 'Not Read'),
-(78, 28, 23, 'Patakag labay ', '2022-06-07 23:48:07', 'Not Read'),
-(79, 28, 24, 'The basura is kalat kalat everywhere', '2022-06-08 12:25:16', 'Not Read'),
-(80, 31, 24, 'What is the problem?', '2022-06-08 12:25:26', 'Not Read'),
-(81, 28, 24, 'sag asa nalng ilabay', '2022-06-08 12:26:07', 'Not Read'),
-(82, 28, 24, 'problemado kaayo mi sa mga kalat diri duol sa amo wa ni mi kasabot kung unsay plano ani ninyo nga wa naman kaayu ni nabutang ug tarong', '2022-06-08 12:26:36', 'Not Read'),
-(83, 70, 25, 'Daghan mag sigeg stambay sa amoa property, patabang ko pahawa nya nila', '2022-06-08 14:36:13', 'Not Read'),
-(84, 31, 24, 'Hello', '2022-06-08 14:36:49', 'Not Read'),
-(85, 34, 25, 'Hello', '2022-06-08 14:38:15', 'Not Read'),
-(86, 58, 24, 'Hello', '2022-06-08 14:40:04', 'Not Read'),
-(87, 31, 25, 'qweqwewq', '2022-06-09 21:58:32', 'Not Read'),
-(88, 31, 25, 'wqewq', '2022-06-09 21:58:33', 'Not Read'),
-(89, 31, 25, 'rqw', '2022-06-09 21:58:34', 'Not Read'),
-(90, 31, 25, 'r', '2022-06-09 21:58:37', 'Not Read'),
-(91, 31, 25, 'we', '2022-06-09 21:58:39', 'Not Read'),
-(92, 31, 25, 'q', '2022-06-09 21:58:40', 'Not Read'),
-(93, 31, 25, 'rwqrqwr', '2022-06-09 21:58:45', 'Not Read'),
-(94, 28, 26, 'Test', '2022-06-09 21:59:18', 'Not Read'),
-(95, 31, 26, 'qweqwe', '2022-06-09 21:59:23', 'Not Read'),
-(96, 31, 26, 'rwq', '2022-06-09 21:59:24', 'Not Read'),
-(97, 31, 25, 'qweqw', '2022-06-09 21:59:27', 'Not Read'),
-(98, 31, 25, 'e', '2022-06-09 21:59:28', 'Not Read'),
-(99, 31, 25, 'w', '2022-06-09 21:59:29', 'Not Read'),
-(100, 31, 25, 's', '2022-06-09 21:59:29', 'Not Read'),
-(101, 31, 26, 'rwqr', '2022-06-09 21:59:33', 'Not Read');
+(1, 110, 27, 'cchbdfg', '2022-06-15 23:51:43', 'Not Read'),
+(2, 100, 27, 'test', '2022-06-15 23:51:59', 'Not Read');
 
 -- --------------------------------------------------------
 
@@ -258,30 +132,7 @@ CREATE TABLE `chatroom` (
 --
 
 INSERT INTO `chatroom` (`chatroomID`, `roomName`, `type`, `idreference`) VALUES
-(3, 'ereklamo#34', 'ereklamo', 34),
-(4, 'ereklamo#32', 'ereklamo', 32),
-(5, 'ereklamo#35', 'ereklamo', 35),
-(6, 'ereklamo#36', 'ereklamo', 36),
-(7, 'ereklamo#33', 'ereklamo', 33),
-(8, 'ereklamo#31', 'ereklamo', 31),
-(9, 'ereklamo#37', 'ereklamo', 37),
-(10, 'ereklamo#41', 'ereklamo', 41),
-(11, 'ereklamo#42', 'ereklamo', 42),
-(12, 'ereklamo#38', 'ereklamo', 38),
-(13, 'ereklamo#43', 'ereklamo', 43),
-(14, 'ereklamo#44', 'ereklamo', 44),
-(15, 'ereklamo#40', 'ereklamo', 40),
-(16, 'ereklamo#45', 'ereklamo', 45),
-(17, 'ereklamo#46', 'ereklamo', 46),
-(18, 'ereklamo#47', 'ereklamo', 47),
-(19, 'ereklamo#48', 'ereklamo', 48),
-(20, 'ereklamo#49', 'ereklamo', 49),
-(21, 'ereklamo#50', 'ereklamo', 50),
-(22, 'ereklamo#51', 'ereklamo', 51),
-(23, 'ereklamo#52', 'ereklamo', 52),
-(24, 'ereklamo#53', 'ereklamo', 53),
-(25, 'ereklamo#54', 'ereklamo', 54),
-(26, 'ereklamo#55', 'ereklamo', 55);
+(27, 'ereklamo#56', 'ereklamo', 56);
 
 -- --------------------------------------------------------
 
@@ -296,13 +147,6 @@ CREATE TABLE `comments` (
   `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`CommentsID`, `UsersID`, `PostID`, `comment`, `date_created`) VALUES
-(29, 29, 77, 'qwerqwer', '2022-06-01 05:50:46');
 
 -- --------------------------------------------------------
 
@@ -322,9 +166,7 @@ CREATE TABLE `contacts` (
 --
 
 INSERT INTO `contacts` (`contactID`, `contactName`, `contactNum`, `BarangayID`) VALUES
-(2, 'PNP', '', 2),
-(3, 'asdasd', '(032)340-5560', 2),
-(4, 'VECO', '564-8485', 2);
+(5, 'VECO', '354-45687', 13);
 
 -- --------------------------------------------------------
 
@@ -344,11 +186,8 @@ CREATE TABLE `documentpurpose` (
 --
 
 INSERT INTO `documentpurpose` (`purposeID`, `purpose`, `barangay`, `barangayDoc`) VALUES
-(1, 'Claim Ayuda', 'Paknaan', 3),
-(3, 'Proof of Residency', 'Paknaan', 1),
-(4, 'Proof of Residency', 'Paknaan', 2),
-(5, 'Approval of Lot Title', 'Paknaan', 13),
-(6, 'Travel', 'Paknaan', 21);
+(7, 'Scholarship', 'Paknaan', 26),
+(8, 'Employment', 'Paknaan', 26);
 
 -- --------------------------------------------------------
 
@@ -375,14 +214,8 @@ CREATE TABLE `documenttype` (
 --
 
 INSERT INTO `documenttype` (`DocumentID`, `documentName`, `barangayName`, `documentDesc`, `allowFee`, `docPrice`, `VoterRequired`, `minimumMos`, `allowLessee`, `requireLessorNote`, `status`) VALUES
-(1, 'Cedula', 'Paknaan', '', 'True', 0, 'False', 6, 'True', 'True', 'Active'),
-(2, 'Barangay Clearance', 'Paknaan', '', 'True', 125, 'False', 6, 'True', 'True', 'Active'),
-(3, 'Indigency Clearance', 'Paknaan', '', 'False', 0, 'False', 6, 'True', 'True', 'Active'),
-(9, 'Barangay Clearance', 'Maguikay', '', 'True', 125, 'True', 6, 'False', 'False', 'Active'),
-(13, 'Fencing Permit', 'Paknaan', '', 'True', 250, 'False', 0, 'False', 'False', 'Active'),
-(20, 'Test', 'Labogon', '', 'True', 1, 'True', 0, 'False', 'False', 'Active'),
-(21, 'COVID Pass', 'Paknaan', '', 'False', 0, 'False', 0, 'True', 'True', 'Active'),
-(23, 'Business Permit', 'Paknaan', '', 'True', 175, 'True', 0, 'False', 'False', 'Inactive');
+(26, 'Barangay Clearance', 'Paknaan', '', 'True', 100, 'True', 0, 'False', 'False', 'Active'),
+(27, 'Test', 'Paknaan', '', 'True', 1, 'True', 0, 'False', 'False', 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -406,17 +239,8 @@ CREATE TABLE `election` (
 --
 
 INSERT INTO `election` (`electionID`, `electionTitle`, `electionStatus`, `created_by`, `created_at`, `updated_at`, `barangay`, `purok`) VALUES
-(11, 'Term 2022-2023', 'Finished', '29', '2022-03-13 06:01:32', '2022-03-13 06:01:32', 'Paknaan', 'Kamatis'),
-(13, 'Term 2026-2027', 'Finished', '29', '2022-03-18 01:50:56', '2022-03-18 01:50:56', 'Paknaan', 'Kamatis'),
-(21, 'test', 'Finished', '29', '2022-05-28 22:46:59', '2022-05-28 22:46:59', 'Paknaan', 'Kamatis'),
-(23, 'Test', 'Cancelled', '29', '2022-05-28 23:03:33', '2022-05-28 23:03:33', 'Paknaan', 'Apple'),
-(24, 'TEst', 'Cancelled', '29', '2022-05-29 23:01:51', '2022-05-29 23:01:51', 'Paknaan', 'Kamatis'),
-(25, 'Purok Leader Election', 'Cancelled', '29', '2022-06-01 13:04:33', '2022-06-01 13:04:33', 'Paknaan', 'Kamatis'),
-(26, 'ewrwreer', 'Cancelled', '29', '2022-06-06 15:15:13', '2022-06-06 15:15:13', 'Paknaan', 'Kamatis'),
-(27, 'test', 'Finished', '29', '2022-06-06 15:16:16', '2022-06-06 15:16:16', 'Paknaan', 'Kamatis'),
-(28, 'For Purok Leader', 'Cancelled', '29', '2022-06-08 14:49:03', '2022-06-08 14:49:03', 'Paknaan', 'Kamatis'),
-(29, 'For Purok Election', 'Finished', '68', '2022-06-08 14:56:43', '2022-06-08 14:56:43', 'Labogon', 'Santa Cruz'),
-(30, 'Test', 'Paused', '29', '2022-06-14 17:04:54', '2022-06-14 17:04:54', 'Paknaan', 'Kamatis');
+(31, 'Purok Leader - Kamatis', 'Finished', '93', '2022-06-16 02:47:05', '2022-06-16 02:47:05', 'Paknaan', 'Kamatis'),
+(32, 'Test', 'Paused', '93', '2022-06-16 09:39:54', '2022-06-16 09:39:54', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -451,31 +275,7 @@ CREATE TABLE `ereklamo` (
 --
 
 INSERT INTO `ereklamo` (`ReklamoID`, `reklamoType`, `detail`, `status`, `CreatedOn`, `UpdatedOn`, `comment`, `checkedBy`, `checkedOn`, `complaintLevel`, `complainee`, `scheduledSummon`, `UsersID`, `barangay`, `purok`, `rescheduleCounter`, `reklamoFee`, `paymenturl`, `councilorID`) VALUES
-(31, 'Complaint to Resident', 'Drugs', 'Send to LUPON', '2022-04-19 22:30:13', '2022-04-19 22:30:13', 'Test', 'Jeremy Elbertson', '2022-05-23 04:23:28', 'Major', 34, '2022-05-27', 28, 'Paknaan', 'Kamatis', 0, 150, 'https://getpaid.gcash.com/checkout/9590717a307b998fa8620a275c12aca9', NULL),
-(32, 'Garbages', 'Improper disposal', 'Resolved', '2022-04-19 22:30:53', '2022-04-19 22:30:53', 'Test', 'Leader, Purok', '2022-05-16 21:17:44', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(33, 'Complaint to Resident', 'Drugs', 'Send to LUPON', '2022-04-25 15:21:20', '2022-04-25 15:21:20', '', 'Jeremy Elbertson', '2022-05-22 02:22:44', 'Major', 34, '2022-05-18', 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(34, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-14 21:14:56', '2022-05-14 21:14:56', 'Test', 'Leader, Purok', '2022-05-16 17:00:03', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(35, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-16 21:14:09', '2022-05-16 21:14:09', 'Help! Daghan kaayo basura nag kalat ari, nya mga tao magsige ra pud ug labay!', 'Purok Leader', '2022-06-05 22:10:03', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(36, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-16 21:52:37', '2022-05-16 21:52:37', 'OASIJDOAJDOASIJDOIJD', 'Purok Leader', '2022-05-21 22:57:02', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(37, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-18 10:54:10', '2022-05-18 10:54:10', 'diaper everywhere', 'Leader, Purok', '2022-05-25 00:42:15', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(38, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-19 15:41:18', '2022-05-19 15:41:18', 'Test', 'Purok Leader', '2022-05-21 22:47:35', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(39, 'Complaint to Resident', '', 'Pending', '2022-05-19 21:21:44', '2022-05-19 21:21:44', 'Test', NULL, NULL, '', 34, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(40, 'Complaint to Resident', '', 'Resolved', '2022-05-19 21:25:01', '2022-05-19 21:25:01', 'Test', 'Leader, Purok', '2022-05-25 00:41:34', 'Major', 1, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(41, 'Complaint to Resident', '', 'Scheduled', '2022-05-19 21:29:19', '2022-05-19 21:29:19', 'Test', 'Handson, Roxy', '2022-05-22 00:02:49', 'Major', 41, '2022-06-01', 28, 'Paknaan', 'Kamatis', 0, 150, 'https://getpaid.gcash.com/checkout/9bd484811873ff175c67b1cc3bb3af8c', NULL),
-(42, 'Complaint to Resident', '', 'Resolved', '2022-05-19 23:27:41', '2022-05-19 23:27:41', 'Patakag labay sa iyang basura, gibadlong na nako kapila pero balikon gihapon niya. Ang labayan pa pud kay ari jd dapit sa among yuta nya kung badlongon siya pay mag suko! Palihug ko badlong nya purok leader!', 'Purok Leader', '2022-05-21 23:44:00', 'Major', 39, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(43, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-21 18:26:28', '2022-05-21 18:26:28', 'test', 'Test', '2022-05-21 22:28:16', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(44, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-21 22:35:21', '2022-05-21 22:35:21', 'Test', 'Purok Leader', '2022-05-21 22:45:53', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(45, 'Complaint to Resident', '', 'To Captain', '2022-05-25 00:27:35', '2022-05-25 00:27:35', 'test', 'Jackson Ville', '2022-05-25 01:44:28', 'Major', 39, NULL, 28, 'Paknaan', 'Kamatis', 0, 150, 'https://getpaid.gcash.com/checkout/f1f89ea1ab1a7a8cbc6b6157300de43b', NULL),
-(46, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-25 00:43:03', '2022-05-25 00:43:03', 'Test', 'Purok Leader', '2022-06-05 22:15:29', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(47, 'Complaint to Resident', '', 'To Captain', '2022-05-25 01:40:47', '2022-05-25 01:40:47', 'qwrqwr', 'Jackson Ville', '2022-05-25 01:44:31', 'Major', 1, NULL, 28, 'Paknaan', 'Kamatis', 0, 150, 'https://getpaid.gcash.com/checkout/064bb8101ca1e84c54c6b5ade4aa907b', NULL),
-(48, 'Garbage', 'Improper disposal', 'Resolved', '2022-05-28 02:57:51', '2022-05-28 02:57:51', 'Test', 'Purok Leader', '2022-06-05 22:16:13', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(49, 'Barangay Infrastructures', 'Broken Roads', 'Resolved', '2022-06-05 22:22:49', '2022-06-05 22:22:49', 'Test', 'Purok Leader', '2022-06-06 04:00:34', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(50, 'Residents', 'Noise', 'Resolved', '2022-06-06 14:40:39', '2022-06-06 14:40:39', 'Silingan saba kaaayo ug baba ', 'Purok Leader', '2022-06-06 14:44:09', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(51, 'Garbage', 'Improper disposal', 'Resolved', '2022-06-07 14:52:58', '2022-06-07 14:52:58', 'Tambak na kaayo ang basura since odette', 'Yasmin Fisher', '2022-06-07 23:43:59', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, 54),
-(52, 'Garbage', 'Improper disposal', 'Resolved', '2022-06-07 23:47:56', '2022-06-07 23:47:56', 'Patakag labay ', 'Samson Ritchie', '2022-06-07 23:50:01', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, 57),
-(53, 'Garbage', 'Improper disposal', 'Resolved', '2022-06-08 12:24:09', '2022-06-08 12:24:09', 'The basura is kalat kalat everywhere', 'Ralph Roob', '2022-06-08 14:40:41', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, 58),
-(54, 'Residents', 'Solicitors', 'Respondents sent', '2022-06-08 14:35:53', '2022-06-08 14:35:53', 'Daghan mag sigeg stambay sa amoa property, patabang ko pahawa nya nila', 'Purok Leader', '2022-06-08 14:37:50', 'Minor', 0, NULL, 70, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL),
-(55, 'Residents', 'Curfew', 'Ongoing', '2022-06-09 21:59:04', '2022-06-09 21:59:04', 'Test', 'Leader, Purok', '2022-06-09 21:59:16', 'Minor', 0, NULL, 28, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL);
+(56, 'Garbage', 'Improper disposal', 'Resolved', '2022-06-15 23:50:45', '2022-06-15 23:50:45', 'cchbdfg', 'Purok Leader', '2022-06-16 01:01:43', 'Minor', 102, NULL, 110, 'Paknaan', 'Kamatis', 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -487,20 +287,17 @@ CREATE TABLE `ereklamocategory` (
   `reklamoCatID` int NOT NULL,
   `reklamoCatName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `reklamoCatBrgy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reklamoCatPriority` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `reklamoFee` int NOT NULL DEFAULT '0',
-  `status` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Active'
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Active',
+  `reklamoCatPriority` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Minor'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ereklamocategory`
 --
 
-INSERT INTO `ereklamocategory` (`reklamoCatID`, `reklamoCatName`, `reklamoCatBrgy`, `reklamoCatPriority`, `reklamoFee`, `status`) VALUES
-(6, 'Garbages', 'Paknaan', 'Minor', 0, 'Active'),
-(8, 'Barangay Infrastructures', 'Paknaan', 'Minor', 0, 'Active'),
-(14, 'Residents', 'Paknaan', 'Minor', 0, 'Active'),
-(17, 'Test', 'Paknaan', 'undefined', 0, 'Active');
+INSERT INTO `ereklamocategory` (`reklamoCatID`, `reklamoCatName`, `reklamoCatBrgy`, `reklamoFee`, `status`, `reklamoCatPriority`) VALUES
+(18, 'Garbage', 'Paknaan', 0, 'Active', 'Minor');
 
 -- --------------------------------------------------------
 
@@ -524,59 +321,7 @@ CREATE TABLE `ereklamoreport` (
 --
 
 INSERT INTO `ereklamoreport` (`ereportID`, `ReklamoID`, `respondentID`, `reportMessage`, `date`, `reportStatus`, `barangay`, `purok`) VALUES
-(5, 32, 34, 'SampleMEssage', '2022-05-17 18:42:18', '', 'Paknaan', 'Kamatis'),
-(6, 35, 34, 'Test', '2022-05-17 18:42:18', '', 'Paknaan', 'Kamatis'),
-(8, 33, 31, 'test', '2022-05-17 18:42:18', '', 'Paknaan', 'Kamatis'),
-(9, 31, 31, 'test', '2022-05-17 23:20:56', '', 'Paknaan', 'Kamatis'),
-(10, 31, 31, 'test', '2022-05-17 23:24:44', '', 'Paknaan', 'Kamatis'),
-(11, 31, 31, 'Test', '2022-05-17 23:27:25', '', 'Paknaan', 'Kamatis'),
-(12, 37, 34, 'service was done immediately. ', '2022-05-18 11:17:56', '', 'Paknaan', 'Kamatis'),
-(13, 36, 34, 'asdafqwqweqweqweadsdasdasdasd', '2022-05-20 01:59:36', '', 'Paknaan', 'Kamatis'),
-(14, 38, 34, '', '2022-05-20 02:41:06', '', 'Paknaan', 'Kamatis'),
-(15, 38, 34, '', '2022-05-20 02:41:52', '', 'Paknaan', 'Kamatis'),
-(16, 38, 34, 'rqwrwqr', '2022-05-20 02:42:47', '', 'Paknaan', 'Kamatis'),
-(17, 38, 34, 'rwqrqwrqw', '2022-05-20 02:43:59', '', 'Paknaan', 'Kamatis'),
-(18, 38, 34, '', '2022-05-20 17:23:16', '', 'Paknaan', 'Kamatis'),
-(19, 38, 34, 'Test', '2022-05-20 17:37:54', '', 'Paknaan', 'Kamatis'),
-(20, 38, 34, 'tqwqwe', '2022-05-21 15:04:35', '', 'Paknaan', 'Kamatis'),
-(21, 38, 34, 'qwew', '2022-05-21 17:00:12', 'Resolved', 'Paknaan', 'Kamatis'),
-(22, 38, 34, 'qwew', '2022-05-21 17:00:12', '', 'Paknaan', 'Kamatis'),
-(23, 38, 34, 'tetqwe', '2022-05-21 18:40:29', 'Resolved', 'Paknaan', 'Kamatis'),
-(24, 38, 34, 'tetqwe', '2022-05-21 18:40:30', '', 'Paknaan', 'Kamatis'),
-(25, 38, 34, 'qweqweq', '2022-05-21 18:40:41', 'Unresolved', 'Paknaan', 'Kamatis'),
-(26, 38, 34, 'qweqweq', '2022-05-21 18:40:41', '', 'Paknaan', 'Kamatis'),
-(27, 38, 34, 'qwrqwrqwr', '2022-05-21 18:40:48', 'Resolved', 'Paknaan', 'Kamatis'),
-(28, 38, 34, 'qwrqwrqwr', '2022-05-21 18:40:48', '', 'Paknaan', 'Kamatis'),
-(29, 38, 34, 'qwrw', '2022-05-21 19:09:03', 'Resolved', 'Paknaan', 'Kamatis'),
-(30, 38, 34, 'Test', '2022-05-21 20:52:56', 'Resolved', 'Paknaan', 'Kamatis'),
-(31, 43, 31, 'TEst', '2022-05-21 22:14:06', 'Resolved', 'Paknaan', 'Kamatis'),
-(32, 38, 31, 'Test', '2022-05-21 22:14:31', 'Resolved', 'Paknaan', 'Kamatis'),
-(53, 44, 34, 'test', '2022-05-21 22:36:05', 'Resolved', 'Paknaan', 'Kamatis'),
-(57, 44, 31, 'Test', '2022-05-21 22:45:53', 'Resolved', 'Paknaan', 'Kamatis'),
-(58, 38, 31, 'test', '2022-05-21 22:47:35', 'Resolved', 'Paknaan', 'Kamatis'),
-(60, 36, 31, 'Test', '2022-05-21 22:57:02', 'Resolved', 'Paknaan', 'Kamatis'),
-(63, 42, 31, 'test', '2022-05-21 23:44:00', 'Resolved', 'Paknaan', 'Kamatis'),
-(64, 41, 31, 'test', '2022-05-21 23:45:43', 'Forward to Captain', 'Paknaan', 'Kamatis'),
-(67, 33, 29, 'test', '2022-05-22 02:22:44', 'Forward to LUPON', 'Paknaan', 'Kamatis'),
-(68, 31, 29, 'Reschedule', '2022-05-22 02:23:48', 'Reschedule', 'Paknaan', 'Kamatis'),
-(69, 31, 29, 'Test', '2022-05-23 04:23:28', 'Forward to LUPON', 'Paknaan', 'Kamatis'),
-(70, 45, 31, 'Test', '2022-05-25 00:52:40', '', 'Paknaan', 'Kamatis'),
-(71, 47, 31, 'Test', '2022-05-25 01:41:17', 'Forward to Captain', 'Paknaan', 'Kamatis'),
-(72, 45, 31, 'qwew qweqweqw qeqwe qe', '2022-05-25 01:43:44', 'Forward to Captain', 'Paknaan', 'Kamatis'),
-(73, 35, 31, 't', '2022-06-05 22:10:01', 'Resolved', 'Paknaan', 'Kamatis'),
-(74, 46, 31, 'test', '2022-06-05 22:15:28', 'Resolved', 'Paknaan', 'Kamatis'),
-(75, 48, 31, 't', '2022-06-05 22:16:13', 'Resolved', 'Paknaan', 'Kamatis'),
-(76, 49, 31, 'test', '2022-06-06 04:00:34', 'Resolved', 'Paknaan', 'Kamatis'),
-(77, 50, 31, 'Amo gipahilom, amo na gibadlong silangan', '2022-06-06 14:44:09', 'Resolved', 'Paknaan', 'Kamatis'),
-(78, 51, 31, 'test', '2022-06-07 23:17:57', 'Send to Councilor', 'Paknaan', 'Kamatis'),
-(80, 51, 54, 'Test', '2022-06-07 23:30:42', 'Resolved', 'Paknaan', 'Kamatis'),
-(81, 51, 54, 'TestTest', '2022-06-07 23:43:01', 'Resolved', 'Paknaan', 'Kamatis'),
-(82, 51, 54, 'test', '2022-06-07 23:43:59', 'Resolved', 'Paknaan', 'Kamatis'),
-(83, 52, 31, 'Test', '2022-06-07 23:48:32', 'Send to Councilor', 'Paknaan', 'Kamatis'),
-(84, 52, 57, 'Done', '2022-06-07 23:50:01', 'Resolved', 'Paknaan', 'Kamatis'),
-(85, 54, 31, 'Sent a responder to help resident disperse solicitors', '2022-06-08 14:37:50', 'Respondents sent', 'Paknaan', 'Kamatis'),
-(86, 53, 31, 'Sent to Councilor to help with improper disposal of garbage', '2022-06-08 14:39:24', 'Send to Councilor', 'Paknaan', 'Kamatis'),
-(87, 53, 58, 'Na resolved na ang problema ', '2022-06-08 14:40:41', 'Resolved', 'Paknaan', 'Kamatis');
+(88, 56, 100, 'resolced', '2022-06-16 01:01:43', 'Resolved', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -596,12 +341,7 @@ CREATE TABLE `ereklamotype` (
 --
 
 INSERT INTO `ereklamotype` (`reklamoTypeID`, `reklamoTypeName`, `reklamoCatID`, `status`) VALUES
-(1, 'Improper disposal', 6, 'Active'),
-(5, 'Broken Roads', 8, 'Active'),
-(13, 'Solicitors', 14, 'Inactive'),
-(14, 'Illegal Vendors', 14, 'Active'),
-(16, 'Noise', 14, 'Active'),
-(17, 'Curfew', 14, 'Active');
+(20, 'Improper disposal', 18, 'Active');
 
 -- --------------------------------------------------------
 
@@ -615,14 +355,6 @@ CREATE TABLE `members` (
   `residentCatID` int NOT NULL,
   `createdOn` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `members`
---
-
-INSERT INTO `members` (`membersID`, `UsersID`, `residentCatID`, `createdOn`) VALUES
-(21, 62, 15, '2022-06-06 16:12:53'),
-(23, 63, 15, '2022-06-06 16:13:03');
 
 -- --------------------------------------------------------
 
@@ -646,363 +378,28 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `UsersID`, `position`, `created_at`, `updated_at`) VALUES
-(15, 'Your account has been verified!', 'Resident', 'Read', 29, NULL, '2022-03-03 14:11:53', '2022-03-03 14:11:53'),
-(16, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-03 19:57:47', '2022-03-03 19:57:47'),
-(17, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-03-04 17:56:52', '2022-03-04 17:56:52'),
-(18, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-03-04 20:35:16', '2022-03-04 20:35:16'),
-(19, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-05 19:54:11', '2022-03-05 19:54:11'),
-(20, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-05 20:01:29', '2022-03-05 20:01:29'),
-(21, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-05 23:17:47', '2022-03-05 23:17:47'),
-(22, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-05 23:19:34', '2022-03-05 23:19:34'),
-(23, 'A resident has submitted a reklamo: Resident', 'ereklamo', 'Read', NULL, 'Secretary', '2022-03-17 16:37:52', '2022-03-17 16:37:52'),
-(30, 'Your eReklamo has been scheduled on 2022-03-17', 'ereklamo', 'Read', 28, 'Resident', '2022-03-17 22:13:32', '2022-03-17 22:13:32'),
-(31, 'Your eReklamo has been scheduled on 2022-03-30', 'ereklamo', 'Read', 28, 'Resident', '2022-03-17 22:35:10', '2022-03-17 22:35:10'),
-(32, 'A resident has submitted a reklamo: Resident', 'ereklamo', 'Read', NULL, 'Secretary', '2022-03-17 23:10:50', '2022-03-17 23:10:50'),
-(33, 'A resident has submitted a reklamo: Resident', 'ereklamo', 'Read', NULL, 'Secretary', '2022-03-17 23:27:34', '2022-03-17 23:27:34'),
-(34, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-20 17:00:11', '2022-03-20 17:00:11'),
-(35, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-21 11:11:15', '2022-03-21 11:11:15'),
-(36, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-03-22 18:52:24', '2022-03-22 18:52:24'),
-(37, 'A resident has submitted a reklamo: Resident', 'ereklamo', 'Read', NULL, 'Secretary', '2022-03-24 14:46:52', '2022-03-24 14:46:52'),
-(38, 'Your eReklamo#15 has been responded by Resident Xavier.', 'ereklamo', 'Read', 28, 'Resident', '2022-03-26 21:02:23', '2022-03-26 21:02:23'),
-(39, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-03-26 21:45:36', '2022-03-26 21:45:36'),
-(40, 'A resident has submitted a reklamo: Resident', 'ereklamo', 'Read', NULL, 'Secretary', '2022-03-26 22:56:12', '2022-03-26 22:56:12'),
-(41, 'Your eReklamo has been scheduled on 2022-03-28', 'ereklamo', 'Read', 34, 'Resident', '2022-03-27 20:15:43', '2022-03-27 20:15:43'),
-(42, 'Your eReklamo$#16 has been responded by Captain Jeremy.', 'ereklamo', 'Read', 29, 'Resident', '2022-03-27 20:32:52', '2022-03-27 20:32:52'),
-(43, 'Your eReklamo#16 has been responded by Captain Jeremy.', 'ereklamo', 'Read', 29, 'Resident', '2022-03-27 20:46:34', '2022-03-27 20:46:34'),
-(44, 'Your eReklamo#18 has been responded by Captain Jeremy.', 'ereklamo', 'Read', 30, 'Resident', '2022-03-27 20:46:38', '2022-03-27 20:46:38'),
-(45, 'Your eReklamo has been scheduled on 2022-03-28', 'ereklamo', 'Read', 29, 'Resident', '2022-03-27 20:46:55', '2022-03-27 20:46:55'),
-(46, 'Your eReklamo has been scheduled on 2022-03-28', 'ereklamo', 'Read', 30, 'Resident', '2022-03-27 20:46:59', '2022-03-27 20:46:59'),
-(47, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-27 21:11:24', '2022-03-27 21:11:24'),
-(48, 'Your account verification has been approved!', 'Resident', 'Read', 37, NULL, '2022-03-27 21:42:51', '2022-03-27 21:42:51'),
-(49, 'Your account verification has been approved!', 'Resident', 'Read', 29, NULL, '2022-03-27 21:42:54', '2022-03-27 21:42:54'),
-(50, 'Your account verification has been approved!', 'Resident', 'Read', 31, NULL, '2022-03-27 21:42:57', '2022-03-27 21:42:57'),
-(51, 'Your account verification has been approved!', 'Resident', 'Read', 30, NULL, '2022-03-27 21:43:01', '2022-03-27 21:43:01'),
-(52, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-28 01:10:08', '2022-03-28 01:10:08'),
-(53, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-28 12:07:25', '2022-03-28 12:07:25'),
-(54, 'Your account verification has been approved!', 'Resident', 'Read', 28, NULL, '2022-03-28 13:32:12', '2022-03-28 13:32:12'),
-(55, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-28 13:48:12', '2022-03-28 13:48:12'),
-(56, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-28 15:21:47', '2022-03-28 15:21:47'),
-(57, 'A resident has submitted a reklamo: Kuryente', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-03-28 15:31:45', '2022-03-28 15:31:45'),
-(58, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-28 16:16:12', '2022-03-28 16:16:12'),
-(59, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-28 16:31:39', '2022-03-28 16:31:39'),
-(60, 'A resident has submitted a reklamo: Resident', 'ereklamo', 'Read', NULL, 'Secretary', '2022-03-28 17:13:02', '2022-03-28 17:13:02'),
-(61, 'Your account verification has been approved!', 'Resident', 'Not Read', 39, NULL, '2022-03-28 21:40:09', '2022-03-28 21:40:09'),
-(62, 'Your account verification has been approved!', 'Resident', 'Not Read', 40, NULL, '2022-03-28 21:40:11', '2022-03-28 21:40:11'),
-(63, 'Your account verification has been approved!', 'Resident', 'Read', 34, NULL, '2022-03-28 21:40:13', '2022-03-28 21:40:13'),
-(64, 'Your eReklamo#20 has been responded by Resident Woshua.', 'ereklamo', 'Read', 28, 'Resident', '2022-03-28 21:45:10', '2022-03-28 21:45:10'),
-(65, 'Your eReklamo has been scheduled on 2022-03-30', 'ereklamo', 'Read', 39, 'Resident', '2022-03-28 21:53:42', '2022-03-28 21:53:42'),
-(66, 'Your eReklamo#20 has been responded by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-03-28 22:04:27', '2022-03-28 22:04:27'),
-(67, 'Your eReklamo#20 has been responded by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-03-28 22:20:44', '2022-03-28 22:20:44'),
-(68, 'Your eReklamo#20 has been rescheduled by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-03-28 22:21:10', '2022-03-28 22:21:10'),
-(69, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-03-29 07:31:09', '2022-03-29 07:31:09'),
-(70, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-03-29 07:36:50', '2022-03-29 07:36:50'),
-(71, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-04-02 15:27:45', '2022-04-02 15:27:45'),
-(72, 'A resident has submitted a reklamo: Residents', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-15 21:07:51', '2022-04-15 21:07:51'),
-(73, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 15:22:42', '2022-04-19 15:22:42'),
-(74, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 21:16:58', '2022-04-19 21:16:58'),
-(75, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 21:17:08', '2022-04-19 21:17:08'),
-(76, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:15:05', '2022-04-19 22:15:05'),
-(77, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:15:21', '2022-04-19 22:15:21'),
-(78, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:15:32', '2022-04-19 22:15:32'),
-(79, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:21:37', '2022-04-19 22:21:37'),
-(80, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:30:13', '2022-04-19 22:30:13'),
-(81, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-19 22:30:53', '2022-04-19 22:30:53'),
-(82, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-04-25 15:21:20', '2022-04-25 15:21:20'),
-(83, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 17:49:24', '2022-04-26 17:49:24'),
-(84, 'Your account verification has been approved!', 'Resident', 'Not Read', 0, NULL, '2022-04-26 19:20:26', '2022-04-26 19:20:26'),
-(85, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:21:57', '2022-04-26 19:21:57'),
-(86, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:22:36', '2022-04-26 19:22:36'),
-(87, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:22:57', '2022-04-26 19:22:57'),
-(88, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:23:33', '2022-04-26 19:23:33'),
-(89, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-04-26 19:24:41', '2022-04-26 19:24:41'),
-(90, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-01-10 13:16:59', '2022-01-10 13:16:59'),
-(91, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-01-10 13:17:46', '2022-01-10 13:17:46'),
-(92, 'Your account verification has been approved!', 'Resident', 'Read', 41, NULL, '2022-01-10 13:22:33', '2022-01-10 13:22:33'),
-(93, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 16:15:28', '2022-05-12 16:15:28'),
-(94, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 16:17:58', '2022-05-12 16:17:58'),
-(95, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 16:18:36', '2022-05-12 16:18:36'),
-(96, 'A resident has requested a Indigency Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 16:19:21', '2022-05-12 16:19:21'),
-(97, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 16:23:56', '2022-05-12 16:23:56'),
-(98, 'A resident has requested a Indigency Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 16:34:26', '2022-05-12 16:34:26'),
-(99, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 17:05:19', '2022-05-12 17:05:19'),
-(100, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 19:48:48', '2022-05-12 19:48:48'),
-(101, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-12 21:21:14', '2022-05-12 21:21:14'),
-(105, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-12 21:23:59', '2022-05-12 21:23:59'),
-(107, 'The purok leader has approved your request for \'. Please process the payment ', 'request', 'Read', 30, 'Resident', '2022-05-12 21:28:52', '2022-05-12 21:28:52'),
-(108, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-12 21:28:52', '2022-05-12 21:28:52'),
-(109, 'The purok leader has approved your request for Barangay Clearance. Please process the payment', 'request', 'Read', 30, 'Resident', '2022-05-12 21:38:29', '2022-05-12 21:38:29'),
-(110, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-12 21:38:29', '2022-05-12 21:38:29'),
-(111, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-12 21:49:52', '2022-05-12 21:49:52'),
-(112, 'Your Barangay Clearance is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-12 21:49:52', '2022-05-12 21:49:52'),
-(113, 'Your account verification has been approved!', 'Resident', 'Not Read', 46, NULL, '2022-05-12 22:37:17', '2022-05-12 22:37:17'),
-(114, 'Your account verification has been approved!', 'Resident', 'Not Read', 1, NULL, '2022-05-12 22:50:28', '2022-05-12 22:50:28'),
-(115, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-14 21:14:56', '2022-05-14 21:14:56'),
-(116, 'Your eReklamo#32 has been accepted by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-15 14:51:18', '2022-05-15 14:51:18'),
-(117, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-15 16:32:38', '2022-05-15 16:32:38'),
-(118, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-15 17:31:06', '2022-05-15 17:31:06'),
-(119, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-15 17:33:08', '2022-05-15 17:33:08'),
-(120, 'Your eReklamo#34 has been accepted by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-15 17:43:46', '2022-05-15 17:43:46'),
-(121, 'Your eReklamo#34 has been resolved by Purok Leader Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-16 17:00:03', '2022-05-16 17:00:03'),
-(122, 'Respondents has been sent for your ReklamoID#32', 'ereklamo', 'Read', 28, 'Resident', '2022-05-16 17:09:23', '2022-05-16 17:09:23'),
-(123, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-16 21:14:09', '2022-05-16 21:14:09'),
-(124, 'Your eReklamo#35 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-16 21:14:43', '2022-05-16 21:14:43'),
-(125, 'Your eReklamo#32 has been resolved by Purok Leader Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-16 21:17:44', '2022-05-16 21:17:44'),
-(126, 'Respondents has been sent for your ReklamoID#35', 'ereklamo', 'Read', 28, 'Resident', '2022-05-16 21:45:07', '2022-05-16 21:45:07'),
-(127, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-16 21:52:37', '2022-05-16 21:52:37'),
-(128, 'Your eReklamo#36 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-16 21:53:12', '2022-05-16 21:53:12'),
-(129, 'Your eReklamo#31 is now being scheduled by Purok Leader.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 11:18:13', '2022-05-17 11:18:13'),
-(130, 'Your eReklamo#31 is now being scheduled by Purok Leader.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 11:29:29', '2022-05-17 11:29:29'),
-(131, 'Your eReklamo#33 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 13:57:12', '2022-05-17 13:57:12'),
-(132, 'Your eReklamo#33 has been resolved by Purok Leader Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 15:48:42', '2022-05-17 15:48:42'),
-(133, 'Your eReklamo#33 has been resolved by Purok Leader Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 16:09:02', '2022-05-17 16:09:02'),
-(134, 'Your eReklamo#31 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 17:43:47', '2022-05-17 17:43:47'),
-(135, 'Your ereklamo#33 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 17:44:11', '2022-05-17 17:44:11'),
-(136, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 17:44:11', '2022-05-17 17:44:11'),
-(142, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 18:41:05', '2022-05-17 18:41:05'),
-(143, 'Your eReklamo has been scheduled on 2022-05-19', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 18:57:28', '2022-05-17 18:57:28'),
-(144, 'Your eReklamo has been scheduled on 2022-05-19', 'ereklamo', 'Read', 34, 'Resident', '2022-05-17 18:57:28', '2022-05-17 18:57:28'),
-(145, 'An eReklamo has been scheduled on 2022-05-19', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-17 18:57:28', '2022-05-17 18:57:28'),
-(146, 'Your eReklamo#33 has been rescheduled by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 19:28:46', '2022-05-17 19:28:46'),
-(147, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 19:38:29', '2022-05-17 19:38:29'),
-(148, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 34, 'Resident', '2022-05-17 19:38:29', '2022-05-17 19:38:29'),
-(149, 'An eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-17 19:38:29', '2022-05-17 19:38:29'),
-(150, 'Your eReklamo#33 has been rescheduled by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:21:54', '2022-05-17 20:21:54'),
-(151, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:27:13', '2022-05-17 20:27:13'),
-(152, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 34, 'Resident', '2022-05-17 20:27:13', '2022-05-17 20:27:13'),
-(153, 'An eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-17 20:27:13', '2022-05-17 20:27:13'),
-(154, 'Your eReklamo#33 has been rescheduled by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:28:22', '2022-05-17 20:28:22'),
-(155, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:29:23', '2022-05-17 20:29:23'),
-(156, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 34, 'Resident', '2022-05-17 20:29:23', '2022-05-17 20:29:23'),
-(157, 'An eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-17 20:29:23', '2022-05-17 20:29:23'),
-(158, 'Your eReklamo#33 has been rescheduled by Captain Jeremy.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:32:44', '2022-05-17 20:32:44'),
-(159, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 28, 'Resident', '2022-05-17 20:33:12', '2022-05-17 20:33:12'),
-(160, 'Your eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', 34, 'Resident', '2022-05-17 20:33:12', '2022-05-17 20:33:12'),
-(161, 'An eReklamo has been scheduled on 2022-05-18', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-17 20:33:12', '2022-05-17 20:33:12'),
-(162, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 23:20:56', '2022-05-17 23:20:56'),
-(163, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 23:20:56', '2022-05-17 23:20:56'),
-(164, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 23:24:44', '2022-05-17 23:24:44'),
-(165, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 23:24:44', '2022-05-17 23:24:44'),
-(166, 'Your ereklamo#31 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-17 23:27:25', '2022-05-17 23:27:25'),
-(167, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 34, NULL, '2022-05-17 23:27:25', '2022-05-17 23:27:25'),
-(169, 'An ereklamo is ready for scheduling!', 'eReklamo', 'Read', NULL, 'Secretary', '2022-05-18 01:09:39', '2022-05-18 01:09:39'),
-(170, 'Your payment for the ereklamo#31 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Read', 28, 'Resident', '2022-05-18 01:09:39', '2022-05-18 01:09:39'),
-(171, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-18 10:54:10', '2022-05-18 10:54:10'),
-(172, 'Your eReklamo#37 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-18 10:56:43', '2022-05-18 10:56:43'),
-(173, 'Respondents has been sent for your ReklamoID#37', 'ereklamo', 'Read', 28, 'Resident', '2022-05-18 11:10:44', '2022-05-18 11:10:44'),
-(174, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-19 15:41:18', '2022-05-19 15:41:18'),
-(175, 'Respondents has been sent for your ReklamoID#36', 'ereklamo', 'Read', 28, 'Resident', '2022-05-19 20:05:52', '2022-05-19 20:05:52'),
-(176, 'Resident Johnson, Xavier has sent a reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-19 21:21:44', '2022-05-19 21:21:44'),
-(177, 'Resident Johnson, Xavier has sent a major reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-19 21:25:01', '2022-05-19 21:25:01'),
-(178, 'Resident Johnson, Xavier has sent a major reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-19 21:29:19', '2022-05-19 21:29:19'),
-(179, 'Your eReklamo#41 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-19 23:22:08', '2022-05-19 23:22:08'),
-(180, 'Resident Johnson, Xavier has sent a major reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-19 23:27:41', '2022-05-19 23:27:41'),
-(181, 'Your eReklamo#42 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-19 23:33:57', '2022-05-19 23:33:57'),
-(182, 'Your eReklamo#38 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-20 01:26:27', '2022-05-20 01:26:27'),
-(183, 'Respondents has been sent for your ReklamoID#38', 'ereklamo', 'Read', 28, 'Resident', '2022-05-20 02:04:21', '2022-05-20 02:04:21'),
-(184, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-21 18:26:28', '2022-05-21 18:26:28'),
-(185, 'A responder has sent a report for ereklamo#38', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-21 19:09:03', '2022-05-21 19:09:03'),
-(186, 'A responder has sent a report for ereklamo#38', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-21 20:52:56', '2022-05-21 20:52:56'),
-(187, 'Your eReklamo#43 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-21 21:22:01', '2022-05-21 21:22:01'),
-(188, 'Respondents has been sent for your ReklamoID#43', 'ereklamo', 'Read', 28, 'Resident', '2022-05-21 21:50:15', '2022-05-21 21:50:15'),
-(189, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-21 22:35:21', '2022-05-21 22:35:21'),
-(190, 'Your eReklamo#44 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-21 22:35:37', '2022-05-21 22:35:37'),
-(191, 'Respondents has been sent for your ReklamoID#44', 'ereklamo', 'Read', 28, 'Resident', '2022-05-21 22:35:46', '2022-05-21 22:35:46'),
-(192, 'A responder has sent a report for ereklamo#44', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-21 22:36:05', '2022-05-21 22:36:05'),
-(193, 'Purok Leader has resolved ereklamo#38', 'ereklamo', 'Read', 28, 'Purok Leader', '2022-05-21 22:47:35', '2022-05-21 22:47:35'),
-(194, 'Purok Leader has resolved ereklamo#$id', 'ereklamo', 'Read', 28, 'Purok Leader', '2022-05-21 22:55:43', '2022-05-21 22:55:43'),
-(195, 'Purok Leader has resolved ereklamo#36', 'ereklamo', 'Read', 28, 'Purok Leader', '2022-05-21 22:57:02', '2022-05-21 22:57:02'),
-(200, 'Purok Leader has resolved your ereklamo#42', 'ereklamo', 'Read', 28, 'Purok Leader', '2022-05-21 23:44:00', '2022-05-21 23:44:00'),
-(201, 'Your ereklamo#41 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-21 23:45:44', '2022-05-21 23:45:44'),
-(202, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 28, NULL, '2022-05-21 23:45:44', '2022-05-21 23:45:44'),
-(203, 'An ereklamo is ready for scheduling!', 'eReklamo', 'Read', NULL, 'Secretary', '2022-05-21 23:46:23', '2022-05-21 23:46:23'),
-(204, 'Your payment for the ereklamo#41 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Read', 28, 'Resident', '2022-05-21 23:46:23', '2022-05-21 23:46:23'),
-(205, 'Your eReklamo has been scheduled on 2022-05-23', 'ereklamo', 'Read', 28, 'Resident', '2022-05-21 23:56:11', '2022-05-21 23:56:11'),
-(206, 'Your eReklamo has been scheduled on 2022-05-23', 'ereklamo', 'Read', 34, 'Resident', '2022-05-21 23:56:11', '2022-05-21 23:56:11'),
-(207, 'An eReklamo has been scheduled on 2022-05-23', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-21 23:56:11', '2022-05-21 23:56:11'),
-(208, 'Your eReklamo has been scheduled on 2022-06-01', 'ereklamo', 'Read', 28, 'Resident', '2022-05-22 00:02:49', '2022-05-22 00:02:49'),
-(209, 'Your eReklamo has been scheduled on 2022-06-01', 'ereklamo', 'Read', 41, 'Resident', '2022-05-22 00:02:49', '2022-05-22 00:02:49'),
-(210, 'An eReklamo has been scheduled on 2022-06-01', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-22 00:02:49', '2022-05-22 00:02:49'),
-(215, 'Captain has forward your reklamo#33 to the LUPON', 'ereklamo', 'Read', 28, 'Resident', '2022-05-22 02:22:44', '2022-05-22 02:22:44'),
-(216, 'Captain has forward your reklamo#33 to the LUPON', 'ereklamo', 'Read', 34, 'Resident', '2022-05-22 02:22:44', '2022-05-22 02:22:44'),
-(217, 'Captain rescheduled your ereklamo#31', 'ereklamo', 'Read', 28, 'Resident', '2022-05-22 02:23:48', '2022-05-22 02:23:48'),
-(218, 'Captain rescheduled your ereklamo#31', 'ereklamo', 'Read', 34, 'Resident', '2022-05-22 02:23:48', '2022-05-22 02:23:48'),
-(219, 'Your eReklamo has been scheduled on 2022-05-27', 'ereklamo', 'Read', 28, 'Resident', '2022-05-22 02:32:35', '2022-05-22 02:32:35'),
-(220, 'Your eReklamo has been scheduled on 2022-05-27', 'ereklamo', 'Read', 34, 'Resident', '2022-05-22 02:32:35', '2022-05-22 02:32:35'),
-(221, 'An eReklamo has been scheduled on 2022-05-27', 'ereklamo', 'Read', NULL, 'Captain', '2022-05-22 02:32:35', '2022-05-22 02:32:35'),
-(222, 'Your eReklamo#40 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-22 20:05:52', '2022-05-22 20:05:52'),
-(223, 'Captain has forward your reklamo#31 to the LUPON', 'ereklamo', 'Read', 28, 'Resident', '2022-05-23 04:23:28', '2022-05-23 04:23:28'),
-(224, 'Captain has forward your reklamo#31 to the LUPON', 'ereklamo', 'Read', 34, 'Resident', '2022-05-23 04:23:28', '2022-05-23 04:23:28'),
-(225, 'Resident Johnson, Xavier has sent a major reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-25 00:27:35', '2022-05-25 00:27:35'),
-(226, 'Your eReklamo#45 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-25 00:41:26', '2022-05-25 00:41:26'),
-(227, 'Your eReklamo#40 has been resolved by Purok Leader Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-25 00:41:34', '2022-05-25 00:41:34'),
-(228, 'Your eReklamo#37 has been resolved by Purok Leader Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-25 00:42:15', '2022-05-25 00:42:15'),
-(229, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-25 00:43:03', '2022-05-25 00:43:03'),
-(230, 'Your eReklamo#46 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-25 00:43:18', '2022-05-25 00:43:18'),
-(231, 'Your ereklamo#45 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-25 00:52:40', '2022-05-25 00:52:40'),
-(232, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Not Read', 39, NULL, '2022-05-25 00:52:40', '2022-05-25 00:52:40'),
-(233, 'An ereklamo is ready for scheduling!', 'eReklamo', 'Read', NULL, 'Secretary', '2022-05-25 00:58:50', '2022-05-25 00:58:50'),
-(234, 'Your payment for the ereklamo#45 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Read', 28, 'Resident', '2022-05-25 00:58:50', '2022-05-25 00:58:50'),
-(235, 'Resident Johnson, Xavier has sent a major reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-25 01:40:47', '2022-05-25 01:40:47'),
-(236, 'Your eReklamo#47 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-25 01:41:05', '2022-05-25 01:41:05'),
-(237, 'Your ereklamo#47 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-25 01:41:19', '2022-05-25 01:41:19'),
-(238, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 28, NULL, '2022-05-25 01:41:19', '2022-05-25 01:41:19'),
-(239, 'Your ereklamo#45 has been forwarded to Capt. Please process the payment.', 'ereklamo', 'Read', 28, NULL, '2022-05-25 01:43:46', '2022-05-25 01:43:46'),
-(240, 'The complainant has forward your ereklamo to Captain, please await for your schedule.', 'ereklamo', 'Read', 28, NULL, '2022-05-25 01:43:46', '2022-05-25 01:43:46'),
-(241, 'An ereklamo is ready for scheduling!', 'eReklamo', 'Read', NULL, 'Secretary', '2022-05-25 01:44:28', '2022-05-25 01:44:28'),
-(242, 'Your payment for the ereklamo#45 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Read', 28, 'Resident', '2022-05-25 01:44:28', '2022-05-25 01:44:28'),
-(243, 'An ereklamo is ready for scheduling!', 'eReklamo', 'Read', NULL, 'Secretary', '2022-05-25 01:44:31', '2022-05-25 01:44:31'),
-(244, 'Your payment for the ereklamo#47 has been confirmed by the Treasurer! Please await for your schedule', 'eReklamo', 'Read', 28, 'Resident', '2022-05-25 01:44:31', '2022-05-25 01:44:31'),
-(245, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-26 03:38:21', '2022-05-26 03:38:21'),
-(246, 'The purok leader has approved your request for Barangay Clearance. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-26 05:01:38', '2022-05-26 05:01:38'),
-(247, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-26 05:01:38', '2022-05-26 05:01:38'),
-(248, 'Your account verification has been approved!', 'Resident', 'Not Read', 44, NULL, '2022-05-26 12:04:04', '2022-05-26 12:04:04'),
-(257, 'Your account verification has been approved!', 'Resident', 'Read', 28, NULL, '2022-05-26 12:19:55', '2022-05-26 12:19:55'),
-(260, 'Your account verification has been approved!', 'Resident', 'Not Read', 45, NULL, '2022-05-26 12:29:28', '2022-05-26 12:29:28'),
-(261, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-26 14:46:38', '2022-05-26 14:46:38'),
-(262, 'Your  is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 0, 'Resident', '2022-05-26 14:46:38', '2022-05-26 14:46:38'),
-(263, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-26 14:46:45', '2022-05-26 14:46:45'),
-(264, 'Your  is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 0, 'Resident', '2022-05-26 14:46:45', '2022-05-26 14:46:45'),
-(265, 'A resident has requested a 2', 'request', 'Read', NULL, 'Purok Leader', '2022-05-27 02:46:40', '2022-05-27 02:46:40'),
-(266, 'A resident has requested a 2', 'request', 'Read', NULL, 'Purok Leader', '2022-05-27 02:48:09', '2022-05-27 02:48:09'),
-(267, 'A resident has requested a 1', 'request', 'Read', NULL, 'Purok Leader', '2022-05-27 02:50:29', '2022-05-27 02:50:29'),
-(268, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-27 03:01:14', '2022-05-27 03:01:14'),
-(269, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-27 03:02:09', '2022-05-27 03:02:09'),
-(270, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-27 18:33:19', '2022-05-27 18:33:19'),
-(271, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-27 18:33:19', '2022-05-27 18:33:19'),
-(272, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-05-28 02:57:51', '2022-05-28 02:57:51'),
-(273, 'Your eReklamo#48 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-05-28 03:00:42', '2022-05-28 03:00:42'),
-(274, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 03:41:59', '2022-05-28 03:41:59'),
-(275, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 13:22:32', '2022-05-28 13:22:32'),
-(276, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 13:26:12', '2022-05-28 13:26:12'),
-(277, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 13:26:38', '2022-05-28 13:26:38'),
-(278, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 13:28:50', '2022-05-28 13:28:50'),
-(279, 'The purok leader has disapproved your request for Barangay Clearance. Reason: The request did not meet the requirements.', 'request', 'Read', 28, 'Resident', '2022-05-28 19:20:29', '2022-05-28 19:20:29'),
-(280, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-28 19:24:41', '2022-05-28 19:24:41'),
-(281, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 19:24:41', '2022-05-28 19:24:41'),
-(282, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-28 19:24:46', '2022-05-28 19:24:46'),
-(283, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 19:24:46', '2022-05-28 19:24:46'),
-(284, 'The purok leader has approved your request for Barangay Clearance. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-28 19:24:52', '2022-05-28 19:24:52'),
-(285, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 19:24:52', '2022-05-28 19:24:52'),
-(286, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-28 19:25:18', '2022-05-28 19:25:18'),
-(287, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-28 19:25:18', '2022-05-28 19:25:18'),
-(288, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-28 19:25:28', '2022-05-28 19:25:28'),
-(289, 'Your Barangay Clearance is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 30, 'Resident', '2022-05-28 19:25:28', '2022-05-28 19:25:28'),
-(290, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-28 20:04:43', '2022-05-28 20:04:43'),
-(291, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:04:43', '2022-05-28 20:04:43'),
-(292, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-28 20:06:12', '2022-05-28 20:06:12'),
-(293, 'Your Barangay Clearance is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:06:12', '2022-05-28 20:06:12'),
-(294, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-28 20:07:03', '2022-05-28 20:07:03'),
-(295, 'Your Barangay Clearance is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:07:03', '2022-05-28 20:07:03'),
-(296, 'A new request is ready for release!', 'request', 'Read', NULL, 'Secretary', '2022-05-28 20:09:44', '2022-05-28 20:09:44'),
-(297, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:09:44', '2022-05-28 20:09:44'),
-(298, 'Your Cedula is has been cancelled for not paying in time.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:10:01', '2022-05-28 20:10:01'),
-(299, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 20:10:26', '2022-05-28 20:10:26'),
-(300, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:10:51', '2022-05-28 20:10:51'),
-(301, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:10:51', '2022-05-28 20:10:51'),
-(302, 'The purok leader has approved your request for Barangay Clearance. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:10:54', '2022-05-28 20:10:54'),
-(303, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:10:54', '2022-05-28 20:10:54'),
-(304, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-05-28 20:10:58', '2022-05-28 20:10:58'),
-(305, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:10:58', '2022-05-28 20:10:58'),
-(306, 'A resident has requested a Indigency Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-05-28 20:16:25', '2022-05-28 20:16:25'),
-(307, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:43:26', '2022-05-28 20:43:26'),
-(308, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:50:29', '2022-05-28 20:50:29'),
-(309, 'A new request is ready for payment', 'request', 'Read', NULL, 'Treasurer', '2022-05-28 20:52:12', '2022-05-28 20:52:12'),
-(310, 'A resident has requested a Cedula', 'request', 'Read', NULL, 'Purok Leader', '2022-06-01 13:22:22', '2022-06-01 13:22:22'),
-(311, 'Purok Leader has resolved your ereklamo#35', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:10:03', '2022-06-05 22:10:03'),
-(312, 'Purok Leader has resolved your ereklamo#46', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:15:29', '2022-06-05 22:15:29'),
-(313, 'Purok Leader has resolved your ereklamo#48', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:16:13', '2022-06-05 22:16:13'),
-(314, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-05 22:22:49', '2022-06-05 22:22:49'),
-(315, 'Your eReklamo#49 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-05 22:23:05', '2022-06-05 22:23:05'),
-(316, 'Purok Leader has resolved your ereklamo#49', 'ereklamo', 'Read', 28, 'Resident', '2022-06-06 04:00:34', '2022-06-06 04:00:34'),
-(317, 'A resident has requested a COVID Pass', 'request', 'Read', NULL, 'Purok Leader', '2022-06-06 14:20:03', '2022-06-06 14:20:03'),
-(318, 'The purok leader has disapproved your request for COVID Pass. Reason: The request did not meet the requirements.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:20:30', '2022-06-06 14:20:30'),
-(322, 'The purok leader has approved your request for Cedula. Please process the payment.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:21:15', '2022-06-06 14:21:15'),
-(323, 'A new request is ready for payment', 'request', 'Not Read', NULL, 'Treasurer', '2022-06-06 14:21:15', '2022-06-06 14:21:15'),
-(326, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-06 14:31:27', '2022-06-06 14:31:27'),
-(327, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:31:27', '2022-06-06 14:31:27'),
-(328, 'Your Barangay Clearance is has been cancelled for not paying in time.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:31:43', '2022-06-06 14:31:43'),
-(329, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-06 14:31:50', '2022-06-06 14:31:50'),
-(330, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 28, 'Resident', '2022-06-06 14:31:50', '2022-06-06 14:31:50'),
-(331, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-06 14:40:39', '2022-06-06 14:40:39'),
-(332, 'Your eReklamo#50 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-06 14:41:39', '2022-06-06 14:41:39'),
-(333, 'Purok Leader has resolved your ereklamo#50', 'ereklamo', 'Read', 28, 'Resident', '2022-06-06 14:44:09', '2022-06-06 14:44:09'),
-(334, 'Your account verification has been approved!', 'Resident', 'Not Read', 61, NULL, '2022-06-06 15:03:56', '2022-06-06 15:03:56'),
-(335, 'Your account verification has been approved!', 'Resident', 'Not Read', 62, NULL, '2022-06-06 15:57:40', '2022-06-06 15:57:40'),
-(340, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:07:06', '2022-06-07 10:07:06'),
-(343, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:08:24', '2022-06-07 10:08:24'),
-(347, 'sss', 'request', 'Read', 49, 'Purok Leader', '2022-06-07 10:27:28', '2022-06-07 10:27:28'),
-(348, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:27:28', '2022-06-07 10:27:28'),
-(349, '', 'request', 'Read', 31, 'Purok Leader', '2022-06-07 10:28:37', '2022-06-07 10:28:37'),
-(350, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:28:37', '2022-06-07 10:28:37'),
-(351, 'The purok leader has approved your request for Indigency Clearance. Please process the payment.', 'request', 'Read', 31, 'Purok Leader', '2022-06-07 10:29:24', '2022-06-07 10:29:24'),
-(352, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:29:24', '2022-06-07 10:29:24'),
-(353, 'The purok leader has approved your request for Indigency Clearance. It is now ready for release.', 'request', 'Read', 31, 'Purok Leader', '2022-06-07 10:30:50', '2022-06-07 10:30:50'),
-(354, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:30:50', '2022-06-07 10:30:50'),
-(355, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-06-07 10:34:58', '2022-06-07 10:34:58'),
-(356, 'The purok leader has disapproved your request for Barangay Clearance. Reason: The request did not meet the requirements.', 'request', 'Read', 28, 'Resident', '2022-06-07 10:35:14', '2022-06-07 10:35:14'),
-(357, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 10:54:51', '2022-06-07 10:54:51'),
-(358, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 31, 'Resident', '2022-06-07 10:54:51', '2022-06-07 10:54:51'),
-(359, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-07 11:14:49', '2022-06-07 11:14:49'),
-(360, 'Your Cedula is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 37, 'Resident', '2022-06-07 11:14:49', '2022-06-07 11:14:49'),
-(361, '', 'request', 'Read', 28, 'Resident', '2022-06-07 11:29:42', '2022-06-07 11:29:42'),
-(362, 'Your request for Cedula has been claimed!', 'request', 'Read', 28, 'Resident', '2022-06-07 11:29:59', '2022-06-07 11:29:59'),
-(363, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-07 14:52:58', '2022-06-07 14:52:58'),
-(364, 'Your eReklamo#51 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 14:54:26', '2022-06-07 14:54:26'),
-(365, 'Purok Leader has sent your ereklamo#51 to the Councilor', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:17:57', '2022-06-07 23:17:57'),
-(367, 'Councilor Yasmin Fisher has resolved your ereklamo#51', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:30:42', '2022-06-07 23:30:42'),
-(368, 'Councilor Yasmin Fisher has resolved your ereklamo#51', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:43:01', '2022-06-07 23:43:01'),
-(369, 'Councilor Yasmin Fisher has resolved your ereklamo#51', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:43:58', '2022-06-07 23:43:58'),
-(370, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-07 23:47:56', '2022-06-07 23:47:56'),
-(371, 'Your eReklamo#52 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:48:07', '2022-06-07 23:48:07'),
-(372, 'Purok Leader has sent your ereklamo#52 to the Councilor', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:48:32', '2022-06-07 23:48:32'),
-(373, 'Councilor Samson Ritchie has resolved your ereklamo#52', 'ereklamo', 'Read', 28, 'Resident', '2022-06-07 23:50:01', '2022-06-07 23:50:01'),
-(374, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-08 12:24:09', '2022-06-08 12:24:09'),
-(375, 'Your eReklamo#53 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-08 12:25:16', '2022-06-08 12:25:16'),
-(376, 'Your account verification has been approved!', 'Resident', 'Read', 70, NULL, '2022-06-08 14:12:06', '2022-06-08 14:12:06'),
-(377, 'A resident has requested a Business Permit', 'request', 'Read', NULL, 'Purok Leader', '2022-06-08 14:21:32', '2022-06-08 14:21:32'),
-(378, 'The purok leader has approved your request for Business Permit. Please process the payment.', 'request', 'Read', 70, 'Resident', '2022-06-08 14:24:27', '2022-06-08 14:24:27'),
-(379, 'A new request is ready for payment', 'request', 'Not Read', NULL, 'Treasurer', '2022-06-08 14:24:27', '2022-06-08 14:24:27'),
-(380, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-08 14:26:01', '2022-06-08 14:26:01'),
-(381, 'Your Business Permit is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 70, 'Resident', '2022-06-08 14:26:01', '2022-06-08 14:26:01'),
-(382, 'Your request for Business Permit has been claimed!', 'request', 'Read', 70, 'Resident', '2022-06-08 14:27:53', '2022-06-08 14:27:53'),
-(383, 'Resident Pepito, Rosvie has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-08 14:35:53', '2022-06-08 14:35:53'),
-(384, 'Your eReklamo#54 is now being processed by Purok.', 'ereklamo', 'Read', 70, 'Resident', '2022-06-08 14:36:13', '2022-06-08 14:36:13'),
-(385, 'Purok Leader has sent responders for your ereklamo#54', 'ereklamo', 'Read', 70, 'Resident', '2022-06-08 14:37:50', '2022-06-08 14:37:50'),
-(386, 'Purok Leader has sent your ereklamo#53 to the Councilor', 'ereklamo', 'Read', 28, 'Resident', '2022-06-08 14:39:24', '2022-06-08 14:39:24'),
-(387, 'Councilor Ralph Roob has resolved your ereklamo#53', 'ereklamo', 'Read', 28, 'Resident', '2022-06-08 14:40:41', '2022-06-08 14:40:41'),
-(388, 'Your account verification has been approved!', 'Resident', 'Not Read', 71, NULL, '2022-06-08 15:06:55', '2022-06-08 15:06:55'),
-(389, 'Your account verification has been approved!', 'Resident', 'Not Read', 72, NULL, '2022-06-08 15:07:04', '2022-06-08 15:07:04'),
-(390, 'Your account verification has been approved!', 'Resident', 'Not Read', 73, NULL, '2022-06-08 15:07:15', '2022-06-08 15:07:15'),
-(391, 'Your account verification has been approved!', 'Resident', 'Not Read', 74, NULL, '2022-06-08 15:07:25', '2022-06-08 15:07:25'),
-(392, 'Resident Johnson, Xavier has sent a minor reklamo!', 'ereklamo', 'Read', NULL, 'Purok Leader', '2022-06-09 21:59:04', '2022-06-09 21:59:04'),
-(393, 'Your eReklamo#55 is now being processed by Purok.', 'ereklamo', 'Read', 28, 'Resident', '2022-06-09 21:59:16', '2022-06-09 21:59:16'),
-(396, 'Your account verification has been approved!', 'Resident', 'Not Read', 87, NULL, '2022-06-12 05:49:50', '2022-06-12 05:49:50'),
-(397, 'Your account verification has been approved!', 'Resident', 'Not Read', 55, NULL, '2022-06-12 05:51:20', '2022-06-12 05:51:20'),
-(398, 'Your account verification has been approved!', 'Resident', 'Not Read', 56, NULL, '2022-06-12 05:51:27', '2022-06-12 05:51:27'),
-(399, 'A resident has requested a Barangay Clearance', 'request', 'Read', NULL, 'Purok Leader', '2022-06-12 07:01:19', '2022-06-12 07:01:19'),
-(400, 'Your account verification has been approved!', 'Resident', 'Not Read', 87, NULL, '2022-06-12 15:55:04', '2022-06-12 15:55:04'),
-(401, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-12 23:34:49', '2022-06-12 23:34:49'),
-(402, 'Your account verification has been approved!', 'Resident', 'Read', 57, NULL, '2022-06-14 13:17:59', '2022-06-14 13:17:59'),
-(403, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-14 15:46:03', '2022-06-14 15:46:03'),
-(404, 'Your account verification has been approved!', 'Resident', 'Read', 28, NULL, '2022-06-14 15:49:02', '2022-06-14 15:49:02'),
-(405, 'You have been nominated to run as Purok Leader by your Captain! Please click here to accept or decline the nomination!', 'nomination', 'Read', 28, 'Resident', '2022-06-14 17:24:43', '2022-06-14 17:24:43'),
-(406, 'The purok leader has disapproved your request for Barangay Clearance. Reason: ', 'request', 'Not Read', 28, 'Resident', '2022-06-14 20:44:04', '2022-06-14 20:44:04'),
-(407, 'The purok leader has disapproved your request for Barangay Clearance. Reason: ', 'request', 'Not Read', 28, 'Resident', '2022-06-14 20:47:06', '2022-06-14 20:47:06'),
-(408, 'The purok leader has approved your request for Indigency Clearance. It is now ready for release.', 'request', 'Read', 31, 'Purok Leader', '2022-06-14 20:48:19', '2022-06-14 20:48:19'),
-(409, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-14 20:48:19', '2022-06-14 20:48:19'),
-(410, 'The purok leader has disapproved your request for Barangay Clearance. Reason: Test', 'request', 'Not Read', 28, 'Resident', '2022-06-14 20:50:07', '2022-06-14 20:50:07'),
-(411, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-15 00:05:32', '2022-06-15 00:05:32'),
-(412, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-15 00:05:38', '2022-06-15 00:05:38'),
-(413, 'Your account verification has been approved!', 'Resident', 'Not Read', 69, NULL, '2022-06-15 00:11:00', '2022-06-15 00:11:00'),
-(414, 'Your account verification has been approved!', 'Resident', 'Not Read', 69, NULL, '2022-06-15 00:12:04', '2022-06-15 00:12:04'),
-(415, 'Your account verification has been approved!', 'Resident', 'Not Read', 69, NULL, '2022-06-15 00:12:37', '2022-06-15 00:12:37'),
-(416, 'Your account verification has been approved!', 'Resident', 'Not Read', 59, NULL, '2022-06-15 00:20:59', '2022-06-15 00:20:59');
-INSERT INTO `notifications` (`NotificationID`, `message`, `type`, `status`, `UsersID`, `position`, `created_at`, `updated_at`) VALUES
-(417, 'Your account verification has been approved!', 'Resident', 'Not Read', 59, NULL, '2022-06-15 00:21:00', '2022-06-15 00:21:00'),
-(418, 'Your account verification has been approved!', 'Resident', 'Not Read', 59, NULL, '2022-06-15 00:21:02', '2022-06-15 00:21:02'),
-(419, 'Your account verification has been approved!', 'Resident', 'Not Read', 60, NULL, '2022-06-15 00:21:07', '2022-06-15 00:21:07'),
-(420, 'Your account verification has been approved!', 'Resident', 'Not Read', 64, NULL, '2022-06-15 00:21:32', '2022-06-15 00:21:32'),
-(421, 'Your account verification has been approved!', 'Resident', 'Not Read', 65, NULL, '2022-06-15 00:21:36', '2022-06-15 00:21:36');
+(422, 'Your account verification has been approved!', 'Resident', 'Read', 94, NULL, '2022-06-15 09:39:11', '2022-06-15 09:39:11'),
+(423, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-15 23:13:54', '2022-06-15 23:13:54'),
+(424, 'Your account verification has been approved!', 'Resident', 'Read', 111, NULL, '2022-06-15 23:23:00', '2022-06-15 23:23:00'),
+(425, 'Your account verification has been approved!', 'Resident', 'Read', 112, NULL, '2022-06-15 23:27:12', '2022-06-15 23:27:12'),
+(426, 'Your account verification has been approved!', 'Resident', 'Read', 110, NULL, '2022-06-15 23:27:18', '2022-06-15 23:27:18'),
+(427, 'A new request is ready for payment', 'request', 'Not Read', NULL, 'Treasurer', '2022-06-15 23:28:11', '2022-06-15 23:28:11'),
+(428, 'A resident has requested a Barangay Clearance', 'request', 'Not Read', NULL, 'Purok Leader', '2022-06-15 23:50:32', '2022-06-15 23:50:32'),
+(429, 'Resident Wows, Yolo has sent a minor reklamo!', 'ereklamo', 'Not Read', NULL, 'Purok Leader', '2022-06-15 23:50:46', '2022-06-15 23:50:46'),
+(430, 'Your eReklamo#56 is now being processed by Purok.', 'ereklamo', 'Read', 110, 'Resident', '2022-06-15 23:51:43', '2022-06-15 23:51:43'),
+(431, 'The purok leader has disapproved your request for Barangay Clearance. Reason: invalid', 'request', 'Read', 110, 'Resident', '2022-06-16 00:38:28', '2022-06-16 00:38:28'),
+(432, 'Purok Leader has resolved your ereklamo#56', 'ereklamo', 'Read', 110, 'Resident', '2022-06-16 01:01:43', '2022-06-16 01:01:43'),
+(433, 'A new request is ready for release!', 'request', 'Not Read', NULL, 'Secretary', '2022-06-16 01:58:08', '2022-06-16 01:58:08'),
+(434, 'Your Barangay Clearance is now ready for release! Please claim it at the barangay hall.', 'request', 'Read', 100, 'Resident', '2022-06-16 01:58:08', '2022-06-16 01:58:08'),
+(435, 'You have been nominated to run as Purok Leader by your Captain! Please click here to accept or decline the nomination!', 'nomination', 'Read', 110, 'Resident', '2022-06-16 02:47:33', '2022-06-16 02:47:33'),
+(436, 'You have been nominated to run as Purok Leader by your Captain! Please click here to accept or decline the nomination!', 'nomination', 'Read', 94, 'Resident', '2022-06-16 02:47:47', '2022-06-16 02:47:47'),
+(437, 'You have been nominated to run as Purok Leader by your Captain! Please click here to accept or decline the nomination!', 'nomination', 'Read', 111, 'Resident', '2022-06-16 02:50:13', '2022-06-16 02:50:13'),
+(438, 'You have been nominated to run as Purok Leader by your Captain! Please click here to accept or decline the nomination!', 'nomination', 'Read', 112, 'Resident', '2022-06-16 02:50:28', '2022-06-16 02:50:28'),
+(439, 'Your account verification has been denied!', 'Resident', 'Not Read', 0, NULL, '2022-06-16 09:26:08', '2022-06-16 09:26:08'),
+(440, 'Your account verification has been approved!', 'Resident', 'Read', 118, NULL, '2022-06-16 09:27:32', '2022-06-16 09:27:32'),
+(441, 'A resident has requested a Barangay Clearance', 'request', 'Not Read', NULL, 'Purok Leader', '2022-06-16 09:29:51', '2022-06-16 09:29:51'),
+(442, 'The purok leader has disapproved your request for Barangay Clearance. Reason: Invalid requirements', 'request', 'Read', 118, 'Resident', '2022-06-16 09:31:24', '2022-06-16 09:31:24'),
+(443, 'You have been nominated to run as Purok Leader by your Captain! Please click here to accept or decline the nomination!', 'nomination', 'Read', 94, 'Resident', '2022-06-16 09:40:04', '2022-06-16 09:40:04');
 
 -- --------------------------------------------------------
 
@@ -1042,7 +439,7 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`PostID`, `UsersID`, `username`, `userType`, `postMessage`, `date_created`, `barangay`) VALUES
-(69, 29, 'captain1', 'Captain', 'Vaccination for kids!! ', '2022-03-02 19:43:01', 'Paknaan');
+(79, 93, 'captain1', 'Captain', 'Vaccinations are now open!! ', '2022-06-15 17:41:01', 'Paknaan');
 
 -- --------------------------------------------------------
 
@@ -1063,30 +460,10 @@ CREATE TABLE `purok` (
 --
 
 INSERT INTO `purok` (`PurokID`, `PurokName`, `BarangayName`, `Active`, `purokLeader`) VALUES
-(1, 'Kamatis', 'Paknaan', 'True', 31),
-(2, 'Berdeee', 'Bakilid', 'True', NULL),
-(3, 'Piattos', 'Maguikay', 'True', NULL),
-(4, 'Pula', 'Bakilid', 'True', NULL),
-(5, 'Nova', 'Maguikay', 'True', NULL),
-(6, 'Chippy', 'Maguikay', 'True', NULL),
-(7, 'Sprite', 'Cambaro', 'True', NULL),
-(8, 'Coke', 'Cambaro', 'True', NULL),
-(9, 'Apple', 'Paknaan', 'False', NULL),
-(10, 'Papayas', 'Paknaan', 'False', NULL),
-(11, 'Kamanggahan', 'Pajo', 'True', NULL),
-(12, 'Sah', 'Bakilid', 'False', NULL),
-(13, 'Mansanitas', 'Paknaan', 'True', NULL),
-(14, 'Kamanggahan', 'Labogon', 'True', 63),
-(15, 'Santa Cruz', 'Labogon', 'True', 75),
-(16, 'Kagapi', 'Paknaan', 'False', NULL),
-(17, 'Gabi', 'Paknaan', 'True', NULL),
-(19, 'Talong', 'Paknaan', 'True', NULL),
-(20, 'Sayote', 'Paknaan', 'True', NULL),
-(24, 'Test', 'Labogon', 'True', NULL),
-(25, 'Test3', 'Labogon', 'True', NULL),
-(26, 'Test2', 'Labogon', 'True', NULL),
-(27, 'Test4', 'Labogon', 'True', NULL),
-(28, 'Mouse', 'Paknaan', 'True', NULL);
+(29, 'Kamatis', 'Paknaan', 'True', 100),
+(37, 'Chippy', 'Bakilid', 'True', 113),
+(42, 'Piattos', 'Bakilid', 'True', NULL),
+(44, 'Sili', 'Paknaan', 'True', NULL);
 
 -- --------------------------------------------------------
 
@@ -1110,259 +487,14 @@ CREATE TABLE `report` (
 --
 
 INSERT INTO `report` (`reportID`, `ReportType`, `reportMessage`, `UsersID`, `created_on`, `updated_on`, `userBarangay`, `userPurok`) VALUES
-(2, 'eReklamo', 'Purok Leader Caitleen has resolved ereklamo#7', 23, '2022-02-24 20:15:16', '2022-02-24 20:15:16', 'Paknaan', 'Kamatis'),
-(16, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#12 on 2022-03-30', 30, '2022-03-17 22:35:11', '2022-03-17 22:35:11', 'Paknaan', 'Kamatis'),
-(17, 'eReklamo', 'Resident Xavier has resolved ereklamo#15', 28, '2022-03-26 21:02:23', '2022-03-26 21:02:23', 'Paknaan', 'Kamatis'),
-(18, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#14 on 2022-03-28', 30, '2022-03-27 20:15:43', '2022-03-27 20:15:43', 'Paknaan', 'Kamatis'),
-(19, 'eReklamo', 'Captain Jeremy has resolved ereklamo#16', 29, '2022-03-27 20:46:34', '2022-03-27 20:46:34', 'Paknaan', 'Kamatis'),
-(20, 'eReklamo', 'Captain Jeremy has resolved ereklamo#18', 29, '2022-03-27 20:46:38', '2022-03-27 20:46:38', 'Paknaan', 'Kamatis'),
-(21, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#16 on 2022-03-28', 30, '2022-03-27 20:46:55', '2022-03-27 20:46:55', 'Paknaan', 'Kamatis'),
-(22, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#18 on 2022-03-28', 30, '2022-03-27 20:46:59', '2022-03-27 20:46:59', 'Paknaan', 'Kamatis'),
-(23, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 01:18:24', '2022-03-28 01:18:24', 'Paknaan', 'Kamatis'),
-(24, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 01:19:13', '2022-03-28 01:19:13', 'Paknaan', 'Kamatis'),
-(25, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 01:21:46', '2022-03-28 01:21:46', 'Paknaan', 'Kamatis'),
-(26, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 01:58:46', '2022-03-28 01:58:46', 'Paknaan', 'Kamatis'),
-(27, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 02:01:37', '2022-03-28 02:01:37', 'Paknaan', 'Kamatis'),
-(28, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 02:18:54', '2022-03-28 02:18:54', 'Paknaan', 'Kamatis'),
-(31, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 03:06:46', '2022-03-28 03:06:46', 'Paknaan', 'Kamatis'),
-(32, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 03:10:14', '2022-03-28 03:10:14', 'Paknaan', 'Kamatis'),
-(33, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 03:29:03', '2022-03-28 03:29:03', 'Paknaan', 'Kamatis'),
-(34, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 03:34:56', '2022-03-28 03:34:56', 'Paknaan', 'Kamatis'),
-(35, 'Request', 'Secretary Handson,Roxy has released the RequestID # 18', 30, '2022-03-28 03:49:34', '2022-03-28 03:49:34', 'Paknaan', 'Kamatis'),
-(36, 'Request', 'Secretary Handson,Roxy has released the RequestID # 19', 30, '2022-03-28 12:14:59', '2022-03-28 12:14:59', 'Paknaan', 'Kamatis'),
-(37, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 21', 31, '2022-03-28 16:04:45', '2022-03-28 16:04:45', 'Paknaan', 'Kamatis'),
-(38, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 21', 31, '2022-03-28 16:05:38', '2022-03-28 16:05:38', 'Paknaan', 'Kamatis'),
-(39, 'Request', 'Secretary Handson,Roxy has released the RequestID # 21', 30, '2022-03-28 16:12:44', '2022-03-28 16:12:44', 'Paknaan', 'Kamatis'),
-(40, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 22', 31, '2022-03-28 16:16:38', '2022-03-28 16:16:38', 'Paknaan', 'Kamatis'),
-(41, 'Request', 'Secretary Handson,Roxy has released the RequestID # 21', 30, '2022-03-28 16:21:58', '2022-03-28 16:21:58', 'Paknaan', 'Kamatis'),
-(42, 'Request', 'Secretary Handson,Roxy has released the RequestID # 22', 30, '2022-03-28 16:27:44', '2022-03-28 16:27:44', 'Paknaan', 'Kamatis'),
-(43, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 23', 31, '2022-03-28 16:32:22', '2022-03-28 16:32:22', 'Paknaan', 'Kamatis'),
-(47, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 23', 37, '2022-03-28 16:44:13', '2022-03-28 16:44:13', 'Paknaan', 'Kamatis'),
-(48, 'Request', 'Treasurer Handson, Roxy has confirmed the payment for RequestID# 28', 37, '2022-03-28 16:52:01', '2022-03-28 16:52:01', 'Paknaan', 'Kamatis'),
-(49, 'Request', 'Treasurer Handson, Roxy has confirmed the payment for RequestID# 28', 37, '2022-03-28 16:53:57', '2022-03-28 16:53:57', 'Paknaan', 'Kamatis'),
-(50, 'Request', 'Treasurer Handson, Roxy has confirmed the payment for RequestID# 28', 37, '2022-03-28 16:54:11', '2022-03-28 16:54:11', 'Paknaan', 'Kamatis'),
-(51, 'Request', 'Treasurer Handson, Roxy has confirmed the payment for RequestID# 28', 37, '2022-03-28 16:54:59', '2022-03-28 16:54:59', 'Paknaan', 'Kamatis'),
-(52, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 23', 37, '2022-03-28 16:56:44', '2022-03-28 16:56:44', 'Paknaan', 'Kamatis'),
-(55, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 23', 37, '2022-03-28 17:06:50', '2022-03-28 17:06:50', 'Paknaan', 'Kamatis'),
-(56, 'eReklamo', 'Resident Woshua has resolved ereklamo#20', 34, '2022-03-28 21:45:10', '2022-03-28 21:45:10', 'Paknaan', 'Kamatis'),
-(57, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#20 on 2022-03-30', 30, '2022-03-28 21:53:42', '2022-03-28 21:53:42', 'Paknaan', 'Kamatis'),
-(58, 'eReklamo', 'Captain Jeremy has resolved ereklamo#20', 29, '2022-03-28 22:04:28', '2022-03-28 22:04:28', 'Paknaan', 'Kamatis'),
-(59, 'eReklamo', 'Captain Jeremy has resolved ereklamo#20', 29, '2022-03-28 22:20:44', '2022-03-28 22:20:44', 'Paknaan', 'Kamatis'),
-(60, 'eReklamo', 'Captain Jeremy has rescheduled ereklamo#20', 29, '2022-03-28 22:21:10', '2022-03-28 22:21:10', 'Paknaan', 'Kamatis'),
-(61, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 24', 31, '2022-03-29 07:32:24', '2022-03-29 07:32:24', 'Paknaan', 'Kamatis'),
-(62, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 25', 31, '2022-03-29 07:49:49', '2022-03-29 07:49:49', 'Paknaan', 'Kamatis'),
-(63, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 25', 37, '2022-03-29 07:55:07', '2022-03-29 07:55:07', 'Paknaan', 'Kamatis'),
-(64, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 24', 37, '2022-03-29 07:57:02', '2022-03-29 07:57:02', 'Paknaan', 'Kamatis'),
-(65, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 26', 31, '2022-04-02 22:18:01', '2022-04-02 22:18:01', 'Paknaan', 'Kamatis'),
-(70, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-04-10 18:51:27', '2022-04-10 18:51:27', 'Paknaan', 'Kamatis'),
-(71, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-04-10 19:39:28', '2022-04-10 19:39:28', 'Paknaan', 'Kamatis'),
-(72, 'eReklamo', 'Captain has entered a new reklamo category type: Test2', 29, '2022-04-10 19:51:46', '2022-04-10 19:51:46', 'Paknaan', 'Kamatis'),
-(73, 'eReklamo', 'Captain has entered a new reklamo category type: Test2', 29, '2022-04-10 20:08:44', '2022-04-10 20:08:44', 'Paknaan', 'Kamatis'),
-(74, 'eReklamo', 'Captain has entered a new reklamo category type: Garbage', 29, '2022-04-10 20:48:01', '2022-04-10 20:48:01', 'Paknaan', 'Kamatis'),
-(75, 'eReklamo', 'Captain has entered a new reklamo category type: Residents', 29, '2022-04-10 20:48:08', '2022-04-10 20:48:08', 'Paknaan', 'Kamatis'),
-(76, 'eReklamo', 'Captain has entered a new reklamo category type: Barangay Infrastructures', 29, '2022-04-10 20:48:46', '2022-04-10 20:48:46', 'Paknaan', 'Kamatis'),
-(77, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 29, '2022-04-10 20:48:58', '2022-04-10 20:48:58', 'Paknaan', 'Kamatis'),
-(78, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-10 20:49:16', '2022-04-10 20:49:16', 'Paknaan', 'Kamatis'),
-(79, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-10 20:52:50', '2022-04-10 20:52:50', 'Paknaan', 'Kamatis'),
-(80, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-10 20:52:58', '2022-04-10 20:52:58', 'Paknaan', 'Kamatis'),
-(81, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-10 20:53:31', '2022-04-10 20:53:31', 'Paknaan', 'Kamatis'),
-(82, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-10 20:53:38', '2022-04-10 20:53:38', 'Paknaan', 'Kamatis'),
-(83, 'eReklamo', 'Captain has modified the reklamo type #2', 29, '2022-04-12 12:56:58', '2022-04-12 12:56:58', 'Paknaan', 'Kamatis'),
-(84, 'eReklamo', 'Captain has modified the reklamo type #2', 29, '2022-04-12 12:57:40', '2022-04-12 12:57:40', 'Paknaan', 'Kamatis'),
-(85, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 13:11:57', '2022-04-12 13:11:57', 'Paknaan', 'Kamatis'),
-(86, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 29, '2022-04-12 14:04:17', '2022-04-12 14:04:17', 'Paknaan', 'Kamatis'),
-(87, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 14:04:22', '2022-04-12 14:04:22', 'Paknaan', 'Kamatis'),
-(88, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 29, '2022-04-12 14:04:38', '2022-04-12 14:04:38', 'Paknaan', 'Kamatis'),
-(89, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 14:04:49', '2022-04-12 14:04:49', 'Paknaan', 'Kamatis'),
-(90, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 29, '2022-04-12 14:05:16', '2022-04-12 14:05:16', 'Paknaan', 'Kamatis'),
-(91, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 14:05:21', '2022-04-12 14:05:21', 'Paknaan', 'Kamatis'),
-(93, 'eReklamo', 'Captain has modified reklamo category #6', 29, '2022-04-12 19:12:58', '2022-04-12 19:12:58', 'Paknaan', 'Kamatis'),
-(94, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-04-12 19:15:06', '2022-04-12 19:15:06', 'Paknaan', 'Kamatis'),
-(95, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 19:15:09', '2022-04-12 19:15:09', 'Paknaan', 'Kamatis'),
-(97, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbages', 29, '2022-04-12 19:28:31', '2022-04-12 19:28:31', 'Paknaan', 'Kamatis'),
-(98, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-04-12 19:28:36', '2022-04-12 19:28:36', 'Paknaan', 'Kamatis'),
-(99, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-04-12 19:28:41', '2022-04-12 19:28:41', 'Paknaan', 'Kamatis'),
-(100, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-04-12 19:28:45', '2022-04-12 19:28:45', 'Paknaan', 'Kamatis'),
-(101, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-15 20:15:53', '2022-04-15 20:15:53', 'Paknaan', 'Kamatis'),
-(102, 'eReklamo', 'Captain has modified the reklamo type #1', 29, '2022-04-15 20:16:31', '2022-04-15 20:16:31', 'Paknaan', 'Kamatis'),
-(103, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-04-15 20:18:44', '2022-04-15 20:18:44', 'Paknaan', 'Kamatis'),
-(104, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-15 20:18:52', '2022-04-15 20:18:52', 'Paknaan', 'Kamatis'),
-(105, 'eReklamo', 'Captain has entered a new reklamo type for category type: Barangay Infrastructures', 29, '2022-04-15 20:18:59', '2022-04-15 20:18:59', 'Paknaan', 'Kamatis'),
-(106, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 31', 31, '2022-05-12 16:25:51', '2022-05-12 16:25:51', 'Paknaan', 'Kamatis'),
-(107, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 31', 37, '2022-05-12 16:26:50', '2022-05-12 16:26:50', 'Paknaan', 'Kamatis'),
-(108, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 32', 31, '2022-05-12 16:51:04', '2022-05-12 16:51:04', 'Paknaan', 'Kamatis'),
-(109, 'Request', 'Secretary Handson,Roxy has released the RequestID # 32', 30, '2022-05-12 17:02:38', '2022-05-12 17:02:38', 'Paknaan', 'Kamatis'),
-(110, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 33', 31, '2022-05-12 17:06:25', '2022-05-12 17:06:25', 'Paknaan', 'Kamatis'),
-(111, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 33', 37, '2022-05-12 17:11:34', '2022-05-12 17:11:34', 'Paknaan', 'Kamatis'),
-(112, 'Request', 'Secretary Handson,Roxy has released the RequestID # 33', 30, '2022-05-12 17:14:17', '2022-05-12 17:14:17', 'Paknaan', 'Kamatis'),
-(116, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 35', 31, '2022-05-12 21:23:59', '2022-05-12 21:23:59', 'Paknaan', 'Kamatis'),
-(118, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 34', 31, '2022-05-12 21:28:52', '2022-05-12 21:28:52', 'Paknaan', 'Kamatis'),
-(119, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 34', 31, '2022-05-12 21:38:29', '2022-05-12 21:38:29', 'Paknaan', 'Kamatis'),
-(120, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 35', 37, '2022-05-12 21:49:52', '2022-05-12 21:49:52', 'Paknaan', 'Kamatis'),
-(121, 'eReklamo', 'Captain has modified reklamo category #7', 29, '2022-05-14 16:33:14', '2022-05-14 16:33:14', 'Paknaan', 'Kamatis'),
-(122, 'eReklamo', 'Captain has modified reklamo category #7', 29, '2022-05-14 16:44:41', '2022-05-14 16:44:41', 'Paknaan', 'Kamatis'),
-(123, 'eReklamo', 'Captain has modified reklamo category #7', 29, '2022-05-14 16:48:29', '2022-05-14 16:48:29', 'Paknaan', 'Kamatis'),
-(124, 'eReklamo', 'Captain has modified reklamo category #7', 29, '2022-05-14 17:02:20', '2022-05-14 17:02:20', 'Paknaan', 'Kamatis'),
-(125, 'eReklamo', 'Captain has modified reklamo category #7', 29, '2022-05-14 17:02:38', '2022-05-14 17:02:38', 'Paknaan', 'Kamatis'),
-(126, 'eReklamo', 'Captain has modified reklamo category #6', 29, '2022-05-14 17:02:48', '2022-05-14 17:02:48', 'Paknaan', 'Kamatis'),
-(127, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-05-14 19:04:34', '2022-05-14 19:04:34', 'Paknaan', 'Kamatis'),
-(128, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:30:49', '2022-05-14 20:30:49', 'Paknaan', 'Kamatis'),
-(129, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 29, '2022-05-14 20:39:47', '2022-05-14 20:39:47', 'Paknaan', 'Kamatis'),
-(130, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:39:51', '2022-05-14 20:39:51', 'Paknaan', 'Kamatis'),
-(131, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-05-14 20:45:36', '2022-05-14 20:45:36', 'Paknaan', 'Kamatis'),
-(132, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:48:52', '2022-05-14 20:48:52', 'Paknaan', 'Kamatis'),
-(133, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:55:51', '2022-05-14 20:55:51', 'Paknaan', 'Kamatis'),
-(134, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-05-14 20:56:25', '2022-05-14 20:56:25', 'Paknaan', 'Kamatis'),
-(135, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:56:28', '2022-05-14 20:56:28', 'Paknaan', 'Kamatis'),
-(136, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-05-14 20:56:36', '2022-05-14 20:56:36', 'Paknaan', 'Kamatis'),
-(137, 'eReklamo', 'Captain has modified the reklamo type #10', 29, '2022-05-14 20:56:42', '2022-05-14 20:56:42', 'Paknaan', 'Kamatis'),
-(138, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:56:45', '2022-05-14 20:56:45', 'Paknaan', 'Kamatis'),
-(139, 'eReklamo', 'Captain has entered a new reklamo category type: test', 29, '2022-05-14 20:56:49', '2022-05-14 20:56:49', 'Paknaan', 'Kamatis'),
-(140, 'eReklamo', 'Captain has modified reklamo category #12', 29, '2022-05-14 20:56:55', '2022-05-14 20:56:55', 'Paknaan', 'Kamatis'),
-(141, 'eReklamo', 'Captain has entered a new reklamo type for category type: testqwewqe', 29, '2022-05-14 20:57:03', '2022-05-14 20:57:03', 'Paknaan', 'Kamatis'),
-(142, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 20:57:07', '2022-05-14 20:57:07', 'Paknaan', 'Kamatis'),
-(143, 'eReklamo', 'Captain has entered a new reklamo category type: test', 29, '2022-05-14 21:10:17', '2022-05-14 21:10:17', 'Paknaan', 'Kamatis'),
-(144, 'eReklamo', 'Captain has entered a new reklamo type for category type: test', 29, '2022-05-14 21:10:28', '2022-05-14 21:10:28', 'Paknaan', 'Kamatis'),
-(145, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-14 21:10:40', '2022-05-14 21:10:40', 'Paknaan', 'Kamatis'),
-(146, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#32', 31, '2022-05-15 14:51:18', '2022-05-15 14:51:18', 'Paknaan', 'Kamatis'),
-(147, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 16:32:38', '2022-05-15 16:32:38', 'Paknaan', 'Kamatis'),
-(148, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 17:31:06', '2022-05-15 17:31:06', 'Paknaan', 'Kamatis'),
-(149, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 17:33:08', '2022-05-15 17:33:08', 'Paknaan', 'Kamatis'),
-(150, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#34', 31, '2022-05-15 17:43:46', '2022-05-15 17:43:46', 'Paknaan', 'Kamatis'),
-(151, 'eReklamo', 'Purok Leader Purok has resolved ereklamo#34', 31, '2022-05-16 17:00:03', '2022-05-16 17:00:03', 'Paknaan', 'Kamatis'),
-(152, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-16 20:04:38', '2022-05-16 20:04:38', 'Paknaan', 'Kamatis'),
-(153, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#35', 31, '2022-05-16 21:14:43', '2022-05-16 21:14:43', 'Paknaan', 'Kamatis'),
-(154, 'eReklamo', 'Purok Leader Purok has resolved ereklamo#32', 31, '2022-05-16 21:17:44', '2022-05-16 21:17:44', 'Paknaan', 'Kamatis'),
-(155, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#36', 31, '2022-05-16 21:53:12', '2022-05-16 21:53:12', 'Paknaan', 'Kamatis'),
-(159, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-16 22:43:33', '2022-05-16 22:43:33', 'Paknaan', 'Kamatis'),
-(160, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#31', 31, '2022-05-17 11:18:13', '2022-05-17 11:18:13', 'Paknaan', 'Kamatis'),
-(161, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#31', 31, '2022-05-17 11:29:29', '2022-05-17 11:29:29', 'Paknaan', 'Kamatis'),
-(162, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#33', 31, '2022-05-17 13:57:12', '2022-05-17 13:57:12', 'Paknaan', 'Kamatis'),
-(163, 'eReklamo', 'Purok Leader Purok has resolved ereklamo#33', 31, '2022-05-17 15:48:42', '2022-05-17 15:48:42', 'Paknaan', 'Kamatis'),
-(164, 'eReklamo', 'Purok Leader Purok has resolved ereklamo#33', 31, '2022-05-17 16:09:03', '2022-05-17 16:09:03', 'Paknaan', 'Kamatis'),
-(166, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#31', 31, '2022-05-17 17:43:47', '2022-05-17 17:43:47', 'Paknaan', 'Kamatis'),
-(167, 'eReklamo', 'Purok Leader has forwarded reklamo#33 to Captain', 31, '2022-05-17 17:44:11', '2022-05-17 17:44:11', 'Paknaan', 'Kamatis'),
-(173, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#33 on 2022-05-18', 30, '2022-05-17 18:41:05', '2022-05-17 18:41:05', 'Paknaan', 'Kamatis'),
-(174, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#33 on 2022-05-19', 30, '2022-05-17 18:57:28', '2022-05-17 18:57:28', 'Paknaan', 'Kamatis'),
-(176, 'eReklamo', 'Captain Jeremy has rescheduled ereklamo#33', 29, '2022-05-17 19:28:46', '2022-05-17 19:28:46', 'Paknaan', 'Kamatis'),
-(177, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#33 on 2022-05-18', 30, '2022-05-17 19:38:29', '2022-05-17 19:38:29', 'Paknaan', 'Kamatis'),
-(178, 'eReklamo', 'Captain Jeremy has rescheduled ereklamo#33', 29, '2022-05-17 20:21:54', '2022-05-17 20:21:54', 'Paknaan', 'Kamatis'),
-(179, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#33 on 2022-05-18', 30, '2022-05-17 20:27:13', '2022-05-17 20:27:13', 'Paknaan', 'Kamatis'),
-(180, 'eReklamo', 'Captain Jeremy has rescheduled ereklamo#33', 29, '2022-05-17 20:28:22', '2022-05-17 20:28:22', 'Paknaan', 'Kamatis'),
-(181, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#33 on 2022-05-18', 30, '2022-05-17 20:29:23', '2022-05-17 20:29:23', 'Paknaan', 'Kamatis'),
-(182, 'eReklamo', 'Captain Jeremy has rescheduled ereklamo#33', 29, '2022-05-17 20:32:44', '2022-05-17 20:32:44', 'Paknaan', 'Kamatis'),
-(183, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#33 on 2022-05-18', 30, '2022-05-17 20:33:12', '2022-05-17 20:33:12', 'Paknaan', 'Kamatis'),
-(184, 'eReklamo', 'Captain has modified reklamo category #7', 29, '2022-05-17 21:44:47', '2022-05-17 21:44:47', 'Paknaan', 'Kamatis'),
-(185, 'eReklamo', 'Purok Leader has forwarded reklamo#31 to Captain', 31, '2022-05-17 23:20:56', '2022-05-17 23:20:56', 'Paknaan', 'Kamatis'),
-(186, 'eReklamo', 'Purok Leader has forwarded reklamo#31 to Captain', 31, '2022-05-17 23:24:44', '2022-05-17 23:24:44', 'Paknaan', 'Kamatis'),
-(187, 'eReklamo', 'Purok Leader has forwarded reklamo#31 to Captain', 31, '2022-05-17 23:27:25', '2022-05-17 23:27:25', 'Paknaan', 'Kamatis'),
-(190, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#31', 37, '2022-05-18 01:07:53', '2022-05-18 01:07:53', 'Paknaan', 'Kamatis'),
-(192, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#31', 37, '2022-05-18 01:09:39', '2022-05-18 01:09:39', 'Paknaan', 'Kamatis'),
-(193, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#37', 31, '2022-05-18 10:56:43', '2022-05-18 10:56:43', 'Paknaan', 'Kamatis'),
-(194, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-18 11:17:56', '2022-05-18 11:17:56', 'Paknaan', 'Kamatis'),
-(195, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#41', 31, '2022-05-19 23:22:08', '2022-05-19 23:22:08', 'Paknaan', 'Kamatis'),
-(196, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#42', 31, '2022-05-19 23:33:57', '2022-05-19 23:33:57', 'Paknaan', 'Kamatis'),
-(197, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#38', 31, '2022-05-20 01:26:27', '2022-05-20 01:26:27', 'Paknaan', 'Kamatis'),
-(198, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 01:59:36', '2022-05-20 01:59:36', 'Paknaan', 'Kamatis'),
-(199, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 02:41:06', '2022-05-20 02:41:06', 'Paknaan', 'Kamatis'),
-(200, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 02:41:52', '2022-05-20 02:41:52', 'Paknaan', 'Kamatis'),
-(201, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 02:42:47', '2022-05-20 02:42:47', 'Paknaan', 'Kamatis'),
-(202, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 02:43:59', '2022-05-20 02:43:59', 'Paknaan', 'Kamatis'),
-(204, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 17:23:16', '2022-05-20 17:23:16', 'Paknaan', 'Kamatis'),
-(205, 'eReklamo', 'Respondent Woshua Torts has reported back to Purok Leader', 34, '2022-05-20 17:37:54', '2022-05-20 17:37:54', 'Paknaan', 'Kamatis'),
-(206, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#43', 31, '2022-05-21 21:22:01', '2022-05-21 21:22:01', 'Paknaan', 'Kamatis'),
-(207, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#44', 31, '2022-05-21 22:35:37', '2022-05-21 22:35:37', 'Paknaan', 'Kamatis'),
-(210, 'eReklamo', 'Purok Leader has forwarded reklamo#41 to Captain', 31, '2022-05-21 23:45:44', '2022-05-21 23:45:44', 'Paknaan', 'Kamatis'),
-(211, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#41', 37, '2022-05-21 23:46:22', '2022-05-21 23:46:22', 'Paknaan', 'Kamatis'),
-(212, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#31 on 2022-05-23', 30, '2022-05-21 23:56:11', '2022-05-21 23:56:11', 'Paknaan', 'Kamatis'),
-(213, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#41 on 2022-06-01', 30, '2022-05-22 00:02:49', '2022-05-22 00:02:49', 'Paknaan', 'Kamatis'),
-(214, 'eReklamo', 'Secretary Roxy has scheduled ereklamo#31 on 2022-05-27', 30, '2022-05-22 02:32:35', '2022-05-22 02:32:35', 'Paknaan', 'Kamatis'),
-(215, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#40', 31, '2022-05-22 20:05:52', '2022-05-22 20:05:52', 'Paknaan', 'Kamatis'),
-(216, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-22 20:08:41', '2022-05-22 20:08:41', 'Paknaan', 'Kamatis'),
-(217, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-22 20:08:44', '2022-05-22 20:08:44', 'Paknaan', 'Kamatis'),
-(218, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#45', 31, '2022-05-25 00:41:26', '2022-05-25 00:41:26', 'Paknaan', 'Kamatis'),
-(219, 'eReklamo', 'Purok Leader Purok has resolved ereklamo#40', 31, '2022-05-25 00:41:34', '2022-05-25 00:41:34', 'Paknaan', 'Kamatis'),
-(220, 'eReklamo', 'Purok Leader Purok has resolved ereklamo#37', 31, '2022-05-25 00:42:15', '2022-05-25 00:42:15', 'Paknaan', 'Kamatis'),
-(221, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#46', 31, '2022-05-25 00:43:18', '2022-05-25 00:43:18', 'Paknaan', 'Kamatis'),
-(222, 'eReklamo', 'Purok Leader has forwarded reklamo#45 to Captain', 31, '2022-05-25 00:52:40', '2022-05-25 00:52:40', 'Paknaan', 'Kamatis'),
-(223, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#45', 37, '2022-05-25 00:58:50', '2022-05-25 00:58:50', 'Paknaan', 'Kamatis'),
-(224, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#47', 31, '2022-05-25 01:41:05', '2022-05-25 01:41:05', 'Paknaan', 'Kamatis'),
-(225, 'eReklamo', 'Purok Leader has forwarded reklamo#47 to Captain', 31, '2022-05-25 01:41:19', '2022-05-25 01:41:19', 'Paknaan', 'Kamatis'),
-(226, 'eReklamo', 'Purok Leader has forwarded reklamo#45 to Captain', 31, '2022-05-25 01:43:46', '2022-05-25 01:43:46', 'Paknaan', 'Kamatis'),
-(227, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#45', 37, '2022-05-25 01:44:28', '2022-05-25 01:44:28', 'Paknaan', 'Kamatis'),
-(228, 'eReklamo', 'Treasurer Jackson Ville has confirmed the payment of ereklamo#47', 37, '2022-05-25 01:44:31', '2022-05-25 01:44:31', 'Paknaan', 'Kamatis'),
-(229, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 36', 31, '2022-05-26 05:01:38', '2022-05-26 05:01:38', 'Paknaan', 'Kamatis'),
-(230, 'Request', 'Treasurer Elbertson,Jeremy has confirmed the payment for RequestID# 7', 29, '2022-05-26 14:46:38', '2022-05-26 14:46:38', 'Paknaan', 'Kamatis'),
-(231, 'Request', 'Treasurer Elbertson,Jeremy has confirmed the payment for RequestID# 7', 29, '2022-05-26 14:46:45', '2022-05-26 14:46:45', 'Paknaan', 'Kamatis'),
-(232, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 41', 31, '2022-05-27 18:33:19', '2022-05-27 18:33:19', 'Paknaan', 'Kamatis'),
-(233, 'Barangay', 'Admin has created a new Barangay: test', 27, '2022-05-27 20:29:32', '2022-05-27 20:29:32', NULL, NULL),
-(234, 'Barangay', 'Admin has assigned 29 as the new Captain for Paknaan', 27, '2022-05-27 20:32:12', '2022-05-27 20:32:12', NULL, NULL),
-(235, 'Barangay', 'Admin has assigned Xavier Johnson as the new Captain for Paknaan', 27, '2022-05-27 20:35:26', '2022-05-27 20:35:26', NULL, NULL),
-(236, 'Barangay', 'Admin has assigned Jeremy Elbertson as the new Captain for Paknaan', 27, '2022-05-27 20:36:37', '2022-05-27 20:36:37', NULL, NULL),
-(237, 'Account', 'Captain  has added a new Resident', 29, '2022-05-27 21:20:54', '2022-05-27 21:20:54', 'Paknaan', 'Kamatis'),
-(238, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#48', 31, '2022-05-28 03:00:42', '2022-05-28 03:00:42', 'Paknaan', 'Kamatis'),
-(239, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-05-28 03:11:12', '2022-05-28 03:11:12', 'Paknaan', 'Kamatis'),
-(240, 'eReklamo', 'Captain has entered a new reklamo category type: Residents', 29, '2022-05-28 03:12:09', '2022-05-28 03:12:09', 'Paknaan', 'Kamatis'),
-(241, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-05-28 03:12:21', '2022-05-28 03:12:21', 'Paknaan', 'Kamatis'),
-(242, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-05-28 03:12:28', '2022-05-28 03:12:28', 'Paknaan', 'Kamatis'),
-(243, 'Request', 'Purok Leader has disapproved request#45 for not meeting the requirements.', 31, '2022-05-28 19:20:29', '2022-05-28 19:20:29', 'Paknaan', 'Kamatis'),
-(244, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 43', 31, '2022-05-28 19:24:41', '2022-05-28 19:24:41', 'Paknaan', 'Kamatis'),
-(245, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 47', 31, '2022-05-28 19:24:46', '2022-05-28 19:24:46', 'Paknaan', 'Kamatis'),
-(246, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 42', 31, '2022-05-28 19:24:52', '2022-05-28 19:24:52', 'Paknaan', 'Kamatis'),
-(247, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 26', 37, '2022-05-28 19:25:18', '2022-05-28 19:25:18', 'Paknaan', 'Kamatis'),
-(248, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 34', 37, '2022-05-28 19:25:28', '2022-05-28 19:25:28', 'Paknaan', 'Kamatis'),
-(249, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 41', 37, '2022-05-28 20:04:43', '2022-05-28 20:04:43', 'Paknaan', 'Kamatis'),
-(250, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 42', 37, '2022-05-28 20:06:12', '2022-05-28 20:06:12', 'Paknaan', 'Kamatis'),
-(251, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 36', 37, '2022-05-28 20:07:03', '2022-05-28 20:07:03', 'Paknaan', 'Kamatis'),
-(252, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 43', 37, '2022-05-28 20:09:43', '2022-05-28 20:09:43', 'Paknaan', 'Kamatis'),
-(253, 'Request', 'Treasurer Ville,Jackson has cancelled the payment for RequestID#47', 37, '2022-05-28 20:10:01', '2022-05-28 20:10:01', 'Paknaan', 'Kamatis'),
-(254, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 48', 31, '2022-05-28 20:10:51', '2022-05-28 20:10:51', 'Paknaan', 'Kamatis'),
-(255, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 46', 31, '2022-05-28 20:10:54', '2022-05-28 20:10:54', 'Paknaan', 'Kamatis'),
-(256, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 44', 31, '2022-05-28 20:10:58', '2022-05-28 20:10:58', 'Paknaan', 'Kamatis'),
-(257, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-06-02 20:16:38', '2022-06-02 20:16:38', 'Paknaan', 'Kamatis'),
-(258, 'eReklamo', 'Captain has entered a new reklamo category type: test', 29, '2022-06-02 20:18:57', '2022-06-02 20:18:57', 'Paknaan', 'Kamatis'),
-(259, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:19:01', '2022-06-02 20:19:01', 'Paknaan', 'Kamatis'),
-(260, 'eReklamo', 'Captain has entered a new reklamo type for category type: Test', 29, '2022-06-02 20:20:31', '2022-06-02 20:20:31', 'Paknaan', 'Kamatis'),
-(261, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-02 20:20:35', '2022-06-02 20:20:35', 'Paknaan', 'Kamatis'),
-(262, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#49', 31, '2022-06-05 22:23:05', '2022-06-05 22:23:05', 'Paknaan', 'Kamatis'),
-(263, 'Request', 'Purok Leader has disapproved request#54 for not meeting the requirements.', 31, '2022-06-06 14:20:30', '2022-06-06 14:20:30', 'Paknaan', 'Kamatis'),
-(267, 'Request', 'Purok Leader Leader,Purok has approved the RequestID # 53', 31, '2022-06-06 14:21:15', '2022-06-06 14:21:15', 'Paknaan', 'Kamatis'),
-(270, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 44', 37, '2022-06-06 14:31:26', '2022-06-06 14:31:26', 'Paknaan', 'Kamatis'),
-(271, 'Request', 'Treasurer Ville,Jackson has cancelled the payment for RequestID#46', 37, '2022-06-06 14:31:43', '2022-06-06 14:31:43', 'Paknaan', 'Kamatis'),
-(272, 'Request', 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 48', 37, '2022-06-06 14:31:50', '2022-06-06 14:31:50', 'Paknaan', 'Kamatis'),
-(275, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-06-06 14:40:12', '2022-06-06 14:40:12', 'Paknaan', 'Kamatis'),
-(276, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#50', 31, '2022-06-06 14:41:39', '2022-06-06 14:41:39', 'Paknaan', 'Kamatis'),
-(277, 'Account', 'Captain  has added a new Resident', 31, '2022-06-06 14:56:26', '2022-06-06 14:56:26', 'Paknaan', 'Kamatis'),
-(278, 'Barangay', 'Admin has created a new Barangay: Labogon', 27, '2022-06-06 15:39:16', '2022-06-06 15:39:16', NULL, NULL),
-(279, 'Barangay', 'Admin has assigned Labogon  Captain as the new Captain for Labogon', 27, '2022-06-06 15:44:45', '2022-06-06 15:44:45', NULL, NULL),
-(280, 'Account', 'Captain  has added a new Resident', 62, '2022-06-06 15:52:21', '2022-06-06 15:52:21', 'Labogon', ''),
-(295, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#51', 31, '2022-06-07 14:54:26', '2022-06-07 14:54:26', 'Paknaan', 'Kamatis'),
-(296, 'Barangay', 'Admin has assigned  as the new Captain for Bakilid', 27, '2022-06-07 19:37:48', '2022-06-07 19:37:48', NULL, NULL),
-(297, 'Barangay', 'Admin has assigned Jeremy Elbertson as the new Captain for Paknaan', 27, '2022-06-07 19:41:18', '2022-06-07 19:41:18', NULL, NULL),
-(298, 'Barangay', 'Admin has assigned Jeremy Elbertson as the new Captain for Paknaan', 27, '2022-06-07 19:41:34', '2022-06-07 19:41:34', NULL, NULL),
-(299, 'Barangay', 'Admin has assigned Jeremy Elbertson as the new Captain for Paknaan', 27, '2022-06-07 19:41:53', '2022-06-07 19:41:53', NULL, NULL),
-(300, 'Barangay', 'Admin has assigned Jeremy Elbertson as the new Captain for Paknaan', 27, '2022-06-07 19:41:57', '2022-06-07 19:41:57', NULL, NULL),
-(301, 'Barangay', 'Barangay has updated Barangay test', 27, '2022-06-07 19:44:37', '2022-06-07 19:44:37', NULL, NULL),
-(302, 'Barangay', 'Barangay has updated Barangay Maguikay', 27, '2022-06-07 19:44:44', '2022-06-07 19:44:44', NULL, NULL),
-(303, 'Barangay', 'Barangay has updated Barangay Cambaro', 27, '2022-06-07 19:44:55', '2022-06-07 19:44:55', NULL, NULL),
-(304, 'Barangay', 'Admin has created a new Barangay: TestTest', 27, '2022-06-07 19:46:37', '2022-06-07 19:46:37', NULL, NULL),
-(305, 'Barangay', 'Barangay has updated Barangay TestTest', 27, '2022-06-07 19:46:48', '2022-06-07 19:46:48', NULL, NULL),
-(306, 'Barangay', 'Admin has created a new Barangay: ', 27, '2022-06-07 21:26:42', '2022-06-07 21:26:42', NULL, NULL),
-(307, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#52', 31, '2022-06-07 23:48:07', '2022-06-07 23:48:07', 'Paknaan', 'Kamatis'),
-(308, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#53', 31, '2022-06-08 12:25:16', '2022-06-08 12:25:16', 'Paknaan', 'Kamatis'),
-(309, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#54', 31, '2022-06-08 14:36:13', '2022-06-08 14:36:13', 'Paknaan', 'Kamatis'),
-(310, 'eReklamo', 'Captain has entered a new reklamo type for category type: Residents', 29, '2022-06-08 14:42:24', '2022-06-08 14:42:24', 'Paknaan', 'Kamatis'),
-(311, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#55', 31, '2022-06-09 21:59:16', '2022-06-09 21:59:16', 'Paknaan', 'Kamatis'),
-(312, 'eReklamo', 'Captain has entered a new reklamo category type: Test', 29, '2022-06-14 22:30:24', '2022-06-14 22:30:24', 'Paknaan', 'Kamatis'),
-(313, 'eReklamo', 'Captain has modified reklamo category #6', 29, '2022-06-14 23:04:14', '2022-06-14 23:04:14', 'Paknaan', 'Kamatis'),
-(314, 'eReklamo', 'Captain has hidden the reklamo type #', 29, '2022-06-14 23:11:25', '2022-06-14 23:11:25', 'Paknaan', 'Kamatis'),
-(315, 'eReklamo', 'Captain has hidden the reklamo type #', 29, '2022-06-14 23:11:44', '2022-06-14 23:11:44', 'Paknaan', 'Kamatis'),
-(316, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbages', 29, '2022-06-14 23:29:46', '2022-06-14 23:29:46', 'Paknaan', 'Kamatis'),
-(317, 'eReklamo', 'Captain has modified the reklamo type #18', 29, '2022-06-14 23:31:54', '2022-06-14 23:31:54', 'Paknaan', 'Kamatis'),
-(318, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-14 23:38:10', '2022-06-14 23:38:10', 'Paknaan', 'Kamatis'),
-(319, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-14 23:38:14', '2022-06-14 23:38:14', 'Paknaan', 'Kamatis'),
-(320, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbages', 29, '2022-06-14 23:42:58', '2022-06-14 23:42:58', 'Paknaan', 'Kamatis'),
-(321, 'eReklamo', 'Captain has deleted the reklamo type #', 29, '2022-06-14 23:45:24', '2022-06-14 23:45:24', 'Paknaan', 'Kamatis');
+(322, 'Barangay', 'Admin has created a new Barangay: Paknaan', 27, '2022-06-15 01:34:38', '2022-06-15 01:34:38', NULL, NULL),
+(323, 'Barangay', 'Barangay has updated Barangay Paknaan', 27, '2022-06-15 01:34:49', '2022-06-15 01:34:49', NULL, NULL),
+(324, 'eReklamo', 'Captain has entered a new reklamo category type: Garbage', 93, '2022-06-15 15:47:05', '2022-06-15 15:47:05', 'Paknaan', 'Kamatis'),
+(325, 'eReklamo', 'Captain has entered a new reklamo type for category type: Garbage', 93, '2022-06-15 15:47:23', '2022-06-15 15:47:23', 'Paknaan', 'Kamatis'),
+(326, 'Barangay', 'Admin has created a new Barangay: Bakilid', 27, '2022-06-15 22:30:10', '2022-06-15 22:30:10', NULL, NULL),
+(327, 'Barangay', 'Admin has assigned Jeremy Elberson as the new Captain for Paknaan', 27, '2022-06-15 22:57:10', '2022-06-15 22:57:10', NULL, NULL),
+(328, 'Barangay', 'Admin has assigned Captain Bakilid as the new Captain for Bakilid', 27, '2022-06-15 23:03:40', '2022-06-15 23:03:40', NULL, NULL),
+(329, 'eReklamo', 'Purok Leader Purok has accepted ereklamo#56', 100, '2022-06-15 23:51:43', '2022-06-15 23:51:43', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1391,35 +523,9 @@ CREATE TABLE `request` (
 --
 
 INSERT INTO `request` (`RequestID`, `documentType`, `purpose`, `requestedOn`, `approvedOn`, `approvedBy`, `amount`, `status`, `userBarangay`, `userPurok`, `userType`, `UsersID`, `requesturl`) VALUES
-(21, 'Barangay Clearance', 'Employment', '2022-03-28 15:21:47', '2022-03-28 16:21:58', 'Handson, Roxy', 50, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, ''),
-(22, 'Cedula', 'Employment', '2022-03-28 16:16:12', '2022-03-28 16:27:44', 'Handson, Roxy', 20, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/9647c47bb7a82b4798cc7cafddfc7bd1'),
-(23, 'Cedula', 'Employment', '2022-03-28 16:31:39', '2022-06-07 11:26:27', 'Handson, Roxy', 20, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/53a59cfd1e256b4064170e8c9cf222a0'),
-(24, 'Barangay Clearance', 'Employment', '2022-03-29 07:31:09', '2022-06-07 11:26:30', 'Handson, Roxy', 50, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/a65846399caff7957c8923eaed155192'),
-(25, 'Cedula', 'Employment', '2022-03-29 07:36:50', '2022-06-07 11:29:42', 'Handson, Roxy', 20, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/c1dde9784e9bb636fc718b4d0da11692'),
-(26, 'Cedula', 'Test', '2022-04-02 15:27:45', '2022-06-07 11:29:59', 'Handson, Roxy', 222, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/e8c0afb83105fd0641490493e3d4d10e'),
-(31, 'Cedula', 'Notarization', '2022-05-12 16:23:56', '2022-05-12 16:26:50', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/4be479841eeb3c2fcd99ee361aef98b7'),
-(32, 'Indigency Clearance', 'Ayuda', '2022-05-12 16:34:26', '2022-05-12 17:02:38', 'Handson, Roxy', 0, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'None'),
-(33, 'Barangay Clearance', 'Proof of Residency', '2022-05-12 17:05:19', '2022-05-12 17:14:17', 'Handson, Roxy', 125, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/6d395aefec4a271b6911d50dd8827336'),
-(34, 'Barangay Clearance', 'Proof of Residency', '2022-05-12 19:48:48', '2022-05-28 19:25:28', 'Ville, Jackson', 125, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 30, 'https://getpaid.gcash.com/checkout/1feb8a4cf689cbfe5caabdfd8bdc6489'),
-(35, 'Barangay Clearance', 'Proof of Residency', '2022-05-12 21:21:14', '2022-05-12 21:49:52', 'Ville, Jackson', 125, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/859f45f5d1bc00b484c652ba0e75deaf'),
-(36, 'Barangay Clearance', 'Proof of Residency', '2022-05-26 03:38:21', '2022-05-28 20:07:03', 'Ville, Jackson', 125, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/722ce4fec2b7b9a7ff01ee49c8f5d6d7'),
-(41, 'Cedula', 'Notarization', '2022-05-27 03:01:15', '2022-05-28 20:04:43', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/553c53cbe3db824b0aeb158724e62a31'),
-(42, 'Barangay Clearance', 'Proof of Residency', '2022-05-27 03:02:09', '2022-05-28 20:06:12', 'Ville, Jackson', 125, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/2848babbc1ef60956297ed5f6b2bf769'),
-(43, 'Cedula', 'Notarization', '2022-05-28 03:41:59', '2022-05-28 20:09:44', 'Ville, Jackson', 5, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/10a2a013d186bb1c18961651f831bc5e'),
-(44, 'Cedula', 'Notarization', '2022-05-28 13:22:33', '2022-06-06 14:31:27', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/b32ff02643697da7643ac0b79383d57e'),
-(45, 'Barangay Clearance', 'Proof of Residency', '2022-05-28 13:26:12', '2022-06-14 20:47:06', 'Purok Leader', 125, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None'),
-(46, 'Barangay Clearance', 'Proof of Residency', '2022-05-28 13:26:38', '2022-06-06 14:31:43', 'Ville, Jackson', 125, 'Cancelled', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/b3e0f405a2576e44008f568076837894'),
-(47, 'Cedula', 'Notarization', '2022-05-28 13:28:50', '2022-05-28 20:10:01', 'Ville, Jackson', 5, 'Cancelled', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/6be03bbaebb52c456a6ee72c3e5e215c'),
-(48, 'Cedula', 'Notarization', '2022-05-28 20:10:26', '2022-06-06 14:31:50', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 28, 'https://getpaid.gcash.com/checkout/40a3bce6012cb4eed13de00c4d04c16e'),
-(49, 'Indigency Clearance', 'Ayuda', '2022-05-28 20:16:25', '2022-06-14 20:48:19', 'Leader, Purok', 0, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 31, 'None'),
-(50, 'Cedula', 'Notarization', '2022-05-28 20:43:26', '2022-06-07 10:54:51', 'Ville, Jackson', 10, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 31, 'None'),
-(51, 'Cedula', 'Notarization', '2022-05-28 20:50:29', '2022-06-07 11:14:49', 'Ville, Jackson', 5, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 37, 'None'),
-(52, 'Cedula', 'Notarization', '2022-05-28 20:52:12', NULL, NULL, 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 37, 'None'),
-(53, 'Cedula', 'Notarization', '2022-06-01 13:22:22', '2022-06-06 14:21:15', 'Leader, Purok', 10, 'Approved', 'Paknaan', 'Kamatis', 'Treasurer', 28, 'https://getpaid.gcash.com/checkout/38ad0aee0f5a09c1d4a78c7016425206'),
-(54, 'COVID Pass', 'To go outside', '2022-06-06 14:20:03', '2022-06-06 14:20:30', 'Purok Leader', 0, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None'),
-(55, 'Barangay Clearance', 'Proof of Residency', '2022-06-07 10:34:58', '2022-06-07 10:35:14', 'Purok Leader', 125, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None'),
-(56, 'Business Permit', 'Proof of Residency', '2022-06-08 14:21:32', '2022-06-08 14:27:53', 'Handson, Roxy', 250, 'Released', 'Paknaan', 'Kamatis', 'Secretary', 70, 'https://getpaid.gcash.com/checkout/1b37949161658e81ed890956d8e15e4d'),
-(57, 'Barangay Clearance', 'Proof of Residency', '2022-06-12 07:01:19', '2022-06-14 20:50:06', 'Purok Leader', 125, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 28, 'None');
+(58, 'Barangay Clearance', 'Scholarship', '2022-06-15 23:28:11', '2022-06-16 01:58:08', 'Treasurer, Treasurer', 100, 'Paid', 'Paknaan', 'Kamatis', 'Secretary', 100, 'None'),
+(59, 'Barangay Clearance', 'Employment', '2022-06-15 23:50:33', '2022-06-16 00:38:27', 'Purok Leader', 100, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 110, 'None'),
+(60, 'Barangay Clearance', 'Scholarship', '2022-06-16 09:29:51', '2022-06-16 09:31:24', 'Purok Leader', 100, 'Disapproved', 'Paknaan', 'Kamatis', 'Purok Leader', 118, 'None');
 
 -- --------------------------------------------------------
 
@@ -1444,27 +550,9 @@ CREATE TABLE `requestreport` (
 --
 
 INSERT INTO `requestreport` (`requestreportID`, `RequestID`, `officerID`, `reportMessage`, `reportStatus`, `amount`, `date`, `barangay`, `purok`) VALUES
-(3, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:07:06', 'Paknaan', 'Kamatis'),
-(6, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:08:24', 'Paknaan', 'Kamatis'),
-(10, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:27:28', 'Paknaan', 'Kamatis'),
-(11, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:28:37', 'Paknaan', 'Kamatis'),
-(12, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:29:24', 'Paknaan', 'Kamatis'),
-(13, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-07 10:30:50', 'Paknaan', 'Kamatis'),
-(14, 55, 31, 'Purok Leader has disapproved request#55 for not meeting the requirements.', 'Disapproved', 125, '2022-06-07 10:35:14', 'Paknaan', 'Kamatis'),
-(15, 50, 37, 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 50', 'Paid', 10, '2022-06-07 10:54:51', 'Paknaan', 'Kamatis'),
-(16, 51, 37, 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 51', 'Paid', 5, '2022-06-07 11:14:49', 'Paknaan', 'Kamatis'),
-(23, 23, 30, 'Secretary Handson,Roxy has released the RequestID # 23', 'Released', 20, '2022-06-07 11:25:04', 'Paknaan', 'Kamatis'),
-(24, 23, 30, 'Secretary Handson,Roxy has released the RequestID#23', 'Released', 20, '2022-06-07 11:26:27', 'Paknaan', 'Kamatis'),
-(25, 24, 30, 'Secretary Handson,Roxy has released the RequestID#24', 'Released', 50, '2022-06-07 11:26:30', 'Paknaan', 'Kamatis'),
-(29, 25, 30, 'Secretary Handson,Roxy has released the RequestID#25', 'Released', 20, '2022-06-07 11:29:42', 'Paknaan', 'Kamatis'),
-(30, 26, 30, 'Secretary Handson,Roxy has released the RequestID#26', 'Released', 222, '2022-06-07 11:29:59', 'Paknaan', 'Kamatis'),
-(31, 56, 31, 'Purok Leader Leader,Purok has approved the RequestID # 56', 'Approved', 250, '2022-06-08 14:24:27', '', ''),
-(32, 56, 37, 'Treasurer Ville,Jackson has confirmed the payment for RequestID# 56', 'Paid', 250, '2022-06-08 14:26:01', '', ''),
-(33, 56, 30, 'Secretary Handson,Roxy has released the RequestID#56', 'Released', 250, '2022-06-08 14:27:53', '', ''),
-(34, 57, 31, '', 'Disapproved', 125, '2022-06-14 20:44:03', '', ''),
-(35, 45, 31, '', 'Disapproved', 125, '2022-06-14 20:47:06', '', ''),
-(36, 49, 31, 'Purok Leader Leader,Purok has approved the RequestID # 49', 'Approved', 0, '2022-06-14 20:48:19', '', ''),
-(37, 57, 31, 'Test', 'Disapproved', 125, '2022-06-14 20:50:06', '', '');
+(38, 59, 100, 'invalid', 'Disapproved', 100, '2022-06-16 00:38:27', 'Paknaan', 'Kamatis'),
+(39, 58, 101, 'Treasurer Treasurer,Treasurer has confirmed the payment for RequestID# 58', 'Paid', 100, '2022-06-16 01:58:08', '', ''),
+(40, 60, 100, 'Invalid requirements', 'Disapproved', 100, '2022-06-16 09:31:24', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1483,8 +571,7 @@ CREATE TABLE `requirementlist` (
 --
 
 INSERT INTO `requirementlist` (`requirementID`, `requirementName`, `DocumentID`) VALUES
-(3, 'Valid ID', 2),
-(4, 'Photocopy of Lot Title', 13);
+(9, 'Valid ID', 26);
 
 -- --------------------------------------------------------
 
@@ -1499,14 +586,6 @@ CREATE TABLE `residentcategory` (
   `Barangay` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `Purok` varchar(20) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `residentcategory`
---
-
-INSERT INTO `residentcategory` (`residentCatID`, `residentCatName`, `createdOn`, `Barangay`, `Purok`) VALUES
-(15, 'No water', '2022-06-06 16:03:03', 'Labogon', 'All'),
-(17, '', '2022-06-15 00:52:18', 'Paknaan', 'All');
 
 -- --------------------------------------------------------
 
@@ -1527,28 +606,6 @@ CREATE TABLE `residents` (
   `BarangayID` int NOT NULL,
   `PurokID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `residents`
---
-
-INSERT INTO `residents` (`ResidentID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `dateResiding`, `Voter`, `Lessee`, `BarangayID`, `PurokID`) VALUES
-(1, 'qweqw', 'edsad', 'adqw', '2000-08-10 00:00:00', 'Single', '2000-01-07 00:00:00', 'True', 'False', 2, 1),
-(2, 'yyyy', 'uuuu', 'iiii', '2018-02-12 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'True', 2, 1),
-(3, 'oiqjwoqj', 'aidjoaidsjoa', 'qwijeqowijeo', '2000-01-01 00:00:00', 'Single', '2000-01-07 00:00:00', 'True', 'False', 2, 1),
-(4, 'asfas', 'fasf', 'asfasf', '2022-05-19 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(5, 'Test', 'Test', 'Test', '2000-01-01 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(6, 'Mr', 'Con', 'Struction', '1999-02-20 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(7, 'Mr', 'Plum', 'Plumber', '2013-02-22 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(8, 'Jackson', 'Me', 'Ville', '2011-11-11 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(9, 'Woshua', 'Etch', 'Torts', '2017-11-25 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(10, 'Purok', 'Leader', 'Leader', '1987-11-11 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(11, 'Roxy', 'Tabby', 'Handson', '1991-02-01 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(12, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(13, 'Xavier', 'Noez', 'Johnson', '2000-08-01 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 2, 1),
-(14, 'qweqw', 'qweq', 'weqweqw', '2022-05-11 00:00:00', 'Married', '2000-01-07 00:00:00', 'False', 'False', 3, 3),
-(15, 'aqweqwe', 'qdqw', 'dasdasd', '2022-05-25 00:00:00', 'Single', '2000-01-07 00:00:00', 'False', 'False', 3, 3),
-(16, 'TEst', 'test', 'test', '2022-05-09 00:00:00', 'Married', '2000-01-07 00:00:00', 'False', 'False', 3, 3);
 
 -- --------------------------------------------------------
 
@@ -1571,8 +628,7 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`scheduleid`, `scheduleDate`, `UsersID`, `complainee`, `forAll`, `scheduleTitle`, `ereklamoID`) VALUES
-(1, '2022-05-05', 0, NULL, 'True', 'Test', 0),
-(7, '2022-06-01', 28, 41, 'False', 'ereklamo#41', 41);
+(1, '2021-02-09', 27, NULL, 'True', 'Test', 0);
 
 -- --------------------------------------------------------
 
@@ -1596,31 +652,28 @@ CREATE TABLE `userreport` (
 --
 
 INSERT INTO `userreport` (`userreportID`, `UsersID`, `OfficerID`, `reportMessage`, `reportStatus`, `date`, `barangay`, `purok`) VALUES
-(1, 0, 29, 'Captain has added a new Resident', 'Add', '2022-06-07 13:45:37', 'Paknaan', 'Kamatis'),
-(2, 65, 29, 'Captain has added a new Resident', 'Add', '2022-06-07 13:47:13', 'Paknaan', 'Kamatis'),
-(3, 66, 31, 'Captain has added a new Resident', 'Add', '2022-06-07 14:05:57', 'Paknaan', 'Kamatis'),
-(4, 69, 68, 'Captain has added a new Resident', 'Add', '2022-06-08 05:25:03', 'Labogon', 'Kamanggahan'),
-(5, 75, 68, 'Captain has added a new Resident', 'Add', '2022-06-08 15:06:09', 'Labogon', 'Kamanggahan'),
-(6, 87, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-12 05:49:50', 'Paknaan', 'Kamatis'),
-(7, 55, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-12 05:51:20', 'Paknaan', 'Kamatis'),
-(8, 56, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-12 05:51:27', 'Paknaan', 'Kamatis'),
-(9, 87, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-12 15:55:04', 'Paknaan', 'Kamatis'),
-(10, 57, 31, 'Test', 'Unverify', '2022-06-12 23:34:49', 'Paknaan', 'Kamatis'),
-(11, 57, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-14 13:17:59', 'Paknaan', 'Kamatis'),
-(12, 28, 31, 'Your account lacks the necessary requirement, please resubmit your profile picture and valid ID ', 'Unverify', '2022-06-14 15:46:03', 'Paknaan', 'Kamatis'),
-(13, 28, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-14 15:49:02', 'Paknaan', 'Kamatis'),
-(14, 32, 29, 'Test', 'Unverify', '2022-06-15 00:05:32', 'Paknaan', 'Kamatis'),
-(15, 58, 29, 'Test', 'Unverify', '2022-06-15 00:05:38', 'Paknaan', 'Kamatis'),
-(16, 69, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:11:02', 'Paknaan', 'Kamatis'),
-(17, 69, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:12:04', 'Paknaan', 'Kamatis'),
-(18, 69, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:12:38', 'Paknaan', 'Kamatis'),
-(19, 59, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:20:59', 'Paknaan', 'Kamatis'),
-(20, 59, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:01', 'Paknaan', 'Kamatis'),
-(21, 59, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:02', 'Paknaan', 'Kamatis'),
-(22, 60, 31, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:07', 'Paknaan', 'Kamatis'),
-(23, 64, 29, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:32', 'Paknaan', 'Kamatis'),
-(24, 65, 29, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 00:21:36', 'Paknaan', 'Kamatis'),
-(25, 88, 29, 'Captain has added a new Resident', 'Add', '2022-06-15 01:05:12', 'Paknaan', 'Kamatis');
+(1, 94, 93, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 09:39:11', 'Paknaan', 'Kamatis'),
+(2, 97, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 09:47:45', 'Paknaan', 'Kamatis'),
+(3, 98, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 10:25:48', 'Paknaan', 'Kamatis'),
+(4, 99, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 10:32:28', 'Paknaan', 'Kamatis'),
+(5, 100, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 15:54:48', 'Paknaan', 'Kamatis'),
+(6, 101, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:16:07', 'Paknaan', 'Kamatis'),
+(7, 102, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:24:20', 'Paknaan', 'Kamatis'),
+(8, 103, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:29:46', 'Paknaan', 'Kamatis'),
+(9, 104, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:32:53', 'Paknaan', 'Kamatis'),
+(10, 105, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:35:26', 'Paknaan', 'Kamatis'),
+(11, 106, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:37:45', 'Paknaan', 'Kamatis'),
+(12, 107, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:40:11', 'Paknaan', 'Kamatis'),
+(13, 108, 93, 'Captain has added a new Resident', 'Add', '2022-06-15 20:42:36', 'Paknaan', 'Kamatis'),
+(14, 112, 100, 'wrong requirements', 'Unverify', '2022-06-15 23:13:54', 'Paknaan', 'Kamatis'),
+(15, 111, 93, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 23:23:00', 'Paknaan', 'Kamatis'),
+(16, 112, 100, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 23:27:12', 'Paknaan', 'Kamatis'),
+(17, 110, 100, 'Purok Leader has verified this account.', 'Verify', '2022-06-15 23:27:18', 'Paknaan', 'Kamatis'),
+(18, 113, 109, 'Captain has added a new Resident', 'Add', '2022-06-16 09:09:48', 'Bakilid', 'Chippy'),
+(19, 114, 109, 'Captain has added a new Resident', 'Add', '2022-06-16 09:12:02', 'Bakilid', 'Chippy'),
+(20, 115, 109, 'Captain has added a new Resident', 'Add', '2022-06-16 09:15:08', 'Bakilid', 'Chippy'),
+(21, 118, 93, 'Invalid requirements, please resend your requirements.', 'Unverify', '2022-06-16 09:26:08', 'Paknaan', 'Kamatis'),
+(22, 118, 100, 'Purok Leader has verified this account.', 'Verify', '2022-06-16 09:27:32', 'Paknaan', 'Kamatis');
 
 -- --------------------------------------------------------
 
@@ -1670,42 +723,30 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UsersID`, `Firstname`, `Middlename`, `Lastname`, `dateofbirth`, `civilStat`, `emailAdd`, `username`, `usersPwd`, `userGender`, `userType`, `profile_pic`, `userBarangay`, `userPurok`, `phoneNum`, `teleNum`, `VerifyStatus`, `userCity`, `Status`, `landlordName`, `landlordContact`, `barangayPos`, `userAddress`, `userHouseNum`, `IsLandlord`, `isRenting`, `startedLiving`, `userSuffix`, `secretQuestion`, `secretAnswer`, `IsVoter`, `councilorRole`, `created_on`, `updated_on`) VALUES
-(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', 'profile_picture.jpg', NULL, NULL, NULL, NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '001', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(28, 'Xavier', 'Noez', 'Johnson', '2000-08-01', 'Male', 'xavier.johnson@gmail.com', 'resident1', '$2y$10$DcyVYXqRr6kf.R03tKa/1.0Vykumm2agobub3e217NP6wd/uG6Z7e', 'Male', 'Resident', '1655192880_1633943340_gru.png', 'Paknaan', 'Kamatis', '', NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', NULL, '002', 'False', 'True', '2000-01-07', '', 'What\'s the name of the school you first went to?', 'qwe', 'False', NULL, '2022-06-12 04:31:46', '2022-06-14 15:48:48'),
-(29, 'Jeremy', 'Psycho', 'Elbertson', '1981-08-23', 'Single', 'jeremyelbertson@gmail.com', 'captain1', '$2y$10$wgirG5En9HiHhhtVzR50E.xdr2RunZl/L5QHs1AnwDfMu.9L7QT9G', 'Male', 'Captain', '1655057880_1633943100_gru.png', 'Paknaan', 'Kamatis', '0923659874', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, NULL, 'False', 'False', '2000-01-07', '', NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(30, 'Roxy', 'Tabby', 'Handson', '1991-02-01', 'Single', 'handson.tabby@gmail.com', 'secretary1', '$2y$10$7MPFKH3XG/uUamFPUQJnyuIfwpkmhl31F7Owu7A4mXHJW.HceFUBq', 'Female', 'Secretary', 'profile_picture.jpg', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '004', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(31, 'Purok', 'Leader', 'Leader', '1987-11-11', 'Single', 'purokleader@gmail.com', 'purokLeader1', '$2y$10$GXZUfl.RHuhPT9OHoRL.sOiI9keF1TAy178G79p12h1/M9SRGd0pW', 'Male', 'Purok Leader', '1655057940_1634632620_Capture.JPG', 'Paknaan', 'Kamatis', '', NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '005', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(32, 'Resident', 'User', 'User', '2020-02-12', 'Single', 'resident@gmail.com', 'resident2', '$2y$10$oua0FAN7GbEUsSuGAfwrEO4bzUdTLgEt5atpy549A0uMhexXUV6OO', 'Male', 'Resident', 'profile_picture.jpg', 'Pajo', 'Kamanggahan', NULL, NULL, 'Unverified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Quezon National Highway', '2154', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(34, 'Woshua', 'Etch', 'Torts', '2017-11-25', 'Single', 'woshua@gmail.com', 'tanodResident', '$2y$10$r1tpz1YRzITj1SYgiq99Re2573PkqyytJkonuaAwCb/kNo46ceI.W', 'Male', 'Resident', '1655058900_1647869940_RobloxScreenShot20220318_181434207.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'Tanod', 'Plaridel Street', '006', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(37, 'Jackson', 'Me', 'Ville', '2011-11-11', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$4afrff9nv2rPHjPwgBwUw.4Uf8OIVYwSlzJibdqElFU4fag3R/.we', 'Male', 'Treasurer', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, 'N/A', 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '007', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(39, 'Mr', 'Plum', 'Plumber', '2013-02-22', 'Single', 'plumber@gmail.com', 'plumberResident', '$2y$10$88iJPGIsWukfR3BdiQPcYeCF/BTDogUL8ulVD7RQ8blCQzWTuwCqq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'National Highway ', '231', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(40, 'Mr', 'Con', 'Struction', '1999-02-20', 'Single', 'construction@gmail.com', 'constructionResident', '$2y$10$OfQqSRF.nA7JA9UDwXpbee2r9.KHb9/lUW0jW2qnf/ki7/4nBxLeq', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', 'Plaridel St.', '2414', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(54, 'Yasmin', 'Awer', 'Fisher', '2013-01-07', 'Single', 'qoidoajd@gmail.com', 'councilor1', '$2y$10$I.dFzFM6CSA0czScwNa6x.VERcxvs4RUCQ5r0BKtNF4c5Msp0RMYe', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Infrastructure Development', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(55, 'Isidro', 'Nidhogg', 'Nitzsche', '2016-01-13', 'Single', 'aosdjasfa@gmail.com', 'councilor2', '$2y$10$5CZU58IIllsB5tAntntoGOIXRs0uQI/U373rjOXdcOWtbHvnSfWHe', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Women & Family, Health & Social Welfare', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(56, 'Kian', 'Schwit', 'Von', '2007-01-09', 'Single', 'aosijdo@gmail.com', 'councilor3', '$2y$10$hu5VlmOzwMBXuID0duSB7ONu2x37JQsb8GO11HRsf9jc32WWQ.Ska', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '784', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Public Accountability and Appropriation', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(57, 'Samson', 'Poer', 'Ritchie', '2001-02-06', 'Male', 'anzxmasd@gmail.com', 'councilor4', '$2y$10$Q.AEENJYxJ5F35sB7ILD9O/aWc3EktqVBCH8mgZZBLZ89Fv2PKNXS', 'Male', 'Councilor', '1655183400_285571718_751194962552495_5114760615446740962_n.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'False', '2000-01-07', '', 'What is your mother\'s maiden name?', 'Test', 'False', 'Clean and Green', '2022-06-12 04:31:46', '2022-06-12 04:31:46'),
-(58, 'Ralph', 'Wex', 'Roob', '2003-01-06', 'Single', 'anbckjzxnc@gmail.com', 'councilor5', '$2y$10$lk0mqswvVGePDgVk9Xi9AeNQy4OcsxFDIanWYbcjdsUACsnn8.Jxa', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Unverified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '156', 'False', 'False', '2000-01-07', NULL, 'What is your first pet\'s name?', 'Test', 'False', 'Health and Sanitation', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(59, 'Hildr', 'Ryjr', 'Adelajda', '2008-06-01', 'Single', 'asmozkm@gmail.com', 'councilor6', '$2y$10$sGuxf7hKot1lg/xxPmiWLezVSP11YKhqWsgIKwfsU6nK629szChCq', 'Male', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Education', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(60, 'Maria-Angeen', 'Ester', 'Coreen', '2003-01-21', 'Single', 'xcvlkkj@gmail.com', 'councilor7', '$2y$10$XhpGN5tTf6BO3P3yp4SDW.HupNGLBWnmabg3i/zOJgaRVmhfPT1w6', 'Female', 'Councilor', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '765', 'False', 'False', '2000-01-07', NULL, 'What is your mother\'s maiden name?', 'Test', 'False', 'Peace and Order', '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(61, 'Test', 'Test', 'Test', '2022-06-05', 'Single', 'asdsgsdoij@gmail.com', 'testaccount', '$2y$10$FWofcPUwJVs4xUur/PbNLuiwb.k/wdnVQ.eH0ij.j78HTzJziEJsm', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '421', 'False', 'False', '2022-03-02', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(62, 'Labogon ', 'Capt', 'Captain', '2022-06-08', 'Single', 'asdkaosdm@gmail.com', 'captain2', '$2y$10$ZRSweUf2tEvlWiVQth.wAuzLma9nu.TyWywDCsnpGJvtqpyOhXFOW', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', '', NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', '2022-04-04', '', NULL, NULL, 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(63, 'Purok', 'Kamanggahan', 'Leader', '2022-06-02', 'Single', 'dsfasasdn@gmail.com', 'purokleader2', '$2y$10$VnOLs5b2k6fZ4JGy26cnJOdNE2IKayS1DsW0jEJvJV8Ev8AS/WBbG', 'Male', 'Purok Leader', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '2313', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(64, 'asojoasjd', 'oadjaosdj', 'asjdoajd', '2022-03-09', 'Single', 'asfasodajdo@gmail.com', 'testaccount2', '$2y$10$uvj2ZzdR45tpp1nqRsE/Ze6eMe59wKNw.oFZtSsn84XA/4DMFNPdy', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(65, 'asdad', 'asdas', 'dasdasda', '2021-09-08', 'Single', 'asdoasjdoi@gmail.com', 'testaccount3', '$2y$10$8YPaafpEXpXu6ASLK.pcbOOxeaXd.bE9hRAZwyLg4cEteWDNze9RK', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '754', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(66, 'qwe', 'qweqwe', 'qweqwe', '2021-06-08', 'Single', 'aasdnkjna@gmail.com', 'testaccount4', '$2y$10$fUiz2kDYB3/xy/kMp1Ea2.h8lV3Xk8OCuVEYSU2261AcjbEKnguzW', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '5153', 'False', 'False', NULL, NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(68, 'Zeke', 'R. ', 'Yeager', '2006-01-03', 'Single', 'asgsdsdf@gmail.com', 'captainLabogon', '$2y$10$OYixsGaROy2k1.aUpmxUJOEFwHXUqiS2uLH8kCgxgVxT0BGbSinG6', 'Male', 'Captain', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', '', '231', 'False', 'False', '2000-06-23', NULL, NULL, NULL, 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(69, 'Armin', 'R. ', 'Yzrett', '2013-02-07', 'Single', 'asdasdoasjdo@gmail.com', 'armin1', '$2y$10$LmOqlX4Xo5jH/XaevRK6PukN/CuB9UwnKriWHrao4pwO0ggusJ3H6', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Kamanggahan', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '2165', 'False', 'False', '2021-10-06', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(70, 'Rosvie', 'R.', 'Pepito', '2021-10-04', 'Single', 'pepitorosvie@gmail.com', 'pepitorosvie', '$2y$10$eYqS51.79cwSDDFL9qKt2.BnW1gmtGbjNzXZvH3zW4nVpV0WhW07K', 'Female', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '504', 'False', 'False', '2018-01-01', NULL, 'What is your first pet\'s name?', 'Leslie', 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(71, 'Sajid', 'O.', 'Cadavero', '2021-05-04', 'Single', 'sajidcadavero@gmail.com', 'santacruz1', '$2y$10$EzXxB04BnmpD8jwUoBVS1ewWI5WmapI1bRFuoulMmTAedoYA8zLTO', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Santa Cruz', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '154', 'False', 'False', '2021-04-05', NULL, 'What is your first pet\'s name?', 'Leslie', 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(72, 'Roxy', 'B.', 'Luna', '2021-12-07', 'Single', 'roxyluna@gmail.com', 'santacruz2', '$2y$10$TD2oy9f8HDGZmNXMtYQDfe5eTQXFgJQoYphTg4RELwrPCj6voZOe2', 'Female', 'Purok Leader', 'profile_picture.jpg', 'Labogon', 'Santa Cruz', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '458', 'False', 'False', '2021-03-28', NULL, 'What is your mother\'s maiden name?', 'Rosilita', 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(73, 'Johnny', 'B.', 'Scissorhands', '2021-01-04', 'Single', 'johnnyscissor@gmail.com', 'santacruz3', '$2y$10$lxFitdF11792fe.iKLVn4.Yy9v2YgIvuz/hDHmurElHc9KCXlsit6', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Santa Cruz', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '487', 'False', 'False', '2020-08-31', NULL, 'What\'s the name of your first bestfriend?', 'Jamiel', 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(74, 'Michael', '-', 'Luna', '2005-01-01', 'Single', 'michaelLuna@gmail.com', 'santacruz4', '$2y$10$JoVoPD9KSfI.4QwnUoQtp.pJPe3qhl5idB.HzW4V1tuoWWAALyb7y', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Santa Cruz', NULL, NULL, 'Verified', 'Mandaue', 'Active', 'None', 'NONE', 'None', NULL, '487', 'False', 'False', '2020-10-05', NULL, 'What\'s the name of the school you first went to?', 'UCLM', 'True', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(75, 'Felix', '-', 'Meister', '2022-02-06', 'Single', 'felxJohn@gmail.com', 'santacruz5', '$2y$10$GShP8tYmVmvDSs4ePe/Vb.ecEHSJ5VQ6HJNq5/JXJmFlIC68ipROq', 'Male', 'Resident', 'profile_picture.jpg', 'Labogon', 'Santa Cruz', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '504', 'False', 'True', '2021-08-16', NULL, NULL, NULL, '', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(84, 'oasjoasdj', 'ojasojasodi', 'ojaosjdasoi', '2022-06-07', 'Single', 'aosdjaosdjo@gmail.com', 'asjdoajsdo', '$2y$10$rXVRR1J6PK7zJjp1UbZSP.zQxWT3POWsPyj2f5i9Ck3IYehXHfz3O', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'Yes', '2022-06-07', '', 'What is your mother\'s maiden name?', 'Test', 'Yes', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(85, 'aosjdoasjdjao', 'oasjdoasdj', 'ojasodjasd', '2022-03-17', 'Single', 'oasjdoasjdO@gmail.com', 'aosjdoasdj', '$2y$10$1jJvW62VYrywf0.L8K1ixO5CUDkOC8l3pbq3KtVwMpk9HGSjeLKUS', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '232', 'False', 'Yes', '2022-05-30', '', 'What is your mother\'s maiden name?', 'Test', 'Yes', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(86, 'asdiasdj', 'jasoidjasodj', 'oiajsdoiajsd', '2022-06-05', 'Single', 'asjdoajsdojas@gmail.com', 'oiasjdoasjdo', '$2y$10$FP8omNt9vJilU3imcBYhn.8jly83DxwyBO5svhJ/a8kuWbNLmYwhu', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '23', 'False', 'Yes', '2022-06-05', 'oijasodja', 'What is your mother\'s maiden name?', 'Test', 'Yes', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(87, 'oasjdaoij', 'iojasojasd', 'oasjdaos', '2022-03-16', 'Single', 'asodjaosdj@gmail.com', 'oasjoasjd', '$2y$10$F.DwHnkK0mocS0iiPjPQ2uMa3B/8SSgnFwFa6/UGCfLJ3cjk4I0uS', 'Male', 'Resident', '1654979100_1633942800_Untitled.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '231', 'False', 'True', '2022-05-29', '', 'What is your mother\'s maiden name?', 'Test', 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
-(88, 'test', 'test', 'etst', '2022-06-06', 'Single', 'asjdoasjdo@gmail.com', 'testaccount9', '$2y$10$HoezUSo.CEw.O3hshkJKnu5eRvH8QtYqX5uGWy/KwFOPmVL4CrOii', 'Male', 'Resident', 'profile_picture.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '5468', 'False', 'True', '2022-05-30', NULL, NULL, NULL, 'True', NULL, '2022-06-15 01:05:12', '2022-06-15 01:05:12');
+(27, 'Craige Jonard', 'Noel', 'Baring', '2000-01-08', 'Single', 'craigejonard@gmail.com', 'admin', '$2y$10$UEq1Wgm7o57pp1kueghFh.rcR3C4OLo3fDV8YPV6Rln17VMV9Cxh2', 'Male', 'Admin', '1655227980_1653529200_20220524_202416.png.jpg', NULL, NULL, NULL, NULL, 'Verified', '', 'Active', 'None', 'NONE', 'None', 'Plaridel Street', '001', 'False', 'False', '2000-01-07', NULL, NULL, NULL, 'False', NULL, '2022-06-12 04:31:46', '2022-06-12 04:35:34'),
+(93, 'Jeremy', 'Psycho', 'Elberson', '2022-06-06', 'Single', 'asodajsdio@gmail.com', 'captain1', '$2y$10$bOhm4DMvi2radMtgu7N8ROzUBEKKrGGmoQEfY6B4dkCFB0gsbjLy6', 'Male', 'Captain', '1655303100_1653575520_RobloxScreenShot20220318_181126843.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', '', '123', 'False', 'False', '2012-06-14', NULL, NULL, NULL, 'True', NULL, '2022-06-15 02:23:51', '2022-06-15 02:23:51'),
+(94, 'Resident', 'Resident', 'Resident', '1987-02-18', 'Single', 'resident@gmail.com', 'resident1', '$2y$10$CpzCjYeywrIRhQnTS2n7meGkMNQnXDa8bNoXb4BjgFSgwWpDQ6SUO', 'Male', 'Resident', '1655256300_ERD Diagram 06-03-22 (2).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '12', 'False', 'False', '1992-06-25', '', 'What is your mother\'s maiden name?', 'Resident', 'True', 'TEst', '2022-06-15 09:25:51', '2022-06-15 09:39:10'),
+(96, 'ihiuh', 'ihiuh', 'iuh', '2022-06-07', 'Single', 'asdjoasdj@gmail.com', 'resident2', '$2y$10$ksHnqoKKCgtPhsEx/qK25OacObpJQf9fjw.g15dNAmEH2186JGfXa', 'Male', 'Resident', '1655257020_1633943100_gru.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '21', 'False', 'False', '2022-06-13', 'iuh', 'What is your mother\'s maiden name?', 'Test', 'True', NULL, '2022-06-15 09:37:26', '2022-06-15 09:37:26'),
+(99, 'Secretary', 'Secretary', 'Secretary', '2022-06-13', 'Single', 'asdohasiodj@gmail.com', 'secretary1', '$2y$10$2Yv6uhWqm.40hLgGf0a2Ue9hUAFMlb5slhbEZbi/DIHOUK/CHVmh2', 'Male', 'Secretary', '1655260320_1636115280_Capture.JPG', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '123', 'False', 'False', '2022-06-12', NULL, NULL, NULL, 'True', NULL, '2022-06-15 10:32:28', '2022-06-15 10:32:28'),
+(100, 'Purok', 'L', 'Leader', '2015-02-02', 'Single', 'ashdiashd@gmail.com', 'purokleader1', '$2y$10$Iz5vnbVgobsvB2NV7YrDzukGmD5Z9YJPXclfFeMq/MdqtUp4VW8um', 'Male', 'Purok Leader', '1655279640_Screenshot (6).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '321', 'False', 'False', '2015-01-16', NULL, NULL, NULL, 'True', NULL, '2022-06-15 15:54:47', '2022-06-15 15:54:47'),
+(101, 'Treasurer', 'Treasurer', 'Treasurer', '2000-01-15', 'Single', 'treasurer@gmail.com', 'treasurer1', '$2y$10$hw.C/jU3l/iue8Z7A11FMeqyBHrqOGZ.NFL.05xW3ka/VcJ4.5KGi', 'Male', 'Treasurer', '1655295360_1653586560_Screenshot (6).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '1125', 'False', 'True', '2008-06-12', NULL, NULL, NULL, 'False', NULL, '2022-06-15 20:16:05', '2022-06-15 20:16:05'),
+(102, 'Juan', '-', 'Councilor', '1998-01-13', 'Single', 'councilorone@gmail.com', 'councilor1', '$2y$10$pXmns1PGKQsZkvdtiIqOMumCMyFFKA/2s9r0kV3QRVDgY7hGUxb9S', 'Female', 'Councilor', '1655295840_285571718_751194962552495_5114760615446740962_n.jpg', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '321', 'False', 'True', '2000-01-03', NULL, NULL, NULL, 'False', 'Health and Sanitation', '2022-06-15 20:24:20', '2022-06-15 20:24:20'),
+(103, 'Tojo', '-', 'Councilor', '1997-01-15', 'Single', 'tojo@gmail.com', 'councilor2', '$2y$10$..3d/2dsdjCdwu8EKuAvvusT454hKC4xJapcV8.RnF1Zn3bdYCmyy', 'Male', 'Councilor', '1655296140_ERD Diagram 06-03-22 (1).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '13', 'False', 'True', '2003-03-06', NULL, NULL, NULL, 'False', 'Peace and Order', '2022-06-15 20:29:45', '2022-06-15 20:29:45'),
+(104, 'Sanji', '-', 'Councilor', '1983-06-17', 'Married', 'sanji@gmail.com', 'councilor3', '$2y$10$ITBpZ8bbxVTPqCyEYiaB2OTXHgNCRjMAuc4o22RLesHu3xSrmlF/e', 'Male', 'Councilor', '1655296320_eBarangay use case (1).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '15', 'False', 'True', '1994-06-21', NULL, NULL, NULL, 'False', 'Education', '2022-06-15 20:32:53', '2022-06-15 20:32:53'),
+(105, 'Yonji', '-', 'Councilor', '1975-09-12', 'Single', 'yonji@gmail.com', 'councilor4', '$2y$10$Uo3uzV4HLwnl5Kvldm4PpOmitR4I3HeQ72Zxwn7PS9lFvfFaLWfUK', 'Female', 'Councilor', '1655296500_Blank diagram.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '14', 'False', 'True', '2000-05-03', NULL, NULL, NULL, 'False', 'Information', '2022-06-15 20:35:25', '2022-06-15 20:35:25'),
+(106, 'Gouji', '-', 'Councilor', '1992-07-05', 'Single', 'gouji@gmail.com', 'councilor5', '$2y$10$9K.2gEvmO2Du0iectW/jZe3j3YeDu8jr1eodf3S15AY56r1q0xHR2', 'Female', 'Councilor', '1655296620_Blank diagram.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '20', 'False', 'True', '2000-11-26', NULL, NULL, NULL, 'False', 'Environment', '2022-06-15 20:37:45', '2022-06-15 20:37:45'),
+(107, 'Siyes', '-', 'Coucilor', '1999-09-12', 'Single', 'siyes@gmail.com', 'councilor6', '$2y$10$767C1IicWpDsVMNSUXpHQuCIRl/lNUJaXrFekfw9UME7ss5daKXEq', 'Male', 'Councilor', '1655296800_eBarangay use case (1).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '45', 'False', 'True', '2002-03-09', NULL, NULL, NULL, 'False', 'Youth', '2022-06-15 20:40:11', '2022-06-15 20:40:11'),
+(108, 'Siyete', '-', 'Councilor', '1989-02-12', 'Single', 'siyete@gmail.com', 'councilor7', '$2y$10$2IpwsJ9vls99TUDaHFTDpuL46Ud.FnTCy6XT0z.G5ci7DYzkZL3yi', 'Female', 'Councilor', '1655296920_eBarangay use case (1).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '78', 'False', 'True', '2001-05-12', NULL, NULL, NULL, 'False', 'Economy', '2022-06-15 20:42:36', '2022-06-15 20:42:36'),
+(109, 'Captain', '-', 'Bakilid', '1985-09-26', 'Single', 'bakilidcaptain@gmail.com', 'captain2', '$2y$10$50CG/N9ORNSCBK23hvAHDux6shGj0kZctnVl0RM9lj1FURYISW0oW', 'Male', 'Captain', '1655305320_20220524_202416.png.jpg', 'Bakilid', 'Chippy', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', '', '23', 'False', 'False', '2000-11-23', NULL, NULL, NULL, 'True', NULL, '2022-06-15 23:02:15', '2022-06-15 23:02:15'),
+(110, 'Yolo', '-', 'Wows', '1991-12-15', 'Single', 'yolo@gmail.com', 'resident3', '$2y$10$wMzbWZjrD6WHpjAsKS1a5OdLxunSILd0gnjR6Hzqdjb17VlPg/CRi', 'Male', 'Resident', '1655305560_ERD 05-29-22.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '78', 'False', 'False', '1999-02-14', '', 'What is your first pet\'s name?', 'yolo', 'True', NULL, '2022-06-15 23:06:40', '2022-06-15 23:27:18'),
+(111, 'Sakura', '-', 'Savior', '1998-05-04', 'Married', 'sakura@gmail.com', 'resident4', '$2y$10$xCZRdHKEV13/WRtZQoqlzO4MPfC0hqc2zGjatwMUKf8gKDAzGx7f2', 'Female', 'Resident', '1655305740_eBarangay use case (1).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '56', 'False', 'False', '2000-05-18', '', 'What is your mother\'s maiden name?', 'sakura', 'True', NULL, '2022-06-15 23:09:08', '2022-06-15 23:23:00'),
+(112, 'Samurai', '-', 'Rex', '1985-03-28', 'Male', 'samurai@gmail.com', 'resident5', '$2y$10$GGm6ASpXZld6Le6faELEnedKkKPfHUDXmumMW7xLwyutWSIpewd2u', 'Male', 'Resident', '1655306760_Blank diagram (1).png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '89', 'False', 'False', '1995-07-23', '', 'What is your mother\'s maiden name?', 'samurai', 'True', NULL, '2022-06-15 23:12:05', '2022-06-15 23:27:12'),
+(113, 'Purok ', 'Leader', 'Bakilid', '1989-12-23', 'Single', 'pleaderbakilid@gmail.com', 'leaderbakilid', '$2y$10$ianjaWth8EyjURQ2TK2GuOA7oJQPy2RrBIZOzdsx.rVtmtBgXr4eG', 'Female', 'Purok Leader', '1655341740_ERD 05-29-22.png', 'Bakilid', 'Chippy', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '60', 'False', 'True', '2000-05-30', NULL, NULL, NULL, 'False', NULL, '2022-06-16 09:09:48', '2022-06-16 09:09:48'),
+(114, 'Secretary', '-', 'Bakilid', '1990-07-05', 'Single', 'secbalikid@gmail.com', 'secbakilid', '$2y$10$adh0uKcUGg7sY/eDtRlb7.TPl9R2YjvoWsEvj2ndl.eiR0/o898.u', 'Male', 'Secretary', '1655341920_ERD 05-29-22.png', 'Bakilid', 'Chippy', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '56', 'False', 'True', '1999-08-19', NULL, NULL, NULL, 'False', NULL, '2022-06-16 09:12:02', '2022-06-16 09:12:02'),
+(115, 'Treasurer', 'Treas', 'Bakilid', '1984-06-26', 'Single', 'treasbakilid@gmail.com', 'treasbakilid', '$2y$10$Y5ptw4QeTT5iCV2xTUbMh.9ivzGzaB9Y9SEc06ysXXW3jD69/g0U.', 'Female', 'Treasurer', '1655342100_ERD Diagram 06-03-22.png', 'Bakilid', 'Chippy', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '89', 'False', 'True', '1999-08-27', NULL, NULL, NULL, 'False', NULL, '2022-06-16 09:15:08', '2022-06-16 09:15:08'),
+(116, 'Name', 'Middle', 'Last', '1999-02-21', 'Single', 'name@gmail.com', 'bakilid1', '$2y$10$AF8LUwvCQOsgNxD4dSeiner2dRsduJVDL5GLycZuFMaU1A6HgkeLy', 'Male', 'Resident', '1655342220_ERD Diagram 06-03-22.png', 'Bakilid', 'Chippy', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '6', 'False', 'False', '2001-05-08', '', 'What is your mother\'s maiden name?', 'name', 'True', NULL, '2022-06-16 09:17:43', '2022-06-16 09:17:43'),
+(117, 'Hulu', '-', 'Swift', '1971-05-04', 'Single', 'swift@gmail.com', 'bakilid2', '$2y$10$f4ZnvnyjvudnkEB1ovQpQOiJuJipNJa0ZeDWyy6n9cAiWXBzyhvcO', 'Female', 'Resident', '1655342520_20220524_202416.png.jpg', 'Bakilid', 'Chippy', NULL, NULL, 'Pending', 'None', 'Active', 'None', 'NONE', 'None', NULL, '7', 'False', 'False', '2004-04-29', '', 'What is your mother\'s maiden name?', 'Test', 'True', NULL, '2022-06-16 09:22:40', '2022-06-16 09:22:40'),
+(118, 'Test', 'Test', 'Test', '2022-06-06', 'Male', 'test@gmail.com', 'testaccount', '$2y$10$It.ESC.eLMLFZ0LzmLgox.mISxYx8YnRjeaOk7/EgH2PURWt0/Or.', 'Male', 'Resident', '1655342760_RobloxScreenShot20220318_181126843.png', 'Paknaan', 'Kamatis', NULL, NULL, 'Verified', 'None', 'Active', 'None', 'NONE', 'None', NULL, '32', 'False', 'False', '2022-06-13', '', 'What is your mother\'s maiden name?', 'Test', 'True', NULL, '2022-06-16 09:24:51', '2022-06-16 09:27:32');
 
 -- --------------------------------------------------------
 
@@ -1728,15 +769,12 @@ CREATE TABLE `votes` (
 --
 
 INSERT INTO `votes` (`voteID`, `candidateID`, `UsersID`, `created_at`, `updated_at`, `position`, `electionID`) VALUES
-(36, 33, 28, '2022-05-28 22:51:35', '2022-05-28 22:51:35', 'Purok Leader', 21),
-(38, 46, 28, '2022-06-06 15:20:42', '2022-06-06 15:20:42', 'Purok Leader', 27),
-(39, 43, 31, '2022-06-06 15:25:42', '2022-06-06 15:25:42', 'Purok Leader', 27),
-(40, 43, 30, '2022-06-06 15:27:34', '2022-06-06 15:27:34', 'Purok Leader', 27),
-(41, 43, 29, '2022-06-06 15:31:02', '2022-06-06 15:31:02', 'Purok Leader', 27),
-(42, 51, 71, '2022-06-08 15:12:12', '2022-06-08 15:12:12', 'Purok Leader', 29),
-(43, 51, 72, '2022-06-08 15:12:28', '2022-06-08 15:12:28', 'Purok Leader', 29),
-(44, 50, 73, '2022-06-08 15:12:42', '2022-06-08 15:12:42', 'Purok Leader', 29),
-(45, 51, 74, '2022-06-08 15:12:54', '2022-06-08 15:12:54', 'Purok Leader', 29);
+(1, 1, 94, '2022-06-16 03:13:25', '2022-06-16 03:13:25', 'Purok Leader', 31),
+(2, 1, 110, '2022-06-16 03:15:09', '2022-06-16 03:15:09', 'Purok Leader', 31),
+(3, 3, 111, '2022-06-16 03:15:58', '2022-06-16 03:15:58', 'Purok Leader', 31),
+(4, 1, 100, '2022-06-16 03:17:27', '2022-06-16 03:17:27', 'Purok Leader', 31),
+(5, 1, 104, '2022-06-16 03:19:15', '2022-06-16 03:19:15', 'Purok Leader', 31),
+(6, 3, 103, '2022-06-16 03:19:44', '2022-06-16 03:19:44', 'Purok Leader', 31);
 
 --
 -- Indexes for dumped tables
@@ -1947,7 +985,7 @@ ALTER TABLE `votes`
 -- AUTO_INCREMENT for table `barangay`
 --
 ALTER TABLE `barangay`
-  MODIFY `BarangayID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `BarangayID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `barangaylupon`
@@ -1959,73 +997,73 @@ ALTER TABLE `barangaylupon`
 -- AUTO_INCREMENT for table `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `candidateID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `chatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `chatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `chatroom`
 --
 ALTER TABLE `chatroom`
-  MODIFY `chatroomID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `chatroomID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `CommentsID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `contactID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `contactID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `documentpurpose`
 --
 ALTER TABLE `documentpurpose`
-  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `purposeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `documenttype`
 --
 ALTER TABLE `documenttype`
-  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `DocumentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `election`
 --
 ALTER TABLE `election`
-  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `electionID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `ereklamo`
 --
 ALTER TABLE `ereklamo`
-  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `ReklamoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `ereklamocategory`
 --
 ALTER TABLE `ereklamocategory`
-  MODIFY `reklamoCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `reklamoCatID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `ereklamoreport`
 --
 ALTER TABLE `ereklamoreport`
-  MODIFY `ereportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `ereportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `ereklamotype`
 --
 ALTER TABLE `ereklamotype`
-  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `reklamoTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `members`
@@ -2037,43 +1075,43 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=422;
+  MODIFY `NotificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=444;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `PostID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `PostID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `purok`
 --
 ALTER TABLE `purok`
-  MODIFY `PurokID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `PurokID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
+  MODIFY `reportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=330;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `RequestID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `requestreport`
 --
 ALTER TABLE `requestreport`
-  MODIFY `requestreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `requestreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `requirementlist`
 --
 ALTER TABLE `requirementlist`
-  MODIFY `requirementID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `requirementID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `residentcategory`
@@ -2085,31 +1123,31 @@ ALTER TABLE `residentcategory`
 -- AUTO_INCREMENT for table `residents`
 --
 ALTER TABLE `residents`
-  MODIFY `ResidentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ResidentID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `scheduleid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `scheduleid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `userreport`
 --
 ALTER TABLE `userreport`
-  MODIFY `userreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `userreportID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `UsersID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT for table `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `voteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `voteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
