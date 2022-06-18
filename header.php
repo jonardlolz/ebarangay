@@ -152,7 +152,7 @@
     <i class="fa fa-bars"></i>
 </button>
 
-<a class="navbar-brand" href="about.html">    <!-- about the website page-->
+<a class="navbar-brand" href="about.php">    <!-- about the website page-->
     <img src="img/eb-logo.png" alt="EBARANGAY LOGO" width="70" height="65">
 </a>
 <!-- Not visible in Xl-->
