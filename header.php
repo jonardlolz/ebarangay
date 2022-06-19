@@ -452,7 +452,10 @@
             <?php if($_SESSION['barangayPos'] != 'None'): ?>
             <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "active"; endif; ?>">
                 <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "respondent.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="respondent.php">Responder</a>
-            </li>                     
+            </li>         
+            <li class="nav-item <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "active"; endif; ?>">
+                <a class="nav-link <?php if(basename($_SERVER['PHP_SELF']) === "report.php"): ?> <?php echo "bg-secondary"; endif; ?>" href="report.php">Report</a>
+            </li>            
             <?php endif; ?>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

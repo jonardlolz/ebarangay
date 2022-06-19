@@ -223,72 +223,68 @@
             while($categoryResult = $categorySql->fetch_assoc()):
                 $catName = str_replace(' ', '', $categoryResult['residentCatName']);?>
                 <div class="tab-pane fade" id="nav-<?php echo $catName ?>" role="tabpanel" aria-labelledby="nav-<?php echo $catName ?>-tab">
-                    <div class="col m-2">
-                        <div class="d-flex flex-row-reverse">
-                            <button class="btn btn-primary categoryOptions" data-id="<?php echo $categoryResult['residentCatID'] ?>"><i class="fas fa-cog"></i> Options</button>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-center text-dark display" 
-                                    width="100%" cellspacing="0" cellpadding="0">
-                                    <thead >
-                                        <tr class="bg-gradient-secondary text-white">
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Birthdate</th>
-                                            <th scope="col">Civil Status</th>
-                                            <th scope="col">User Type</th>
-                                            <th scope="col">Purok</th>
-                                            <th scope="col">Manage</th>
-                                        </tr>
-                                        
-                                    </thead>
-                                    <tbody>
-                                        <!--Row 1-->
-                                        <?php 
-                                            $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM members INNER JOIN users ON members.UsersID=users.UsersID WHERE residentCatID={$categoryResult['residentCatID']}");
-                                            while($row=$accounts->fetch_assoc()):
-                                                if($row["userType"] == "Admin"){
-                                                    continue;
-                                                }
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <img class="img-profile rounded-circle <?php 
-                                                    if($row["userType"] == "Resident"){
-                                                        echo "img-res-profile";
-                                                    }
-                                                    elseif($row["userType"] == "Purok Leader"){
-                                                        echo "img-purokldr-profile";
-                                                    }
-                                                    elseif($row["userType"] == "Captain"){
-                                                        echo "img-capt-profile";
-                                                    }
-                                                    elseif($row["userType"] == "Secretary"){
-                                                        echo "img-sec-profile";
-                                                    }
-                                                    elseif($row["userType"] == "Treasurer"){
-                                                        echo "img-treas-profile";
-                                                    }
-                                                    elseif($row["userType"] == "Admin"){
-                                                        echo "img-admin-profile";
-                                                    }
-                                                ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
-                                                </br>
-                                                <?php echo $row["name"] ?>
-                                            </td>
-                                            <td><?php echo $row["dateofbirth"] ?></td>
-                                            <td><?php echo $row["civilStat"] ?></td>
-                                            <td><?php echo $row["userType"] ?></td>
-                                            <td><?php echo $row["userPurok"] ?></td>
-                                            <td><button class="btn btn-danger btn-flat btn-sm removeResident" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-times"></i> Remove</button></td>
-                                            <!--Right Options-->
-                                        </tr>
-                                        <?php endwhile; ?>
-                                        <!--Row 1-->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="d-flex flex-row-reverse">
+                        <button class="btn btn-primary categoryOptions" data-id="<?php echo $categoryResult['residentCatID'] ?>"><i class="fas fa-cog"></i> Options</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center text-dark display" 
+                            width="100%" cellspacing="0" cellpadding="0">
+                            <thead >
+                                <tr class="bg-gradient-secondary text-white">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Birthdate</th>
+                                    <th scope="col">Civil Status</th>
+                                    <th scope="col">User Type</th>
+                                    <th scope="col">Purok</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                <!--Row 1-->
+                                <?php 
+                                    $accounts = $conn->query("SELECT *, concat(users.Firstname, ' ', users.Lastname) as name FROM members INNER JOIN users ON members.UsersID=users.UsersID WHERE residentCatID={$categoryResult['residentCatID']}");
+                                    while($row=$accounts->fetch_assoc()):
+                                        if($row["userType"] == "Admin"){
+                                            continue;
+                                        }
+                                ?>
+                                <tr>
+                                    <td>
+                                        <img class="img-profile rounded-circle <?php 
+                                            if($row["userType"] == "Resident"){
+                                                echo "img-res-profile";
+                                            }
+                                            elseif($row["userType"] == "Purok Leader"){
+                                                echo "img-purokldr-profile";
+                                            }
+                                            elseif($row["userType"] == "Captain"){
+                                                echo "img-capt-profile";
+                                            }
+                                            elseif($row["userType"] == "Secretary"){
+                                                echo "img-sec-profile";
+                                            }
+                                            elseif($row["userType"] == "Treasurer"){
+                                                echo "img-treas-profile";
+                                            }
+                                            elseif($row["userType"] == "Admin"){
+                                                echo "img-admin-profile";
+                                            }
+                                        ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                        </br>
+                                        <?php echo $row["name"] ?>
+                                    </td>
+                                    <td><?php echo $row["dateofbirth"] ?></td>
+                                    <td><?php echo $row["civilStat"] ?></td>
+                                    <td><?php echo $row["userType"] ?></td>
+                                    <td><?php echo $row["userPurok"] ?></td>
+                                    <td><button class="btn btn-danger btn-flat btn-sm removeResident" data-id="<?php echo $row['UsersID'] ?>"><i class="fas fa-times"></i> Remove</button></td>
+                                    <!--Right Options-->
+                                </tr>
+                                <?php endwhile; ?>
+                                <!--Row 1-->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             <?php endwhile; ?>

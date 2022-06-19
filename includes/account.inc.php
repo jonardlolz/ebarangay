@@ -258,7 +258,9 @@ if(isset($_GET['edit'])):
 <script>
     
     $(document).ready(function() {
-        $('#residentList').select2();
+        $('#residentList').select2({
+            dropdownParent: $('#uni_modal')
+        });
     });
 
     $(".container-fluid").parent().siblings(".modal-footer").remove();
