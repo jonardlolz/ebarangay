@@ -1039,7 +1039,7 @@
                         <tbody>
                             <!--Row 1-->
                             <?php
-                                $requests = $conn->query("SELECT ereklamoreport.*, concat(users.Firstname, ' ', users.Lastname) as name, users.userType, users.profile_pic FROM ereklamoreport JOIN users ON respondentID=users.UsersID WHERE ReklamoID={$_GET['reklamoid']} ORDER BY date DESC");
+                                $requests = $conn->query("SELECT ereklamoreport.*, users.*, concat(users.Firstname, ' ', users.Lastname) as name, users.userType, users.profile_pic FROM ereklamoreport JOIN users ON respondentID=users.UsersID WHERE ReklamoID={$_GET['reklamoid']} ORDER BY date DESC");
                                 while($row=$requests->fetch_assoc()):
                                     if($row["userType"] == "Admin"){
                                         continue;
@@ -1067,7 +1067,7 @@
                                         elseif($row["userType"] == "Admin"){
                                             echo "img-admin-profile";
                                         }
-                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                     <br>
                                     <?php echo $row["name"] ?>
                                 </td>

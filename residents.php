@@ -313,6 +313,11 @@
         <a class="fas fa-plus fa-lg mr-2 text-gray-600 residentOptions" href="javascript:void(0)"></a>
     </div>
     <div class="card-body" style="font-size: 75%">
+        <div class="d-flex flex-row-reverse">
+            <button class="btn btn-flat btn-sm btn-primary printResident">
+                <i class="fas fa-print"></i> Print
+            </button>
+        </div>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</a>
@@ -575,7 +580,7 @@
                                         elseif($row["userType"] == "Admin"){
                                             echo "img-admin-profile";
                                         }
-                                    ?>" src="img/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
+                                    ?>" src="img/users/<?php echo $row['UsersID'] ?>/profile_pic/<?php echo $row["profile_pic"] ?>" width="40" height="40"/>
                                     </br>
                                     <?php echo $row["name"] ?>
                                 </td>
@@ -607,11 +612,11 @@
                 "scrollCollapse": true,
                 "paging": false,
                 "ordering": false,
-                dom: 'Bfrtip',
-                buttons: [
-                    'pdf'
-                ]
             });
+
+            $('.printResident').click(function(){
+                uni_modal("<center><b>Generate report</b></center></center>","includes/print.inc.php?resident")
+            })
         });
     </script>
 </div>

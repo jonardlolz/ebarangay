@@ -9,6 +9,11 @@
                 </div>
                 
                 <div class="card-body" style="font-size: 75%">
+                    <div class="d-flex flex-row-reverse">
+                        <button class="btn btn-flat btn-sm btn-primary printResident">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                    </div>
                     <div class="col-sm-4">
                         <div class="row">
                             <div class="col">
@@ -42,11 +47,6 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
-                            <a target="_blank" href="pdf.php?reportType=ereklamoReport">
-                                <div class="d-flex flex-row-reverse">
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
-                                </div>
-                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" width="100%" cellspacing="0" cellpadding="0">
                                     <thead>
@@ -66,10 +66,10 @@
                                             $accounts = $conn->query("SELECT ereklamoreport.*, ereklamo.*, concat(responder.Firstname, ' ', responder.Lastname) as respondername, responder.profile_pic as responderprofile, responder.userType as respondertype, concat(complainee.Firstname, ' ', complainee.Lastname) as complaineename, complainee.profile_pic as complaineeprofile, complainee.userType as complaineetype, chatroom.chatroomID 
                                             FROM ereklamoreport 
                                             INNER JOIN ereklamo on ereklamo.ReklamoID=ereklamoreport.ReklamoID 
-                                            INNER JOIN users responder ON responder.UsersID=ereklamoreport.respondentID 
-                                            INNER JOIN users complainee ON complainee.UsersID=ereklamo.complainee 
-                                            INNER JOIN chatroom ON ereklamo.ReklamoID=chatroom.idreference AND type='ereklamo' 
-                                            WHERE ereklamo.barangay='Paknaan' AND ereklamoreport.reportStatus='Resolved' 
+                                            LEFT JOIN users responder ON responder.UsersID=ereklamoreport.respondentID 
+                                            LEFT JOIN users complainee ON complainee.UsersID=ereklamo.complainee 
+                                            INNER JOIN chatroom ON ereklamo.ReklamoID=chatroom.idreference AND type='ereklamo'
+                                            WHERE ereklamoreport.barangay='{$_SESSION['userBarangay']}' AND ereklamoreport.reportStatus='Resolved'
                                             ORDER BY date DESC");
                                             while($row=$accounts->fetch_assoc()):
                                         ?>
@@ -143,11 +143,6 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="request" role="tabpanel" aria-labelledby="request-tab">
-                            <a target="_blank" href="pdf.php?reportType=requestReport">
-                                <div class="d-flex flex-row-reverse">
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
-                                </div>
-                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
@@ -254,11 +249,6 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-                            <a target="_blank" href="pdf.php?reportType=paymentReport">
-                                <div class="d-flex flex-row-reverse">
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
-                                </div>
-                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
@@ -372,11 +362,6 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="residents" role="tabpanel" aria-labelledby="residents-tab">
-                            <a target="_blank" href="pdf.php?reportType=userReport">
-                                <div class="d-flex flex-row-reverse">
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
-                                </div>
-                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                     width="100%" cellspacing="0" cellpadding="0">
@@ -405,7 +390,7 @@
                                             FROM userreport 
                                             INNER JOIN users resident ON resident.UsersID=userreport.UsersID 
                                             INNER JOIN users officer ON officer.UsersID=userreport.OfficerID 
-                                            WHERE barangay='{$_SESSION['userBarangay']}' AND purok='{$_SESSION['userPurok']}' 
+                                            WHERE barangay='{$_SESSION['userBarangay']}'
                                             ORDER BY date DESC");
                                             while($row=$accounts->fetch_assoc()):
                                         ?>
@@ -476,11 +461,6 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab">
-                            <a target="_blank" href="pdf.php?reportType=electionReport">
-                                <div class="d-flex flex-row-reverse">
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
-                                </div>
-                            </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" 
                                 width="100%" cellspacing="0" cellpadding="0">
@@ -536,6 +516,9 @@
         })
         $('.results_election').click(function(){
             uni_modal("<center><b>Results</b></center></center>","includes/addElection.inc.php?result="+$(this).attr('data-id'))
+        })
+        $('.printResident').click(function(){
+            uni_modal("<center><b>Generate Report</b></center></center>","includes/print.inc.php?reportType")
         })
         
         $(document).ready(function() {
@@ -896,11 +879,11 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="reklamo" role="tabpanel" aria-labelledby="reklamo-tab">
-                            <a target="_blank" href="pdf.php?reportType=ereklamoReport">
-                                <div class="d-flex flex-row-reverse">
+                            <div class="d-flex flex-row-reverse">
+                                <a target="_blank" href="pdf.php?reportType=ereklamoReport">
                                     <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i> Print</button>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center text-dark display" width="100%" cellspacing="0" cellpadding="0">
                                     <thead>
